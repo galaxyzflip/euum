@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+   PUBLIC "-//mybatis.org//DTD Mapper 3.0/EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 
+작성자 : 최창선
+작성일 : 2026-01-13
+용도 : 회원관련 sql 모음 
+-->
+
+<mapper namespace="com.mycom.euum.member.mapper.CartMapper">
+	
+	
+	<!-- 찜 추가하기 -->
+	<insert id="addCard">
+		insert cart_tbl (cart_num, goods_num, member_num)
+		values(cart_num_seq.nextval, #{goodsNum}, #{memberNum})
+	</insert>
+	
+	
+	<!-- 찜 목록 가져오기 -->
+	<select id="getCartList" resultType="com.mycom.euum.cart.bean.CartBean">
+	
+		select g.*, c.cart_regdate
+		from cart_tbl c inner join goods_tbl g
+		on c.goods_num=g.goods_num
+		and c.member_num=#{memberNum}
+	</select>
+
+
+	<!-- 카트(찜) 1개 삭제 -->
+	<delete id="deleteCart">
+		delete from cart_tbl
+		where cart_num=#{cartNum}
+	</delete> 
+
+</mapper>
