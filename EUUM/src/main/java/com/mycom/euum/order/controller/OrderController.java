@@ -33,7 +33,7 @@ public class OrderController {
 
 		}
 		GoodsBean goodsInfo = orderService.getGoodsInfo(Integer.parseInt(list.get(0).getGoodsNum()));
-		log.info("셀러정보 css_branch : " + goodsInfo.toString());
+		log.info("셀러정보 레알 브런치: " + goodsInfo.toString());
 		log.info("셀러정보 : " + goodsInfo.toString());
 		log.info("셀러정보 : " + goodsInfo.toString());
 		log.info("셀러정보 : " + goodsInfo.toString());
