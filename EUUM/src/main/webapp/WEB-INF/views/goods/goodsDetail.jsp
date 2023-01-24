@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<script src="webjars/jquery/3.5.1/dist/jquery.min.js"></script>
+
 
 <div class="mainDiv">
 	<div class="topDiv">
@@ -13,13 +13,13 @@
 	<div class="middleDiv">
 		<div class="middleLeftDiv">
 			<div>
-				<img src="${pageContext.request.contextPath}/resources/img/ex_nongdamgom.png" style="width: 625px;" />
+				<img src="${pageContext.request.contextPath}/resources/assets/img/stats-bg.jpg" style="width: 625px;" />
 			</div>
 			<div>
-				<img src="${pageContext.request.contextPath}/resources/img/ex_nongdamgom.png" style="width: 625px;" />
+				<img src="${pageContext.request.contextPath}/resources/assets/img/stats-bg.jpg" style="width: 625px;" />
 			</div>
 			<div>
-				<img src="${pageContext.request.contextPath}/resources/img/ex_nongdamgom.png" style="width: 625px;" />
+				<img src="${pageContext.request.contextPath}/resources/assets/img/stats-bg.jpg" style="width: 625px;" />
 			</div>
 		</div>
 		<div class="middleRightDiv">
@@ -31,7 +31,7 @@
 			<!-- 상세옵션 (고정 개수) -->
 			<div style="height: 280px; border: 1px solid black;">
 <!-- 			<div style="height: 280px;"> -->
-				<span>상세옵션<span>
+				<span>상세옵션</span>
 				<dl>
 					<dt>제출 파일 유형</dt>
 					<dd>${detail.goodsFormat}</dd>
@@ -61,13 +61,13 @@
 					<c:choose>
 						<c:when test="${fn:length(optionList) > 0}">
 							<c:forEach items="${optionList}" var="selectList" varStatus="status">
-								<ul class="option_info">
-									<span>${selectList[0].goodsOptName}</span>
-									<select id="select_option" class="select_option" onChange="setTotalInfo();">
+								<ul id="option_info${status.index }">
+									<span class="option-name">${selectList[0].goodsOptName}</span>
+									<select id="select_option" class="select_option" onChange="setTotalInfo(${status.index });">
 										<option value="0">선택하세요</option>
 										<c:forEach items="${selectList}" var="row" varStatus="status">
-											<option value="${row.goodsOptPrice}">
-												${row.goodsOptContent} (<fmt:formatNumber value="${row.goodsOptPrice}" groupingUsed="true" />)
+											<option value="${row.goodsOptContent} ${row.goodsOptPrice}">
+												<span class="option-content">${row.goodsOptContent}</span> <span class="option-price">(<fmt:formatNumber value="${row.goodsOptPrice}" groupingUsed="true" />)</span>
 											</option>
 										</c:forEach>
 									</select>
@@ -80,9 +80,17 @@
 			<!-- 주문 -->
 			<div style="display: inline-block; width:350px; height:200px; border: 1px solid black;">
 <!-- 			<div style="display: inline-block; width:350px;"> -->
+
+
+				<!-- 선택된 옵션 보여주는곳... -->
+				<div class="selected-option">
+				
+				</div>
+
 				<span>결제 금액</span><br/>
+				
 				<strong><span class="total_price">0</span> 원</strong>
-				<button type="button">주문 하기</button>
+				<button type="button" onclick="buy()">주문 하기</button>
 			</div>
 		</div>
 	</div>
@@ -102,53 +110,213 @@
 		</div>
 </div>
 
-<form action="/order/order" method="post">
-	<input type="hidden" name="optionList.goodsOptName" value="0번옵션">
-	<input type="hidden" name="optionList.goodsOptPrice" value="0번가격">
-	<input type="hidden" name="optionList.goodsOptName" value="1번옵션">
-	<input type="hidden" name="optionList.goodsOptPrice" value="1번가격">
-	<button type="submit">저장</button>
+<form id="orderForm" action="/order/orderForm" method="post">
+	
 </form>
 
 <script>
+let num = 0;
 
- $(document).ready(function(){
-	$('.select_option').on('change', function(){
-		let selectOption ='';
-		let optionNum = 0;
+
+function buy(){
+	const selectedOption = document.getElementsByClassName('option-data');
+	
+	$.each(selectedOption, function(index, item){
+		let buyOptionName = $(this).find('.option-name').text();
+		let buyOptionPrice = parseInt($(this).find('.option-price').text());
+		let buyOptionCount = $(this).find('.option-count').text();
+		
+		console.log(index + " 번째 주문할 옵션 이름 : " + buyOptionName);	
+		console.log(index + " 주문할 옵션 금액 : " + buyOptionPrice);	
+		console.log(index + " 주문할 옵션 수량 : " + buyOptionCount);	
+		
+		let inner = '';
+		let goodsNum = '${detail.goodsNum}';
 		
 		
-		selectOption += '<input type="text" name="optionList[' + optionNum + '].goodsOptName" value=""';
+		inner += '<input type="hidden" name="optionList['+index+'].goodsOptName" value="'+buyOptionName+'">';
+		inner += '<input type="hidden" name="optionList['+index+'].goodsOptPrice" value="'+buyOptionPrice+'">';
+		inner += '<input type="hidden" name="optionList['+index+'].goodsOptCount" value="'+buyOptionCount+'">';
+		inner += '<input type="hidden" name="optionList['+index+'].goodsNum" value="'+goodsNum+'">';
 		
 		
-		optionNum++;
+		console.log('입력할 input 태그들... : ' + inner);
+		
+		$('#orderForm').append(inner);
+		
 	})
-})
+	$('#orderForm').submit();
+}
+
+//옵션명, 옵션내용, 금액 넣어주면 선택된 옵션 추가해주는 함수...
+function insertSelectedOption(optionName, optionContent, optionPrice){
+	
+	
+	let selectedOptionList = $('.option-name');
+	let orderOptionName = optionName + ' / ' + optionContent;
+	
+	if(dulicateCheck(selectedOptionList, orderOptionName) != 0){
+		console.log(optionName);
+		
+		let inner = '';
+		
+		inner += '<div class="option-data" id="optionData'+num+'"><div>';
+		inner += '<div class="option-name">' + orderOptionName + '</div>';
+		inner += '<div class="optionCountPrice"><span class="#">  <button class="plus" onclick="counter(\'plus\', '+num+')"> + </button> <span class="option-count" id="count' +num +'">1</span>';
+		inner += '<button class="minus" onclick="counter(\'minus\', '+num+')"> - </button></span> <span class="option-price" id="price' + num + '">' + optionPrice + '</span>';
+		inner += '<button id="delete' + num + '" onclick="deleteOption('+num+')" > x </button>'
+		inner += '</div><input type="hidden" id="ori-price' +num + '" value="'+optionPrice+'"/></div></div>';
+
+		$('.selected-option').append(inner);
+		
+		num++;
+		
+		setTotalPrice();
+	}
+	
+	
+}
+
+ 
+//선택된 옵션에서 사용할 index...
+
+ 
+ 
+function setTotalInfo(index) {
+	
+	let selectOption = document.getElementById('option_info'+index);
+	//console.log(selectOption);
+	
+	//선택된 옵션명
+	let optionName = $(selectOption).find('span').text();
+	
+	//선택된 옵션내용, 가격... 아래 optionContent, optionPrice 로 나눌거임
+	let optionStr = $(selectOption).find('select option:selected').val();
+	//선택된 옵션 내용
+	let optionContent ='';
+	//선택된 옵션 가격
+	let optionPrice = '';
+	//옵션 내용 옵션 가격 각 변수에 대입
+	[optionContent, optionPrice] = optionStr.split(' ');
+	
+	//선택하세요. 옵션 선택시에는 옵션 추가 안되게...
+	if(optionContent === '0'){
+		return false;
+	}
+
+	//선택된 옵션정보 로그 찍어보기
+	//console.log(optionName);
+	//console.log(optionContent);
+	//console.log(optionPrice);
+	
+	insertSelectedOption(optionName, optionContent, optionPrice);
+	
+}
+
+
+//선택된 옵션 리스트들(selectedOptionList)과 방금 선택된 옵션(orderOptionName) 을 비교하여 
+//중복이면 return 0, 중복 아니면 1을 리턴...
+function dulicateCheck(selectedOptionList, orderOptionName){
+	
+	let check = 1;
+	
+	$.each(selectedOptionList, function(index, item){
+		if($(item).text() == orderOptionName){
+			check = 0;
+			return false;
+		}
+	})
+	return check;
+}
+ 
+
+
+function deleteOption(index){
+	const selectedOption = document.getElementById('optionData'+index);
+	selectedOption.remove();
+	setTotalPrice();
+}
+
+ 
+ //수량 증감 함수, 버튼 onclick 이벤트 걸려있음...
+ //type : plus, minus ; num : 추가된 옵션의 인덱스...
+ function counter(type, num){
+	 
+	 const countElement = document.getElementById('count'+num);
+	 const priceElement = document.getElementById('price'+num);
+	 const oriPriceElement = document.getElementById('ori-price'+num);
+	 
+	 let count = countElement.innerText;
+	 let price = priceElement.innerText;
+	 let oriPrice = oriPriceElement.value; 
+	 
+	 if(type === 'plus'){
+		 count = parseInt(count) + 1;
+		 
+	 }else if(type === 'minus'){
+		 count = parseInt(count) - 1;
+	 }
+	 
+	 if(parseInt(count) < 1){
+		 count = 1;
+	 }
+	 
+	 price = parseInt(oriPrice) * parseInt(count);
+	 console.log("계산된 가격... : " + price);
+	 
+	 countElement.innerText = count;
+	 priceElement.innerText = price;
+	 
+	 setTotalPrice();
+	 
+ }
+ 
 
 // 선민: 추가옵션에 따른 최종금액 계산
-function setTotalInfo() {
+// 옵션선택시, 수량 변경시 해당 함수 사용
+ function setTotalPrice() {
 	
 	let totalPrice = 0;
 	
-	$(".option_info").each(function(index, element) {
-	    let optionPrice = $(element).find(".select_option").val();
+	$(".option-data").each(function(index, element) {
+	    let optionPrice = $(element).find(".option-price").text();
 	    
+	    //console.log('optionPrice : ' + optionPrice);
 		// 총 가격
 		totalPrice += parseInt(optionPrice);
 	});
 	
+	console.log('합계금액 : ' + totalPrice);
 	// 최종 합계 금액
 	$(".total_price").text(totalPrice.toLocaleString());		
 }
 </script>
 
 <style>
+
+.optionCountPrice span{
+
+	justify-content: space-between;	
+	padding-right:10px;
+	padding-left:10px;
+}
+
+
+
 div {
 	display: block;
 }
 
 ul {
 	list-style: none;
+}
+
+.option-data dl dd{
+	display : inline-block;
+}
+
+.option-data dl dt{
+	display : block;
 }
 
 .mainDiv {

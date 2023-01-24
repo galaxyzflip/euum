@@ -88,7 +88,7 @@ li {
 				<div class=input-box>
 					<div class="insertbox">
 						<!-- <label for="memberEmail">아이디(이메일)</label> -->
-						<input type="text" id="memberEmail" name="memberEmail" class="insert" maxlength="10" placeholder="아이디(이메일)">
+						<input type="text" id="memberEmail" name="memberEmail" class="insert" maxlength="30" placeholder="아이디(이메일)">
 					</div>
 					<div class="insertbox">
 						<!-- <label for="memberPassword">비밀번호</label> -->

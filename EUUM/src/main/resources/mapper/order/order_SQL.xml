@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+   PUBLIC "-//mybatis.org//DTD Mapper 3.0/EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.mycom.euum.order.mapper.OrderMapper">
+
+<!-- 작성자 : 최창선, 주문시 보여주는 셀러닉네임 포함, 상품 정보 -->
+	<select id="getGoodsInfo" resultType="com.mycom.euum.goods.bean.GoodsBean">
+
+		select goods_seller_nickname , goods_image1, goods_name, 
+		goods_format, goods_resolution, goods_size, goods_modify_count,
+		 GOODS_PERIOD
+		from goods_tbl
+		where goods_num=#{goodsNum}
+
+	</select>
+
+
+	<!-- 회원 주문 -->
+	<insert id="insertOrder">
+		INSERT INTO
+		ORDER_TBL(
+		ORDER_KEY_NUM,
+		ORDER_NUM,
+		GOODS_NUM,
+		MEMBER_NUM,
+		ORDER_STATUS,
+		ORDER_CONTACT,
+		ORDER_EMAIL,
+		ORDER_DATE,
+		ORDER_REQUEST,
+		ORDER_PAY_TYPE,
+		ORDER_NAME,
+		ORDER_FORMAT,
+		ORDER_RESOLUTION,
+		ORDER_SIZE,
+		ORDER_MODIFY_COUNT,
+		ORDER_PERIOD,
+		ORDER_IMAGE)
+		VALUES(
+		ORDER_KEY_NUM_SEQ.VAL,
+		#{ORDER_NUM},
+		#{GOODS_NUM},
+		#{MEMBER_NUM},
+		'입금대기중',
+		#{ORDER_CONTACT},
+		#{ORDER_EMAIL},
+		SYSDATE,
+		#{ORDER_REQUEST},
+		#{ORDER_PAY_TYPE},
+		#{ORDER_NAME},
+		#{ORDER_FORMAT},
+		#{ORDER_RESOLUTION},
+		#{ORDER_SIZE},
+		#{ORDER_MODIFY_COUNT},
+		#{ORDER_PERIOD},
+		#{ORDER_IMAGE})
+	</insert>
+
+	<!-- 회원 주문 옵션 -->
+	<insert id="insertOrderOpt">
+		INSERT INTO
+		ORDER_OPT_TBL(
+		ORDER_OPT_NUM,
+		GOODS_NUM,
+		GOODS_OPTION_CONTENT_NUM,
+		ORDER_OPT_PRICE,
+		ORDER_OPT_COUNT,
+		ORDER_OPT_DATE,
+		ORDER_OPT_STATUS,
+		ORDER_OPT_REQUEST,
+		ORDER_OPT_PAY_TYPE,
+		ORDER_OPTION_NAME)
+		VALUES(
+		ORDER_OPT_KEY_NUM_SEQ.VAL,
+		#{GOODS_NUM},
+		#{GOODS_OPTION_CONTENT_NUM},
+		#{ORDER_OPT_PRICE},
+		#{ORDER_OPT_COUNT},
+		SYSDATE,
+		'입금대기중',
+		#{ORDER_OPT_REQUEST},
+		#{ORDER_OPT_PAY_TYPE},
+		#{ORDER_OPTION_NAME})
+	</insert>
+
+	<!-- 상태 변경 -->
+	<update id="updateOrderStatus">
+		UPDATE ORDER_TBL
+		SET ORDER_STATUS = #{ORDER_STATUS}
+		WHERE ORDER_NUM = #{ORDER_NUM};
+	</update>
+
+	<!-- 옵션 상태 변경 -->
+	<update id="updateOrderOptStatus">
+		UPDATE ORDER_OPT_TBL
+		SET ORDER_OPT_STATUS = #{ORDER_OPT_STATUS}
+		WHERE ORDER_NUM = #{ORDER_NUM};
+	</update>
+
+
+	<!-- 완료 상태 변경 -->
+	<update id="updateOrderStatusOk">
+		UPDATE ORDER_TBL
+		SET ORDER_STATUS = #{ORDER_STATUS},
+		ORDER_DONE_DATE = TO CHAR(SYSDATE, 'YYYY-MM-DD')
+		WHERE ORDER_NUM = #{ORDER_NUM}
+	</update>
+
+	<!-- 완료 옵션 상태 변경 -->
+	<update id="updateOrderOptStatusOk">
+		UPDATE ORDER_OPT_TBL
+		SET ORDER_OPT_STATUS = #{ORDER_OPT_STATUS}
+		WHERE ORDER_NUM = #{ORDER_NUM};
+	</update>
+
+	<!-- 취소 상태 변경 -->
+	<update id="updateOrderCancel">
+		UPDATE ORDER_TBL
+		SET ORDER_STATUS = #{ORDER_STATUS},
+		ORDER_CANCLE_DATE = TO CHAR(SYSDATE, 'YYYY-MM-DD');
+		WHERE ORDER_NUM = #{ORDER_NUM};
+	</update>
+
+	<!-- 취소 옵션 상태 변경 -->
+	<update id="updateOrderOptCancel">
+		UPDATE ORDER_OPT_TBL
+		SET ORDER_OPT_STATUS = #{ORDER_OPT_STATUS},
+		ORDER_OPT_CANCLE_DATE = TO CHAR(SYSDATE, 'YYYY-MM-DD');
+		WHERE ORDER_NUM = #{ORDER_NUM};
+	</update>
+
+	<!-- 주문 수정 -->
+	<update id="updateOrder">
+		UPDATE ORDER_TBL
+		SET ORDER_EMAIL = #{ORDER_EMAIL},
+		ORDER_CONTACT = #{ORDER_CONTACT},
+		ORDER_REQUEST = #{ORDER_REQUEST}
+		WHERE ORDER_NUM = #{ORDER_NUM};
+	</update>
+
+
+	<!-- 주문 옵션 수정 -->
+	<update id="updateOrderOpt">
+		UPDATE ORDER_OPT_TBL
+		SET ORDER_OPT_PRICE = #{ORDER_OPT_PRICE},
+		ORDER_OPT_COUNT = #{ORDER_OPT_COUNT},
+		ORDER_OPT_REQUEST = #{ORDER_OPT_REQUEST}
+		WHERE ORDER_NUM = #{ORDER_NUM};
+	</update>
+
+	<!-- 주문 내역 리스트 -->
+	<select id="selectOrderList"
+		resultType="com.mycom.euum.order.bean.OrderBean">
+		SELECT ORDER_KEY_NUM,
+		ORDER_NUM,
+		GOODS_NUM,
+		MEMBER_NUM,
+		ORDER_STATUS,
+		ORDER_CONTACT,
+		ORDER_EMAIL,
+		ORDER_DATE,
+		ORDER_REQUEST,
+		ORDER_PAY_TYPE,
+		ORDER_NAME,
+		ORDER_FORMAT,
+		ORDER_RESOLUTION,
+		ORDER_SIZE,
+		ORDER_MODIFY_COUNT,
+		ORDER_PERIOD,
+		ORDER_IMAGE,
+		ORDER_OPT_NUM,
+		GOODS_NUM,
+		GOODS_OPTION_CONTENT_NUM,
+		ORDER_OPT_PRICE,
+		ORDER_OPT_COUNT,
+		ORDER_OPT_DATE,
+		ORDER_OPT_STATUS,
+		ORDER_OPT_REQUEST,
+		ORDER_OPT_PAY_TYPE,
+		ORDER_OPTION_NAME
+		FROM ORDER_TBL, ORDER_OPT_TBL
+		WHERE MEMBER_NUM = #{MEMBER_NUM}
+	</select>
+
+
+
+	<!-- 접수 내역 리스트 -->
+	<select id="selectSellerList"
+		resultType="com.mycom.euum.order.bean.OrderBean">
+		SELECT order_key_num,
+		order_num,
+		goods_num,
+		member_num,
+		seller_num,
+		order_status,
+		order_contact,
+		order_email,
+		order_date,
+		order_request,
+		order_pay_type,
+		order_name,
+		order_format,
+		order_resolution,
+		order_size,
+		order_modify_count,
+		order_period,
+		order_image,
+		order_opt_num,
+		goods_num,
+		goods_option_content_num,
+		order_opt_price,
+		order_opt_count,
+		order_opt_date,
+		order_opt_status,
+		order_opt_request,
+		order_opt_pay_type,
+		order_option_name
+		FROM ORDER_TBL, ORDER_OPT_TBL
+		WHERE SELLER_NUM = #{SELLER_NUM}
+	</select>
+
+	<!-- 어드민 주문 관리 내역 -->
+	<select id="selectAdminOrderList"
+		resultType="com.mycom.euum.order.bean.OrderBean">
+		SELECT
+		order_key_num,
+		order_num,
+		goods_num,
+		member_num,
+		order_status,
+		order_contact,
+		order_email,
+		order_date,
+		order_request,
+		order_pay_type,
+		order_name,
+		order_format,
+		order_resolution,
+		order_size,
+		order_modify_count,
+		order_period,
+		order_image,
+		order_opt_num,
+		goods_num,
+		goods_option_content_num,
+		order_opt_price,
+		order_opt_count,
+		order_opt_date,
+		order_opt_status,
+		order_opt_request,
+		order_opt_pay_type,
+		order_option_name
+		FROM
+		order_tbl,
+		order_opt_tbl
+	</select>
+
+
+	<!-- 주문 완료 -->
+	<select id="selectOrder"
+		resultType="com.mycom.euum.order.bean.OrderBean">
+		SELECT
+		order_key_num,
+		order_num,
+		goods_num,
+		member_num,
+		order_status,
+		order_contact,
+		order_email,
+		order_date,
+		order_request,
+		order_pay_type,
+		order_name,
+		order_format,
+		order_resolution,
+		order_size,
+		order_modify_count,
+		order_period,
+		order_image,
+		order_opt_num,
+		goods_num,
+		goods_option_content_num,
+		order_opt_price,
+		order_opt_count,
+		order_opt_date,
+		order_opt_status,
+		order_opt_request,
+		order_opt_pay_type,
+		order_option_name
+		FROM
+		order_tbl,
+		order_opt_tbl
+		WHERE MEMBER_NUM = #{MEMBER_NUM}
+		and ORDER_NUM = #{order_num}
+	</select>
+
+
+
+</mapper>
