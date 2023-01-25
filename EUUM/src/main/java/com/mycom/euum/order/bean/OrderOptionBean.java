@@ -7,19 +7,19 @@ import lombok.Data;
 
 @Data
 public class OrderOptionBean {
-	private String goodsOptName;
-	private String goodsOptPrice;
-	private String goodsOptCount;
 	
-	private String goodsOptNum;
+	private String orderOptNum;
 	private String orderNum;
 	private String goodsNum;
-	private String goodsOptionContentNum;
+	//private String goodsOptContentNum;
+	private String orderOptPrice;
+	private String orderOptCount;
 	private Date orderOptDate;
 	private Date orderOptCancleDate;
 	private String orderOptStatus;
-	private String orderOptRequest;
+	//private String orderOptRequest;
 	private String orderOptPayType;
+	private String orderOptName;
 	
 	private List<OrderOptionBean> optionList;
 }

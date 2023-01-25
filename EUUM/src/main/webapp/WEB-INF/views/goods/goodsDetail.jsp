@@ -110,42 +110,55 @@
 		</div>
 </div>
 
+
+<!-- 주문시 아래 폼에 input 태그 입력 후 서브밋 -->
 <form id="orderForm" action="/order/orderForm" method="post">
-	
+	<input type="hidden" name="" value="${detail.goodsMemberNum }"/> 
+
 </form>
 
 <script>
+
 let num = 0;
 
 
 function buy(){
 	const selectedOption = document.getElementsByClassName('option-data');
 	
-	$.each(selectedOption, function(index, item){
-		let buyOptionName = $(this).find('.option-name').text();
-		let buyOptionPrice = parseInt($(this).find('.option-price').text());
-		let buyOptionCount = $(this).find('.option-count').text();
+	console.log('주문시작 선택된 옵션 확인 : ' + selectedOption);
+	console.log('선택된 옵션 개수 : ' + selectedOption.length);
+	
+	if(selectedOption.length > 0){
 		
-		console.log(index + " 번째 주문할 옵션 이름 : " + buyOptionName);	
-		console.log(index + " 주문할 옵션 금액 : " + buyOptionPrice);	
-		console.log(index + " 주문할 옵션 수량 : " + buyOptionCount);	
-		
-		let inner = '';
-		let goodsNum = '${detail.goodsNum}';
-		
-		
-		inner += '<input type="hidden" name="optionList['+index+'].goodsOptName" value="'+buyOptionName+'">';
-		inner += '<input type="hidden" name="optionList['+index+'].goodsOptPrice" value="'+buyOptionPrice+'">';
-		inner += '<input type="hidden" name="optionList['+index+'].goodsOptCount" value="'+buyOptionCount+'">';
-		inner += '<input type="hidden" name="optionList['+index+'].goodsNum" value="'+goodsNum+'">';
-		
-		
-		console.log('입력할 input 태그들... : ' + inner);
-		
-		$('#orderForm').append(inner);
-		
-	})
+		$.each(selectedOption, function(index, item){
+			let buyOptionName = $(this).find('.option-name').text();
+			let buyOptionPrice = $(this).find('.ori-price').val().replace(/,/g, "");
+			let buyOptionCount = $(this).find('.option-count').text();
+			
+			console.log(index + " 번째 주문할 옵션 이름 : " + buyOptionName);	
+			console.log(index + " 주문할 옵션 금액 : " + buyOptionPrice);	
+			console.log(index + " 주문할 옵션 수량 : " + buyOptionCount);	
+			
+			let inner = '';
+			let goodsNum = '${detail.goodsNum}';
+			
+			
+			inner += '<input type="hidden" name="optionList['+index+'].orderOptName" value="'+buyOptionName+'">';
+			inner += '<input type="hidden" name="optionList['+index+'].orderOptPrice" value="'+buyOptionPrice+'">';
+			inner += '<input type="hidden" name="optionList['+index+'].orderOptCount" value="'+buyOptionCount+'">';
+			inner += '<input type="hidden" name="optionList['+index+'].goodsNum" value="'+goodsNum+'">';
+			
+			
+			console.log('입력할 input 태그들... : ' + inner);
+			
+			$('#orderForm').append(inner);
+			
+		})
+	}else{
+		alert('옵션 선택 후 주문해주시기 바랍니다');
+	}
 	$('#orderForm').submit();
+	$('#orderForm').load(location.href+'#orderForm');
 }
 
 //옵션명, 옵션내용, 금액 넣어주면 선택된 옵션 추가해주는 함수...
@@ -165,7 +178,7 @@ function insertSelectedOption(optionName, optionContent, optionPrice){
 		inner += '<div class="optionCountPrice"><span class="#">  <button class="plus" onclick="counter(\'plus\', '+num+')"> + </button> <span class="option-count" id="count' +num +'">1</span>';
 		inner += '<button class="minus" onclick="counter(\'minus\', '+num+')"> - </button></span> <span class="option-price" id="price' + num + '">' + optionPrice + '</span>';
 		inner += '<button id="delete' + num + '" onclick="deleteOption('+num+')" > x </button>'
-		inner += '</div><input type="hidden" id="ori-price' +num + '" value="'+optionPrice+'"/></div></div>';
+		inner += '</div><input type="hidden" class="ori-price" id="ori-price' +num + '" value="'+optionPrice+'"/></div></div>';
 
 		$('.selected-option').append(inner);
 		
@@ -210,6 +223,15 @@ function setTotalInfo(index) {
 	//console.log(optionPrice);
 	
 	insertSelectedOption(optionName, optionContent, optionPrice);
+	
+	//옵션 선택 후 셀렉트박스 초기화	
+	const option = document.getElementsByClassName('select_option');
+	$.each(option, function(index, item){
+		item.value='0';
+		
+	})
+	
+//	$('.select_option option:eq(0)').prop("selected", true);
 	
 }
 
@@ -265,7 +287,7 @@ function deleteOption(index){
 	 console.log("계산된 가격... : " + price);
 	 
 	 countElement.innerText = count;
-	 priceElement.innerText = price;
+	 priceElement.innerText = price.toLocaleString();
 	 
 	 setTotalPrice();
 	 
@@ -275,13 +297,16 @@ function deleteOption(index){
 // 선민: 추가옵션에 따른 최종금액 계산
 // 옵션선택시, 수량 변경시 해당 함수 사용
  function setTotalPrice() {
+	console.log('setTotalPrice 시작');
 	
 	let totalPrice = 0;
 	
 	$(".option-data").each(function(index, element) {
 	    let optionPrice = $(element).find(".option-price").text();
 	    
-	    //console.log('optionPrice : ' + optionPrice);
+	    optionPrice = optionPrice.replace(/,/g, "");
+	    
+	    console.log('optionPrice : ' + optionPrice);
 		// 총 가격
 		totalPrice += parseInt(optionPrice);
 	});
