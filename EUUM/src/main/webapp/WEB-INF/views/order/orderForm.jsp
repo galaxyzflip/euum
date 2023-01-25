@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
   <style>
         .container {
@@ -47,7 +48,7 @@
             font-size: 25px;
         }
 
-        .price {
+        .totalPrice {
             color: rgb(255, 102, 0);
         }
 
@@ -59,7 +60,28 @@
     </style>
     
      <div class="container">
-
+		<form id="order-form" action="/order/orderPro" method="post">
+			<!-- 주문할 상품정보 및 이메일 등... -->
+			<input type="hidden" name="orderFormat" value="${goodsInfo.goodsFormat }"/>
+			<input type="hidden" name="orderName" value="${goodsInfo.goodsName }">
+			<input type="hidden" name="orderModifyCount" value="${goodsInfo.goodsModifyCount }">
+			<input type="hidden" name="orderPeriod" value="${goodsInfo.goodsPeriod }">
+			<input type="hidden" name="orderResolution" value="${goodsInfo.goodsResolution }">
+			<input type="hidden" name="orderSize" value="${goodsInfo.goodsSize }">
+			<input type="hidden" name="goodsNum" value="${goodsInfo.goodsNum }">
+			<input type="hidden" name="orderEmail" value="">
+			<input type="hidden" name="orderPayType" value="임시값">
+			<input type="hidden" name="orderImage" value="임시값">
+			
+			<!-- 주문할 옵션 정보들 -->
+			<c:forEach items="${orderList }" var="order" varStatus="status">
+				<input type="hidden" name="optionList[${status.index }].orderOptName" value="${order.orderOptName }">
+				<input type="hidden" name="optionList[${status.index }].orderOptPrice" value="${order.orderOptPrice }">
+				<input type="hidden" name="optionList[${status.index }].orderOptCount" value="${order.orderOptCount }">
+				<input type="hidden" name="optionList[${status.index }].goodsNum" value="${order.goodsNum }">
+			</c:forEach>
+			
+			
         <table class="pay-table">
             <tr>
                 <td colspan="3">결제 방법 다음 페이지에 안내되는 계좌번호로 입금합니다.</td>
@@ -71,13 +93,13 @@
             </tr>
             <tr>
                 <td>연락처</td>
-                <td><input type="text"/></td>
+                <td><input type="text" name="orderContact" value="${loginUser.memberMobile }"/></td>
             </tr>
             <tr>
                 <td>이메일</td>
                 <td>
-                    <input type="text" value="${fn:substringBefore(loginUser.memberEmail, '@') }"/> @ 
-                    <input type="text" value="${fn:substringAfter(loginUser.memberEmail, '@') }"/> 
+                    <input type="text" class="start-email" value="${fn:substringBefore(loginUser.memberEmail, '@') }"/> @ 
+                    <input type="text" class="end-email" value="${fn:substringAfter(loginUser.memberEmail, '@') }"/> 
                     <select>
                         <option>직접입력</option>
                         <option>naver.com</option>
@@ -86,11 +108,12 @@
             </tr>
             <tr>
                 <td>요청사항</td>
-                <td><textarea rows="3" cols="80"></textarea></td>
+                <td><textarea rows="3" cols="80" name="orderRequest"></textarea></td>
             </tr>
 
         </table>
-
+        <button type="submit" id="order-btn">결제</button>
+ 		</form>
         <br><br>
 
         <table class="order-goods-table">
@@ -106,15 +129,15 @@
 							
 							<c:forEach items="${orderList }" var="order">
 								<div>
-	                                <span class="goods-left">${order.goodsOptName } / ${order.goodsOptCount }개</span>
-	                                <span class="goods-right">${order.goodsOptPrice }</span>
+	                                <span class="goods-left">${order.orderOptName } / ${order.orderOptCount }개</span>
+	                                <span class="goods-right optTotalPrice"><fmt:formatNumber value="${order.orderOptPrice * order.orderOptCount}" groupingUsed="true" /></span>
 	                            </div>
 								
 							</c:forEach>
 
                             <div class="price-info">
                                 <span class="goods-left">총 결제 금액</span>
-                                <span class="goods-right price"> ${totalPrice }원</span>
+                                <span class="goods-right totalPrice"> 원</span>
                             </div>
 
                         </div>
@@ -124,23 +147,23 @@
                     <div class="order-info">
                         <div>
                             <span class="goods-left">제출 파일 유형</span>
-                            <span class="goods-right"> psd, png, jpg</span>
+                            <span class="goods-right"> ${goodsInfo.goodsFormat }</span>
                         </div>
                         <div>
                             <span class="goods-left">해상도</span>
-                            <span class="goods-right"> 300 dpi</span>
+                            <span class="goods-right"> ${goodsInfo.goodsResolution }</span>
                         </div>
                         <div>
                             <span class="goods-left">기본 사이즈</span>
-                            <span class="goods-right"> 3000px 이상 4k</span>
+                            <span class="goods-right"> ${goodsInfo.goodsSize }</span>
                         </div>
                         <div>
                             <span class="goods-left">수정 횟수</span>
-                            <span class="goods-right">2회</span>
+                            <span class="goods-right">${goodsInfo.goodsModifyCount } 회</span>
                         </div>
                         <div>
                             <span class="goods-left">작업 기간</span>
-                            <span class="goods-right"> 결제일로 부터 7일</span>
+                            <span class="goods-right"> 결제일로 부터 ${goodsInfo.goodsPeriod }일</span>
                         </div>
                     </div>
                 </td>
@@ -148,32 +171,39 @@
 
         </table>
         
-        
-        
-        <form action="/order/orderPro" method="post">
-			<c:forEach items="${orderList }" var="order" varStatus="status">
-				<input type="text" name="optionList[${status.index }].goodsOptName" value="${order.goodsOptName }">
-				<input type="text" name="optionList[${status.index }].goodsOptPrice" value="${order.goodsOptPrice }">
-				<input type="text" name="optionList[${status.index }].goodsOptCount" value="${order.goodsOptCount }">
-				<br>
-			</c:forEach>
-				<br>
-				<input type="text" name="orderFormat" value="${goodsInfo.goodsFormat }">
-				<input type="text" name="orderName" value="${goodsInfo.goodsName }">
-				<input type="text" name="orderModifyCount" value="${goodsInfo.goodsModifyCount }">
-				<input type="text" name="orderPeriod" value="${goodsInfo.goodsPeriod }">
-				<input type="text" name="orderResolution" value="${goodsInfo.goodsResolution }">
-				<input type="text" name="orderSize" value="${goodsInfo.goodsSize }"> 
-				
-			<button type="submit">결제</button>	
-        </form>
-
 
 
     </div>
     
     <script>
     
+    	$(document).ready(function(){
+    		
+    		//옵션합계 금액 모두 더해서 총 결제금액 표시해주기
+    		const optTotalPrice = document.getElementsByClassName("optTotalPrice")
+    		console.log("옵션 합계 가격들 : " +optTotalPrice);
+    		let totalPrice = 0;
+    		
+    		$.each(optTotalPrice, function(index, item){
+    			totalPrice += parseInt($(item).text().replace(/,/g, ""));//금액 ,표시 없애주기
+    			
+    		})
+    		    		
+    		$('.totalPrice').text(totalPrice.toLocaleString());
+    		//..옵션합계 금액...
+    		
+    		
+    		//결제버튼 클릭시 이메일 합치고 submit
+    		$('#order-btn').on('click', function(e){
+    			e.preventDefault();
+    			let email = $('.start-email').val() + "@" + $('.end-email').val();
+    			$('input[name="orderEmail"]').val(email);
+    			$('#order-form').submit();
+    			
+    		})
+    		
+    		
+    	})
     	
     
     </script>

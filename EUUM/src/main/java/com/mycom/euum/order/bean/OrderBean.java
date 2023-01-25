@@ -1,6 +1,7 @@
 package com.mycom.euum.order.bean;
 
 import java.sql.Date;
+import java.util.List;
 
 import lombok.Data;
 
@@ -27,7 +28,7 @@ public class OrderBean {
 	private String orderPeriod;
 	private String orderImage;
 	
-	
+	private List<OrderOptionBean> optionList;
 	
 	
 	

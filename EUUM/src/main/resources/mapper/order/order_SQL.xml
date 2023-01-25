@@ -9,12 +9,16 @@
 <!-- 작성자 : 최창선, 주문시 보여주는 셀러닉네임 포함, 상품 정보 -->
 	<select id="getGoodsInfo" resultType="com.mycom.euum.goods.bean.GoodsBean">
 
-		select goods_seller_nickname , goods_image1, goods_name, 
+		select goods_num, goods_seller_nickname , goods_image1, goods_name, 
 		goods_format, goods_resolution, goods_size, goods_modify_count,
 		 GOODS_PERIOD
 		from goods_tbl
 		where goods_num=#{goodsNum}
 
+	</select>
+	
+	<select id="getOrderKeyNum" resultType="int">
+		select order_key_num_seq.nextval from dual
 	</select>
 
 
@@ -39,51 +43,59 @@
 		ORDER_MODIFY_COUNT,
 		ORDER_PERIOD,
 		ORDER_IMAGE)
+		
 		VALUES(
-		ORDER_KEY_NUM_SEQ.VAL,
-		#{ORDER_NUM},
-		#{GOODS_NUM},
-		#{MEMBER_NUM},
-		'입금대기중',
-		#{ORDER_CONTACT},
-		#{ORDER_EMAIL},
+		#{orderKeyNum},
+		#{orderNum},
+		#{goodsNum},
+		#{memberNum},
+		'1',
+		#{orderContact},
+		#{orderEmail},
 		SYSDATE,
-		#{ORDER_REQUEST},
-		#{ORDER_PAY_TYPE},
-		#{ORDER_NAME},
-		#{ORDER_FORMAT},
-		#{ORDER_RESOLUTION},
-		#{ORDER_SIZE},
-		#{ORDER_MODIFY_COUNT},
-		#{ORDER_PERIOD},
-		#{ORDER_IMAGE})
+		#{orderRequest},
+		#{orderPayType},
+		#{orderName},
+		#{orderFormat},
+		#{orderResolution},
+		#{orderSize},
+		#{orderModifyCount},
+		#{orderPeriod},
+		#{orderImage})
 	</insert>
 
 	<!-- 회원 주문 옵션 -->
 	<insert id="insertOrderOpt">
 		INSERT INTO
-		ORDER_OPT_TBL(
+		ORDER_OPT_TBL
+		(
 		ORDER_OPT_NUM,
 		GOODS_NUM,
-		GOODS_OPTION_CONTENT_NUM,
+		ORDER_NUM,
+		<!-- GOODS_OPT_CONTENT_NUM, -->
 		ORDER_OPT_PRICE,
 		ORDER_OPT_COUNT,
 		ORDER_OPT_DATE,
 		ORDER_OPT_STATUS,
-		ORDER_OPT_REQUEST,
+		<!-- ORDER_OPT_REQUEST, -->
 		ORDER_OPT_PAY_TYPE,
-		ORDER_OPTION_NAME)
-		VALUES(
-		ORDER_OPT_KEY_NUM_SEQ.VAL,
-		#{GOODS_NUM},
-		#{GOODS_OPTION_CONTENT_NUM},
-		#{ORDER_OPT_PRICE},
-		#{ORDER_OPT_COUNT},
+		ORDER_OPT_NAME
+		)
+		
+		VALUES
+		(
+		#{orderOptNum},
+		#{goodsNum},
+		#{orderNum},
+		<!-- #{goodsOptContentNum}, -->
+		#{orderOptPrice}, 
+		#{orderOptCount}, 
 		SYSDATE,
-		'입금대기중',
-		#{ORDER_OPT_REQUEST},
-		#{ORDER_OPT_PAY_TYPE},
-		#{ORDER_OPTION_NAME})
+		'1',
+		<!-- #{orderOptRequest},  -->
+		#{orderOptPayType}, 
+		#{orderOptName}
+		)
 	</insert>
 
 	<!-- 상태 변경 -->
@@ -150,6 +162,43 @@
 		ORDER_OPT_REQUEST = #{ORDER_OPT_REQUEST}
 		WHERE ORDER_NUM = #{ORDER_NUM};
 	</update>
+	
+	<!-- order 1개와 order-option n개를 가져올 수 있는 resultMap -->
+	<resultMap type="com.mycom.euum.order.bean.OrderBean" id="orderMap">
+		<result property="orderKeyNum" column="order_Key_Num"/>
+		<result property="orderNum" column="order_Num"/>
+		<result property="goodsNum" column="goods_Num"/>
+		<result property="memberNum" column="member_Num"/>
+		<result property="sellerNum" column="seller_Num"/>
+		<result property="orderStatus" column="order_Status"/>
+		<result property="orderContact" column="order_Contact"/>
+		<result property="orderEmail" column="order_Email"/>
+		<result property="orderDate" column="order_Date"/>
+		<result property="orderCancleDate" column="order_Cancle_Date"/>
+		<result property="orderRequest" column="order_Request"/>
+		<result property="orderPayType" column="order_Pay_Type"/>
+		<result property="orderName" column="order_Name"/>
+		<result property="orderFormat" column="order_Format"/>
+		<result property="orderResolution" column="order_Resolution"/>
+		<result property="orderSize" column="order_Size"/>
+		<result property="orderModifyCount" column="order_Modify_Count"/>
+		<result property="orderPeriod" column="order_Period"/>
+		<result property="orderImage" column="order_Image"/>
+		
+		<collection property="optionList" resultMap="optionMap"/>
+		
+	</resultMap>
+	
+	<resultMap type="com.mycom.euum.order.bean.OrderOptionBean" id="optionMap">
+		<result property="orderOptNum" column="order_opt_num"/>
+		<result property="orderOptPrice" column="order_opt_price"/>
+		<result property="orderOptCount" column="order_opt_count"/>
+		<result property="orderOptDate" column="order_opt_date"/>
+		<result property="orderOptCancleDate" column="order_opt_cancle_date"/>
+		<result property="orderOptStatus" column="order_opt_status"/>
+		<result property="orderOptPayType" column="order_opt_pay_type"/>
+		<result property="orderOptName" column="order_opt_name"/>
+	</resultMap>
 
 	<!-- 주문 내역 리스트 -->
 	<select id="selectOrderList"
@@ -259,13 +308,16 @@
 	</select>
 
 
+	
+	
+
 	<!-- 주문 완료 -->
-	<select id="selectOrder"
-		resultType="com.mycom.euum.order.bean.OrderBean">
+	<!-- <select id="selectOrder" resultType="com.mycom.euum.order.bean.OrderBean"> -->
+	<select id="selectOrder" resultMap="orderMap">
 		SELECT
 		order_key_num,
-		order_num,
-		goods_num,
+		o.order_num,
+		o.goods_num,
 		member_num,
 		order_status,
 		order_contact,
@@ -281,20 +333,21 @@
 		order_period,
 		order_image,
 		order_opt_num,
-		goods_num,
-		goods_option_content_num,
+		o.goods_num,
+		goods_opt_content_num,
 		order_opt_price,
 		order_opt_count,
 		order_opt_date,
 		order_opt_status,
 		order_opt_request,
 		order_opt_pay_type,
-		order_option_name
+		order_opt_name
 		FROM
-		order_tbl,
-		order_opt_tbl
-		WHERE MEMBER_NUM = #{MEMBER_NUM}
-		and ORDER_NUM = #{order_num}
+		order_tbl o,
+		order_opt_tbl p
+		
+		where o.order_num = p.order_num
+		and o.ORDER_NUM = #{orderNum}
 	</select>
 
 
