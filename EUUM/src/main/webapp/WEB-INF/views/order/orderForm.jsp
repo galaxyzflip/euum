@@ -4,116 +4,114 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
-  <style>
-        .container {
-            margin-top: 150px;
-            margin-bottom: 100px;
-            margin-left: 100px;
-            margin-right: 100px;
-        }
+<style>
+.container {
+	margin-top: 150px;
+	margin-bottom: 100px;
+	
+}
 
-       .order-goods-table td {
-            padding-top: 50px;
-            padding-bottom: 50px;
-            border: 1px solid black;
-            padding-left:15px;
-            padding-right:15px;
-        }
+.order-goods-table td {
+	padding-top: 50px;
+	padding-bottom: 50px;
+	border: 1px solid black;
+	padding-left: 15px;
+	padding-right: 15px;
+}
 
-        .order-goods-table{
+.order-goods-table {
+	border: 1px solid black;
+	border-collapse: collapse;
+	width: 1100px;
+	margin: auto;
+}
 
-            border: 1px solid black;
-            border-collapse: collapse;
-            width: 1100px;
-            margin: auto;
-        }
+.pay-table {
+	width: 1100px;
+	border-collapse: collapse;
+	border: 1px solid black;
+	margin:auto;
+}
 
-        .pay-table{
-            width: 1100px;
-            border-collapse: collapse;
-            border: 1px solid black;
-            
-        }
+.seller-name {
+	font-size: 20px;
+	font-weight: bold;
+}
 
-        .seller-name {
-            font-size: 20px;
-            font-weight: bold;
-        }
+.goods-name {
+	font-size: 16px;
+}
 
-        .goods-name {
-            font-size: 16px;
-        }
+.price-info {
+	font-size: 25px;
+}
 
-        .price-info {
-            font-size: 25px;
-        }
+.totalPrice {
+	color: rgb(255, 102, 0);
+}
 
-        .totalPrice {
-            color: rgb(255, 102, 0);
-        }
+.order-info {
+	display: inline-block;
+}
+</style>
 
-        .order-info {
-            display: inline-block;
-        }
-
-        
-    </style>
-    
-     <div class="container">
-		<form id="order-form" action="/order/orderPro" method="post">
-			<!-- 주문할 상품정보 및 이메일 등... -->
-			<input type="hidden" name="orderFormat" value="${goodsInfo.goodsFormat }"/>
-			<input type="hidden" name="orderName" value="${goodsInfo.goodsName }">
-			<input type="hidden" name="orderModifyCount" value="${goodsInfo.goodsModifyCount }">
-			<input type="hidden" name="orderPeriod" value="${goodsInfo.goodsPeriod }">
-			<input type="hidden" name="orderResolution" value="${goodsInfo.goodsResolution }">
-			<input type="hidden" name="orderSize" value="${goodsInfo.goodsSize }">
-			<input type="hidden" name="goodsNum" value="${goodsInfo.goodsNum }">
-			<input type="hidden" name="orderEmail" value="">
-			<input type="hidden" name="orderPayType" value="임시값">
-			<input type="hidden" name="orderImage" value="임시값">
-			
-			<!-- 주문할 옵션 정보들 -->
-			<c:forEach items="${orderList }" var="order" varStatus="status">
-				<input type="hidden" name="optionList[${status.index }].orderOptName" value="${order.orderOptName }">
-				<input type="hidden" name="optionList[${status.index }].orderOptPrice" value="${order.orderOptPrice }">
-				<input type="hidden" name="optionList[${status.index }].orderOptCount" value="${order.orderOptCount }">
-				<input type="hidden" name="optionList[${status.index }].goodsNum" value="${order.goodsNum }">
-			</c:forEach>
-			
-			
-        <table class="pay-table">
-            <tr>
-                <td colspan="3">결제 방법 다음 페이지에 안내되는 계좌번호로 입금합니다.</td>
-            </tr>
-
-            <tr>
-                <td>입금자명</td>
-                <td><input type="text" value="${loginUser.memberName }"/> * 작가에게 노출 안됨</td>
-            </tr>
-            <tr>
-                <td>연락처</td>
-                <td><input type="text" name="orderContact" value="${loginUser.memberMobile }"/></td>
-            </tr>
-            <tr>
-                <td>이메일</td>
-                <td>
-                    <input type="text" class="start-email" value="${fn:substringBefore(loginUser.memberEmail, '@') }"/> @ 
-                    <input type="text" class="end-email" value="${fn:substringAfter(loginUser.memberEmail, '@') }"/> 
-                    <select>
-                        <option>직접입력</option>
-                        <option>naver.com</option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td>요청사항</td>
-                <td><textarea rows="3" cols="80" name="orderRequest"></textarea></td>
-            </tr>
-
-        </table>
-        <button type="submit" id="order-btn">결제</button>
- 		</form>
+<div class="container">
+<form id="order-form" action="/order/orderPro" method="post">
+	<!-- 주문할 상품정보 및 이메일 등... -->
+	<input type="hidden" name="orderFormat" value="${goodsInfo.goodsFormat }"/>
+	<input type="hidden" name="orderName" value="${goodsInfo.goodsName }">
+	<input type="hidden" name="orderModifyCount" value="${goodsInfo.goodsModifyCount }">
+	<input type="hidden" name="orderPeriod" value="${goodsInfo.goodsPeriod }">
+	<input type="hidden" name="orderResolution" value="${goodsInfo.goodsResolution }">
+	<input type="hidden" name="orderSize" value="${goodsInfo.goodsSize }">
+	<input type="hidden" name="goodsNum" value="${goodsInfo.goodsNum }">
+	<input type="hidden" name="orderEmail" value="">
+	<input type="hidden" name="orderPayType" value="임시값">
+	<input type="hidden" name="orderImage" value="임시값">
+	
+	<!-- 주문할 옵션 정보들 -->
+	<c:forEach items="${orderList }" var="order" varStatus="status">
+		<input type="hidden" name="optionList[${status.index }].orderOptName" value="${order.orderOptName }">
+		<input type="hidden" name="optionList[${status.index }].orderOptPrice" value="${order.orderOptPrice }">
+		<input type="hidden" name="optionList[${status.index }].orderOptCount" value="${order.orderOptCount }">
+		<input type="hidden" name="optionList[${status.index }].goodsNum" value="${order.goodsNum }">
+	</c:forEach>
+	
+	
+	<table class="pay-table">
+	    <tr>
+	        <td colspan="3">결제 방법 다음 페이지에 안내되는 계좌번호로 입금합니다.</td>
+	    </tr>
+	
+	    <tr>
+	        <td>입금자명</td>
+	        <td><input type="text" value="${loginUser.memberName }"/> * 작가에게 노출 안됨</td>
+		</tr>
+		<tr>
+		    <td>연락처</td>
+		    <td><input type="text" name="orderContact" value="${loginUser.memberMobile }"/></td>
+		</tr>
+		<tr>
+		    <td>이메일</td>
+			<td>
+				<input type="text" class="start-email" value="${fn:substringBefore(loginUser.memberEmail, '@') }"/> @ 
+				<input type="text" class="end-email" value="${fn:substringAfter(loginUser.memberEmail, '@') }"/> 
+		            <select>
+		                <option>직접입력</option>
+		                <option>naver.com</option>
+		            </select>
+			</td>
+	    </tr>
+	    <tr>
+	        <td>요청사항</td>
+	        <td><textarea rows="3" cols="80" name="orderRequest"></textarea></td>
+	    </tr>
+	    
+	   
+	
+	</table>
+     
+	</form>
         <br><br>
 
         <table class="order-goods-table">
@@ -170,6 +168,10 @@
             </tr>
 
         </table>
+        
+        <div style="margin:auto; text-align:center;">
+        	<button type="submit" id="order-btn">결제</button>
+        </div>
         
 
 
