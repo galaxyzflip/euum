@@ -36,6 +36,14 @@
 			<artifactId>spring-webmvc</artifactId>
 			<version>${org.springframework-version}</version>
 		</dependency>
+		
+		<!-- 이미지 썸네일 생성 시 필요 -->
+		<!-- https://mvnrepository.com/artifact/net.coobird/thumbnailator -->
+		<dependency>
+			<groupId>net.coobird</groupId>
+			<artifactId>thumbnailator</artifactId>
+			<version>0.4.8</version>
+		</dependency>
 
 		<!-- json 출력시 필요 -->
 		<dependency>

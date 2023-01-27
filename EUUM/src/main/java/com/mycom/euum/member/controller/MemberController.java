@@ -1,6 +1,8 @@
 package com.mycom.euum.member.controller;
 
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -10,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.mycom.euum.member.bean.MemberBean;
@@ -140,6 +143,78 @@ public class MemberController {
 		
 		return null;
 	}
+	
+	// 회원가입
+	
+		@GetMapping("/member/joinForm1")
+		public String joinForm1() {
+			return "member/joinForm1";
+		}
+		@GetMapping("/member/joinForm2")
+		public String joinForm2() {
+			return "member/joinForm2";
+		}
+
+		@PostMapping("/member/joinPro")
+		public String joinPro(MemberBean memberBean) {
+			System.out.println(memberBean+ "------------controller");
+			memberService.insertMember(memberBean);
+			return "redirect:/member/joinOk";
+		}
+
+		@GetMapping("/member/joinOk")
+		public String joinOk() {
+			return "member/joinOk";
+		}
+
+		@ResponseBody
+		@GetMapping(value = "/member/emailCheck")
+		public String idCheck(@RequestParam("email") String email) {
+			
+			System.out.println("email = " + email );
+			int result = memberService.selectByEmail(email);
+			if(result==0) {
+				return "Y";
+			}else {
+				return "N";
+			}
+
+		}
+		
+		@ResponseBody
+		@GetMapping(value = "/member/pwCheck")
+		public String pwCheck(@RequestParam("email") String email,@RequestParam("pw") String pw) {
+		
+			System.out.println("------------------ email = "+email);
+			System.out.println("------------------ pw = "+pw);
+			Pattern passPattern1 = Pattern.compile("^(?=.*[a-zA-Z])(?=.*\\d)(?=.*\\W).{8,16}$");
+			Matcher passMatcher1 = passPattern1.matcher(pw);
+			
+			
+			
+			if(!passMatcher1.find()){
+			    return "1";
+			}else if(pw.length()<9) {
+				return "2";
+			}else if(pw.length()<11) {
+				return "3";
+			}else if(10 < pw.length() & pw.length() < 17) {
+				return "4";
+			}return "0";
+			
+		}
+		
+		/*
+		 * @ResponseBody
+		 * 
+		 * @GetMapping(value = "/member/joinAuth") public String
+		 * authCheck(@RequestParam("email") String email,@RequestParam("pw") String pw)
+		 * {
+		 * 
+		 * 
+		 * 
+		 * }
+		 */
 	
 
 	

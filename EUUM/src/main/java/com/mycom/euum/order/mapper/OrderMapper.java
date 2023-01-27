@@ -1,5 +1,7 @@
 package com.mycom.euum.order.mapper;
 
+import java.util.List;
+
 import com.mycom.euum.goods.bean.GoodsBean;
 import com.mycom.euum.order.bean.OrderBean;
 import com.mycom.euum.order.bean.OrderOptionBean;
@@ -17,4 +19,10 @@ public interface OrderMapper {
 	public int insertOrderOpt(OrderOptionBean optionBean);
 	
 	public OrderBean selectOrder(String orderNum);
+	
+	
+	/** 작성자 : 최창선, 용도 : 회원번호 조건으로 주문리스트 불러오기*/
+	public List<OrderBean> selectOrderListByMember(int memberNum);
+	
+	
 }

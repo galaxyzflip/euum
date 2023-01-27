@@ -65,6 +65,7 @@
 	<input type="hidden" name="orderResolution" value="${goodsInfo.goodsResolution }">
 	<input type="hidden" name="orderSize" value="${goodsInfo.goodsSize }">
 	<input type="hidden" name="goodsNum" value="${goodsInfo.goodsNum }">
+	<input type="hidden" name="sellerNickname" value="${goodsInfo.goodsSellerNickname }">
 	<input type="hidden" name="orderEmail" value="">
 	<input type="hidden" name="orderPayType" value="임시값">
 	<input type="hidden" name="orderImage" value="임시값">

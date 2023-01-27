@@ -13,13 +13,13 @@
 	<div class="middleDiv">
 		<div class="middleLeftDiv">
 			<div>
-				<img src="${pageContext.request.contextPath}/resources/assets/img/stats-bg.jpg" style="width: 625px;" />
+				<img src="${pageContext.request.contextPath}/resources/img/${detail.goodsImageDate}${detail.goodsImage1}" style="width: 625px;" />
 			</div>
 			<div>
-				<img src="${pageContext.request.contextPath}/resources/assets/img/stats-bg.jpg" style="width: 625px;" />
+				<img src="${pageContext.request.contextPath}/resources/img/${detail.goodsImageDate}${detail.goodsImage2}" style="width: 625px;" />
 			</div>
 			<div>
-				<img src="${pageContext.request.contextPath}/resources/assets/img/stats-bg.jpg" style="width: 625px;" />
+				<img src="${pageContext.request.contextPath}/resources/img/${detail.goodsImageDate}${detail.goodsImage3}" style="width: 625px;" />
 			</div>
 		</div>
 		<div class="middleRightDiv">
@@ -114,7 +114,8 @@
 <!-- 주문시 아래 폼에 input 태그 입력 후 서브밋 -->
 <form id="orderForm" action="/order/orderForm" method="post">
 	<input type="hidden" name="" value="${detail.goodsMemberNum }"/> 
-
+	<input type="hidden" name="" value="${detail.goodsSellerNickname }"/> 
+	
 </form>
 
 <script>
@@ -154,11 +155,13 @@ function buy(){
 			$('#orderForm').append(inner);
 			
 		})
+		
+		$('#orderForm').submit();
+		$('#orderForm').load(location.href+'#orderForm');
+		
 	}else{
 		alert('옵션 선택 후 주문해주시기 바랍니다');
 	}
-	$('#orderForm').submit();
-	$('#orderForm').load(location.href+'#orderForm');
 }
 
 //옵션명, 옵션내용, 금액 넣어주면 선택된 옵션 추가해주는 함수...

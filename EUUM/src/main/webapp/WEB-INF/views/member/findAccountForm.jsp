@@ -107,16 +107,16 @@
 
                     <div class="find-id-form">
                         <div class="input-form">
-                            <form method="post" action="/member/findIdPro">
+                            <form method="post" action="/member/findIdPro" id='find-id-form'>
                                 <div>
                                     <label>이름</label>
-                                    <input type="text" name="memberName">
+                                    <input type="text" name="memberName" id="find-id-name">
                                 </div>
                                 <div>
                                     <label>휴대폰번호</label>
-                                    <input type="text" name="memberMobile">
+                                    <input type="text" name="memberMobile" id="find-id-mobile">
                                 </div>
-                                <button type="submit" class="btn btn-danger">아이디 찾기</button>
+                                <button type="submit" class="btn btn-danger" id='find-id-btn'>아이디 찾기</button>
                             </form>
 
                         </div>
@@ -132,22 +132,22 @@
                     <div class="find-pw-form">
                         <div class="input-form">
 
-                            <form method="post" action="/member/findPwPro">
+                            <form method="post" action="/member/findPwPro" id="find-pw-form">
 
                                 <div>
                                     <label>이름</label>
-                                    <input type="text" name="memberName">
+                                    <input type="text" name="memberName" id="find-pw-name">
                                 </div>
                                 <div>
                                     <label>아이디(이메일)</label>
-                                    <input type="text" name="memberEmail">
+                                    <input type="text" name="memberEmail" id="find-pw-id">
                                 </div>
                                 <div>
                                     <label>휴대폰번호</label>
-                                    <input type="text" name="memberMobile">
+                                    <input type="text" name="memberMobile" id="find-pw-mobile">
                                 </div>
 
-                                <button type="submit">비밀번호 찾기</button>
+                                <button type="submit" class="btn btn-danger" id='find-pw-btn'>비밀번호 찾기</button>
                             </form>
 
 
@@ -162,3 +162,48 @@
 
 
     </div>
+    
+    
+    <script>
+    
+    $(document).ready(function(){
+    	
+    	$('#find-id-btn').on('click', function(e){
+    		e.preventDefault();
+    		if(!$('#find-id-name').val()){
+    			alert("이름을 입력해주세요");
+    			return false;
+    		}
+    		
+    		if(!$('#find-id-mobile').val()){
+    			alert("휴대폰번호를 입력해주세요");
+    			return false;
+    		}
+    		
+    		$('#find-id-form').submit();
+    		
+    	})
+    	
+    	$('#find-pw-btn').on('click', function(e){
+    		e.preventDefault();
+    		if(!$('#find-pw-name').val()){
+    			alert("이름을 입력해주세요");
+    			return false;
+    		}
+    		
+    		if(!$('#find-pw-id').val()){
+    			alert("아이디를 입력해주세요");
+    			return false;
+    		}
+    		
+    		if(!$('#find-pw-mobile').val()){
+    			alert("휴대폰번호를 입력해주세요");
+    			return false;
+    		}
+    		
+    		$('#find-pw-form').submit();
+    		
+    	})
+    })
+    
+    </script>

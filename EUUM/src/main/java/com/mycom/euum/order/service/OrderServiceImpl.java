@@ -50,7 +50,7 @@ public class OrderServiceImpl implements OrderService{
 	public String orderPro(OrderOptionBean optionBean, OrderBean orderBean) {
 	
 		int optionInsertCount = 0;
-		
+		String orderName="";
 		//order_tbl 시퀀스값 하나 받아오기
 		int orderKeyNum = orderMapper.getOrderKeyNum();
 		//위에서 받은 시퀀스값 조합하여 주문번호 생성 ex) 202301250001
@@ -59,11 +59,6 @@ public class OrderServiceImpl implements OrderService{
 		orderBean.setOrderKeyNum(orderKeyNum);
 		orderBean.setOrderNum(orderNum);
 
-		//대표주문 처리
-		int orderInsertCount = orderMapper.insertOrder(orderBean);
-		
-		log.info("주문 insert count : " + orderInsertCount);
-		
 		List<OrderOptionBean> optionList = optionBean.getOptionList();
 		
 		for (int i=0 ; i<optionList.size() ; i++) {
@@ -77,9 +72,22 @@ public class OrderServiceImpl implements OrderService{
 			
 			//옵션주문 처리
 			optionInsertCount += orderMapper.insertOrderOpt(optionList.get(i));
+			
+			if(i+1 < optionList.size()) {
+				orderName = orderName+optionList.get(i).getOrderOptName()+" / "+optionList.get(i).getOrderOptCount()+" 개`";
+			}else {
+				orderName = orderName+optionList.get(i).getOrderOptName()+" / "+optionList.get(i).getOrderOptCount()+" 개";
+			}
+			
 		}
 		log.info("입력된 옵션주문 개수 : " + optionInsertCount);
 		
+		
+		// 대표주문 처리
+		orderBean.setOrderName(orderName);
+		int orderInsertCount = orderMapper.insertOrder(orderBean);
+		log.info("주문 insert count : " + orderInsertCount);
+
 		return orderNum;
 	}
 	
@@ -89,6 +97,12 @@ public class OrderServiceImpl implements OrderService{
 		log.info("가져온 주문 : " + order.toString());
 		
 		return order;
+	}
+
+	@Override
+	public List<OrderBean> selectOrderListByMember(int memberNum) {
+		
+		return orderMapper.selectOrderListByMember(memberNum);
 	}
 
 }

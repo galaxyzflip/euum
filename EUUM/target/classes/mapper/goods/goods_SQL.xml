@@ -3,7 +3,7 @@
 
 <mapper namespace="com.mycom.euum.goods.mapper.GoodsMapper">
 
-	<!-- 상품 등록 (insertGoods) -->
+	<!-- 선민: 상품 등록 (insertGoods) -->
 	<insert id="insertGoods" parameterType="com.mycom.euum.goods.bean.GoodsBean">
 		<selectKey keyProperty="goodsNum" order="BEFORE" resultType="int">
 			select GOODS_NUM_SEQ.nextval from dual
@@ -26,6 +26,7 @@
 			GOODS_IMAGE1,
 			GOODS_IMAGE2,
 			GOODS_IMAGE3,
+			GOODS_IMAGE_DATE,
 			GOODS_STATUS
 		)
 		values
@@ -46,12 +47,13 @@
 			#{goodsImage1},
 			#{goodsImage2},
 			#{goodsImage3},
+			#{goodsImageDate},
 			'승인대기'
 		)
 	</insert>
 
 	
-	<!-- 상품 수정 (updateGoods) -->
+	<!-- 선민: 상품 수정 (updateGoods) -->
 	<update id="updateGoods" parameterType="com.mycom.euum.goods.bean.GoodsBean">
 		update GOODS_TBL
 		set
@@ -69,13 +71,14 @@
 			GOODS_IMAGE1 = #{goodsImage1},
 			GOODS_IMAGE2 = #{goodsImage2},
 			GOODS_IMAGE3 = #{goodsImage3},
+			GOODS_IMAGE_DATE = #{goodsImageDate},
 		    GOODS_DATE = SYSDATE
 		where
 			GOODS_NUM = #{goodsNum}
 	</update>
 	
 	
-	<!-- 상품 삭제 (deleteGoods) -->
+	<!-- 선민: 상품 삭제 (deleteGoods) -->
 	<update id="deleteGoods" parameterType="int">
 	update GOODS_TBL
 	set
@@ -85,7 +88,7 @@
 	</update>
 	
 	
-	<!-- 상품추가옵션 등록 (insertGoodsOption) -->
+	<!-- 선민: 상품추가옵션 등록 (insertGoodsOption) -->
 	<insert id="insertGoodsOption" parameterType="com.mycom.euum.goods.bean.GoodsOptionBean">
 		insert into GOODS_OPTION_TBL 
 		(
@@ -108,7 +111,7 @@
 	</insert>
 	
 	
-	<!-- 상품추가옵션 삭제 (deleteGoodsOption) -->
+	<!-- 선민: 상품추가옵션 삭제 (deleteGoodsOption) -->
 	<delete id="deleteGoodsOption" parameterType="int">
 		delete from GOODS_OPTION_TBL
 		where
@@ -116,12 +119,12 @@
 	</delete>
 	
 	
-	<!-- 상품추가옵션 수정 -->
+	<!-- 선민: 상품추가옵션 수정 -->
 	<!-- 수정할 상품의 추가옵션을 상품번호로 찾아 (1)모두 삭제하고 (deleteGoodsOption) -->
 	<!-- 새로 지정한 상품의 추가옵션을 (2)새로 등록 (insertGoodsOption) -->
 	
 	
-	<!-- 상품 임시저장 - 최초 저장 (insertTempGoods) -->
+	<!-- 선민: 상품 임시저장 - 최초 저장 (insertTempGoods) -->
 	<insert id="insertTempGoods" parameterType="com.mycom.euum.goods.bean.GoodsBean">
 		<selectKey keyProperty="goodsNum" order="BEFORE" resultType="int">
 			select GOODS_NUM_SEQ.nextval from dual
@@ -144,6 +147,7 @@
 			GOODS_IMAGE1,
 			GOODS_IMAGE2,
 			GOODS_IMAGE3,
+			GOODS_IMAGE_DATE,
 			GOODS_STATUS
 		)
 		values
@@ -164,12 +168,13 @@
 			#{goodsImage1},
 			#{goodsImage2},
 			#{goodsImage3},
+			#{goodsImageDate},
 			'임시저장'
 		)
 	</insert>
 	
 	
-	<!-- 상품 임시저장 - 중간 저장 (updateTempGoods) -->
+	<!-- 선민: 상품 임시저장 - 중간 저장 (updateTempGoods) -->
 	<update id="updateTempGoods" parameterType="com.mycom.euum.goods.bean.GoodsBean">
 		update GOODS_TBL
 		set
@@ -186,13 +191,14 @@
 			GOODS_PERIOD = #{goodsPeriod},
 			GOODS_IMAGE1 = #{goodsImage1},
 			GOODS_IMAGE2 = #{goodsImage2},
-			GOODS_IMAGE3 = #{goodsImage3}
+			GOODS_IMAGE3 = #{goodsImage3},
+			GOODS_IMAGE_DATE = #{goodsImageDate}
 		where 
 			GOODS_NUM = #{goodsNum}
 	</update>
 	
 	
-	<!-- 상품 임시저장 - 최종 등록 (updateTempGoodsToGoods) -->
+	<!-- 선민: 상품 임시저장 - 최종 등록 (updateTempGoodsToGoods) -->
 	<update id="updateTempGoodsToGoods" parameterType="com.mycom.euum.goods.bean.GoodsBean">
 		update GOODS_TBL
 		set
@@ -210,13 +216,44 @@
 			GOODS_IMAGE1 = #{goodsImage1},
 			GOODS_IMAGE2 = #{goodsImage2},
 			GOODS_IMAGE3 = #{goodsImage3},
+			GOODS_IMAGE_DATE = #{goodsImageDate},
 			GOODS_STATUS = '승인대기'
 		where
 			GOODS_NUM = #{goodsNum}
 	</update>
 	
 	
-	<!-- 관리자 상품 상태변경 (updateAdminGoods) -->
+	<!-- 선민: 내 등록상품 리스트 가져오기 -->
+	<select id="selectMyGoodsList" parameterType="int" resultType="com.mycom.euum.goods.bean.GoodsBean">
+		select *
+		from GOODS_TBL
+		where GOODS_STATUS = '승인완료'
+		and GOODS_MEMBER_NUM = #{goodsMemberNum}
+		order by GOODS_NUM DESC
+	</select>
+	
+	
+	<!-- 선민: 내 등록대기상품 리스트 가져오기 -->
+	<select id="selectMyUnapprovedGoodsList" parameterType="int" resultType="com.mycom.euum.goods.bean.GoodsBean">
+		select *
+		from GOODS_TBL
+		where GOODS_STATUS = '승인대기'
+		and GOODS_MEMBER_NUM = #{goodsMemberNum}
+		order by GOODS_NUM DESC
+	</select>
+	
+	
+	<!-- 선민: 내 임시상품 리스트 가져오기 -->
+	<select id="selectMyTempGoodsList" parameterType="int" resultType="com.mycom.euum.goods.bean.GoodsBean">
+		select *
+		from GOODS_TBL
+		where GOODS_STATUS = '임시저장'
+		and GOODS_MEMBER_NUM = #{goodsMemberNum}
+		order by GOODS_NUM DESC
+	</select>
+	
+	
+	<!-- 선민: 관리자 상품 상태변경 (updateAdminGoods) -->
 	<update id="updateAdminGoods" parameterType="com.mycom.euum.goods.bean.GoodsBean">
 		update GOODS_TBL
 		set
@@ -226,7 +263,7 @@
 	</update>
 	
 	
-	<!-- 상품 리스트 가져오기 (selectGoodsList) -->
+	<!-- 선민: 상품 리스트 가져오기 (selectGoodsList) -->
 	<select id="selectGoodsList" resultType="com.mycom.euum.goods.bean.GoodsBean">
 		select *
 		from GOODS_TBL
@@ -235,7 +272,39 @@
 	</select>
 	
 	
-	<!-- 상품 상세보기 - 상품 기본 정보 가져오기 (selectGoodsInfo) -->
+	<!-- 은정: 상품 리스트 검색결과 가져오기 (selectGoodsSearchList) -->
+	<select id="selectGoodsSearchList" parameterType="string" resultType="com.mycom.euum.goods.bean.GoodsBean">
+		select *
+		from GOODS_TBL
+		where GOODS_STATUS = '승인완료'
+		and GOODS_NAME like '%' || #{searchKeyword} || '%' 
+		order by GOODS_NUM DESC
+	</select>
+	
+	
+	<!-- 은정: 상품 리스트 정렬결과 가져오기 (selectGoodsSortList) -->
+	<select id="goodsSort" parameterType="int" resultType="com.mycom.euum.goods.bean.GoodsBean">
+	    select * from GOODS_TBL
+		where GOODS_STATUS = '승인완료'
+		
+		
+	    <if test="sortCom == 1">
+	         order by GOODS_DATE DESC
+	    </if>  
+	    <if test="sortCom == 3">
+	         and GOODS_USE == '상업용'
+	    </if>     
+	    <if test="sortCom == 4">
+	         and GOODS_USE == '비상업용'
+	    </if>     
+	    <if test="sortCom == 5">
+	         and GOODS_USE == '상업용+비상업용'
+	    </if>
+   </select>
+
+	
+	
+	<!-- 선민: 상품 상세보기 - 상품 기본 정보 가져오기 (selectGoodsInfo) -->
 	<select id="selectGoodsInfo" parameterType="String" resultType="com.mycom.euum.goods.bean.GoodsBean">
 		select *
 		from GOODS_TBL
@@ -243,7 +312,7 @@
 	</select>
 	
 	
-	<!-- 상품 상세보기 - 상품 추가옵션 가져오기 (selectGoodsOptionInfo) -->
+	<!-- 선민: 상품 상세보기 - 상품 추가옵션 가져오기 (selectGoodsOptionInfo) -->
 	<!-- 일단 사용하지 않음 -->
 	<select id="selectGoodsOptionInfo" parameterType="String" resultType="com.mycom.euum.goods.bean.GoodsOptionBean">
 		select *
@@ -252,7 +321,7 @@
 	</select>
 	
 	
-	<!-- 상품 상세보기 - 상품 추가옵션 옵션명 갯수 -->
+	<!-- 선민: 상품 상세보기 - 상품 추가옵션 옵션명 갯수 -->
 	<select id="selectGoodsOptionCount" parameterType="String" resultType="int">
 		select count(distinct GOODS_OPT_NAME)
 		from GOODS_OPTION_TBL
@@ -260,7 +329,7 @@
 	</select>
 
 
-	<!-- 상품 상세보기 - 상품 추가옵션 선택항목 리스트 꺼내오기 -->
+	<!-- 선민: 상품 상세보기 - 상품 추가옵션 선택항목 리스트 꺼내오기 -->
 	<select id="selectGoodsOptionContent" parameterType="String" resultType="com.mycom.euum.goods.bean.GoodsOptionBean">
 		select *
 		from GOODS_OPTION_TBL
@@ -268,16 +337,13 @@
 		and GOODS_OPT_NAME_NUM = #{goodsOptNameNum} 
 		order by GOODS_OPT_CONTENT_NUM ASC
 	</select>
-
 	
 	
-	<!-- 관리자 상품 리스트 가져오기 - 전체 (selectAdminGoodsList) -->
+	<!-- 선민: 관리자 상품 리스트 가져오기 - 전체 (selectAdminGoodsList) -->
 	<select id="selectAdminGoodsList" resultType="com.mycom.euum.goods.bean.GoodsBean">
 		select *
 		from GOODS_TBL
 		order by GOODS_NUM DESC
 	</select>
-	
-	
 
 </mapper>

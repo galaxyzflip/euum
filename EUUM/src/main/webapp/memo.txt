@@ -1,0 +1,15 @@
+1. DB 설계도 점검...
+
+이름 규칙...	
+	option - opt
+	goods_seller_nickname - seller_nickname
+	
+	GOODS_OPTION_CONTENT_NUM_SEQ - goods_opt_content_num
+	
+	goods_use 크기 키우기
+	
+2. 바뀐 테이블 테이블 생성 DDL 수정해주세요
+
+3. request.getRealPath
+
+notice/notice - notice/noticelist

@@ -53,7 +53,7 @@ public interface MemberMapper {
 	
 	
 	/**전문가 정보 불러오기*/
-	public MemberBean getSeller(int memberNum);
+	public SellerBean getSeller(String sellerNum);
 	
 	
 	/**전문가 정보 수정*/
@@ -69,10 +69,10 @@ public interface MemberMapper {
 	
 	
 	/**회원 탈퇴*/
-	public int secessionMember(int memberNum);
+	public int secessionMember(String memberNum);
 	
 	/**회원탈퇴시 전문가면 전문가 정보도 함께 처리*/
-	public int secessionSeller(int memberNum);
+	public int secessionSeller(String sellerNum);
 	
 	
 	
