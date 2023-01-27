@@ -42,7 +42,9 @@
 		ORDER_SIZE,
 		ORDER_MODIFY_COUNT,
 		ORDER_PERIOD,
-		ORDER_IMAGE)
+		ORDER_IMAGE,
+		SELLER_NICKNAME
+		)
 		
 		VALUES(
 		#{orderKeyNum},
@@ -61,7 +63,9 @@
 		#{orderSize},
 		#{orderModifyCount},
 		#{orderPeriod},
-		#{orderImage})
+		#{orderImage},
+		#{sellerNickname}
+		)
 	</insert>
 
 	<!-- 회원 주문 옵션 -->
@@ -163,6 +167,7 @@
 		WHERE ORDER_NUM = #{ORDER_NUM};
 	</update>
 	
+	
 	<!-- order 1개와 order-option n개를 가져올 수 있는 resultMap -->
 	<resultMap type="com.mycom.euum.order.bean.OrderBean" id="orderMap">
 		<result property="orderKeyNum" column="order_Key_Num"/>
@@ -184,6 +189,7 @@
 		<result property="orderModifyCount" column="order_Modify_Count"/>
 		<result property="orderPeriod" column="order_Period"/>
 		<result property="orderImage" column="order_Image"/>
+		<result property="sellerNickname" column="seller_nickname"/>
 		
 		<collection property="optionList" resultMap="optionMap"/>
 		
@@ -201,11 +207,13 @@
 	</resultMap>
 
 	<!-- 주문 내역 리스트 -->
-	<select id="selectOrderList"
-		resultType="com.mycom.euum.order.bean.OrderBean">
-		SELECT ORDER_KEY_NUM,
+	<select id="selectOrderListByMember" resultType="com.mycom.euum.order.bean.OrderBean">
+		SELECT 
+        G.GOODS_NAME,
+		ORDER_KEY_NUM,
 		ORDER_NUM,
-		GOODS_NUM,
+		SELLER_NICKNAME,
+		G.GOODS_NUM,
 		MEMBER_NUM,
 		ORDER_STATUS,
 		ORDER_CONTACT,
@@ -220,18 +228,10 @@
 		ORDER_MODIFY_COUNT,
 		ORDER_PERIOD,
 		ORDER_IMAGE,
-		ORDER_OPT_NUM,
-		GOODS_NUM,
-		GOODS_OPTION_CONTENT_NUM,
-		ORDER_OPT_PRICE,
-		ORDER_OPT_COUNT,
-		ORDER_OPT_DATE,
-		ORDER_OPT_STATUS,
-		ORDER_OPT_REQUEST,
-		ORDER_OPT_PAY_TYPE,
-		ORDER_OPTION_NAME
-		FROM ORDER_TBL, ORDER_OPT_TBL
-		WHERE MEMBER_NUM = #{MEMBER_NUM}
+		ORDER_DATE+ORDER_PERIOD as "ORDER_EXPIRATION_DATE"
+		FROM ORDER_TBL O INNER JOIN GOODS_TBL G
+        ON O.GOODS_NUM=G.GOODS_NUM
+		WHERE MEMBER_NUM = #{memberNum}
 	</select>
 
 
@@ -341,7 +341,9 @@
 		order_opt_status,
 		order_opt_request,
 		order_opt_pay_type,
-		order_opt_name
+		order_opt_name,
+		o.SELLER_NICKNAME
+		
 		FROM
 		order_tbl o,
 		order_opt_tbl p

@@ -12,4 +12,11 @@ public interface MemberService {
 	
 	public int resetPassword(MemberBean bean, String memberPassword_check);
 	
+	
+	public void insertMember(MemberBean memberBean);
+
+	public int selectByEmail(String email);
+
+	public int selectByMobile(String mobile);
+	
 }

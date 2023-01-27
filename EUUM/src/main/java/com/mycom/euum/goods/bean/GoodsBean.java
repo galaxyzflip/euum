@@ -28,6 +28,7 @@ public class GoodsBean {
 	String goodsModifyCount;
 	Date goodsDate;
 	String goodsPeriod;
+	String goodsImageDate;
 	String goodsImage1;
 	String goodsImage2;
 	String goodsImage3;

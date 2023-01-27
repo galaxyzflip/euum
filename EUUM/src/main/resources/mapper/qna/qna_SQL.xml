@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+   PUBLIC "-//mybatis.org//DTD Mapper 3.0/EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+   
+<mapper namespace="com.mycom.euum.qna.mapper.QNAMapper">
+  
+   <!-- 문의글 리스트 -->
+ <!-- <select id="qnaList" resultType="com.mycom.euum.qna.bean.QNABean">		
+     <![CDATA[
+		SELECT QNA_NUM, QNA_TITLE, QNA_REGDATE, QNA_WRITER, QNA_ORDERED
+          FROM (SELECT * FROM QNA_TBL WHERE QNA_DELETE = 'N')
+          ORDER BY QNA_NID DESC, QNA_ORDERED ASC
+	 ]]>		   
+  </select> -->
+  
+  <!-- 문의글 리스트 -->
+  <select id="qnaList" resultType="com.mycom.euum.qna.bean.QNABean">		
+     <![CDATA[
+		select QNA_NUM, QNA_TITLE, QNA_REGDATE, QNA_WRITER, QNA_ORDERED, QNA_DELETE, QNA_NID
+		from (select rownum rn, QNA_NUM, QNA_TITLE, QNA_REGDATE,
+        QNA_WRITER, QNA_ORDERED, QNA_DELETE, QNA_NID
+           FROM QNA_TBL
+           WHERE rownum <=#{pageNum} * #{amount})
+		where rn>(#{pageNum}-1) * #{amount} AND QNA_DELETE = 'N'
+        ORDER BY QNA_NID DESC, QNA_ORDERED ASC
+	 ]]>		   
+  </select>
+  
+  <!-- 문의글 등록 -->
+  <insert id="qnaInsert" parameterType="com.mycom.euum.qna.bean.QNABean">		
+     <selectKey keyProperty="qnaNum" keyColumn="qnaNum" order="BEFORE" resultType="int">
+			SELECT QNA_NUM_SEQ.NEXTVAL FROM DUAL
+	 </selectKey>
+	 <![CDATA[
+		INSERT INTO QNA_TBL(QNA_NUM, MEMBER_NUM, QNA_WRITER, QNA_TITLE, QNA_CONTENT, QNA_NID)
+          VALUES(#{qnaNum}, #{memberNum}, #{qnaWriter}, #{qnaTitle}, #{qnaContent}, #{qnaNum})
+        ]]>		   
+  </insert>
+  
+  <!-- 문의글 상세보기 -->
+  <select id="qnaDetail" resultType="com.mycom.euum.qna.bean.QNABean">		
+     <![CDATA[
+		SELECT MEMBER_NUM, QNA_NUM, QNA_TITLE, QNA_WRITER, QNA_REGDATE, QNA_CONTENT
+          FROM (SELECT * FROM QNA_TBL WHERE QNA_NUM = #{qnaNum})
+	 ]]>		   
+  </select>
+  
+    <!-- 부모 글 정보 가져오기 -->
+      <select id="selectInfo" resultType="com.mycom.euum.qna.bean.QNABean">		
+     <![CDATA[
+		SELECT QNA_NID, QNA_ORDERED, QNA_LAYER
+          FROM QNA_TBL
+          WHERE QNA_NUM = #{qnaNum}
+	 ]]>		   
+  </select>
+      
+    <!-- 답변글 순서 증가 -->
+	<update id="updateOrder" parameterType="map">
+	   <![CDATA[
+	    update QNA_TBL set QNA_ORDERED = QNA_ORDERED+1 where QNA_NID=#{qnaNid} and QNA_ORDERED > #{qnaOrdered}
+	   ]]>	
+	</update>
+	
+	<!--답변 글쓰기-->
+	<insert id="rewrite" parameterType="com.mycom.euum.qna.bean.QNABean">
+        <![CDATA[       
+		INSERT INTO QNA_TBL(QNA_NUM, MEMBER_NUM, QNA_WRITER, QNA_TITLE, QNA_CONTENT, QNA_NID, QNA_ORDERED, QNA_LAYER)
+          VALUES(QNA_NUM_SEQ.NEXTVAL, #{memberNum}, #{qnaWriter}, #{qnaTitle}, #{qnaContent}, #{qnaNid}, #{qnaOrdered}+1, #{qnaLayer}+1)      
+        ]]>	
+	</insert>
+	
+	<!--문의글 삭제 처리 -->
+	<update id="qnaDelete" parameterType="com.mycom.euum.qna.bean.QNABean">
+	    <![CDATA[       
+		   UPDATE QNA_TBL
+             SET QNA_DELETE = 'Y'
+             WHERE QNA_NUM = #{qnaNum}      
+        ]]>	
+	</update>
+	
+	<!-- 문의글 수정 처리 -->
+	<update id="qnaModifyPro" parameterType="com.mycom.euum.qna.bean.QNABean">
+	    <![CDATA[       
+		   UPDATE QNA_TBL
+             SET QNA_TITLE = #{qnaTitle},
+                 QNA_CONTENT = #{qnaContent}
+             WHERE QNA_NUM = #{qnaNum}      
+        ]]>	
+	</update>
+	
+	<select id="getQNATotalCount" resultType="int">
+	   <![CDATA[ 
+		select count(*) from QNA_TBL where QNA_NUM>0
+		]]>	
+	</select>
+
+</mapper>

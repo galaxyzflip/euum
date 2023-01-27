@@ -28,7 +28,16 @@ public class OrderBean {
 	private String orderPeriod;
 	private String orderImage;
 	
+	private Date orderExpirationDate;
+	private String sellerNickname;
+	private String goodsName;
+	
 	private List<OrderOptionBean> optionList;
+
+	private List<OrderBean> orderList;
+	
+	
+	
 	
 	
 	

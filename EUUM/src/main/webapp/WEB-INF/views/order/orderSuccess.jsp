@@ -71,7 +71,8 @@
                 <td style="width:40%">
 
                         <div class="order-info">
-                            <div class="goods-name">${order.orderName }</div>
+                            <div class="goods-name">${order.sellerNickname }</div>
+                            <div>${order.goodsName }</div>
 							
 							<c:forEach items="${order.optionList }" var="option">
 								<div>

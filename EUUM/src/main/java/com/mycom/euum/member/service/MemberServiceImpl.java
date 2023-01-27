@@ -52,5 +52,24 @@ public class MemberServiceImpl implements MemberService {
 		}
 		
 	}
+	
+	@Override
+	public void insertMember(MemberBean memberBean) {
+		System.out.println(memberBean);
+		memberMapper.insertMember(memberBean);
+	}
+	
+
+
+	@Override
+	public int selectByEmail(String email) {
+		return memberMapper.selectByEmail(email);
+	}
+
+	@Override
+	public int selectByMobile(String mobile) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 
 }

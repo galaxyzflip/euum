@@ -72,12 +72,34 @@ public class OrderController {
 		return "order/orderSuccess";
 	}
 
-	@GetMapping("order/orderTest")
-	public String orderTest(Model model) {
-		OrderBean order = orderService.selectOrder("20230126-0047");
-		model.addAttribute("order", order);
-
-		return "order/orderSuccess";
+	/*
+	 * @GetMapping("order/orderTest") public String orderTest(Model model) {
+	 * OrderBean order = orderService.selectOrder("20230126-0047");
+	 * model.addAttribute("order", order);
+	 * 
+	 * return "order/orderSuccess"; }
+	 */
+	
+	/*
+	 * @GetMapping("order/orderListTest") public String orderListTest() {
+	 * 
+	 * List<OrderBean> orderList = orderService.selectOrderListByMember(1);
+	 * 
+	 * for(OrderBean order : orderList) { log.info("불러온 오더 정보 : " +
+	 * order.toString()); }
+	 * 
+	 * return null; }
+	 */
+	
+	@GetMapping("order/myOrderList")
+	public String myOrderList(Model model, HttpSession session) {
+		
+		MemberBean member = (MemberBean)session.getAttribute("loginUser");
+		
+		List<OrderBean> orderList = orderService.selectOrderListByMember(member.getMemberNum());
+		
+		model.addAttribute("orderList", orderList);
+		return "order/myOrderList";
 	}
 
 }

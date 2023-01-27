@@ -1,5 +1,7 @@
 package com.mycom.euum.order.service;
 
+import java.util.List;
+
 import com.mycom.euum.goods.bean.GoodsBean;
 import com.mycom.euum.order.bean.OrderBean;
 import com.mycom.euum.order.bean.OrderOptionBean;
@@ -11,4 +13,8 @@ public interface OrderService {
 	public String orderPro(OrderOptionBean optionList, OrderBean orderBean);
 	
 	public OrderBean selectOrder(String orderNum);
+	
+	public List<OrderBean> selectOrderListByMember(int memberNum);
+	
+	
 }
