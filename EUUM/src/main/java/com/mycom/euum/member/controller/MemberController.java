@@ -85,7 +85,7 @@ public class MemberController {
 		return "redirect:/main";
 	}
 	
-	//계정찾기 폼 로드... 인증은 어떻게 할 것인가...
+	//계정찾기 폼 로드... 인증은 어떻게 할 것인가..'.
 	@GetMapping("/member/findAccountForm")
 	public String findAccountForm() {
 		
