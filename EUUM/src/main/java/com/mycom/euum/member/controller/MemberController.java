@@ -75,6 +75,8 @@ public class MemberController {
 		
 	}
 	
+	// .
+	
 	//로그아웃...
 	@GetMapping("/member/logout")
 	public String logout(HttpServletRequest request) {
