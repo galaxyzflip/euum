@@ -33,7 +33,7 @@
         </ul>
       </nav><!-- .navbar -->
 
-      <a class="btn-book-a-table" href="/member/joinForm">회원가입</a>
+      <a class="btn-book-a-table" href="/member/joinForm1">회원가입</a>
       <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
       <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
 

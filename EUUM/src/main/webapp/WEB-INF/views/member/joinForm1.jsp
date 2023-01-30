@@ -287,7 +287,7 @@ a {
 
 </style>
 <div id="headbanner">
-	<a href="./main" class="h_logo"><span>euum</span></a>
+	<a href="../" class="h_logo"><span>euum</span></a>
 </div>
 <div id="content">
 	<!-- tg-text=title -->
