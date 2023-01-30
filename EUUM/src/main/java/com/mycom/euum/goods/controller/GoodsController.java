@@ -53,15 +53,17 @@ public class GoodsController {
 	
 	/** 은정: 상품 리스트 - 상품 검색결과 리스트 */
 	@GetMapping(value = "/goods/goodsSearch")
-	public String goodsSearch(String searchKeyword, Model model) throws Exception {
+	public String goodsSearch(String searchKeyword, String searchOption, Model model) throws Exception {
 		log.info("===== 상품 검색결과 리스트 =====");
 		log.info("---------------------------------");
 		log.info("검색어: " + searchKeyword);
+		log.info("검색옵션: " + searchOption);
 
-		List<GoodsBean> goodsList = goodsService.selectGoodsSearchList(searchKeyword);
+		List<GoodsBean> goodsList = goodsService.selectGoodsSearchList(searchKeyword, searchOption);
 		model.addAttribute("goodsList", goodsList);
+		model.addAttribute("selectedSearchOption", searchOption);
 		
-		return "/goods/goodsList";
+		return "goods/goodsList";
 	}
 	
 	/** 은정: 상품 리스트 - 상품 정렬결과 리스트 */
@@ -99,7 +101,7 @@ public class GoodsController {
 		return "goods/goodsRegisterForm";
 	}
 	
-	/** 선민: 상품 등록 - DB에 값 저장 (goodsStatus = '승인대기') */
+	/** 선민: 상품 등록 - DB에 데이터 저장 (goodsStatus = '승인대기') */
 	@PostMapping(value = "/goods/goodsRegisterPro")
 	public String goodsRegisterPro(MultipartFile[] uploadFile, GoodsBean goodsBean, GoodsOptionBean goodsOptionBean, Model model) throws Exception {
 		log.info("===== 상품 등록 처리 =====");
@@ -143,7 +145,7 @@ public class GoodsController {
 		return "redirect:/myPage/myGoods";
 	}
 	
-	/** 선민: 상품 임시저장 - DB에 값 저장 (goodsStatus = '임시저장') */
+	/** 선민: 상품 임시저장 - DB에 데이터 저장 (goodsStatus = '임시저장') */
 	@PostMapping(value = "/goods/goodsRegisterTempPro")
 	public String goodsRegisterTempPro(MultipartFile[] uploadFile, GoodsBean goodsBean, GoodsOptionBean goodsOptionBean, Model model) throws Exception {
 		log.info("===== 상품 임시저장 처리 =====");
@@ -175,7 +177,32 @@ public class GoodsController {
 	/* ---------------------------- 상품 수정 ---------------------------- */
 	/* ---------------------------- 상품 삭제 ---------------------------- */
 
+	/** 선민: 상품 삭제 - DB에서 데이터 삭제 */
+//	@PostMapping(value = "/goods/goodsDeletePro")
+//	public String goodsDeletePro(int goodsNum) throws Exception {
+//		log.info("===== 상품 삭제 처리 =====");
+//		log.info("삭제할 상품 번호: " + goodsNum);
+//		
+//		goodsService.deleteGoods(goodsNum);
+//		
+//		return "redirect:/myPage/myGoods";
+//	}
 	
+	/** 선민: 상품 삭제 - DB에서 데이터 삭제 (Ajax가 반환한 result 데이터를 jsp에 그려서 가져오기) */
+	@PostMapping(value = "/goods/goodsDeletePro")
+	public String goodsDeletePro(int goodsNum, Model model) throws Exception {
+		log.info("===== 상품 삭제 처리 =====");
+		log.info("삭제할 상품 번호: " + goodsNum);
+		
+		goodsService.deleteGoods(goodsNum);
+		
+		Map<String, List<GoodsBean>> myGoodsMap = new HashMap<String, List<GoodsBean>>();
+		int goodsMemberNum = 999;
+		myGoodsMap = goodsService.selectMyGoodsList(goodsMemberNum);
+		model.addAttribute("myGoodsMap", myGoodsMap);
+		
+		return "myPage/myGoodsAjax";
+	}
 	
 	/* ---------------------------- 상품 상세보기 ---------------------------- */
 	

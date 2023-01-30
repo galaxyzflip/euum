@@ -31,8 +31,8 @@ public class GoodsServiceImpl implements GoodsService {
 	
 	/** 은정: 상품 리스트 검색결과 가져오기 (List) */
 	@Override
-	public List<GoodsBean> selectGoodsSearchList(String searchKeyword) throws Exception {
-		return goodsMapper.selectGoodsSearchList(searchKeyword);
+	public List<GoodsBean> selectGoodsSearchList(String searchKeyword, String searchOption) throws Exception {
+		return goodsMapper.selectGoodsSearchList(searchKeyword, searchOption);
 	}
 	
 	/** 선민: 나의 상품 리스트 가져오기 - 승인완료 상품 (List) */
@@ -75,8 +75,15 @@ public class GoodsServiceImpl implements GoodsService {
 	}
 	
 	/** 선민: 상품 임시저장 - 상품 등록 폼의 내용을 임시 저장 */
-	public void insertTempGoods(GoodsBean goodsBean) {
+	public void insertTempGoods(GoodsBean goodsBean) throws Exception {
 		goodsMapper.insertTempGoods(goodsBean);
+	}
+	
+	/* ---------------------------- 상품 삭제 ---------------------------- */
+	
+	/** 선민: 상품 삭제 - DB에서 데이터 삭제 */
+	public void deleteGoods(int goodsNum) throws Exception {
+		goodsMapper.deleteGoods(goodsNum);
 	}
 	
 	/* ---------------------------- 상품 상세보기 ---------------------------- */
@@ -105,5 +112,7 @@ public class GoodsServiceImpl implements GoodsService {
 	public List<GoodsOptionBean> selectGoodsOptionContent(String goodsNum, String goodsOptNameNum) throws Exception {
 		return goodsMapper.selectGoodsOptionContent(goodsNum, goodsOptNameNum);
 	}
+
+	
 
 }
