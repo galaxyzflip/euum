@@ -30,10 +30,10 @@ public class MyPageController {
 	@GetMapping("/myPage/modifyForm")
 	public String memberDetail(Model model, HttpServletRequest request, MemberBean bean) {
 
-		HttpSession session = request.getSession();
-		
-		MemberBean loginUser = (MemberBean)session.getAttribute("loginUser");
-		myPageService.getMember(loginUser);
+//		HttpSession session = request.getSession();
+//		
+//		MemberBean loginUser = (MemberBean)session.getAttribute("loginUser");
+		MemberBean loginUser = myPageService.getMember(bean);
 		model.addAttribute("member", loginUser);
 		
 		return "myPage/memberDetail";

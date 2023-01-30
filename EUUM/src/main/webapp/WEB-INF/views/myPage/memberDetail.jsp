@@ -213,36 +213,6 @@ function transSeller() {
 }
 
 function modifyPro() {
-/* 	var memberName = $("#memberName").val();
-	var memberZipcode = $("#memberZipcode").val(); 
-	var memberAddress = $("#memberAddress").val();
-	var memberDetailAddress = $("#memberDetailAddress").val();
-	if (memberName != null) {
-		$.ajax({
-			type:"POST",
-			url:"/myPage/modifyPro",
-			data{
-				"memberName" : memberName,
-				"memberZipcode" : memberZipcode,
-				"memberAddress" : memberAddress,
-				"memberDetailAddress" : memberDetailAddress,
-			},
-			dataType:"JSON",
-			success:function(data){
-				console.log(data);
-				alert("회원정보가 변경되었습니다.");
-				$("#modifyForm").submit();
-			},
-			error:function(request,status,error){
-				alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-			}
-		});
-	}else{
-		alert("이름을 입력해주세요!")
-	}
-	} */
-	
-	
 	//var form = document.getElementById("modifyForm");
 	if (confirm("회원정보를 변경하시겠습니까?") == true) {
 		alert("회원정보가 변경 되었습니다.");

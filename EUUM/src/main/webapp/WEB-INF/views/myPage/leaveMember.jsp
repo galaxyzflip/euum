@@ -97,7 +97,7 @@ div {
 <div>동일한 아이디로는 재가입하실 수 없습니다.</div>
 </div>
 
-<form method="post" name="join" id="leaveForm" action="/myPage/leavePro">
+<form method="post" name="join">
 
 <div id="quit_inp" class="cf">
 

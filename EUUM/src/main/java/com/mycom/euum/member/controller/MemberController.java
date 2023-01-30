@@ -29,22 +29,22 @@ public class MemberController {
 	private MemberService memberService;
 
 	//테스트용... 임시 사용
-	@GetMapping("/main")
-	public String test(HttpServletRequest request) {
-		
-		
-		//로그인 귀찮아서 임시로 만든것... 세션 저장해줌
-		HttpSession session = request.getSession();
-		MemberBean loginUser = new MemberBean();
-		loginUser.setMemberNum(1);
-		loginUser.setMemberName("최창선");
-		loginUser.setMemberEmail("sonsun33@naver.com");
-		loginUser.setMemberMobile("01041746137");
-		session.setAttribute("loginUser", loginUser);
-		
-		
-		return "main/main";
-	}
+//	@GetMapping("/main")
+//	public String test(HttpServletRequest request) {
+//		
+//		
+//		//로그인 귀찮아서 임시로 만든것... 세션 저장해줌
+//		HttpSession session = request.getSession();
+//		MemberBean loginUser = new MemberBean();
+//		loginUser.setMemberNum(1);
+//		loginUser.setMemberName("최창선");
+//		loginUser.setMemberEmail("sonsun33@naver.com");
+//		loginUser.setMemberMobile("01041746137");
+//		session.setAttribute("loginUser", loginUser);
+//		
+//		
+//		return "main/main";
+//	}
 	
 	
 	//로그인 폼 로드

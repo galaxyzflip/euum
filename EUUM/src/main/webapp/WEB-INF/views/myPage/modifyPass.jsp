@@ -79,7 +79,7 @@ div {
 <ul>비밀번호는 8자리 이상으로 설정해주세요 (영문,숫자,특수문자 조합)</ul>
 </div>
 
-<form method="post" name="join" id="modifyPass" action="/myPage/modifyPassPro">
+<form method="post" name="join">
 
 <div>
 
@@ -121,6 +121,10 @@ function modifyPass() {
 	} else {
 		return false;
 	} 
+}
+
+function history.back() {
+	return /myPage/modifyForm;
 }
 </script>
 </html>
