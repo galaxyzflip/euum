@@ -8,5 +8,7 @@ public interface ReviewService {
 	
 	public List<ReviewBean> reviewList(ReviewBean reviewBean);
 	
+	public void reviewInsert(ReviewBean reviewBean); 
+	
 
 }
