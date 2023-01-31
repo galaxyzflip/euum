@@ -31,6 +31,9 @@ public interface GoodsService {
 	/** 선민: 상품 등록 - 새로운 상품 데이터를 DB에 삽입하기 */
 	public void insertGoods(GoodsBean goodsBean) throws Exception;
 	
+	/** 선민: 상품 추가옵션 등록 - 등록될 상품의 추가옵션 데이터를 DB에 삽입하기 */
+	public void insertGoodsOption(GoodsOptionBean goodsOptionBean) throws Exception;
+	
 	/** 선민: 상품 임시저장 - 상품 등록 폼의 내용을 임시 저장 */
 	public void insertTempGoods(GoodsBean goodsBean) throws Exception;
 	

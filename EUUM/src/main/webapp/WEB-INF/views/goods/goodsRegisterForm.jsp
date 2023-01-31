@@ -83,6 +83,9 @@
 				<tbody class="opBody" id="opBody">
 					<tr class="opList_1" id="opList_1">
 						<td>
+<!-- 							<input type="text" name="goodsOptions[0].goodsOptName" style="width: 160px;"> -->
+<!-- 							<input type="text" name="goodsOptions[0].goodsOptContent" style="width: 500px"> -->
+<!-- 							<input type="text" name="goodsOptions[0].goodsOptPrice" style="width: 160px;"> -->
 							<input type="text" name="goodsOptName" style="width: 160px;">
 							<input type="text" name="goodsOptContent" style="width: 500px">
 							<input type="text" name="goodsOptPrice" style="width: 160px;">
@@ -148,6 +151,14 @@ $(document).ready(function() {
 		newBox += '<input type="text" name="goodsOptPrice" style="width: 160px;">';
 		newBox += '<button type="button" id="opContentDel_bt" onclick="opContentDel(' + opNum + ');">X</button>';
 		newBox += '</td></tr>';
+		
+// 		newBox += '<tr class="opList_' + opNum + '" id="opList_' + opNum + '">';
+// 		newBox += '<td>';
+// 		newBox += '<input type="text" name="goodsOptions[' + (opNum-1) + '].goodsOptName" style="width: 160px;">';
+// 		newBox += '<input type="text" name="goodsOptions[' + (opNum-1) + '].goodsOptContent" style="width: 500px">';
+// 		newBox += '<input type="text" name="goodsOptions[' + (opNum-1) + '].goodsOptPrice" style="width: 160px;">';
+// 		newBox += '<button type="button" id="opContentDel_bt" onclick="opContentDel(' + opNum + ');">X</button>';
+// 		newBox += '</td></tr>';
 		
 // 		newBox += '<tr class="opList_' + opNum + '" id="opList_' + opNum + '">';
 // 		newBox += '<td>';

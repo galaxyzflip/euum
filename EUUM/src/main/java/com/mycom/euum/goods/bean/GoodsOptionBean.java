@@ -14,7 +14,7 @@ public class GoodsOptionBean {
 	
 	/** 선민: 상품-상품추가옵션 테이블 조인을 위한 key */
 	int goodsNum; 
-	int goodsOptPrice;
+	String goodsOptPrice;
 	String goodsOptName;
 	int goodsOptNameNum;
 	String goodsOptContent;
