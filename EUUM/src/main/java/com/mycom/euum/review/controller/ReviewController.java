@@ -4,7 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
+import com.mycom.euum.notice.bean.NoticeBean;
 import com.mycom.euum.review.bean.ReviewBean;
 import com.mycom.euum.review.service.ReviewService;
 
@@ -35,4 +37,16 @@ public class ReviewController {
 		return "review/reviewList";
 	}
 	
+	@GetMapping("/review/insertForm")
+	public String reviewInsertForm() {
+		return "review/reviewInsertForm";
+	}
+	
+	@PostMapping("/review/insertPro")
+	public String reviewInsertPro(ReviewBean reviewBean) {
+		
+		reviewService.reviewInsert(reviewBean);
+		
+		return "redirect:/review/list";
+	}
 }
