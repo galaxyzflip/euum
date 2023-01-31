@@ -113,7 +113,7 @@ public class GoodsController {
 	/** 선민: 상품 등록 - DB에 데이터 저장 (goodsStatus = '승인대기') */
 	@PostMapping(value = "/goods/goodsRegisterPro")
 //	public String goodsRegisterPro(MultipartFile[] uploadFile, GoodsBean goodsBean, GoodsOptionBeanList goodsOptionBeanList, Model model) throws Exception {
-	public String goodsRegisterPro(MultipartFile[] uploadFile, GoodsBean goodsBean, String[] goodsOptName, String[] goodsOptContent, String[] goodsOptPrice, Model model) throws Exception {
+	public String goodsRegisterPro(MultipartFile[] uploadFile, GoodsBean goodsBean, String[] goodsOptName, String[] goodsOptContent, int[] goodsOptPrice, Model model) throws Exception {
 		log.info("===== 상품 등록 처리 =====");
 		log.info("---------------------------------");
 		log.info("uploadFile: " + uploadFile);
@@ -139,7 +139,7 @@ public class GoodsController {
 
 
 		// 02. 상품 등록
-		goodsBean.setGoodsMemberNum(500); // (임시)not null에 의한 에러방지
+		goodsBean.setGoodsMemberNum(999); // (임시)not null에 의한 에러방지
 		goodsBean.setGoodsSellerNickname("홍길동"); // (임시)not null에 의한 에러방지
 		goodsService.insertGoods(goodsBean);
 
