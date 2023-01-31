@@ -130,7 +130,7 @@
 		select count(*) from NOTICE_TBL 
 		where 
 		<include refid="criteria"></include>
-		NOTICE_NUM>0
+		NOTICE_NUM>0 AND NOTICE_CATEGORY=1 AND NOTICE_DELETE ='N'
 	</select>
 	
 	<sql id="criteria">

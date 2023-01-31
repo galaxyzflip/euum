@@ -23,6 +23,12 @@ public class ReviewServiceImpl implements ReviewService {
 		// TODO Auto-generated method stub
 		return reviewMapper.reviewList(reviewBean.getGoodsNum());
 	}
+
+	@Override
+	public void reviewInsert(ReviewBean reviewBean) {
+		// TODO Auto-generated method stub
+		reviewMapper.reviewInsert(reviewBean);
+	}
 	
 	
 

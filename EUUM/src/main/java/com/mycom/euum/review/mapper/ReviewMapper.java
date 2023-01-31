@@ -7,5 +7,7 @@ import com.mycom.euum.review.bean.ReviewBean;
 public interface ReviewMapper {
 	
 	public List<ReviewBean> reviewList(int goodsNum);
+	
+	public void reviewInsert(ReviewBean reviewBean);
 
 }

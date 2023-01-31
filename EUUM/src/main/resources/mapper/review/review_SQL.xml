@@ -13,5 +13,13 @@
 		
 	 ]]>		   
   </select>
+  
+  <insert id="reviewInsert">
+  	<![CDATA[
+  		insert into REVIEW_TBL (REVIEW_NUM, MEMBER_NUM, REVIEW_WRITER, REVIEW_TITLE,
+					REVIEW_CONTENT, GOODS_NUM, ORDER_NUM, REVIEW_STAR)
+		values (REVIEW_NUM_SEQ.NEXTVAL , #{memberNum}, #{reviewWriter}, #{reviewTitle}, #{reviewContent}, #{goodsNum}, #{orderNum}), #{reviewStar})
+		  	]]>
+  </insert>
  
 </mapper>
