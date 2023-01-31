@@ -195,7 +195,7 @@ function deleteMyGoods(status, index) {
 // 		alert('이거뜨면먼가오류있음');
 // 	}
 	
-// 	document.getElementById(tr).remove();
+	document.getElementById(tr).remove();
 }
 </script>
 

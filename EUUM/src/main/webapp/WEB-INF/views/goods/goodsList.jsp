@@ -70,7 +70,9 @@ function writer_chk(level){
 </script>
 
 <body>
-	<br><br><br>
+	<br>
+	<br>
+	<br>
 	<div class="container">
 		<div class="sub_menu_back">
 			<!-- <div class="siteWidth left_ul"> -->
@@ -110,7 +112,8 @@ function writer_chk(level){
 		<div class="subContent">
 			<!-- MAIN CENTER START -->
 			<div class="cate_banner_title">
-				<ul>프리미엄 작가</ul>
+				<ul>프리미엄 작가
+				</ul>
 			</div>
 
 			<div id="cate_banner" class="clear">
@@ -127,9 +130,6 @@ function writer_chk(level){
 					<img src="${pageContext.request.contextPath}/resources/assets/img/image/zz3.jpeg/${goodsImage3}" alt="" style='width: 260px; height: 220px'>
 				</a>
 			</div>
-			
-			
-			
 		</div>
 	</div>
 
@@ -153,19 +153,38 @@ function writer_chk(level){
 				<div class="col">
 					<div style="float: left; font-size: 14.5px;">
 						<div id="search_Box">
-							<form method="get" action="/goods/goodsSearch" name="searchkeyword">
-								<!-- <select name="searchkeyword" >
-										<option value="sellerNickname">작가닉네임</option>
-										<option value="goodsName">상품이름</option>
-							     </select> -->
+							<form method="get" action="/goods/goodsSearch"> 
+								<select name="searchOption">
+									<option value="goodsName">상품 이름</option>
+									<option value="goodsWriter">작가 이름</option>
+								</select>
 								<span>
 									<input type="text" name="searchKeyword" id="searchKeyword" style="width: 200px; height: 30px; display: inline-block;">
 								</span>
 								<span>
-									<button id="searchKeyword" type="submit" style="height: 32px; width: 80px;">검색</button>
+									<button type="submit" style="height: 32px; width: 80px;">검색</button>
 								</span>
 							</form>
 						</div>
+						
+						
+						
+						
+						
+						
+						
+						<div>
+							<form action="/goods/goodsSearch2" method="get">
+								<select name="searchOption" onChange="">
+									<option value="">선택하세요</option>
+									<option value="1번">1번</option>
+									<option value="2번">2번</option>
+								</select>
+							</form>
+						</div>
+
+
+
 
 
 
@@ -206,11 +225,13 @@ function writer_chk(level){
 								<table style="border: solid 1px">
 									<tr>
 										<td>
-											<img class="thumb" src="${pageContext.request.contextPath}/resources/img/${row.goodsImageDate}s_${row.goodsImage1}"> <img class="thumb" src="/resources/img/${row.goodsImageDate}s_${row.goodsImage2}"> <img class="thumb" src="/resources/img/${row.goodsImageDate}s_${row.goodsImage3}">
+											<img class="thumb" src="${pageContext.request.contextPath}/resources/img/${row.goodsImageDate}s_${row.goodsImage1}">
+											<img class="thumb" src="/resources/img/${row.goodsImageDate}s_${row.goodsImage2}">
+											<img class="thumb" src="/resources/img/${row.goodsImageDate}s_${row.goodsImage3}">
 										</td>
 										<td class="myg_info">
-											<li>${row.goodsName} / ${row.goodsUse}</li>
-											<li>${row.goodsSellerNickname} / ${row.goodsPrice}</li>
+											<li>${row.goodsName}/ ${row.goodsUse}</li>
+											<li>${row.goodsSellerNickname}/ ${row.goodsPrice}</li>
 										</td>
 									</tr>
 								</table>
@@ -222,8 +243,8 @@ function writer_chk(level){
 					</c:otherwise>
 				</c:choose>
 			</div>
-			
-			
+
+
 		</div>
 </body>
 </html>

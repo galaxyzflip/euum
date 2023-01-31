@@ -65,6 +65,20 @@ public class GoodsController {
 		
 		return "goods/goodsList";
 	}
+
+	
+	@GetMapping(value = "/goods/goodsSearch2")
+	public String goodsSearch2(String searchOption, Model model) throws Exception {
+		log.info("검색옵션: " + searchOption);
+		model.addAttribute("searchOption", searchOption);
+		
+		return "goods/goodsList";
+	}
+	
+	
+	
+	
+	
 	
 	/** 은정: 상품 리스트 - 상품 정렬결과 리스트 */
 	// 1차 취합 전까지 일단 비워놓을게요!!
@@ -135,7 +149,7 @@ public class GoodsController {
 		
 		
 		// (임시)not null에 의한 에러방지
-		goodsOptionBean.setGoodsNum(goodsBean.getGoodsNum()); // selectKey 사용
+//		goodsOptionBeanList.setGoodsNum(goodsBean.getGoodsNum()); // selectKey 사용
 		log.info("*** selectKey로 뽑아온 goodsNum: " + goodsBean.getGoodsNum());
 //		goodsOptionBean.setGoodsOptName("SD전신");
 //		goodsOptionBean.setGoodsOptNameNum(1);
