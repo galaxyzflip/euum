@@ -103,7 +103,7 @@ div {
 
 <ul>
 <ol>성명</ol>
-<ol>${loginUser.memberName}</ol>
+<ol>${member.memberName}</ol>
 </ul>
 
 <ul>
@@ -115,9 +115,9 @@ div {
 
 <div class="blank" style="height:90px;">&nbsp;</div>
 <div class="left_right_ul" style="width:393px; margin:0 auto">
-<input type="hidden" name="memberNum" value="${loginUser.memberNum}">
-<input type="submit" class="btn1" onclick="leavePro();" value="회원 탈퇴">
-<input type="submit" class="btn3" onclick="history.back();" value="이전 페이지">
+<input type="hidden" name="memberNum" value="${member.memberNum}">
+<ul><input type="submit" class="btn1" onclick="leavePro();" value="회원 탈퇴"></ul>
+<ul class="btn3" onclick="history.back();">이전 페이지</ul>
 </div>
 
 </form>

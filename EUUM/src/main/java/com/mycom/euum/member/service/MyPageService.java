@@ -6,7 +6,7 @@ import com.mycom.euum.member.bean.SellerBean;
 public interface MyPageService {
 
 	// 회원 정보 관련
-	public MemberBean getMember(MemberBean bean);
+	public MemberBean getMember(int memberNum);
 	
 	public int updateMember(MemberBean bean);
 	
@@ -18,7 +18,7 @@ public interface MyPageService {
 	
 	public int secessionSeller(String sellerNum);
 	
-	public SellerBean getSeller(String sellerNum);
+	public SellerBean getSeller(int sellerNum);
 	
 	public void insertSeller(SellerBean bean);
 	

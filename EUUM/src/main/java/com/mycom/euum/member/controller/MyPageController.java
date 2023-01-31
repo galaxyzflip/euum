@@ -28,14 +28,16 @@ public class MyPageController {
 
 	// 회원정보 상세보기 겸 수정 창
 	@GetMapping("/myPage/modifyForm")
-	public String memberDetail(Model model, HttpServletRequest request, MemberBean bean) {
+	public String memberDetail(Model model, HttpServletRequest request) {
 
-//		HttpSession session = request.getSession();
-//		
-//		MemberBean loginUser = (MemberBean)session.getAttribute("loginUser");
-		MemberBean loginUser = myPageService.getMember(bean);
-		model.addAttribute("member", loginUser);
+		HttpSession session = request.getSession();
+	
 		
+		MemberBean loginUser = (MemberBean)session.getAttribute("loginUser");
+		loginUser = myPageService.getMember(loginUser.getMemberNum());
+		model.addAttribute("memberDetail", loginUser);
+		log.info("------------------" + loginUser.toString());
+
 		return "myPage/memberDetail";
 	}
 	
@@ -50,15 +52,15 @@ public class MyPageController {
 	
 	// 비밀번호 변경 창
 	@GetMapping("/myPage/modifyPassForm")
-	public String modifyPassForm(Model model, HttpServletRequest request, MemberBean bean) {
+	public String modifyPassForm(Model model, HttpServletRequest request) {
 		
-//		MemberBean loginUser = myPageService.getMember(memberNum);
 		HttpSession session = request.getSession();
+	
 		
 		MemberBean loginUser = (MemberBean)session.getAttribute("loginUser");
-		myPageService.getMember(loginUser);
-		
-		log.info("-----------------" + loginUser.toString());
+		loginUser = myPageService.getMember(loginUser.getMemberNum());
+		model.addAttribute("member", loginUser);
+		log.info("------------------" + loginUser.toString());
 		
 		return "myPage/modifyPass";
 	}
@@ -74,22 +76,27 @@ public class MyPageController {
 	
 	// 회원 탈퇴 창
 	@GetMapping("/myPage/leaveForm")
-	public String leaveForm(Model model, HttpServletRequest request, MemberBean bean) {
+	public String leaveForm(Model model, HttpServletRequest request) {
 		
 		HttpSession session = request.getSession();
+	
 		
 		MemberBean loginUser = (MemberBean)session.getAttribute("loginUser");
-		
-		log.info("-----------------" + loginUser.toString());
+		loginUser = myPageService.getMember(loginUser.getMemberNum());
+		model.addAttribute("member", loginUser);
+		log.info("------------------" + loginUser.toString());
 		
 		return "myPage/leaveMember";
 	}
 	
 	// 회원 탈퇴 처리
 	@PostMapping("/myPage/leavePro")
-	public String leavePro(String memberNum, HttpServletRequest request) {
+	public String leavePro(String memberNum, String sellerNum, HttpServletRequest request) {
 
 		myPageService.secessionMember(memberNum);
+		
+		
+//		myPageService.secessionSeller(sellerNum);
 
 		HttpSession session = request.getSession();
 		
@@ -110,13 +117,16 @@ public class MyPageController {
 	
 	// 전문가 내 프로필 상세보기 겸 수정 창
 	@GetMapping("/myPage/modifySellerForm")
-	public String modifySellerInfo(Model model, HttpServletRequest request) {
+	public String modifySellerInfo(Model model, HttpServletRequest request, String sellerNum) {
 		
 		HttpSession session = request.getSession();
-		
-		SellerBean loginUser = (SellerBean)session.getAttribute("loginUser");
-		
-		log.info("-----------------" + loginUser.toString());
+	
+		MemberBean loginUser = (MemberBean)session.getAttribute("loginUser");
+		loginUser = myPageService.getMember(loginUser.getMemberNum());
+		model.addAttribute("member", loginUser);
+		log.info("------------------" + loginUser.toString());
+		SellerBean seller = myPageService.getSeller(loginUser.getMemberNum());
+		model.addAttribute("seller", seller);
 		
 		return "myPage/sellerDetail";
 	}

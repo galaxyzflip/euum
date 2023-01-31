@@ -18,14 +18,14 @@ public class MyPageServiceImpl implements MyPageService {
 
 	// 회원 정보 상세보기
 	@Override
-	public MemberBean getMember(MemberBean bean) {
-		
-		return memberMapper.getMember(bean.getMemberNum());
+	public MemberBean getMember(int memberNum) {
+				
+		return memberMapper.getMember(memberNum);
 	}
 
 	// 전문가 정보 상세보기
 	@Override
-	public SellerBean getSeller(String sellerNum) {
+	public SellerBean getSeller(int sellerNum) {
 
 		return memberMapper.getSeller(sellerNum);
 	}

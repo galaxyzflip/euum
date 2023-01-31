@@ -94,7 +94,7 @@
 	<!-- member_class 변경 쿼리... 전문가 전환 -->
 	<update id="updateMemberClass">
 		update member_tbl 
-		set member_class=#{memberClass}
+		set member_class='S'
 		where member_num=#{memberNum}
 	</update>
 	
