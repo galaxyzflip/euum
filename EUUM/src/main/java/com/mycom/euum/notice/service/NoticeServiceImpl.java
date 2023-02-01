@@ -70,7 +70,7 @@ public class NoticeServiceImpl implements NoticeService{
 	@Override
 	public int getTotal(Criteria cri) {
 		// TODO Auto-generated method stub
-		return noticeMapper.getTotlaCount(cri);
+		return noticeMapper.getTotalCount(cri);
 	}
 	 
 	 

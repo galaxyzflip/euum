@@ -1,12 +1,14 @@
 package com.mycom.euum.review.controller;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import com.mycom.euum.notice.bean.NoticeBean;
+import com.mycom.euum.page.RCriteria;
+import com.mycom.euum.page.RPageDTO;
 import com.mycom.euum.review.bean.ReviewBean;
 import com.mycom.euum.review.service.ReviewService;
 
@@ -15,24 +17,29 @@ import lombok.extern.log4j.Log4j;
 @Log4j
 @Controller
 public class ReviewController {
+
+	//////////////	리스트에서 페이징 수정 삭제 가능하게 해야할거같음
 	
 	@Autowired
 	private ReviewService reviewService;
 	
-	private ReviewBean reviewBean;
+	
 	
 	@GetMapping("/review/list")
-	public String noticeList(Model model) {
+	public String noticeList(Model model, RCriteria rcri) {
 	
-		ReviewBean reviewBean = new ReviewBean();
+//		int amount= rcri.getAmount();
+//		int pageNum=rcri.getPageNum();
+//		int total=reviewService.getTotal(rcri, goodsNum);		 
 		
-		reviewBean.setGoodsNum(1);
 		
-		System.out.println("빈이==================="+reviewBean);
-				
-		model.addAttribute("reviewList", reviewService.reviewList(reviewBean));
+		int total=reviewService.getTotal(rcri);
+		model.addAttribute("pageMaker", new RPageDTO(rcri, total));
 		
-		log.info("sql돌려요=======================" + reviewService.reviewList(reviewBean));
+						
+		model.addAttribute("reviewList", reviewService.reviewList(rcri));
+		
+		log.info("sql돌려요=======================" + reviewService.reviewList(rcri));
 		
 		return "review/reviewList";
 	}
@@ -49,4 +56,5 @@ public class ReviewController {
 		
 		return "redirect:/review/list";
 	}
+	
 }

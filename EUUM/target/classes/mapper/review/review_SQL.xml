@@ -6,20 +6,75 @@
 <mapper namespace="com.mycom.euum.review.mapper.ReviewMapper">
 	
 	<select id="reviewList" resultType="com.mycom.euum.review.bean.ReviewBean">		
-     <![CDATA[
+    <!--  <![CDATA[
 		select R.REVIEW_NUM, R.REVIEW_WRITER, R.REVIEW_TITLE, R.REVIEW_REGDATE, G.GOODS_NUM, R.REVIEW_CONTENT
 		from REVIEW_TBL R inner join GOODS_TBL G on R.GOODS_NUM = G.GOODS_NUM
-		where G.GOODS_NUM = #{goodsNum} and R.REVIEW_DELETE = 'N' ORDER BY  REVIEW_NUM DESC
-		
-	 ]]>		   
+		where G.GOODS_NUM = #{goodsNum} and R.REVIEW_DELETE = 'N' ORDER BY  REVIEW_NUM ASC	
+	 ]]> -->	
+	 
+	 <!--  <![CDATA[
+		select R.REVIEW_NUM, R.REVIEW_WRITER, R.REVIEW_TITLE, R.REVIEW_REGDATE, G.GOODS_NUM, R.REVIEW_CONTENT
+		from REVIEW_TBL R inner join GOODS_TBL G on R.GOODS_NUM = G.GOODS_NUM
+		where (select rownum rn,R.REVIEW_NUM, R.REVIEW_TITLE, R.REVIEW_REGDATE,
+		               R.REVIEW_WRITER, R.REVIEW_HITCOUNT, R.REVIEW_DELETE, R.REVIEW_CATEGORY
+		                FROM REVIEW_TBL
+		                WHERE rownum <=#{pageNum} * #{amount} AND G.GOODS_NUM = #{goodsNum} AND R.REVIEW_DELETE = 'N')
+		where rn>(#{pageNum}-1) * #{amount} ORDER BY  R.REVIEW_NUM ASC	
+	 ]]> -->
+	
+	 <![CDATA[
+	 	select REVIEW_NUM, MEMBER_NUM, REVIEW_WRITER, REVIEW_TITLE, REVIEW_REGDATE, REVIEW_STAR, 
+        GOODS_NUM, REVIEW_CONTENT, REVIEW_DELETE
+		from (select rownum rn, R.REVIEW_NUM, R.REVIEW_TITLE, R.REVIEW_REGDATE, R.MEMBER_NUM, R.REVIEW_STAR,
+		               R.REVIEW_WRITER, R.REVIEW_DELETE, R.REVIEW_CONTENT, G.GOODS_NUM
+		                FROM REVIEW_TBL R inner join GOODS_TBL G on R.GOODS_NUM = G.GOODS_NUM
+		                WHERE rownum <=#{pageNum} * #{amount} AND G.GOODS_NUM =#{goodsNum} AND R.REVIEW_DELETE = 'N')
+		where rn>(#{pageNum}-1) * #{amount} ORDER BY REVIEW_NUM	DESC	
+	 ]]>
+	 	   
   </select>
   
   <insert id="reviewInsert">
   	<![CDATA[
   		insert into REVIEW_TBL (REVIEW_NUM, MEMBER_NUM, REVIEW_WRITER, REVIEW_TITLE,
 					REVIEW_CONTENT, GOODS_NUM, ORDER_NUM, REVIEW_STAR)
-		values (REVIEW_NUM_SEQ.NEXTVAL , #{memberNum}, #{reviewWriter}, #{reviewTitle}, #{reviewContent}, #{goodsNum}, #{orderNum}), #{reviewStar})
-		  	]]>
+		values (REVIEW_NUM_SEQ.NEXTVAL , #{memberNum}, #{reviewWriter}, #{reviewTitle}, #{reviewContent}, #{goodsNum}, #{orderNum}, #{reviewStar})
+	]]>
   </insert>
+  
+  <select id="reviewDetail" resultType="com.mycom.euum.review.bean.ReviewBean">
+  	<![CDATA[
+  		SELECT REVIEW_NUM, REVIEW_WRITER, REVIEW_CONTENT, REVIEW_REGDATE, REVIEW_TITLE
+  		FROM REVIEW_TBL
+  		WHERE REVIEW_NUM =#{reviewNum}
+  	]]>
+  </select>
+  
+  
+  <update id="reviewModifyPro">
+	 	<![CDATA[
+	 		update REVIEW_TBL
+			set REVIEW_TITLE = #{reviewTitle},
+			    REVIEW_CONTENT = #{reviewContent},				
+			where REVIEW_NUM = #{reviewNum}
+	 	]]>	 
+	 </update>
+	 
+	 <update id="reviewDelete">
+	 	<![CDATA[
+	 		update REVIEW_TBL
+			set REVIEW_DELETE = 'Y'
+			where REVIEW_NUM = #{reviewNum}
+	 	]]>	 
+	 </update>
+	 
+	 
+	 <select id="getTotalCount" resultType="int">
+		select count(*) from REVIEW_TBL 
+		where 
+		REVIEW_NUM>0 AND REVIEW_DELETE ='N' AND GOODS_NUM=#{goodsNum}
+	</select>
+	
+	
  
 </mapper>

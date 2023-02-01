@@ -25,6 +25,18 @@
 	            submenu.slideDown();
 	        }
 	    });
+	    
+	    var actionForm = $("#actionForm");
+
+		$(".paginate_button a").on("click", function(e) {
+
+					e.preventDefault();
+
+					console.log('click');
+
+					actionForm.find("input[name='pageNum']").val($(this).attr("href"));
+					actionForm.submit();
+				});
 	});
 </script>
 <head>
@@ -38,6 +50,7 @@
 		<thead>
 				<tr>
 					<th scope="col">번호</th>
+					<th scope="col">평점</th>
 					<th scope="col">제목</th>	
 					<th scope="col">작성자</th>
 					<th scope="col">등록일</th>
@@ -48,6 +61,21 @@
 			<c:forEach items="${reviewList}" var="reviewList">
 				<tr>
 					<td><c:out value="${reviewList.reviewNum }"/></td>
+					
+					<td>
+						<span style="color: #ffc81e"> 
+						<c:if test="${reviewList.reviewStar eq 1}">
+							<c:out value="★☆☆☆☆" /></c:if>
+						 <c:if test="${reviewList.reviewStar eq 2}">
+							<c:out value="★★☆☆☆" /></c:if>
+						 <c:if test="${reviewList.reviewStar eq 3}">
+							<c:out value="★★★☆☆" /></c:if> 
+						<c:if test="${reviewList.reviewStar eq 4}">
+							<c:out value="★★★★☆" /></c:if> 
+						<c:if test="${reviewList.reviewStar eq 5}">
+							<c:out value="★★★★★" /></c:if>
+						</span>
+					</td>
 					<td>
 						<ul class="menu">
 						<a><c:out value="${reviewList.reviewTitle }"/></a>
@@ -60,7 +88,9 @@
 					<td><fmt:formatDate pattern="yyyy-MM-dd" value="${reviewList.reviewRegdate}" /></td>
 				</tr>
 			</c:forEach>
-		</c:if>		
+		</c:if>	
+		
+		
 	</table>	
 		<c:if test="${fn:length(reviewList) == 0}">
 					<div>
@@ -71,6 +101,34 @@
 						</table>
 					</div>
 				</c:if>
+				
+		<form id='actionForm' action="/review/list" method='get'>
+				<input type='hidden' name='pageNum' value='${pageMaker.rcri.pageNum}'>
+				<input type='hidden' name='amount' value='${pageMaker.rcri.amount}'>
+		</form>
+		
+		<div class='pull-right'>
+				<ul class="pagination">
+				
+					<c:if test="${pageMaker.prev}">
+							<li class="paginate_button previous"><a
+								href="${pageMaker.startPage -1}">Previous</a></li>
+						</c:if>
+
+						<c:forEach var="num" begin="${pageMaker.startPage}"
+							end="${pageMaker.endPage}">
+							<li class="paginate_button  ${pageMaker.rcri.pageNum == num ? "active":""} ">
+								<a href="${num}">${num}</a>
+							</li>
+						</c:forEach>
+
+						<c:if test="${pageMaker.next}">
+							<li class="paginate_button next"><a
+								href="${pageMaker.endPage +1 }">Next</a></li>
+						</c:if>
+				</ul>
+			</div>	
+					
 </div>
 
 
