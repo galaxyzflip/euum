@@ -21,7 +21,7 @@
 		                WHERE rownum <=#{pageNum} * #{amount} AND G.GOODS_NUM = #{goodsNum} AND R.REVIEW_DELETE = 'N')
 		where rn>(#{pageNum}-1) * #{amount} ORDER BY  R.REVIEW_NUM ASC	
 	 ]]> -->
-	 <!--  -->
+	
 	 <![CDATA[
 	 	select REVIEW_NUM, MEMBER_NUM, REVIEW_WRITER, REVIEW_TITLE, REVIEW_REGDATE, REVIEW_STAR, 
         GOODS_NUM, REVIEW_CONTENT, REVIEW_DELETE
