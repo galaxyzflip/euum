@@ -69,7 +69,7 @@
 	 </update>
 	 
 	 
-	 <select id="getTotlaCount" resultType="int">
+	 <select id="getTotalCount" resultType="int">
 		select count(*) from REVIEW_TBL 
 		where 
 		REVIEW_NUM>0 AND REVIEW_DELETE ='N' AND GOODS_NUM=#{goodsNum}

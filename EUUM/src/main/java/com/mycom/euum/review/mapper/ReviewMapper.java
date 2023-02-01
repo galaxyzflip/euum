@@ -22,6 +22,6 @@ public interface ReviewMapper {
 	public ReviewBean reviewDetail(int reviewNum);
 	
 	
-	public int getTotlaCount(RCriteria rcri);
+	public int getTotalCount(RCriteria rcri);
 
 }

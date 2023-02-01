@@ -58,7 +58,7 @@ public class ReviewServiceImpl implements ReviewService {
 	@Override
 	public int getTotal(RCriteria rcri) {
 		// TODO Auto-generated method stub
-		return reviewMapper.getTotlaCount(rcri);
+		return reviewMapper.getTotalCount(rcri);
 	}
 
 }
