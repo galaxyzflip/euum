@@ -9,10 +9,10 @@
         <div class="col-lg-3 col-md-6 d-flex">
           <i class="bi bi-geo-alt icon"></i>
           <div>
-            <h4>Address</h4>
+            <h4>주소</h4>
             <p>
-              A108 Adam Street <br>
-              New York, NY 535022 - US<br>
+              서울특별시 종로구<br>
+              미려빌딩 6층 602호<br>
             </p>
           </div>
 
@@ -21,10 +21,10 @@
         <div class="col-lg-3 col-md-6 footer-links d-flex">
           <i class="bi bi-telephone icon"></i>
           <div>
-            <h4>Reservations</h4>
+            <h4>연락처</h4>
             <p>
-              <strong>Phone:</strong> +1 5589 55488 55<br>
-              <strong>Email:</strong> info@example.com<br>
+              <strong>전화:</strong> 010-0000-0000<br>
+              <strong>이메일:</strong> m2dic@naver.com<br>
             </p>
           </div>
         </div>
@@ -32,16 +32,16 @@
         <div class="col-lg-3 col-md-6 footer-links d-flex">
           <i class="bi bi-clock icon"></i>
           <div>
-            <h4>Opening Hours</h4>
+            <h4>오픈시간</h4>
             <p>
-              <strong>Mon-Sat: 11AM</strong> - 23PM<br>
-              Sunday: Closed
+              <strong>월-금:</strong> 10시 - 18시<br>
+              토요일,일요일: Closed
             </p>
           </div>
         </div>
 
         <div class="col-lg-3 col-md-6 footer-links">
-          <h4>Follow Us</h4>
+          <h4>소셜링크</h4>
           <div class="social-links d-flex">
             <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
             <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
@@ -55,7 +55,7 @@
 
     <div class="container">
       <div class="copyright">
-        &copy; Copyright <strong><span>Yummy</span></strong>. All Rights Reserved
+        &copy; Copyright <strong><span>euum</span></strong>. All Rights Reserved
       </div>
       <div class="credits">
         <!-- All the links in the footer should remain intact. -->
