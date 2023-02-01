@@ -105,4 +105,46 @@ public class OrderServiceImpl implements OrderService{
 		return orderMapper.selectOrderListByMember(memberNum);
 	}
 
+	@Override
+	public List<OrderBean> selectAdminOrderList() {
+		
+		return orderMapper.selectAdminOrderList();
+	}
+
+	@Override
+	public OrderBean addOrder(OrderBean orderBean) {
+
+		int orderKeyNum = orderMapper.getOrderKeyNum();
+		String orderNum = getOrderNum(orderKeyNum);
+		
+		orderBean.setOrderKeyNum(orderKeyNum);
+		orderBean.setOrderNum(orderNum);
+		
+		orderMapper.insertOrder(orderBean);
+		
+		
+		OrderOptionBean optionBean = new OrderOptionBean();
+		optionBean.setOrderNum(orderNum);
+		optionBean.setOrderOptPrice(Integer.toString(orderBean.getOrderPrice()));
+		optionBean.setGoodsNum(orderBean.getGoodsNum());
+		optionBean.setOrderOptCount("1");
+		optionBean.setOrderOptPayType(orderBean.getOrderPayType());
+		optionBean.setOrderOptName(orderBean.getOrderName());
+		optionBean.setOrderOptNum(orderBean.getOrderNum()+"-1");
+		orderMapper.insertOrderOpt(optionBean);
+		
+		
+		 
+		return orderMapper.selectOrder(orderNum);
+	}
+
 }
+
+
+
+
+
+
+
+
+

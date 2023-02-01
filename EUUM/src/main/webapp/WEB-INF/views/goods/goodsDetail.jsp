@@ -66,7 +66,7 @@
 									<select id="select_option" class="select_option" onChange="setTotalInfo(${status.index });">
 										<option value="0">선택하세요</option>
 										<c:forEach items="${selectList}" var="row" varStatus="status">
-											<option value="${row.goodsOptContent} ${row.goodsOptPrice}">
+											<option value="${row.goodsOptContent}`${row.goodsOptPrice}">
 												<span class="option-content">${row.goodsOptContent}</span> <span class="option-price">(<fmt:formatNumber value="${row.goodsOptPrice}" groupingUsed="true" />)</span>
 											</option>
 										</c:forEach>
@@ -113,8 +113,9 @@
 
 <!-- 주문시 아래 폼에 input 태그 입력 후 서브밋 -->
 <form id="orderForm" action="/order/orderForm" method="post">
-	<input type="hidden" name="" value="${detail.goodsMemberNum }"/> 
+	<input type="hidden" name="" value="${detail.memberNum }"/> 
 	<input type="hidden" name="" value="${detail.goodsSellerNickname }"/> 
+	
 	
 </form>
 
@@ -213,7 +214,7 @@ function setTotalInfo(index) {
 	//선택된 옵션 가격
 	let optionPrice = '';
 	//옵션 내용 옵션 가격 각 변수에 대입
-	[optionContent, optionPrice] = optionStr.split(' ');
+	[optionContent, optionPrice] = optionStr.split('`');
 	
 	//선택하세요. 옵션 선택시에는 옵션 추가 안되게...
 	if(optionContent === '0'){

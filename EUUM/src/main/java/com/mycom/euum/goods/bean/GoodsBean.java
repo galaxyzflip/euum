@@ -20,7 +20,7 @@ public class GoodsBean {
 	String goodsContent;
 	int goodsPrice;
 	String goodsSellerNickname;
-	int goodsMemberNum;
+	int memberNum;
 	String goodsFormat;
 	String goodsResolution;
 	String goodsSize;

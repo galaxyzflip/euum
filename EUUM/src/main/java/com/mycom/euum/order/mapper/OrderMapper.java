@@ -24,5 +24,8 @@ public interface OrderMapper {
 	/** 작성자 : 최창선, 용도 : 회원번호 조건으로 주문리스트 불러오기*/
 	public List<OrderBean> selectOrderListByMember(int memberNum);
 	
+	public List<OrderBean> selectAdminOrderList();
+	
+	
 	
 }

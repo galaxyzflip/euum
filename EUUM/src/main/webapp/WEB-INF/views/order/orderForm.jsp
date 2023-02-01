@@ -69,6 +69,7 @@
 	<input type="hidden" name="orderEmail" value="">
 	<input type="hidden" name="orderPayType" value="임시값">
 	<input type="hidden" name="orderImage" value="임시값">
+	<input type="hidden" name="sellerNum" value="${goodsInfo.memberNum }">
 	
 	<!-- 주문할 옵션 정보들 -->
 	<c:forEach items="${orderList }" var="order" varStatus="status">
