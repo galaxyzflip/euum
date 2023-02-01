@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.mycom.euum.image.bean.ImageBean;
+
 import lombok.extern.log4j.Log4j;
 import net.coobird.thumbnailator.Thumbnailator;
 
@@ -24,17 +26,18 @@ import net.coobird.thumbnailator.Thumbnailator;
 public class FileUtils {
 
 	/** 선민: 첨부파일 업로드 처리 (Form) */
-	public List<String> fileUpload(MultipartFile[] uploadFile, HttpServletRequest request) {
-		
+	public List<ImageBean> fileUpload(MultipartFile[] uploadFile, HttpServletRequest request, String fileUse) {
+
 		log.info("request.getRealPath(\"\"): " + request.getRealPath(""));
-		List<String> fileInfoList = new ArrayList<String>();
-		
+		List<ImageBean> imageBeanList = new ArrayList<ImageBean>();
+//		List<String> fileInfoList = new ArrayList<String>();
+
 		// *** 각자의 경로로 변경해주세요 ***
 //		String uploadFolder = "C:\\Aisu\\stsApp\\EUUM\\src\\main\\webapp\\resources\\img";
 //		String uploadFolder = "C:/Aisu/stsApp/git/euum/EUUM/src/main/webapp/resources/img";
 //		String uploadFolder = "C:/Aisu/stsApp/git/euum/EUUM/src/main/webapp/resources/img";
 		String uploadFolder = request.getRealPath("") + "resources/img";
-		
+
 		log.info("---------------------------------");
 		log.info("uploadFolder: " + uploadFolder);
 		log.info("uploadFile: " + uploadFile);
@@ -53,15 +56,15 @@ public class FileUtils {
 		if (uploadPath.exists() == false) {
 			uploadPath.mkdirs(); // 년월일의 폴더 생성
 		}
-		
-		// 파일이 저장될 경로를 문자열로 생성하여 리스트의 인덱스 0번에 저장 
-		String fileDate = getFolder() + "/"; 
-		fileInfoList.add(fileDate);
-		
-		log.info("---------------------------------");
-		log.info(fileInfoList);
-		log.info(fileInfoList.get(0));
-		
+
+		// 파일이 저장될 경로를 문자열로 생성하여 리스트의 인덱스 0번에 저장
+		String fileDate = getFolder() + "/";
+//		fileInfoList.add(fileDate);
+
+//		log.info("---------------------------------");
+//		log.info(fileInfoList);
+//		log.info(fileInfoList.get(0));
+
 		for (MultipartFile multipartFile : uploadFile) {
 			log.info("---------------------------------");
 			log.info("업로드한 파일 이름: " + multipartFile.getOriginalFilename());
@@ -76,17 +79,25 @@ public class FileUtils {
 			// 파일 이름 중복 방지를 위한 uuid 생성
 			UUID uuid = UUID.randomUUID();
 			uploadFileName = uuid.toString() + "_" + uploadFileName;
-			
+
 			log.info("업로드 폴더 경로: " + uploadPath);
 			log.info("업로드되는 파일 이름: " + uploadFileName);
 			log.info("파일 최종 경로: " + uploadPath + uploadFileName);
-			
+
 			// DB에 삽입할 파일 저장명을 리스트에 저장
 			String fileName = uploadFileName;
-			fileInfoList.add(fileName);
-			log.info("*** fileDate: " + fileDate);
-			log.info("*** fileName: " + fileName);
-			log.info("*** fileInfoList: " + fileInfoList);
+//				fileInfoList.add(fileName);
+//				log.info("*** fileDate: " + fileDate);
+//				log.info("*** fileName: " + fileName);
+//				log.info("*** fileInfoList: " + fileInfoList);
+
+			ImageBean imageBean = new ImageBean();
+
+			imageBean.setImageFileName(fileName);
+			imageBean.setImageUploadPath(fileDate);
+			imageBean.setImageUUID(uuid.toString());
+			imageBean.setImageUse(fileUse);
+//			imageBean.setImageUseNum();
 
 			try {
 				File saveFile = new File(uploadPath, uploadFileName);
@@ -98,12 +109,17 @@ public class FileUtils {
 					FileOutputStream thumbnail = new FileOutputStream(new File(uploadPath, "s_" + uploadFileName));
 					Thumbnailator.createThumbnail(multipartFile.getInputStream(), thumbnail, 160, 160);
 					thumbnail.close();
+
+					// 파일타입을 i로 지정
+					imageBean.setImageFileType("i");
 				}
 			} catch (Exception e) {
 				log.error(e.getMessage());
 			}
+
+			imageBeanList.add(imageBean);
 		} // for
-		return fileInfoList;
+		return imageBeanList;
 	}
 
 	/** 선민: 오늘날짜(년월일)의 경로를 문자열로 생성 (경로 구분자: /) */
