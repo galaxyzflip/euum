@@ -29,7 +29,7 @@
 		               R.REVIEW_WRITER, R.REVIEW_DELETE, R.REVIEW_CONTENT, G.GOODS_NUM
 		                FROM REVIEW_TBL R inner join GOODS_TBL G on R.GOODS_NUM = G.GOODS_NUM
 		                WHERE rownum <=#{pageNum} * #{amount} AND G.GOODS_NUM =#{goodsNum} AND R.REVIEW_DELETE = 'N')
-		where rn>(#{pageNum}-1) * #{amount} ORDER BY REVIEW_NUM ASC	
+		where rn>(#{pageNum}-1) * #{amount} ORDER BY REVIEW_NUM	DESC	
 	 ]]>
 	 	   
   </select>

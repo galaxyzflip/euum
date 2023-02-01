@@ -50,6 +50,7 @@
 		<thead>
 				<tr>
 					<th scope="col">번호</th>
+					<th scope="col">평점</th>
 					<th scope="col">제목</th>	
 					<th scope="col">작성자</th>
 					<th scope="col">등록일</th>
@@ -60,6 +61,21 @@
 			<c:forEach items="${reviewList}" var="reviewList">
 				<tr>
 					<td><c:out value="${reviewList.reviewNum }"/></td>
+					
+					<td>
+						<span style="color: #ffc81e"> 
+						<c:if test="${reviewList.reviewStar eq 1}">
+							<c:out value="★☆☆☆☆" /></c:if>
+						 <c:if test="${reviewList.reviewStar eq 2}">
+							<c:out value="★★☆☆☆" /></c:if>
+						 <c:if test="${reviewList.reviewStar eq 3}">
+							<c:out value="★★★☆☆" /></c:if> 
+						<c:if test="${reviewList.reviewStar eq 4}">
+							<c:out value="★★★★☆" /></c:if> 
+						<c:if test="${reviewList.reviewStar eq 5}">
+							<c:out value="★★★★★" /></c:if>
+						</span>
+					</td>
 					<td>
 						<ul class="menu">
 						<a><c:out value="${reviewList.reviewTitle }"/></a>
