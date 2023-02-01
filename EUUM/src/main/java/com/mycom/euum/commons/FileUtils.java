@@ -10,6 +10,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -22,17 +24,16 @@ import net.coobird.thumbnailator.Thumbnailator;
 public class FileUtils {
 
 	/** 선민: 첨부파일 업로드 처리 (Form) */
-	public List<String> fileUpload(MultipartFile[] uploadFile) {
+	public List<String> fileUpload(MultipartFile[] uploadFile, HttpServletRequest request) {
 		
+		log.info("request.getRealPath(\"\"): " + request.getRealPath(""));
 		List<String> fileInfoList = new ArrayList<String>();
 		
 		// *** 각자의 경로로 변경해주세요 ***
 //		String uploadFolder = "C:\\Aisu\\stsApp\\EUUM\\src\\main\\webapp\\resources\\img";
-//		String uploadFolder = "C:/Aisu/stsApp/EUUM/src/main/webapp/resources/img";
-//		String uploadFolder = "C:/Users/AISU/git/repository/EUUM/src/main/webapp/resources/img";
-//		String uploadFolder = "C:\\Users\\pigcs\\git\\ex00\\ex01\\euum\\EUUM\\src\\main\\webapp\\resources//img";
 //		String uploadFolder = "C:/Aisu/stsApp/git/euum/EUUM/src/main/webapp/resources/img";
-		String uploadFolder = "C:/Aisu/stsApp/git/euum/EUUM/src/main/webapp/resources/img";
+//		String uploadFolder = "C:/Aisu/stsApp/git/euum/EUUM/src/main/webapp/resources/img";
+		String uploadFolder = request.getRealPath("") + "resources/img";
 		
 		log.info("---------------------------------");
 		log.info("uploadFolder: " + uploadFolder);
