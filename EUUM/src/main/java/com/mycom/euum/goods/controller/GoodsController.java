@@ -18,8 +18,9 @@ import org.springframework.web.multipart.MultipartFile;
 import com.mycom.euum.commons.FileUtils;
 import com.mycom.euum.goods.bean.GoodsBean;
 import com.mycom.euum.goods.bean.GoodsOptionBean;
-import com.mycom.euum.goods.bean.GoodsOptionBeanList;
 import com.mycom.euum.goods.service.GoodsServiceImpl;
+import com.mycom.euum.image.bean.ImageBean;
+import com.mycom.euum.image.service.ImageServiceImpl;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
@@ -31,6 +32,7 @@ public class GoodsController {
 
 //	@Resource(name = "goodsService")
 	private GoodsServiceImpl goodsService;
+	private ImageServiceImpl imageService;
 	private FileUtils fileUtils;
 
 	@RequestMapping(value = "/")
@@ -39,8 +41,6 @@ public class GoodsController {
 		return "main_layout";
 	}
 
-	
-	
 	/* ---------------------------- 상품 리스트 ---------------------------- */
 
 	/** 선민: 상품 리스트 - 전체 상품 리스트 */
@@ -97,8 +97,6 @@ public class GoodsController {
 		return "myPage/myGoods";
 	}
 
-	
-	
 	/* ---------------------------- 상품 등록 ---------------------------- */
 
 	/** 선민: 상품 등록 - 약관 페이지 이동 */
@@ -119,69 +117,66 @@ public class GoodsController {
 	@PostMapping(value = "/goods/goodsRegisterPro")
 	public String goodsRegisterPro(MultipartFile[] uploadFile, HttpServletRequest request, GoodsBean goodsBean, String[] goodsOptName, String[] goodsOptContent, int[] goodsOptPrice, Model model) throws Exception {
 		log.info("===== 상품 등록 처리 =====");
-		log.info("---------------------------------");
 		log.info("uploadFile: " + uploadFile);
-		log.info("index length: " + uploadFile.length);
-		log.info("index 0: " + uploadFile[0].getOriginalFilename());
-		log.info("index 1: " + uploadFile[1].getOriginalFilename());
-		log.info("index 2: " + uploadFile[2].getOriginalFilename());
+		log.info("업로드 된 파일 개수: " + uploadFile.length);
 
-		List<String> fileInfoList = new ArrayList<String>();
+		List<ImageBean> imageBeanList = new ArrayList<ImageBean>();
 
-		// 01. 파일 업로드 메소드 fileUpload() -> 메소드 호출 시 리스트를 리턴하고, 인덱스 0번은 파일저장날짜, 이후 인덱스번호는 파일 저장명이 담겨있음
-		fileInfoList = fileUtils.fileUpload(uploadFile, request);
-
-		goodsBean.setGoodsImageDate(fileInfoList.get(0)); // 파일저장날짜 (추후 <img>태그에 사용)
-		goodsBean.setGoodsImage1(fileInfoList.get(1)); // 첫번째 이미지파일 저장명
-		goodsBean.setGoodsImage2(fileInfoList.get(2)); // 두번째 이미지파일 저장명
-		goodsBean.setGoodsImage3(fileInfoList.get(3)); // 세번째 이미지파일 저장명
-
-//		log.info("---------------------------------");
-//		log.info("GoodsBean: " + goodsBean);
-//		log.info("---------------------------------");
-//		log.info("GoodsOptionBean: " + goodsOptionBean);
-
+		// 01. 파일 업로드 메소드 fileUpload()
+		log.info("---------- 01. 파일 업로드 메소드 호출 ----------");
+		imageBeanList = fileUtils.fileUpload(uploadFile, request, "goods");
 
 		// 02. 상품 등록
+		goodsBean.setGoodsImageDate(imageBeanList.get(0).getImageUploadPath()); // 파일저장날짜 (추후 <img>태그에 사용)
+		goodsBean.setGoodsImage1(imageBeanList.get(0).getImageFileName()); // 첫번째 이미지파일 저장명
+		goodsBean.setGoodsImage2(imageBeanList.get(1).getImageFileName()); // 두번째 이미지파일 저장명
+		goodsBean.setGoodsImage3(imageBeanList.get(2).getImageFileName()); // 세번째 이미지파일 저장명
+
 		goodsBean.setMemberNum(999); // (임시)not null에 의한 에러방지
 		goodsBean.setGoodsSellerNickname("홍길동"); // (임시)not null에 의한 에러방지
-		goodsService.insertGoods(goodsBean);
 
-		
+		goodsService.insertGoods(goodsBean);
+		log.info("---------- 02. 상품 등록 ----------");
+		log.info("GoodsBean: " + goodsBean);
+
+		int selectKeyGoodsNum = goodsBean.getGoodsNum();
+		log.info("---------- 02. 상품 등록 ----------");
+		log.info("selectKey로 뽑아온 goodsNum: " + selectKeyGoodsNum);
+
 		// 03. 상품 추가옵션 등록
-		List<GoodsOptionBean> GoodsOptionList = new ArrayList<GoodsOptionBean>();
-		
-		log.info("---------------------------------");
-		log.info("goodsOptName 배열 길이: " + goodsOptName.length);
-		log.info("goodsOptContent 배열 길이: " + goodsOptContent.length);
-		log.info("goodsOptPrice 배열 길이: " + goodsOptPrice.length);
-		
+		log.info("---------- 03. 상품 추가옵션 등록 ----------");
+		log.info("상품 추가옵션의 총 개수: " + goodsOptName.length);
+
 		int goodsOptNameIndex = 0;
-		String goodsOptNameEx = "";
-		
+		String goodsOptNameEx = ""; // 옵션이름을 비교하기 위한 변수
+
 		for (int i = 0; i < goodsOptName.length; i++) {
 			GoodsOptionBean goodsOptionBean = new GoodsOptionBean();
-			
+
 			if (!goodsOptNameEx.equals(goodsOptName[i])) {
 				goodsOptNameEx = goodsOptName[i];
 				goodsOptNameIndex++;
 			}
-			
-			goodsOptionBean.setGoodsNum(goodsBean.getGoodsNum()); // selectKey 사용
-			log.info("*** selectKey로 뽑아온 goodsNum: " + goodsBean.getGoodsNum());
+
+			goodsOptionBean.setGoodsNum(selectKeyGoodsNum); // selectKey 사용
 			goodsOptionBean.setGoodsOptName(goodsOptName[i]);
 			goodsOptionBean.setGoodsOptContent(goodsOptContent[i]);
 			goodsOptionBean.setGoodsOptPrice(goodsOptPrice[i]);
 			goodsOptionBean.setGoodsOptNameNum(goodsOptNameIndex);
-			log.info("---- 중간점검: " + goodsOptionBean.getGoodsOptName());
-			
+
 			goodsService.insertGoodsOption(goodsOptionBean);
-//			GoodsOptionList.add(goodsOption);
+			log.info("---------- 03. 상품 추가옵션 등록 ----------");
+			log.info("GoodsOptionBean: " + goodsOptionBean);
 		}
-		
-//		log.info("--------------- 최종결과 ---------------\n");
-		
-		
+
+		// 04. 이미지파일 정보를 DB에 저장
+		for (ImageBean imageBean : imageBeanList) {
+			imageBean.setImageUseNum(selectKeyGoodsNum);
+			imageService.insertImage(imageBean);
+		}
+
+		log.info("---------- 04. 이미지파일 정보 DB 저장 ----------");
+		log.info("imageBeanList: " + imageBeanList);
 
 		return "redirect:/myPage/myGoods";
 	}
@@ -190,91 +185,73 @@ public class GoodsController {
 	@PostMapping(value = "/goods/goodsRegisterTempPro")
 	public String goodsRegisterTempPro(MultipartFile[] uploadFile, HttpServletRequest request, GoodsBean goodsBean, String[] goodsOptName, String[] goodsOptContent, int[] goodsOptPrice, Model model) throws Exception {
 		log.info("===== 상품 등록 처리 =====");
-		log.info("---------------------------------");
 		log.info("uploadFile: " + uploadFile);
-		log.info("index length: " + uploadFile.length);
-		log.info("index 0: " + uploadFile[0].getOriginalFilename());
-		log.info("index 1: " + uploadFile[1].getOriginalFilename());
-		log.info("index 2: " + uploadFile[2].getOriginalFilename());
+		log.info("업로드 된 파일 개수: " + uploadFile.length);
 
-		List<String> fileInfoList = new ArrayList<String>();
+		List<ImageBean> imageBeanList = new ArrayList<ImageBean>();
 
-		// 01. 파일 업로드 메소드 fileUpload() -> 메소드 호출 시 리스트를 리턴하고, 인덱스 0번은 파일저장날짜, 이후 인덱스번호는 파일 저장명이 담겨있음
-		fileInfoList = fileUtils.fileUpload(uploadFile, request);
-
-		goodsBean.setGoodsImageDate(fileInfoList.get(0)); // 파일저장날짜 (추후 <img>태그에 사용)
-		goodsBean.setGoodsImage1(fileInfoList.get(1)); // 첫번째 이미지파일 저장명
-		goodsBean.setGoodsImage2(fileInfoList.get(2)); // 두번째 이미지파일 저장명
-		goodsBean.setGoodsImage3(fileInfoList.get(3)); // 세번째 이미지파일 저장명
-
-//		log.info("---------------------------------");
-//		log.info("GoodsBean: " + goodsBean);
-//		log.info("---------------------------------");
-//		log.info("GoodsOptionBean: " + goodsOptionBean);
-
+		// 01. 파일 업로드 메소드 fileUpload()
+		log.info("---------- 01. 파일 업로드 메소드 호출 ----------");
+		imageBeanList = fileUtils.fileUpload(uploadFile, request, "goods");
 
 		// 02. 상품 등록
+		goodsBean.setGoodsImageDate(imageBeanList.get(0).getImageUploadPath()); // 파일저장날짜 (추후 <img>태그에 사용)
+		goodsBean.setGoodsImage1(imageBeanList.get(0).getImageFileName()); // 첫번째 이미지파일 저장명
+		goodsBean.setGoodsImage2(imageBeanList.get(1).getImageFileName()); // 두번째 이미지파일 저장명
+		goodsBean.setGoodsImage3(imageBeanList.get(2).getImageFileName()); // 세번째 이미지파일 저장명
+
 		goodsBean.setMemberNum(999); // (임시)not null에 의한 에러방지
 		goodsBean.setGoodsSellerNickname("홍길동"); // (임시)not null에 의한 에러방지
-		goodsService.insertTempGoods(goodsBean);
 
-		
+		goodsService.insertGoods(goodsBean);
+		log.info("---------- 02. 상품 등록 ----------");
+		log.info("GoodsBean: " + goodsBean);
+
+		int selectKeyGoodsNum = goodsBean.getGoodsNum();
+		log.info("---------- 02. 상품 등록 ----------");
+		log.info("selectKey로 뽑아온 goodsNum: " + selectKeyGoodsNum);
+
 		// 03. 상품 추가옵션 등록
-		List<GoodsOptionBean> GoodsOptionList = new ArrayList<GoodsOptionBean>();
-		
-		log.info("---------------------------------");
-		log.info("goodsOptName 배열 길이: " + goodsOptName.length);
-		log.info("goodsOptContent 배열 길이: " + goodsOptContent.length);
-		log.info("goodsOptPrice 배열 길이: " + goodsOptPrice.length);
-		
+		log.info("---------- 03. 상품 추가옵션 등록 ----------");
+		log.info("상품 추가옵션의 총 개수: " + goodsOptName.length);
+
 		int goodsOptNameIndex = 0;
-		String goodsOptNameEx = "";
-		
+		String goodsOptNameEx = ""; // 옵션이름을 비교하기 위한 변수
+
 		for (int i = 0; i < goodsOptName.length; i++) {
 			GoodsOptionBean goodsOptionBean = new GoodsOptionBean();
-			
+
 			if (!goodsOptNameEx.equals(goodsOptName[i])) {
 				goodsOptNameEx = goodsOptName[i];
 				goodsOptNameIndex++;
 			}
-			
-			goodsOptionBean.setGoodsNum(goodsBean.getGoodsNum()); // selectKey 사용
-			log.info("*** selectKey로 뽑아온 goodsNum: " + goodsBean.getGoodsNum());
+
+			goodsOptionBean.setGoodsNum(selectKeyGoodsNum); // selectKey 사용
 			goodsOptionBean.setGoodsOptName(goodsOptName[i]);
 			goodsOptionBean.setGoodsOptContent(goodsOptContent[i]);
 			goodsOptionBean.setGoodsOptPrice(goodsOptPrice[i]);
 			goodsOptionBean.setGoodsOptNameNum(goodsOptNameIndex);
-			log.info("---- 중간점검: " + goodsOptionBean.getGoodsOptName());
-			
+
 			goodsService.insertGoodsOption(goodsOptionBean);
-//			GoodsOptionList.add(goodsOption);
+			log.info("---------- 03. 상품 추가옵션 등록 ----------");
+			log.info("GoodsOptionBean: " + goodsOptionBean);
 		}
-		
-		log.info("--------------- 최종결과 ---------------\n");
-		log.info(GoodsOptionList);
-		log.info("-------------------------------------");
+
+		// 04. 이미지파일 정보를 DB에 저장
+		for (ImageBean imageBean : imageBeanList) {
+			imageBean.setImageUseNum(selectKeyGoodsNum);
+			imageService.insertImage(imageBean);
+		}
+
+		log.info("---------- 04. 이미지파일 정보 DB 저장 ----------");
+		log.info("imageBeanList: " + imageBeanList);
 
 		return "redirect:/myPage/myGoods";
 	}
 
-	
-	
 	/* ---------------------------- 상품 수정 ---------------------------- */
-	
-	
-	
-	/* ---------------------------- 상품 삭제 ---------------------------- */
 
-	/** 선민: 상품 삭제 - DB에서 데이터 삭제 */
-//	@PostMapping(value = "/goods/goodsDeletePro")
-//	public String goodsDeletePro(int goodsNum) throws Exception {
-//		log.info("===== 상품 삭제 처리 =====");
-//		log.info("삭제할 상품 번호: " + goodsNum);
-//		
-//		goodsService.deleteGoods(goodsNum);
-//		
-//		return "redirect:/myPage/myGoods";
-//	}
+	/* ---------------------------- 상품 삭제 ---------------------------- */
 
 	/** 선민: 상품 삭제 - DB에서 데이터 삭제 (Ajax가 반환한 result 데이터를 jsp에 그려서 가져오기) */
 	@PostMapping(value = "/goods/goodsDeletePro")
@@ -292,8 +269,6 @@ public class GoodsController {
 		return "myPage/myGoodsAjax";
 	}
 
-	
-	
 	/* ---------------------------- 상품 상세보기 ---------------------------- */
 
 	/** 선민: 상품 상세보기 */

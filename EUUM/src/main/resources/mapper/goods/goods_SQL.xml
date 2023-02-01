@@ -16,7 +16,7 @@
 			GOODS_CONTENT,
 			GOODS_PRICE,
 			GOODS_SELLER_NICKNAME,
-			GOODS_MEMBER_NUM,
+			MEMBER_NUM,
 			GOODS_FORMAT,
 			GOODS_RESOLUTION,
 			GOODS_SIZE,
@@ -37,7 +37,7 @@
 			#{goodsContent},
 			#{goodsPrice},
 			#{goodsSellerNickname},
-			#{goodsMemberNum},
+			#{memberNum},
 			#{goodsFormat},
 			#{goodsResolution},
 			#{goodsSize},
@@ -138,7 +138,7 @@
 			GOODS_CONTENT,
 			GOODS_PRICE,
 			GOODS_SELLER_NICKNAME,
-			GOODS_MEMBER_NUM,
+			MEMBER_NUM,
 			GOODS_FORMAT,
 			GOODS_RESOLUTION,
 			GOODS_SIZE,
@@ -159,7 +159,7 @@
 			#{goodsContent},
 			#{goodsPrice},
 			#{goodsSellerNickname},
-			#{goodsMemberNum},
+			#{memberNum},
 			#{goodsFormat},
 			#{goodsResolution},
 			#{goodsSize},
@@ -229,7 +229,7 @@
 		select *
 		from GOODS_TBL
 		where GOODS_STATUS = '승인완료'
-		and GOODS_MEMBER_NUM = #{goodsMemberNum}
+		and MEMBER_NUM = #{memberNum}
 		order by GOODS_NUM DESC
 	</select>
 	
@@ -239,7 +239,7 @@
 		select *
 		from GOODS_TBL
 		where GOODS_STATUS = '승인대기'
-		and GOODS_MEMBER_NUM = #{goodsMemberNum}
+		and MEMBER_NUM = #{memberNum}
 		order by GOODS_NUM DESC
 	</select>
 	
@@ -249,7 +249,7 @@
 		select *
 		from GOODS_TBL
 		where GOODS_STATUS = '임시저장'
-		and GOODS_MEMBER_NUM = #{goodsMemberNum}
+		and MEMBER_NUM = #{memberNum}
 		order by GOODS_NUM DESC
 	</select>
 	

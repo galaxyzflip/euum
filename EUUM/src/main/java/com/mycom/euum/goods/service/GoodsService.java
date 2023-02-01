@@ -6,7 +6,6 @@ import java.util.Map;
 import com.mycom.euum.goods.bean.GoodsBean;
 import com.mycom.euum.goods.bean.GoodsOptionBean;
 
-
 public interface GoodsService {
 	
 	/* ---------------------------- 상품 리스트 ---------------------------- */
@@ -18,13 +17,13 @@ public interface GoodsService {
 	public List<GoodsBean> selectGoodsSearchList(String searchKeyword, String searchOption) throws Exception;
 	
 	/** 선민: 나의 상품 리스트 가져오기 - 승인완료 상품 (List) */
-	public Map<String, List<GoodsBean>> selectMyGoodsList(int goodsMemberNum) throws Exception;
+	public Map<String, List<GoodsBean>> selectMyGoodsList(int memberNum) throws Exception;
 	
 	/** 선민: 나의 상품 리스트 가져오기 - 승인대기 상품 (List) */
-	public List<GoodsBean> selectMyUnapprovedGoodsList(int goodsMemberNum) throws Exception;
+	public List<GoodsBean> selectMyUnapprovedGoodsList(int memberNum) throws Exception;
 	
 	/** 선민: 나의 상품 리스트 가져오기 - 임시저장 상품 (List) */
-	public List<GoodsBean> selectMyTempGoodsList(int goodsMemberNum) throws Exception;
+	public List<GoodsBean> selectMyTempGoodsList(int memberNum) throws Exception;
 	
 	/* ---------------------------- 상품 등록 ---------------------------- */
 	

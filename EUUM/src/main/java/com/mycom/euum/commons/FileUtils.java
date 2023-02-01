@@ -27,69 +27,44 @@ public class FileUtils {
 
 	/** 선민: 첨부파일 업로드 처리 (Form) */
 	public List<ImageBean> fileUpload(MultipartFile[] uploadFile, HttpServletRequest request, String fileUse) {
-
-		log.info("request.getRealPath(\"\"): " + request.getRealPath(""));
+		log.info("===== 첨부파일 업로드 =====");
+		
 		List<ImageBean> imageBeanList = new ArrayList<ImageBean>();
-//		List<String> fileInfoList = new ArrayList<String>();
 
-		// *** 각자의 경로로 변경해주세요 ***
-//		String uploadFolder = "C:\\Aisu\\stsApp\\EUUM\\src\\main\\webapp\\resources\\img";
-//		String uploadFolder = "C:/Aisu/stsApp/git/euum/EUUM/src/main/webapp/resources/img";
-//		String uploadFolder = "C:/Aisu/stsApp/git/euum/EUUM/src/main/webapp/resources/img";
-		String uploadFolder = request.getRealPath("") + "resources/img";
+		
+		// 01. 폴더 및 경로 생성
+		String uploadFolderPath = request.getRealPath("") + "resources/img";
+		log.info("---------- 01. 폴더 경로 세팅 및 폴더 생성 ----------");
+		log.info("request.getRealPath(): " + request.getRealPath(""));
+		log.info("uploadFolderPath: " + uploadFolderPath);
 
-		log.info("---------------------------------");
-		log.info("uploadFolder: " + uploadFolder);
-		log.info("uploadFile: " + uploadFile);
-		log.info("index length: " + uploadFile.length);
-		log.info("index 0: " + uploadFile[0].getOriginalFilename());
-		log.info("index 1: " + uploadFile[1].getOriginalFilename());
-		log.info("index 2: " + uploadFile[2].getOriginalFilename());
+		File uploadPath = new File(uploadFolderPath, getFolder()); // 폴더 경로를 지정 및 생성할 File 객체 생성
 
-		// 폴더 객체 생성
-		File uploadPath = new File(uploadFolder, getFolder());
-//		log.info("---------------------------------");
-//		log.info("getFolder() 결과: " + getFolder());
-//		log.info("업로드 경로 이름: " + uploadPath);
-
-		// 해당 경로가 존재하는지 검사 후 존재하지 않으면 새로 생성
-		if (uploadPath.exists() == false) {
-			uploadPath.mkdirs(); // 년월일의 폴더 생성
+		if (uploadPath.exists() == false) { // 해당 경로가 존재하는지 검사 후 존재하지 않으면 년/월/일의 폴더 신규 생성
+			uploadPath.mkdirs(); // 
 		}
 
-		// 파일이 저장될 경로를 문자열로 생성하여 리스트의 인덱스 0번에 저장
+		
+		// 02. 저장할 파일 이름 지정
 		String fileDate = getFolder() + "/";
-//		fileInfoList.add(fileDate);
-
-//		log.info("---------------------------------");
-//		log.info(fileInfoList);
-//		log.info(fileInfoList.get(0));
 
 		for (MultipartFile multipartFile : uploadFile) {
-			log.info("---------------------------------");
-			log.info("업로드한 파일 이름: " + multipartFile.getOriginalFilename());
-			log.info("파라미터 이름: " + multipartFile.getName());
-			log.info("업로드 파일 크기: " + multipartFile.getSize());
-
 			String uploadFileName = multipartFile.getOriginalFilename();
 
-			// IE의 경로 설정을 위한 부분
-			uploadFileName = uploadFileName.substring(uploadFileName.lastIndexOf("/") + 1);
+			uploadFileName = uploadFileName.substring(uploadFileName.lastIndexOf("/") + 1); // IE의 경로 설정을 위한 부분
 
-			// 파일 이름 중복 방지를 위한 uuid 생성
-			UUID uuid = UUID.randomUUID();
+			UUID uuid = UUID.randomUUID(); // 파일 이름 중복 방지를 위한 uuid 생성
 			uploadFileName = uuid.toString() + "_" + uploadFileName;
 
-			log.info("업로드 폴더 경로: " + uploadPath);
-			log.info("업로드되는 파일 이름: " + uploadFileName);
+			log.info("---------- 02. 저장할 파일 이름 지정 ----------");
+			log.info("업로드된 파일 이름: " + multipartFile.getOriginalFilename());
+			log.info("저장할 폴더 경로: " + uploadPath);
+			log.info("저장할 파일 이름: " + uploadFileName);
 			log.info("파일 최종 경로: " + uploadPath + uploadFileName);
 
-			// DB에 삽입할 파일 저장명을 리스트에 저장
+			
+			// 03. 이미지 테이블에 저장할 데이터 세팅
 			String fileName = uploadFileName;
-//				fileInfoList.add(fileName);
-//				log.info("*** fileDate: " + fileDate);
-//				log.info("*** fileName: " + fileName);
-//				log.info("*** fileInfoList: " + fileInfoList);
 
 			ImageBean imageBean = new ImageBean();
 
@@ -97,14 +72,22 @@ public class FileUtils {
 			imageBean.setImageUploadPath(fileDate);
 			imageBean.setImageUUID(uuid.toString());
 			imageBean.setImageUse(fileUse);
-//			imageBean.setImageUseNum();
+			log.info("---------- 03. 이미지 테이블에 저장할 데이터 세팅 ----------");
+			log.info("imageFileName: " + fileName);
+			log.info("imageUploadPath: " + fileDate);
+			log.info("imageUUID " + uuid.toString());
+			log.info("imageUse: " + fileUse);
+			// imageBean.setImageUseNum(); -> 각 기능마다 각자의 Controller에서 글번호 삽입
+			// ex) 상품 등록 시 첨부한 이미지파일인 경우 GoodsController에서 imageBean.setImageUseNum(goodsNum);
 
+			
+			// 04. 세팅된 정보를 바탕으로 파일을 서버에 생성
+			log.info("---------- 04. 업로드된 파일을 서버에 생성 ----------");
 			try {
 				File saveFile = new File(uploadPath, uploadFileName);
-				multipartFile.transferTo(saveFile); // 업로드된 파일이 서버 내에 생성 되는 지점
+				multipartFile.transferTo(saveFile); // 업로드된 파일이 서버 내에 실제로 생성 되는 지점
 
-				// contentType이 image인지 검사
-				if (checkImageType(saveFile)) {
+				if (checkImageType(saveFile)) { // contentType이 image인지 검사
 					// 썸네일 생성
 					FileOutputStream thumbnail = new FileOutputStream(new File(uploadPath, "s_" + uploadFileName));
 					Thumbnailator.createThumbnail(multipartFile.getInputStream(), thumbnail, 160, 160);
@@ -119,16 +102,20 @@ public class FileUtils {
 
 			imageBeanList.add(imageBean);
 		} // for
+		
+		
+		// 05. 이미지 테이블에 저장할 데이터를 List로 반환
+		log.info("---------- 05. 이미지 테이블에 저장할 데이터를 List로 반환 ----------");
 		return imageBeanList;
 	}
 
-	/** 선민: 오늘날짜(년월일)의 경로를 문자열로 생성 (경로 구분자: /) */
+	/** 선민: 오늘날짜(년/월/일)의 경로를 문자열로 생성 (경로 구분자: /) */
 	private String getFolder() {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		Date date = new Date();
 		String str = sdf.format(date);
 
-//		return str.replace("-", File.separator); // (경로 구분자: \)
+//		return str.replace("-", File.separator);  (경로 구분자: \)
 		return str.replace("-", "/");
 	}
 
