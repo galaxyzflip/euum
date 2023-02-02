@@ -31,7 +31,7 @@ public class FileUtils {
 //		String uploadFolder = "C:/Aisu/stsApp/EUUM/src/main/webapp/resources/img";
 //		String uploadFolder = "C:/Users/AISU/git/repository/EUUM/src/main/webapp/resources/img";
 //		String uploadFolder = "C:\\Users\\pigcs\\git\\ex00\\ex01\\euum\\EUUM\\src\\main\\webapp\\resources//img";
-		String uploadFolder = "C:\\Users\\김병찬\\git\\euum\\EUUM\\src\\main\\webapp\\resources\\|img";
+		String uploadFolder = "C:\\Users\\김병찬\\git\\euum\\EUUM\\src\\main\\webapp\\resources\\img";
 		log.info("---------------------------------");
 		log.info("uploadFolder: " + uploadFolder);
 		log.info("uploadFile: " + uploadFile);

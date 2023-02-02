@@ -101,8 +101,8 @@
 	<!-- 전문가 전환시 레코드 삽입 -->
 	<insert id="insertSeller">
 		insert into 
-		seller_tbl(seller_num, member_num)
-		values(seller_num_seq.nextval, #{memberNum})
+		seller_tbl(seller_num, member_num, seller_buisness_yn)
+		values(seller_num_seq.nextval, #{memberNum}, 'Y')
 	</insert>
 	
 	<!-- 셀러정보 가져오기... -->

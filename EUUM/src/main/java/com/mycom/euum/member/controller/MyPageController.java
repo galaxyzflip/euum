@@ -3,6 +3,9 @@ package com.mycom.euum.member.controller;
 
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -10,8 +13,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.mycom.euum.commons.FileUtils;
 import com.mycom.euum.member.bean.MemberBean;
 import com.mycom.euum.member.bean.SellerBean;
 import com.mycom.euum.member.service.MyPageService;
@@ -25,6 +29,7 @@ import lombok.extern.log4j.Log4j;
 public class MyPageController {
 	
 	MyPageService myPageService;
+	private FileUtils fileUtils;
 
 	// 회원정보 상세보기 겸 수정 창
 	@GetMapping("/myPage/modifyForm")
@@ -133,10 +138,23 @@ public class MyPageController {
 	
 	// 전문가 프로필 수정 처리
 	@PostMapping("/myPage/modifySellerPro")
-	public String modifySellerInfoPro(SellerBean sellerBean) {
+	public String modifySellerInfoPro(MultipartFile[] uploadFile, SellerBean sellerBean) {
+			
+		log.info("---------------------------------");
+		log.info("uploadFile: " + uploadFile);
+		log.info("uploadFile: " + uploadFile.length);
+		log.info("index 0: " + uploadFile[0].getOriginalFilename());
+		
+		List<String> profile = new ArrayList<String>();
+			
+		profile = fileUtils.fileUpload(uploadFile);
+		
+		sellerBean.setSellerImage(profile.get(0));
 		
 		myPageService.updateSeller(sellerBean);
 		
 		return "redirect:/myPage/modifySellerForm";
 	}
+	
+	// 전문가 프로필 이미지 업로드
 }

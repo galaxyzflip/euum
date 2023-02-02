@@ -83,30 +83,30 @@ input[type='file'] {
 
 <div class="modifySellerbody">
 
-<form method="post" id="modifySellerInfo" action="/myPage/modifySellerPro" enctype="multipart/form-data" onSubmit="return modifySellerPro();">
+<form role="form" method="post" id="modifySellerInfo" action="/myPage/modifySellerPro" enctype="multipart/form-data" onSubmit="return modifySellerPro();">
 
 <input type="hidden" name="memberNum" value="${seller.memberNum}">
 
-<div id="sellerInfo" class="left_div">
+<!--<div id="sellerInfo" class="left_div">
 <c:choose>
 <c:if test="${member.memberClass = 'S'}">
-<!-- 프로필 사진 -->
+
 <div>
 <img src="">
 </div>
 
-<!-- 닉네임 -->
+
 <div id="section1">
 <ul>${seller.sellerNickName}</ul>
 <ul></ul>
 </div>
 
-<!-- 회원정보 -->
+
 <div id="section2">
 <ul class="line left_right_ol"></ul>
 </div>
 
-<!-- 연락처 -->
+
 <div id="section3">
 <ul>연락처</ul>
 <ul>${member.memberEmail}</ul>
@@ -116,7 +116,7 @@ input[type='file'] {
 
 </c:if>
 </c:choose>
-</div>
+</div>-->
 <!-- sellerInfo -->
 
 <div class="sellerProfile">
@@ -155,12 +155,11 @@ input[type='file'] {
 
 <div id="profile_Box">
 
-<ul><ol><img src="/resources/img/${seller.sellerImage}"></ol></ul>
+<ul><ol><img src="${pageContext.request.contextPath}/resources/img/${seller.sellerImage}"></ol></ul>
 <ul>"권장사이즈 "<font>180 x 180 px</font></ul>
 <ul style="margin-top:14px; text-align: center;" class="cf">
 <input type="file" class="real-upload" name="sellerImage" multiple id="orgFile">
-<ol class="rBtn_lGray" onclick="file_check()">이미지 선택</ol>
-
+<ol class="rBtn_lGray">이미지 선택</ol>
 </ul>
 
 <div id="item_Inp">
@@ -172,7 +171,14 @@ input[type='file'] {
 
 <ul>
 <ol>전문분야</ol>
-<ol></ol>
+<ol><select name="sellerSpecialty" id="sellerSpecialty">
+<option value="">선택하세요</option>
+<option value="캐릭터 일러스트">캐릭터 일러스트</option>
+<option value="일러스트">일러스트</option>
+<option value="디자인">디자인</option>
+<option value="3D 모델링">3D 모델링</option>
+<option value="웹툰 · 만화">웹툰 · 만화</option>
+</select></ol>
 </ul>
 
 <ul>
@@ -208,11 +214,11 @@ input[type='file'] {
 
 <ul>
 <div>회원 구분</div>
-<div>
-<input type="radio" name="sellerBuisnessYn" id="Y" value="${seller.sellerBuisnessYn = 'Y'}">
+<div id="sellerBuisnessYn">
+<input type="radio" name="sellerBuisnessYn" id="Y" value="Y" checked>
 <label for="Y">개인 (비사업자)</label>
-<span>
-<input type="radio" name="sellerBuisnessYn" id="N" value="${seller.sellerBuisnessYn = 'N'}">
+<span style="margin-left:20px">
+<input type="radio" name="sellerBuisnessYn" id="N" value="N">
 <label for="N">개인/법인 사업자</label>
 </span>
 <div>
@@ -247,11 +253,19 @@ input[type='file'] {
 </div>
 <!-- body -->
 
-
 </body>
+
+<script>
+
+window.onload = function(){
+	 document.querySelector("#sellerBuisnessYn input[value='${seller.sellerBuisnessYn}']").setAttribute('checked' , true);
+}
+
+</script>
+
 <script>
 function modifySellerPro() {
-	//var form = document.getElementById("modifyForm");
+	//var form = document.getElementById("modifySellerForm");
 	if (confirm("전문가 정보를 변경하시겠습니까?") == true) {
 		alert("전문가 정보가 변경 되었습니다.");
 		return true;
@@ -264,6 +278,10 @@ const realUpload = document.querySelector('.real-upload');
 const upload = document.querySelector('.rBtn_lGray');
 
 upload.addEventListener('click', () => realUpload.click());
+
+$("#sellerSpecialty").val("sellerSpecialty");
+
+$("#sellerSpecialty").val("${seller.sellerSpecialty}").prop("selected", true);
 
 </script>
 </html>

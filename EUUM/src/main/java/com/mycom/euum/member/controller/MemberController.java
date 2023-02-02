@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.mycom.euum.member.bean.MemberBean;
+import com.mycom.euum.member.bean.SellerBean;
 import com.mycom.euum.member.service.MemberService;
 
 import lombok.AllArgsConstructor;
@@ -57,17 +58,24 @@ public class MemberController {
 	
 	//로그인 처리
 	@PostMapping("/member/loginPro")
-	public String loginPro(MemberBean bean, HttpServletRequest request, RedirectAttributes rttr) {
+	public String loginPro(MemberBean bean, SellerBean sellerBean, HttpServletRequest request, RedirectAttributes rttr) {
 		HttpSession session = request.getSession();
 	
 		MemberBean loginUser = memberService.loginService(bean); 
+		SellerBean loginSeller = memberService.getSeller(loginUser.getMemberNum());
 		
-		if(loginUser != null) {
+		if(loginUser != null ^ loginSeller == null) {
 			session.setAttribute("loginUser", loginUser);
 			session.setMaxInactiveInterval(60 * 30);
 			
 			return "redirect:/main";
 			
+		}else if(loginUser != null ^ loginSeller != null) {
+			session.setAttribute("loginUser", loginUser);
+			session.setAttribute("seller", loginSeller);
+			session.setMaxInactiveInterval(60 * 30);
+			
+			return "redirect:/main";
 		}else {
 			rttr.addFlashAttribute("result", "loginFail");
 			return "redirect:/member/loginForm";
