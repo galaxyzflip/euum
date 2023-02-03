@@ -122,6 +122,14 @@
 	
 </form>
 
+    <div id="goodsReview">
+	   <jsp:include	page="/WEB-INF/views/review/reviewList.jsp"></jsp:include>
+	</div>
+   
+    <div id="goodsQNAList">
+	   <jsp:include	page="/WEB-INF/views/goodsQNA/goodsQNAList.jsp"></jsp:include>
+	</div>
+
 <script>
 
 let num = 0;

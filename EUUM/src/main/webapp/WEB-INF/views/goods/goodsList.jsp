@@ -244,7 +244,6 @@ function writer_chk(level){
 				</c:choose>
 			</div>
 
-
 		</div>
 </body>
 </html>

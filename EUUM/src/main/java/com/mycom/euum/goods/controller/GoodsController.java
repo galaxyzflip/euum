@@ -19,8 +19,14 @@ import com.mycom.euum.commons.FileUtils;
 import com.mycom.euum.goods.bean.GoodsBean;
 import com.mycom.euum.goods.bean.GoodsOptionBean;
 import com.mycom.euum.goods.service.GoodsServiceImpl;
-import com.mycom.euum.image.bean.ImageBean;
-import com.mycom.euum.image.service.ImageServiceImpl;
+
+import com.mycom.euum.goodsQNA.service.GoodsQNAService;
+import com.mycom.euum.page.Criteria;
+import com.mycom.euum.page.PageDTO;
+import com.mycom.euum.page.RCriteria;
+import com.mycom.euum.page.RPageDTO;
+import com.mycom.euum.review.service.ReviewService;
+
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
@@ -34,6 +40,8 @@ public class GoodsController {
 	private GoodsServiceImpl goodsService;
 	private ImageServiceImpl imageService;
 	private FileUtils fileUtils;
+	private GoodsQNAService goodsQNAService;
+	private ReviewService reviewService;
 
 	@RequestMapping(value = "/")
 	public String test() {
@@ -275,14 +283,16 @@ public class GoodsController {
 
 	/** 선민: 상품 상세보기 */
 	@GetMapping(value = "/goods/goodsDetail")
-	public String goodsDetail(Model model, String goodsNum) throws Exception {
-		log.info("===== 상품 상세보기 =====");
+	public String goodsDetail(Model model,String goodsNum, Criteria cri, RCriteria rcri) throws Exception {
+		
 		int optionCount = goodsService.selectGoodsOptionCount(goodsNum);
 		List<List<GoodsOptionBean>> optionList = new ArrayList<List<GoodsOptionBean>>();
+
 		log.info("옵션의 개수: " + optionCount);
 
 		/** 상품등록 - 추가옵션 구현 전까지 전체 주석 */
-//		// 선민: 상품의 옵션 세부항목이 존재하지 않는다는 것은 상품 자체가 존재하지 않는 것을 의미하므로 상품 리스트로 return
+
+//		 선민: 상품의 옵션 세부항목이 존재하지 않는다는 것은 상품 자체가 존재하지 않는 것을 의미하므로 상품 리스트로 return
 //		if (optionCount == 0) {
 //			// 지금은 상품 리스트로 return하지만,
 //			// 추후에는 '검색결과가 없습니다.'를 보여줄 수 있도록 goodsList.jsp에 구현
@@ -292,14 +302,36 @@ public class GoodsController {
 		for (int i = 1; i <= optionCount; i++) {
 			List<GoodsOptionBean> list = goodsService.selectGoodsOptionContent(goodsNum, Integer.toString(i));
 
-			log.info("---------------------------------");
-			log.info(i + "번째 옵션의 선택항목: " + list);
 			optionList.add(list);
 		}
-
+        
+		/** 의종: goodsQNA 리스트 가져오기 및 페이징 */
+		int amount = cri.getAmount();
+		int pageNum = cri.getPageNum();
+		int total=goodsQNAService.getGoodsQNATotalCount(cri,goodsNum); 
+		
+		model.addAttribute("list" , goodsQNAService.goodsQNAList(goodsNum, pageNum, amount));
+		model.addAttribute("pageMaker", new PageDTO(cri, total));
+		model.addAttribute("goodsNum" , goodsNum);
+		
+		
 		model.addAttribute("detail", goodsService.selectGoodsInfo(goodsNum));
 		model.addAttribute("optionList", optionList);
 		model.addAttribute("optionCount", optionCount);
+
+		
+		
+		/*================= 용주 작업중===============*/
+		
+		
+		
+		int rtotal=reviewService.getTotal(rcri);
+		model.addAttribute("rpageMaker", new RPageDTO(rcri, rtotal));
+		
+						
+		model.addAttribute("reviewList", reviewService.reviewList(rcri));
+		
+		log.info("sql돌려요=======================" + reviewService.reviewList(rcri));
 
 		return "goods/goodsDetail";
 	}

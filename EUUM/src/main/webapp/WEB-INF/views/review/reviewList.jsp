@@ -54,7 +54,8 @@
 					<th scope="col">力格</th>	
 					<th scope="col">累己磊</th>
 					<th scope="col">殿废老</th>
-				</tr>			
+				</tr>		
+					
 		</thead>
 		
 		<c:if test="${fn:length(reviewList) != 0}">
@@ -81,15 +82,18 @@
 						<a><c:out value="${reviewList.reviewTitle }"/></a>
 				            <ul class="hide">
 				                <c:out value="${reviewList.reviewContent }"/>
+				               	
 				            </ul>
+				            
 				        </ul>
 				    </td>
 					<td><c:out value="${reviewList.reviewWriter }"/></td>
 					<td><fmt:formatDate pattern="yyyy-MM-dd" value="${reviewList.reviewRegdate}" /></td>
 				</tr>
+				
 			</c:forEach>
 		</c:if>	
-		
+			
 		
 	</table>	
 		<c:if test="${fn:length(reviewList) == 0}">
@@ -102,32 +106,42 @@
 					</div>
 				</c:if>
 				
-		<form id='actionForm' action="/review/list" method='get'>
-				<input type='hidden' name='pageNum' value='${pageMaker.rcri.pageNum}'>
-				<input type='hidden' name='amount' value='${pageMaker.rcri.amount}'>
+		<form id='actionForm' action="/goods/goodsDetail" method='get'>
+				<input type='hidden' name='rpageNum' value='${rpageMaker.rcri.rpageNum}'>
+				<input type='hidden' name='ramount' value='${rpageMaker.rcri.ramount}'>
+				<input type='hidden' name='goodsNum' value='${goodsNum}'>
 		</form>
 		
 		<div class='pull-right'>
-				<ul class="pagination">
+			<ul class="pagination">
 				
-					<c:if test="${pageMaker.prev}">
+					<c:if test="${rpageMaker.prev}">
 							<li class="paginate_button previous"><a
-								href="${pageMaker.startPage -1}">Previous</a></li>
+								href="${rpageMaker.startPage -1}">Previous</a></li>
+							<li class="paginate_button previous">
+							<%-- <a href="/goods/goodsDetail/?goodsNum=${detail.goodsNum}&pageNum=${rpageMaker.startPage - 1 }">Previous</a></li> --%>
+				
 						</c:if>
 
-						<c:forEach var="num" begin="${pageMaker.startPage}"
-							end="${pageMaker.endPage}">
-							<li class="paginate_button  ${pageMaker.rcri.pageNum == num ? "active":""} ">
+						<c:forEach var="num" begin="${rpageMaker.startPage}"
+							end="${rpageMaker.endPage}">
+							<li class="paginate_button  ${rpageMaker.rcri.rpageNum == num ? "active":""} ">
 								<a href="${num}">${num}</a>
+							<%-- 	<a href="/goods/goodsDetail?goodsNum=${detail.goodsNum}&pageNum=${num}">${num}</a> --%>
 							</li>
 						</c:forEach>
 
-						<c:if test="${pageMaker.next}">
+						<c:if test="${rpageMaker.next}">
 							<li class="paginate_button next"><a
-								href="${pageMaker.endPage +1 }">Next</a></li>
+								href="${rpageMaker.endPage +1 }">Next</a></li>
+							<%-- <li class="paginate_button next">
+							<a href="/goods/goodsDetail?goodsNum=${detail.goodsNum}&pageNum=${rpageMaker.endPage + 1}">Next</a></li> --%>
 						</c:if>
-				</ul>
-			</div>	
+			</ul>
+		</div>	
+		
+		
+			
 					
 </div>
 

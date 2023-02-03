@@ -50,8 +50,9 @@
 		<input type="hidden" name="memberNum" value="1">
 		<input type="hidden" name="goodsNum" value="1">
 		<input type="hidden" name="orderNum" value="1">
-		<input type="hidden" name="reviewTitle" value="1">
+		
 		<input type="hidden" name="reviewWriter" value="ㅇㅅㅇ주">
+		
 		
 		<fieldset>
 		<span class="text-bold">별점을 선택해주세요</span>
@@ -69,6 +70,8 @@
 		
 		
 		<div>
+			<textarea class="col-auto form-control" type="text" name="reviewTitle"
+					  placeholder="제목을 입력 해 주세요."></textarea>
 			<textarea class="col-auto form-control" type="text" name="reviewContent"
 					  placeholder="후기를 입력 해 주세요."></textarea>
 		</div>
