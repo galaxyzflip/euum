@@ -36,6 +36,7 @@
 		<!-- .navbar -->
 		<div>
 
+<<<<<<< HEAD
 			<c:choose>
 				<c:when test="${loginUser == null}">
 					<!-- 로그인하지 않았을 때 -->
@@ -45,6 +46,12 @@
 					<i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
 				</c:when>
 				<c:otherwise>
+=======
+      <a class="btn-book-a-table" href="/member/joinForm1">회원가입</a>
+      <a class="btn-book-a-table" href="/myPage/modifyForm">마이페이지</a>
+      <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
+      <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
+>>>>>>> refs/remotes/euum/kms_dev
 
 					<c:if test="${loginUser.memberGrade == '2'}">
 						<a href="/admin" style="margin-right: 10px;">관리자</a>

@@ -12,6 +12,7 @@
 	width:100%;
 }
 
+<<<<<<< HEAD
 .add {
 	width: 20%;
 }
@@ -19,6 +20,15 @@
 .catsub {
 	font-size: 16px;
 }
+=======
+    <!-- ======= About Section ======= -->
+    <section id="about" class="about">
+      <div class="container" data-aos="fade-up">
+        <div class="section-header">
+          <h2>About Us</h2>
+          <p>Learn More <span>About Us</span></p>
+        </div>
+>>>>>>> refs/remotes/euum/kms_dev
 
 
 .stats-counter {
