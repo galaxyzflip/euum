@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mycom.euum.image.mapper.ImageMapper">
+
+	<!-- 선민: 이미지 등록 (insertImage) -->
+	<insert id="insertImage" parameterType="com.mycom.euum.image.bean.ImageBean">
+		insert into IMAGE_TBL
+		(
+			IMAGE_NUM,
+			IMAGE_UUID,
+			IMAGE_UPLOAD_PATH,
+			IMAGE_FILE_NAME,
+			IMAGE_FILE_TYPE,
+			IMAGE_USE,
+			IMAGE_USE_NUM
+		)
+		values
+		(
+			IMAGE_NUM_SEQ.nextval,
+			#{imageUUID},
+			#{imageUploadPath},
+			#{imageFileName},
+			#{imageFileType},
+			#{imageUse},
+			#{imageUseNum}
+		)
+	</insert>
+
+</mapper>

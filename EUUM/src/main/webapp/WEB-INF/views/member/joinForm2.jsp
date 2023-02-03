@@ -335,7 +335,7 @@
 			oncomplete : function(data) {
 				document.querySelector("#memberZipcode").value = data.zonecode;
 				document.querySelector("#memberAddress").value = data.address
-				document.getElementById("memberDetailAddress").focus();
+				document.getElementById("#memberDetailAddress").focus();
 			}
 		}).open();
 

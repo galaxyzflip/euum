@@ -31,6 +31,9 @@ public class OrderBean {
 	private Date orderExpirationDate;
 	private String sellerNickname;
 	private String goodsName;
+	private int orderPrice;
+	
+	
 	
 	private List<OrderOptionBean> optionList;
 

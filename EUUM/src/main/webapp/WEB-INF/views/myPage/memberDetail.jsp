@@ -94,15 +94,14 @@ div {
 
 <div class="modifybody">
 
-
 <!-- sellerInfo -->
 
 <form method="post" id="modifyForm" action="/myPage/modifyPro" enctype="multipart/form-data" onSubmit="return modifyPro();">
-	<input type="hidden" name="jmode" value="modify">
-	<input type="hidden" name="ckBtn">
-	<input type="hidden" name="receive" value="N">
-	<input type="hidden" name="auth_check">
-	<input type="hidden" name="memberNum" value="${member.memberNum}">
+<input type="hidden" name="jmode" value="modify">
+<input type="hidden" name="ckBtn">
+<input type="hidden" name="receive" value="N">
+<input type="hidden" name="auth_check">
+<input type="hidden" name="memberNum" value="${memberDetail.memberNum}">
 
 <div class="modifyMember">
 
@@ -112,14 +111,14 @@ div {
 
 <li class="1sp">
 <div class="1sp">아이디(이메일)</div>
-<div>${member.memberEmail}</div>
+<div>${memberDetail.memberEmail}</div>
 </li>
 
 <li class="1sp">
 <div>휴대전화 번호</div>
 <div>
 <ul class="left_ol">
-<ol>${member.memberMobile}</ol>
+<ol>${memberDetail.memberMobile}</ol>
 <ol class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
 전화번호 변경</ol>
 </ul>
@@ -148,25 +147,25 @@ div {
 
 <li class="1sp">
 <div>이름</div>
-<div><input type="text" name="memberName" id="memberName" value="${member.memberName}" maxlength="8" class="form-control"></div>
+<div><input type="text" name="memberName" id="memberName" value="${memberDetail.memberName}" maxlength="8" class="form-control"></div>
 </li>
 
 <li class="1sp">
 <div>우편번호</div>
 <div>
-<ol><input type="text" id="memberZipcode" name="memberZipcode" value="${member.memberZipcode}" class="form-control" readonly></ol>
+<ol><input type="text" id="memberZipcode" name="memberZipcode" value="${memberDetail.memberZipcode}" class="form-control" readonly></ol>
 <ol type="button" onclick="kakaoPost()">검색</ol>
 </div>
 </li>
 
 <li class="1sp">
 <div>주소</div>
-<div><input type="text" id="memberAddress" name="memberAddress" value="${member.memberAddress}" class="form-control" readonly></div>
+<div><input type="text" id="memberAddress" name="memberAddress" value="${memberDetail.memberAddress}" class="form-control" readonly></div>
 </li>
 
 <li class="1sp">
 <div>상세주소</div>
-<div><input type="text" name="memberDetailAddress" value="${member.memberDetailAddress}" class="form-control"></div>
+<div><input type="text" name="memberDetailAddress" value="${memberDetail.memberDetailAddress}" class="form-control"></div>
 </li>
 
 </div>
@@ -176,8 +175,8 @@ div {
 <div class="left left_li" style="padding-left:4px">
 <li style="margin-right: 30px" type="button" onclick="location.href='/myPage/modifyPassForm';">비밀번호 변경</li>
 <li style="margin-right: 30px" type="button" onclick="location.href='/myPage/leaveForm';">회원탈퇴</li>
-<c:set var="memberClass" value="${member.memberClass}"></c:set>
-<c:if test="${member.memberClass != S}">
+<c:set var="memberClass" value="${memberDetail.memberClass}"></c:set>
+<c:if test="${memberDetail.memberClass != S}">
 <input  style="margin-right: 30px" type="button" onclick="transSeller()" value="전문가 회원전환">
 </c:if>
 </div>
@@ -213,36 +212,6 @@ function transSeller() {
 }
 
 function modifyPro() {
-/* 	var memberName = $("#memberName").val();
-	var memberZipcode = $("#memberZipcode").val(); 
-	var memberAddress = $("#memberAddress").val();
-	var memberDetailAddress = $("#memberDetailAddress").val();
-	if (memberName != null) {
-		$.ajax({
-			type:"POST",
-			url:"/myPage/modifyPro",
-			data{
-				"memberName" : memberName,
-				"memberZipcode" : memberZipcode,
-				"memberAddress" : memberAddress,
-				"memberDetailAddress" : memberDetailAddress,
-			},
-			dataType:"JSON",
-			success:function(data){
-				console.log(data);
-				alert("회원정보가 변경되었습니다.");
-				$("#modifyForm").submit();
-			},
-			error:function(request,status,error){
-				alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-			}
-		});
-	}else{
-		alert("이름을 입력해주세요!")
-	}
-	} */
-	
-	
 	//var form = document.getElementById("modifyForm");
 	if (confirm("회원정보를 변경하시겠습니까?") == true) {
 		alert("회원정보가 변경 되었습니다.");

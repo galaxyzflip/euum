@@ -14,7 +14,7 @@ public class SellerBean {
 	private String sellerAccountName;
 	private String sellerSpecialty;
 	private String sellerDescription;
-	private String sellerNickname;
+	private String sellerNickName;
 	private String sellerContact1;
 	private String sellerContact2;
 	private String sellerBuisnessYn;
