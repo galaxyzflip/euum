@@ -23,7 +23,7 @@ public interface NoticeMapper {
 	
 	public int noticeDelete(NoticeBean noticeBean);
 	
-	public int getTotlaCount(Criteria cri);
+	public int getTotalCount(Criteria cri);
 	
 	
 }

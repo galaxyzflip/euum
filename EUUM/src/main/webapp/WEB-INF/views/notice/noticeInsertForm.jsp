@@ -9,6 +9,9 @@ $(document).ready(function(){
 		$("#category").val($(this).val());
 
 	});
+	
+	
+	
  });
 
 
@@ -53,7 +56,9 @@ $(document).ready(function(){
 
 
 		<div align="center">
-			<input type="submit" value="작성완료"> <input type="button" value="취소">
+			<button class="reset" type="reset"><span>다시작성</span></button>
+			<button class="done" type="submit"><span>작성하기</span></button>
+			
 		</div>
 	</form>
 </body>
