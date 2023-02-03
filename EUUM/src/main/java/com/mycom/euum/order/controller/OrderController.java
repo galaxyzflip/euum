@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mycom.euum.goods.bean.GoodsBean;
@@ -81,25 +82,6 @@ public class OrderController {
 
 		return "order/orderSuccess";
 	}
-
-	/*
-	 * @GetMapping("order/orderTest") public String orderTest(Model model) {
-	 * OrderBean order = orderService.selectOrder("20230126-0047");
-	 * model.addAttribute("order", order);
-	 * 
-	 * return "order/orderSuccess"; }
-	 */
-	
-	/*
-	 * @GetMapping("order/orderListTest") public String orderListTest() {
-	 * 
-	 * List<OrderBean> orderList = orderService.selectOrderListByMember(1);
-	 * 
-	 * for(OrderBean order : orderList) { log.info("불러온 오더 정보 : " +
-	 * order.toString()); }
-	 * 
-	 * return null; }
-	 */
 	
 	//회원용 내 주문 보기
 	@GetMapping("order/myOrderList")
@@ -110,30 +92,53 @@ public class OrderController {
 		List<OrderBean> orderList = orderService.selectOrderListByMember(member.getMemberNum());
 		
 		for(OrderBean order : orderList) {
-			log.info("오더리스트 하나 : " + order);
+			log.info("오더리스트 : " + order);
 		}
 		
 		model.addAttribute("orderList", orderList);
 		return "order/myOrderList";
 	}
 	
-//	@GetMapping("order/addOrderOption")
-//	public String addOrderOption(@RequestParam("goodsNum") String goodsNum, Model model) throws Exception {
-//		
-//		int optionCount = goodsService.selectGoodsOptionCount(goodsNum);
-//		List<List<GoodsOptionBean>> optionList = new ArrayList<List<GoodsOptionBean>>();
-//		for (int i = 1; i <= optionCount; i++) {
-//			List<GoodsOptionBean> list = goodsService.selectGoodsOptionContent(goodsNum, Integer.toString(i));
-//
-//			log.info("---------------------------------");
-//			log.info(i + "번째 옵션의 선택항목: " + list);
-//			optionList.add(list);
-//		}
-//		model.addAttribute("optionList", optionList);
-//		
-//		return "order/addOrderOption";
-//	}
 	
+	//회원용 내 주문 보기(myOrderList.jsp) 에서 옵션 추가 처리하는 메소드
+	
+	
+	
+	//회원용 추가주문 하기 (myOrderList 에서...)
+	@ResponseBody
+	@PostMapping(value="order/addOrder", consumes = "application/json", produces=MediaType.APPLICATION_JSON_VALUE)
+	public OrderBean addOrder(@RequestBody OrderBean orderBean, HttpSession session) {
+		
+		MemberBean memberBean = (MemberBean)session.getAttribute("loginUser");
+		orderBean.setMemberNum(memberBean.getMemberNum());
+		
+		log.info("추가주문 빈 확인 : " + orderBean);
+		
+		OrderBean newOrder = orderService.addOrder(orderBean);
+		
+		log.info("입력된 주문 : " + newOrder);
+		
+		return newOrder;
+	}
+	
+	// 셀러용 의뢰받은 주문 리스트
+	@GetMapping("seller/orderList")
+	public String sellerOrderList(Model model, HttpSession session) {
+
+		MemberBean member = (MemberBean) session.getAttribute("loginUser");
+
+		List<OrderBean> orderList = orderService.selectOrderListBySeller(member.getMemberNum());
+
+		for (OrderBean order : orderList) {
+			log.info("받은 오더리스트 : " + order);
+		}
+
+		model.addAttribute("orderList", orderList);
+		return "sellerOrder/sellerOrderList";
+	}
+	
+	
+
 	//admin용 주문리스트 불러오는 메소드
 	@GetMapping("admin/order/orderList")
 	public String adminOrderList(Model model) {
@@ -144,27 +149,28 @@ public class OrderController {
 	}
 	
 	
-	//회원용 내 주문 보기(myOrderList.jsp) 에서 옵션 추가 처리하는 메소드
+	//회원용 주문 취소하기
 	@ResponseBody
-	@PostMapping(value="order/addOrder", consumes = "application/json", produces=MediaType.APPLICATION_JSON_VALUE)
-	public OrderBean addOrder(@RequestBody OrderBean orderBean, HttpSession session) {
+	@PostMapping(value="order/cancleOrder", produces=MediaType.APPLICATION_JSON_VALUE)
+//	@PostMapping(value="/order/cancleOrder",consumes = "application/json", produces=MediaType.APPLICATION_JSON_VALUE)
+	public OrderBean cancleOrder(OrderBean orderBean) {
 		
-		MemberBean memberBean = (MemberBean)session.getAttribute("loginUser");
-		orderBean.setMemberNum(memberBean.getMemberNum());
+		int check = orderService.cancleOrder(orderBean);
+		log.info("update count : " + check);
 		
-		log.info("추가주문 빈 확인 : " + orderBean);
-		
-		
-		OrderBean newOrder = orderService.addOrder(orderBean);
-		
-		log.info("입력된 주문 : " + newOrder);
+		orderBean = orderService.selectOrder(orderBean.getOrderNum());
 		
 		
-		return newOrder;
+		return orderBean;
 	}
 	
-	
-	
-	
+	//주문상태 변경하기...
+	@PostMapping("order/transferOrderStatus")
+	public String transferOrderStatus(OrderBean orderBean) {
+		
+		orderService.updateOrderStatus(orderBean);
+		
+		return "redirect:/seller/orderList";
+	}
 
 }

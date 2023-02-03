@@ -53,6 +53,23 @@
 .order-info {
 	display: inline-block;
 }
+
+.login-input {
+	width: 270px !important;
+}
+
+.input-group>.form-control {
+	flex: none;
+}
+
+.modal-body {
+	margin: auto;
+	background-color: #eeeeee;
+}
+
+.input-group-text{
+	width:90px;
+}
 </style>
 
 <div class="container">
@@ -98,9 +115,15 @@
 			<td>
 				<input type="text" class="start-email" value="${fn:substringBefore(loginUser.memberEmail, '@') }"/> @ 
 				<input type="text" class="end-email" value="${fn:substringAfter(loginUser.memberEmail, '@') }"/> 
-		            <select>
-		                <option>직접입력</option>
-		                <option>naver.com</option>
+		            <select id="select-email" onchange="selectEmail()">
+		                <option value="">직접입력</option>
+		                <option value="naver.com">naver.com</option>
+		                <option value="gmail.com">gmail.com</option>
+		                <option value="hanmail.net">hanmail.net</option>
+		                <option value="daum.ne">daum.net</option>
+		                <option value="empas.com">empas.com</option>
+		                <option value="me.com">me.com</option>
+		                <option value="nate.com">nate.com</option>
 		            </select>
 			</td>
 	    </tr>
@@ -179,35 +202,147 @@
 
     </div>
     
-    <script>
-    
-    	$(document).ready(function(){
-    		
-    		//옵션합계 금액 모두 더해서 총 결제금액 표시해주기
-    		const optTotalPrice = document.getElementsByClassName("optTotalPrice")
-    		console.log("옵션 합계 가격들 : " +optTotalPrice);
-    		let totalPrice = 0;
-    		
-    		$.each(optTotalPrice, function(index, item){
-    			totalPrice += parseInt($(item).text().replace(/,/g, ""));//금액 ,표시 없애주기
-    			
-    		})
-    		    		
-    		$('.totalPrice').text(totalPrice.toLocaleString());
-    		//..옵션합계 금액...
-    		
-    		
-    		//결제버튼 클릭시 이메일 합치고 submit
-    		$('#order-btn').on('click', function(e){
-    			e.preventDefault();
-    			let email = $('.start-email').val() + "@" + $('.end-email').val();
-    			$('input[name="orderEmail"]').val(email);
-    			$('#order-form').submit();
-    			
-    		})
-    		
-    		
-    	})
-    	
-    
-    </script>
+    <!-- Modal -->
+<div class="modal fade" id="loginModal" tabindex="-1"
+	aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h1 class="modal-title fs-5" id="exampleModalLabel">로그인</h1>
+				<button type="button" class="btn-close" data-bs-dismiss="modal"
+					aria-label="Close"></button>
+			</div>
+
+
+			<div class="modal-body">
+			<form id="addOrder">
+				<div id="option1">
+
+					<div class="input-group mb-3">
+						<span class="input-group-text" id="inputGroup-sizing-default">아이디</span> 
+						<input type="text" class="form-control login-input" 
+							aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" name="memberEmail" value="">
+					</div>
+
+					<div class="input-group mb-3">
+						<span class="input-group-text " id="inputGroup-sizing-default">비밀번호</span> 
+						<input type="password" class="form-control login-input"
+							aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" name="memberPassword" value="">
+					</div>
+					
+				</div>
+			</form>
+			</div>
+
+
+			<div class="modal-footer">
+				<button type="button" id="btn-cancle" class="btn btn-secondary"
+					data-bs-dismiss="modal">취소</button>
+				<button type="button" id="btn-login" class="btn btn-primary">로그인</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- /.modal -->
+
+<script>
+
+let modal = $('#loginModal');
+
+	function selectEmail(){
+		
+		let selectEmail = document.getElementById('select-email');
+		let selectValue = selectEmail.options[selectEmail.selectedIndex].value;
+		console.log('선택한 이메일 : ' + selectValue);
+		let endEmail = document.getElementsByClassName('end-email');
+		endEmail[0].value = selectValue;
+		
+		if(endEmail[0].value == '' || endEmail[0].value == null){
+			endEmail[0].readOnly = false;
+		}else{
+			endEmail[0].readOnly = true;
+		}
+	}
+	
+
+	function loginCheck() {
+		let loginUser = '${loginUser}';
+		console.log(loginUser);
+
+		if (!loginUser) {
+			if(confirm("로그인이 필요한 서비스 입니다. 로그인 하시겠습니까?")) {
+				modal.modal("show");
+			};
+			return false;
+		}
+		return true;
+	}
+	
+	function loginService(memberEmail, memberPassword){
+		$.ajax({
+			url : "/member/loginProAjax",
+			type : "post",
+			async:false,
+			contentType : "application/json; charset=utf-8",
+		//	dataType : 'json',
+ 			data : JSON.stringify({
+ 				memberEmail : memberEmail,
+ 				memberPassword : memberPassword
+			}),
+			success : function(data){
+				console.log(data);
+				
+				if(data == 'loginSuccess'){
+					alert('로그인 되었습니다');
+					location.reload();
+				}else{
+					alert('로그인에 실패하였습니다');
+				}
+				
+			},
+			error : function(request, status, error){
+				console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+				alert('에러');
+			} 
+		})
+	}
+
+	$(document).ready(function() {
+		
+		$('#btn-login').on('click', function(){
+			let memberEmail = $(modal).find('input[name="memberEmail"]').val();
+			let memberPassword = $(modal).find('input[name="memberPassword"]').val();
+			console.log('입력한 아이디 : ' + memberEmail);
+			console.log('입력한 비밀번호 : ' + memberPassword);
+			
+			loginService(memberEmail, memberPassword)
+			
+		})
+
+		//옵션합계 금액 모두 더해서 총 결제금액 표시해주기
+		const optTotalPrice = document.getElementsByClassName("optTotalPrice")
+		console.log("옵션 합계 가격들 : " + optTotalPrice);
+		let totalPrice = 0;
+
+		$.each(optTotalPrice, function(index, item) {
+			totalPrice += parseInt($(item).text().replace(/,/g, ""));//금액 ,표시 없애주기
+
+		})
+
+		$('.totalPrice').text(totalPrice.toLocaleString());
+		//..옵션합계 금액...
+
+		//결제버튼 클릭시 이메일 합치고 submit
+		$('#order-btn').on('click', function(e) {
+			
+			if(loginCheck()){
+				e.preventDefault();
+				let email = $('.start-email').val() + "@" + $('.end-email').val();
+				$('input[name="orderEmail"]').val(email);
+				$('#order-form').submit();
+			}
+
+		})
+
+	})
+</script>

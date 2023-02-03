@@ -63,7 +63,7 @@
 							<c:forEach items="${optionList}" var="selectList" varStatus="status">
 								<ul id="option_info${status.index }">
 									<span class="option-name">${selectList[0].goodsOptName}</span>
-									<select id="select_option" class="select_option" onChange="setTotalInfo(${status.index });">
+									<select id="select_option" class="select_option" onChange="selectOption(${status.index });">
 										<option value="0">선택하세요</option>
 										<c:forEach items="${selectList}" var="row" varStatus="status">
 											<option value="${row.goodsOptContent}`${row.goodsOptPrice}">
@@ -125,6 +125,9 @@ let num = 0;
 
 
 function buy(){
+	
+
+	
 	const selectedOption = document.getElementsByClassName('option-data');
 	
 	console.log('주문시작 선택된 옵션 확인 : ' + selectedOption);
@@ -198,8 +201,8 @@ function insertSelectedOption(optionName, optionContent, optionPrice){
 //선택된 옵션에서 사용할 index...
 
  
- 
-function setTotalInfo(index) {
+//옵션 선택시 동작
+function selectOption(index) {
 	
 	let selectOption = document.getElementById('option_info'+index);
 	//console.log(selectOption);

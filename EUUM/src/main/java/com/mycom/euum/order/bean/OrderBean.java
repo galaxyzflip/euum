@@ -33,6 +33,8 @@ public class OrderBean {
 	private String goodsName;
 	private int orderPrice;
 	
+	
+	
 	private List<OrderOptionBean> optionList;
 
 	private List<OrderBean> orderList;

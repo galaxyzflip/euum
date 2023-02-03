@@ -155,57 +155,62 @@
 
 	<!-- 상태 변경 -->
 	<update id="updateOrderStatus">
-		UPDATE ORDER_TBL
-		SET ORDER_STATUS = #{ORDER_STATUS}
-		WHERE ORDER_NUM = #{ORDER_NUM};
+		UPDATE ORDER_TBL O
+		SET ORDER_STATUS = #{orderStatus}
+		
+		<if test="orderStatus == 3">
+			, ORDER_EXPIRATION_DATE = SYSDATE + (SELECT GOODS_PERIOD FROM GOODS_TBL G WHERE G.GOODS_NUM =O.GOODS_NUM )
+		</if>
+		
+		WHERE ORDER_NUM = #{orderNum}
 	</update>
 
 	<!-- 옵션 상태 변경 -->
 	<update id="updateOrderOptStatus">
 		UPDATE ORDER_OPT_TBL
 		SET ORDER_OPT_STATUS = #{ORDER_OPT_STATUS}
-		WHERE ORDER_NUM = #{ORDER_NUM};
+		WHERE ORDER_NUM = #{ORDER_NUM}
 	</update>
 
 
 	<!-- 완료 상태 변경 -->
 	<update id="updateOrderStatusOk">
 		UPDATE ORDER_TBL
-		SET ORDER_STATUS = #{ORDER_STATUS},
-		ORDER_DONE_DATE = TO CHAR(SYSDATE, 'YYYY-MM-DD')
-		WHERE ORDER_NUM = #{ORDER_NUM}
+		SET ORDER_STATUS = #{orderStatus},
+		ORDER_DONE_DATE = SYSDATE
+		WHERE ORDER_NUM = #{orderNum}
 	</update>
 
 	<!-- 완료 옵션 상태 변경 -->
 	<update id="updateOrderOptStatusOk">
 		UPDATE ORDER_OPT_TBL
 		SET ORDER_OPT_STATUS = #{ORDER_OPT_STATUS}
-		WHERE ORDER_NUM = #{ORDER_NUM};
+		WHERE ORDER_NUM = #{ORDER_NUM}
 	</update>
 
 	<!-- 취소 상태 변경 -->
 	<update id="updateOrderCancel">
 		UPDATE ORDER_TBL
-		SET ORDER_STATUS = #{ORDER_STATUS},
-		ORDER_CANCLE_DATE = TO CHAR(SYSDATE, 'YYYY-MM-DD');
-		WHERE ORDER_NUM = #{ORDER_NUM};
+		SET ORDER_STATUS = #{orderStatus},
+		ORDER_CANCLE_DATE = SYSDATE
+		WHERE ORDER_NUM = #{orderNum}
 	</update>
 
 	<!-- 취소 옵션 상태 변경 -->
 	<update id="updateOrderOptCancel">
 		UPDATE ORDER_OPT_TBL
 		SET ORDER_OPT_STATUS = #{ORDER_OPT_STATUS},
-		ORDER_OPT_CANCLE_DATE = TO CHAR(SYSDATE, 'YYYY-MM-DD');
-		WHERE ORDER_NUM = #{ORDER_NUM};
+		ORDER_OPT_CANCLE_DATE = TO CHAR(SYSDATE, 'YYYY-MM-DD')
+		WHERE ORDER_NUM = #{ORDER_NUM}
 	</update>
 
 	<!-- 주문 수정 -->
 	<update id="updateOrder">
 		UPDATE ORDER_TBL
-		SET ORDER_EMAIL = #{ORDER_EMAIL},
-		ORDER_CONTACT = #{ORDER_CONTACT},
-		ORDER_REQUEST = #{ORDER_REQUEST}
-		WHERE ORDER_NUM = #{ORDER_NUM};
+		SET ORDER_EMAIL = #{orderEmail},
+		ORDER_CONTACT = #{orderContact},
+		ORDER_REQUEST = #{orderRequest}
+		WHERE ORDER_NUM = #{orderNum}
 	</update>
 
 
@@ -215,7 +220,7 @@
 		SET ORDER_OPT_PRICE = #{ORDER_OPT_PRICE},
 		ORDER_OPT_COUNT = #{ORDER_OPT_COUNT},
 		ORDER_OPT_REQUEST = #{ORDER_OPT_REQUEST}
-		WHERE ORDER_NUM = #{ORDER_NUM};
+		WHERE ORDER_NUM = #{ORDER_NUM}
 	</update>
 	
 	
@@ -257,7 +262,7 @@
 		<result property="orderOptName" column="order_opt_name"/>
 	</resultMap>
 
-	<!-- 주문 내역 리스트 -->
+	<!-- 회원의 주문 내역 리스트 -->
 	<select id="selectOrderListByMember" resultType="com.mycom.euum.order.bean.OrderBean">
 		SELECT  O.ORDER_NUM,
         G.GOODS_NAME,
@@ -279,13 +284,50 @@
 		ORDER_MODIFY_COUNT,
 		ORDER_PERIOD,
 		ORDER_IMAGE,
-        ORDER_DATE+ORDER_PERIOD as "ORDER_EXPIRATION_DATE",
-        ORDER_PRICE
+        ORDER_EXPIRATION_DATE,
+        ORDER_PRICE,
+        ORDER_REQUEST,
+        ORDER_CANCLE_DATE
 		FROM ORDER_TBL O INNER JOIN GOODS_TBL G 
         ON O.GOODS_NUM=G.GOODS_NUM
         inner join (select order_num, sum(order_opt_price) as "ORDER_PRICE" from order_opt_tbl group by order_num) p
         on o.order_num=p.order_num
 		and O.MEMBER_NUM = #{memberNum}
+		order by order_date desc
+		
+	</select>
+	
+	<!-- 셀러의 주문 내역 리스트 -->
+	<select id="selectOrderListBySeller" resultType="com.mycom.euum.order.bean.OrderBean">
+		SELECT  O.ORDER_NUM,
+        G.GOODS_NAME,
+		ORDER_KEY_NUM,
+		SELLER_NICKNAME,
+		G.GOODS_NUM,
+		G.MEMBER_NUM,
+		O.SELLER_NUM,
+		ORDER_STATUS,
+		ORDER_CONTACT,
+		ORDER_EMAIL,
+		ORDER_DATE,
+		ORDER_REQUEST,
+		ORDER_PAY_TYPE,
+		ORDER_NAME,
+		ORDER_FORMAT,
+		ORDER_RESOLUTION,
+		ORDER_SIZE,
+		ORDER_MODIFY_COUNT,
+		ORDER_PERIOD,
+		ORDER_IMAGE,
+        ORDER_EXPIRATION_DATE,
+        ORDER_PRICE,
+        ORDER_REQUEST,
+        ORDER_CANCLE_DATE
+		FROM ORDER_TBL O INNER JOIN GOODS_TBL G 
+        ON O.GOODS_NUM=G.GOODS_NUM
+        inner join (select order_num, sum(order_opt_price) as "ORDER_PRICE" from order_opt_tbl group by order_num) p
+        on o.order_num=p.order_num
+		and O.SELLER_NUM = #{sellerNum}
 		order by order_date desc
 		
 	</select>
@@ -324,7 +366,7 @@
 		order_opt_pay_type,
 		order_option_name
 		FROM ORDER_TBL, ORDER_OPT_TBL
-		WHERE SELLER_NUM = #{SELLER_NUM}
+		WHERE SELLER_NUM = #{sellerNum}
 	</select>
 
 	<!-- 어드민 주문 관리 내역 -->

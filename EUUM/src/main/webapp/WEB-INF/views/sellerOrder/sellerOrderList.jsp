@@ -115,17 +115,15 @@ ul li {
 
 		<tbody>
 			<c:forEach items="${orderList }" var="order" varStatus='status'>
-			
-				
 
-				<tr id="order${status.index }">
-					<td id="order-num">${order.orderNum }</td>
-					<td><a href="/goods/goodsDetail?goodsNum=${order.goodsNum }"><img src="/resources/assets/img/about-2.jpg"></img></a></td>
+				<tr>
+					<td>${order.orderNum }</td>
+					<td><img src="/resources/assets/img/about-2.jpg"></img></td>
 					<td>${order.sellerNickname }</td>
 					<td class="order-name"><br> ${order.goodsName }<br>
 						${fn:replace(order.orderName,'`','<br>')}</td>
 					<td>${order.orderPrice } 원</td>
-					<td id="order-status"><c:if test="${order.orderStatus eq 1 }">입금대기중</c:if> <c:if
+					<td><c:if test="${order.orderStatus eq 1 }">입금대기중</c:if> <c:if
 							test="${order.orderStatus eq 2 }">입금확인</c:if> <c:if
 							test="${order.orderStatus eq 3 }">작업중</c:if> <c:if
 							test="${order.orderStatus eq 4 }">작업완료</c:if> <c:if
@@ -144,18 +142,6 @@ ul li {
 						<div class="order-detail">
 							<div class="order-tap1">
 								<ul>
-									<li>입금은행 신한은행 : </li>
-									<li>110-223-996057</li>
-								</ul>
-								<ul>
-									<li>예금주</li>
-									<li>(주)이음</li>
-								</ul>
-								<ul>
-									<li>입금자명</li>
-									<li>최창선</li>
-								</ul>
-								<ul>
 									<li>주문자 이메일</li>
 									<li>${order.orderEmail }</li>
 								</ul>
@@ -170,16 +156,8 @@ ul li {
 									<li>${order.orderDate }</li>
 								</ul>
 								<ul>
-									<c:if test="${order.orderStatus le '6' }">
-										<li>완료예정일</li>
-										<li>${order.orderExpirationDate}</li>
-									</c:if>
-									
-									<c:if test="${order.orderStatus gt '6' }">
-										<li>주문취소일</li>
-										<li>${order.orderCancleDate}</li>
-									</c:if>
-									
+									<li>완료예정일</li>
+									<li>${order.orderExpirationDate}</li>
 								</ul>
 								<ul>
 									<li>제출 파일 유형</li>
@@ -202,26 +180,17 @@ ul li {
 									<li>작업 기간</li>
 									<li>시작일로부터 ${order.orderPeriod } 일</li>
 								</ul>
+								
 							</div>
 							
 							<div>
 								<ul>
+									<c:if test="${order.orderStatus eq '2' }">
+										<li><button onclick="transferOrderStatus('${order.orderNum}')">작업중 전환</button></li><br>
+									</c:if>
 									<li>요청사항 : ${order.orderRequest }</li>
 								</ul>
 							</div>
-
-				
-							<div id="order-tap3">
-									<c:if test="${order.orderStatus lt 3 }">
-										<button class="order-tap3" id="cancle-order" onclick="cancleOrder('${order.orderNum}', '${order.orderStatus }', 'order${status.index }')">주문 취소</button><br>
-									</c:if>
-									
-									<c:if test="${order.orderStatus lt 4 }">
-										<button class="order-tap3" id="add-order${status.index }"
-									onclick="openModal('${order.orderNum}', '${order.goodsNum }', '${order.orderEmail }', '${order.orderContact}', '${order.sellerNickname}', '${order.sellerNum }')">추가금액 결제</button>
-									</c:if>
-							</div>
-							
 							
 						</div>
 					</td>
@@ -246,18 +215,15 @@ ul li {
 
 
 			<div class="modal-body">
-			<form id="addOrder">
 				<div id="option1">
 
 					<div class="input-group mb-3">
-						<span class="input-group-text" id="inputGroup-sizing-default">결제 내용</span> 
-						<input type="text" class="form-control add-option"
+						<span class="input-group-text" id="inputGroup-sizing-default">결제 내용</span> <input type="text" class="form-control add-option"
 							aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" name="orderName"	value="">
 					</div>
 
 					<div class="input-group mb-3">
-						<span class="input-group-text" id="inputGroup-sizing-default">추가 금액</span> 
-						<input type="text" class="form-control add-option"
+						<span class="input-group-text" id="inputGroup-sizing-default">추가 금액</span> <input type="text" class="form-control add-option"
 							aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" name="orderPrice"> 원
 					</div>
 					
@@ -270,7 +236,6 @@ ul li {
 						<input type="hidden" name="orderPayType" value="임시값"/>
 					</div>
 				</div>
-			</form>
 			</div>
 
 
@@ -283,66 +248,35 @@ ul li {
 	</div>
 </div>
 <!-- /.modal -->
+
+<form id="actionForm" action="/order/transferOrderStatus" method="post">
+	<input type="hidden" name="orderNum" value="">
+	<input type="hidden" name="orderStatus" value="">
+	
+</form>
 <script>
+
+	function transferOrderStatus(orderNum){
+		if(confirm("진행중 상태로 변경하시겠습니까?")){
+			$('#actionForm').find('input[name="orderNum"]').val(orderNum);
+			$('#actionForm').find('input[name="orderStatus"]').val(3);	
+			$('#actionForm').submit();
+		}
+		
+	}
 
 	let modal = $('.modal');
 	
 	$(document).ready(function() {
 
+		//상세정보 펼치기
 		$(".que").click(function() {
 			$(this).parent().parent().next(".anw").stop().slideToggle(0);
 			//$(this).toggleClass('on').siblings().removeClass('on');
 			$(this).parent().parent().next(".anw").siblings(".anw").slideUp(0); // 1개씩 펼치기
 		});
 
-	});
-	
-	function updateOrder(data, order){
-		console.log(data.orderNum);
-		console.log(data.orderStatus);
-		console.log('몇번오더인지'+order);
-		
-		let orderForm = document.getElementById(order);
-		let status;
-		
-		if(data.orderStatus == '7'){
-			$(orderForm).find('#order-status').text('취소(환불대기중)');
-		}else if(data.orderStatus == '9'){
-			$(orderForm).find('#order-status').text('취소(입금 전 취소)');
-		}
-		
-		$(orderForm).next().find('#order-tap3').css('display', 'none');
-		
-	}
-	
-	function cancleOrder(orderNum, orderStatus, order){
-		if(confirm("주문을 취소하시겠습니까?")){
-			
-			console.log('취소할 주문번호 : ' + orderNum);
-			console.log('취소할 주문상태 : ' + orderStatus)
-			
-		 	$.ajax({
-				url : "/order/cancleOrder",
-				type : "post",
-				async : false,
-//				contentType : "application/json; charset=utf-8",
-	//			dataType : 'json',
-	 			data : {
-	 				orderNum : orderNum,
-	 				orderStatus : orderStatus
-	 			},
-				success : function(data){
-					updateOrder(data, order);
-					
-				},
-				error : function(request, status, error){
-					console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-					alert('에러');
-				} 
-				
-			})
-		}
-	}
+	})
 
 	//modal show
 	function openModal(orderNum, goodsNum, orderEmail, orderContact, sellerNickname, sellerNum) {
@@ -361,10 +295,10 @@ ul li {
 
 		$('input[name="orderName"]').val(orderNum + " 주문의 추가 금액 결제");
 		modal.modal('show');
+
 	}
 
-	
-	
+	//추가주문 처리 ajax
 	$('#add-order').on('click', function() {
 		let orderName = $('input[name="orderName"]').val();
 		let orderPrice = $('input[name="orderPrice"]').val();
@@ -413,6 +347,7 @@ ul li {
 		
 		modal.modal('hide');
 	})
+	
 	
 </script>
 

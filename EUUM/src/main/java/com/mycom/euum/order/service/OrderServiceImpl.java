@@ -138,6 +138,31 @@ public class OrderServiceImpl implements OrderService{
 		return orderMapper.selectOrder(orderNum);
 	}
 
+	@Override
+	public List<OrderBean> selectOrderListBySeller(int sellerNum) {
+
+		return orderMapper.selectOrderListBySeller(sellerNum);
+	}
+	@Override	
+	public int cancleOrder(OrderBean orderBean) {
+		
+		if(orderBean.getOrderStatus().equals("1")) {
+			orderBean.setOrderStatus("9");
+		}else if(orderBean.getOrderStatus().equals("2")) {
+			orderBean.setOrderStatus("7");
+		}
+		
+		return orderMapper.updateOrderCancel(orderBean);
+	}
+	
+	@Override
+	public int updateOrderStatus(OrderBean orderBean) {
+		
+		return orderMapper.updateOrderStatus(orderBean);
+	}
+
+
+	 
 }
 
 

@@ -16,9 +16,14 @@ public interface OrderService {
 	
 	public List<OrderBean> selectOrderListByMember(int memberNum);
 	
+	public List<OrderBean> selectOrderListBySeller(int sellerNum);
+	
 	public List<OrderBean> selectAdminOrderList();
 	
 	public OrderBean addOrder(OrderBean orderBean);
 	
+	public int cancleOrder(OrderBean orderBean);
+	
+	public int updateOrderStatus(OrderBean orderBean);
 	
 }
