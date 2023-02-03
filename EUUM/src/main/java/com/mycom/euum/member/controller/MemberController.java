@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.mycom.euum.member.bean.MemberBean;
+import com.mycom.euum.member.bean.SellerBean;
 import com.mycom.euum.member.service.MemberService;
 
 import lombok.AllArgsConstructor;
@@ -33,6 +34,7 @@ public class MemberController {
 	@GetMapping("/main")
 	public String test(HttpServletRequest request) {
 
+
 		// 로그인 귀찮아서 임시로 만든것... 세션 저장해줌
 		HttpSession session = request.getSession();
 		MemberBean loginUser = new MemberBean();
@@ -41,6 +43,7 @@ public class MemberController {
 		loginUser.setMemberEmail("sonsun33@naver.com");
 		loginUser.setMemberMobile("01041746137");
 		session.setAttribute("loginUser", loginUser);
+
 
 		return "main/main";
 	}
@@ -54,18 +57,29 @@ public class MemberController {
 
 	// 로그인 처리
 	@PostMapping("/member/loginPro")
-	public String loginPro(MemberBean bean, HttpServletRequest request, RedirectAttributes rttr) {
+	public String loginPro(MemberBean bean, SellerBean sellerBean, HttpServletRequest request, RedirectAttributes rttr) {
 		HttpSession session = request.getSession();
 
-		MemberBean loginUser = memberService.loginService(bean);
+	
+		MemberBean loginUser = memberService.loginService(bean); 
+		SellerBean loginSeller = memberService.getSeller(loginUser.getMemberNum());
+		
+		if(loginUser != null ^ loginSeller == null) {
 
-		if (loginUser != null) {
 			session.setAttribute("loginUser", loginUser);
 			session.setMaxInactiveInterval(60 * 30);
 
 			return "redirect:/main";
 
-		} else {
+			
+		}else if(loginUser != null ^ loginSeller != null) {
+			session.setAttribute("loginUser", loginUser);
+			session.setAttribute("seller", loginSeller);
+			session.setMaxInactiveInterval(60 * 30);
+			
+			return "redirect:/main";
+		}else {
+
 			rttr.addFlashAttribute("result", "loginFail");
 			return "redirect:/member/loginForm";
 		}

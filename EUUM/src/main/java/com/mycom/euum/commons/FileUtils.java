@@ -31,20 +31,7 @@ public class FileUtils {
 		
 		List<ImageBean> imageBeanList = new ArrayList<ImageBean>();
 
-		
 
-		// 01. 폴더 및 경로 생성
-		String uploadFolderPath = request.getRealPath("") + "resources/img";
-		log.info("---------- 01. 폴더 경로 세팅 및 폴더 생성 ----------");
-		log.info("request.getRealPath(): " + request.getRealPath(""));
-		log.info("uploadFolderPath: " + uploadFolderPath);
-
-		File uploadPath = new File(uploadFolderPath, getFolder()); // 폴더 경로를 지정 및 생성할 File 객체 생성
-
-		if (uploadPath.exists() == false) { // 해당 경로가 존재하는지 검사 후 존재하지 않으면 년/월/일의 폴더 신규 생성
-			uploadPath.mkdirs(); // 
-
-		}
 
 		
 		// 02. 저장할 파일 이름 지정

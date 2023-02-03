@@ -3,6 +3,7 @@ package com.mycom.euum.member.service;
 import java.util.Map;
 
 import com.mycom.euum.member.bean.MemberBean;
+import com.mycom.euum.member.bean.SellerBean;
 
 public interface MemberService {
 
@@ -18,5 +19,7 @@ public interface MemberService {
 	public int selectByEmail(String email);
 
 	public int selectByMobile(String mobile);
+	
+	public SellerBean getSeller(int sellerNum);
 	
 }
