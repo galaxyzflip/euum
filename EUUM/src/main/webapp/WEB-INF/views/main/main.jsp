@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <style>
 @media ( min-width : 1200px) .col-xl-4 {
@@ -12,7 +12,6 @@
 	width:100%;
 }
 
-<<<<<<< HEAD
 .add {
 	width: 20%;
 }
@@ -20,15 +19,6 @@
 .catsub {
 	font-size: 16px;
 }
-=======
-    <!-- ======= About Section ======= -->
-    <section id="about" class="about">
-      <div class="container" data-aos="fade-up">
-        <div class="section-header">
-          <h2>About Us</h2>
-          <p>Learn More <span>About Us</span></p>
-        </div>
->>>>>>> refs/remotes/euum/kms_dev
 
 
 .stats-counter {
