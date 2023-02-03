@@ -27,7 +27,18 @@
     padding: 100px 0;
 }
 
-
+.iconimg{
+	margin-bottom:25px;
+}
+.loginBtn{
+	font-size: 16px;
+	transition: 0.5s;
+	margin-left: 25px;
+	color: var(--font-secondary);
+	font-weight: 600;
+	align-items: center!important;
+	display: flex!important;
+}
 </style>
 	
 
@@ -41,12 +52,23 @@
 				<h2 data-aos="fade-up">안전하게 전문가에게 맡기세요</h2>
 				<p data-aos="fade-up" data-aos-delay="100">당신이 필요한 전문가가 당신과의 이음을
 					기다리고 있습니다.</p><br>
+					
+				<c:choose>
+				<c:when test="${loginUser == null}">
+					<!-- 로그인하지 않았을 때 -->
+					<div class="d-flex" data-aos="fade-up" data-aos-delay="200">
+						<a href="member/joinForm1" class="btn-book-a-table">회원가입</a> 
+						<a href="member/loginForm" class="loginBtn">
+						<span>로그인</span></a>
+					</div>
+				</c:when>
+				<c:otherwise>
 
-				<div class="d-flex" data-aos="fade-up" data-aos-delay="200">
-					<a href="member/joinForm1" class="btn-book-a-table">회원가입</a> <a
-						href="member/loginForm"
-						class="glightbox btn-watch-video d-flex align-items-center"><span>로그인</span></a>
-				</div>
+					
+					&nbsp;
+				</c:otherwise>
+			</c:choose>
+				
 			</div>
 			<div class="col-lg-5 order-1 order-lg-2 text-center text-lg-start">
 				<img
@@ -74,7 +96,7 @@
 							<a href="">
 								<div
 									class="icon-box d-flex flex-column justify-content-center align-items-center">
-									<i class="bi bi-clipboard-data"></i>
+									<img src="../resources/img/icon/01.png" class="iconimg">
 									<h5 class="catsub">캐릭터 / 일러스트</h5>
 								</div>
 							</a>
@@ -85,7 +107,7 @@
 							<a href="">
 								<div
 									class="icon-box d-flex flex-column justify-content-center align-items-center">
-									<i class="bi bi-clipboard-data"></i>
+									<img src="../resources/img/icon/03.png" class="iconimg">
 									<h5 class="catsub">일러스트</h5>
 								</div>
 							</a>
@@ -96,7 +118,7 @@
 							<a href="">
 								<div
 									class="icon-box d-flex flex-column justify-content-center align-items-center">
-									<i class="bi bi-clipboard-data"></i>
+									<img src="../resources/img/icon/04.png" class="iconimg">
 									<h5 class="catsub">디자인</h5>
 								</div>
 							</a>
@@ -107,7 +129,7 @@
 							<a href="">
 								<div
 									class="icon-box d-flex flex-column justify-content-center align-items-center">
-									<i class="bi bi-gem"></i>
+									<img src="../resources/img/icon/02.png" class="iconimg">
 									<h5 class="catsub">3D 모델링</h5>
 								</div>
 							</a>
@@ -118,7 +140,7 @@
 							<a href="">
 								<div
 									class="icon-box d-flex flex-column justify-content-center align-items-center">
-									<i class="bi bi-inboxes"></i>
+									<img src="../resources/img/icon/05.png" class="iconimg">
 									<h5 class="catsub">웹툰 / 만화</h5>
 								</div>
 							</a>
@@ -327,6 +349,7 @@
 
 	<!-- ======= Contact Section ======= -->
 	<section id="contact" class="contact">
+		<div style="margin-top:10px;">&nbsp</div>
 		<div class="container" data-aos="fade-up">
 
 			<div class="section-header">

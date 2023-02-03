@@ -44,7 +44,7 @@ background: #f5f6f7;
 	font-size: 12px;
 	font-weight: 400;
 	display: inline-block;
-	color: #08a600;
+	color: #fb8500;
 }
 
 #headbanner {
@@ -97,13 +97,7 @@ ul {
 	box-sizing: border-box;
 }
 
-:root .terms_chk_all .input_chk input:checked+label:before {
-	content: '';
-	background: #f5f6f7
-		url(https://static.nid.naver.com/images/ui/myinfo/pc_check_on_l_24.png)
-		no-repeat 0 0;
-	background-size: 24px 24px;
-}
+
 
 :root .input_chk input {
 	position: absolute;
@@ -114,27 +108,8 @@ ul {
 	height: 1px;
 }
 
-:root .terms_chk_all .input_chk label:before {
-	content: '';
-	position: absolute;
-	top: 50%;
-	left: 1px;
-	width: 24px;
-	height: 24px;
-	margin-top: -14px;
-	background: #f5f6f7
-		url(https://static.nid.naver.com/images/ui/myinfo/pc_check_off_24.png)
-		no-repeat 0 0;
-	background-size: 24px 24px;
-}
 
-:root .input_chk input:checked+label:before {
-	content: '';
-	background: #f5f6f7
-		url(https://static.nid.naver.com/images/ui/myinfo/pc_chcek_on_s_20.png)
-		no-repeat 0 0;
-	background-size: 20px 20px;
-}
+
 
 .terms_bx_list {
 	margin-top: 4px;
@@ -149,21 +124,6 @@ body, button, dd, dl, dt, fieldset, form, h1, h2, h3, h4, h5, h6, input, legend,
 .terms_bx {
 	display: block;
 	padding-top: 30px;
-}
-
-:root .input_chk label:before {
-	content: '';
-	position: absolute;
-	top: 50%;
-	left: 1px;
-	display: block;
-	width: 20px;
-	height: 20px;
-	margin-top: -10px;
-	background: #f5f6f7
-		url(https://static.nid.naver.com/images/ui/myinfo/pc_chcek_off_s_20.png)
-		no-repeat 0 0;
-	background-size: 20px 20px;
 }
 
 .input_chk label {

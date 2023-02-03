@@ -24,13 +24,13 @@
 				<li class="dropdown"><a href="#"><span>카테고리</span> <i
 						class="bi bi-chevron-down dropdown-indicator"></i></a>
 					<ul>
-						<li><a href="#">캐릭터 / 일러스트</a></li>
+						<li><a href="/goods/goodsList">캐릭터 / 일러스트</a></li>
 						<li><a href="#">일러스트</a></li>
 						<li><a href="#">디자인</a></li>
 						<li><a href="#">3D 모델링</a></li>
 						<li><a href="#">웹툰 / 만화</a></li>
 					</ul></li>
-				<li><a href="#contact">오시는길</a></li>
+				<li><a href="/#contact">오시는길</a></li>
 			</ul>
 		</nav>
 		<!-- .navbar -->
@@ -47,7 +47,7 @@
 				<c:otherwise>
 
 					<c:if test="${loginUser.memberGrade == '2'}">
-						<a href="#">관리자</a>
+						<a href="/admin" style="margin-right: 10px;">관리자</a>
 						<a href="/member/logout">로그아웃</a>
 						<a class="btn-book-a-table" href="/myPage/modifyForm">마이페이지</a>
 						<i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
