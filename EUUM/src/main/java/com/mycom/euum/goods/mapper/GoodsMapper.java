@@ -19,24 +19,32 @@ public interface GoodsMapper {
 	public List<GoodsBean> selectGoodsList() throws Exception;
 	
 	/** 은정: 상품 리스트 검색결과 가져오기 (List) */
-	public List<GoodsBean> selectGoodsSearchList(String searchKeyword) throws Exception ;
+	public List<GoodsBean> selectGoodsSearchList(@Param("searchKeyword")String searchKeyword, @Param("searchOption")String searchOption) throws Exception ;
 	
 	/** 선민: 나의 상품 리스트 가져오기 - 승인완료 상품 (List) */
-	public List<GoodsBean> selectMyGoodsList(int goodsMemberNum) throws Exception;
+	public List<GoodsBean> selectMyGoodsList(int memberNum) throws Exception;
 	
 	/** 선민: 나의 상품 리스트 가져오기 - 승인대기 상품 (List) */
-	public List<GoodsBean> selectMyUnapprovedGoodsList(int goodsMemberNum) throws Exception;
+	public List<GoodsBean> selectMyUnapprovedGoodsList(int memberNum) throws Exception;
 	
 	/** 선민: 나의 상품 리스트 가져오기 - 임시저장 상품 (List) */
-	public List<GoodsBean> selectMyTempGoodsList(int goodsMemberNum) throws Exception;
+	public List<GoodsBean> selectMyTempGoodsList(int memberNum) throws Exception;
 
 	/* ---------------------------- 상품 등록 ---------------------------- */
 	
 	/** 선민: 상품 등록 - 새로운 상품 데이터를 DB에 삽입하기 */
-	public void insertGoods(GoodsBean goodsBean);
+	public void insertGoods(GoodsBean goodsBean) throws Exception;
+	
+	/** 선민: 상품 추가옵션 등록 - 등록될 상품의 추가옵션 데이터를 DB에 삽입하기 */
+	public void insertGoodsOption(GoodsOptionBean goodsOptionBean) throws Exception;
 	
 	/** 선민: 상품 임시저장 - 상품 등록 폼의 내용을 임시 저장 */
-	public void insertTempGoods(GoodsBean goodsBean);
+	public void insertTempGoods(GoodsBean goodsBean) throws Exception;
+	
+	/* ---------------------------- 상품 삭제 ---------------------------- */
+	
+	/** 선민: 상품 삭제 - DB에서 데이터 삭제 */
+	public void deleteGoods(int goodsNum) throws Exception;
 	
 	/* ---------------------------- 상품 상세보기 ---------------------------- */
 	
@@ -53,5 +61,9 @@ public interface GoodsMapper {
 	/** 선민: 상품 상세보기 - 추가옵션 선택항목 리스트 꺼내오기 (List) */
 	// 선민: mybatis로 2개 이상의 파라미터를 보낼 때 @Param으로 명시해주기
 	public List<GoodsOptionBean> selectGoodsOptionContent(@Param("goodsNum") String goodsNum, @Param("goodsOptNameNum") String goodsOptNameNum) throws Exception;
+
+	
+
+	
 
 }

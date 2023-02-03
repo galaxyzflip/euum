@@ -72,6 +72,7 @@ public class MemberController {
 
 	}
 
+
 	// ajax 로그인 처리
 	@ResponseBody
 	@PostMapping("/member/loginProAjax")
@@ -93,7 +94,6 @@ public class MemberController {
 
 	}
 
-	// 로그아웃...
 	@GetMapping("/member/logout")
 	public String logout(HttpServletRequest request) {
 		request.getSession().invalidate();
@@ -101,7 +101,9 @@ public class MemberController {
 		return "redirect:/main";
 	}
 
+
 	// 계정찾기 폼 로드... 인증은 어떻게 할 것인가...
+
 	@GetMapping("/member/findAccountForm")
 	public String findAccountForm() {
 
@@ -158,24 +160,7 @@ public class MemberController {
 		return null;
 	}
 
-	// 회원가입
 
-	@GetMapping("/member/joinForm1")
-	public String joinForm1() {
-		return "./member/joinForm1";
-	}
-
-	@GetMapping("/member/joinForm2")
-	public String joinForm2() {
-		return "./member/joinForm2";
-	}
-
-	@PostMapping("/member/joinPro")
-	public String joinPro(MemberBean memberBean) {
-		System.out.println(memberBean + "------------controller");
-		memberService.insertMember(memberBean);
-		return "redirect:/member/joinOk";
-	}
 
 	@GetMapping("/member/joinOk")
 	public String joinOk() {

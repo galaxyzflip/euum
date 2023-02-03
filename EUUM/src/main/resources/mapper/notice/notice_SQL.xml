@@ -23,9 +23,22 @@
      ]]>	
      <include refid="criteria"></include>
      <![CDATA[
+     					rownum <=#{pageNum} * #{amount} AND NOTICE_CATEGORY=1 AND NOTICE_DELETE = 'N')
+		where rn>(#{pageNum}-1) * #{amount} ORDER BY NOTICE_NUM DESC
+	]]>	
+<!-- 	<![CDATA[
+		select NOTICE_NUM, NOTICE_TITLE, NOTICE_REGDATE,
+		NOTICE_WRITER, NOTICE_HITCOUNT, NOTICE_DELETE, NOTICE_CATEGORY
+		from (select rownum rn, NOTICE_NUM, NOTICE_TITLE, NOTICE_REGDATE,
+		                NOTICE_WRITER, NOTICE_HITCOUNT, NOTICE_DELETE, NOTICE_CATEGORY
+		                FROM NOTICE_TBL
+		                WHERE 
+     ]]>	
+     <include refid="criteria"></include>
+     <![CDATA[
      					rownum <=#{pageNum} * #{amount})
 		where rn>(#{pageNum}-1) * #{amount} AND  NOTICE_DELETE = 'N' ORDER BY  NOTICE_NUM DESC
-	]]>	
+	]]>	 -->
 	
 	<!-- <![CDATA[
 		select NOTICE_NUM, NOTICE_TITLE, NOTICE_REGDATE,
@@ -113,11 +126,11 @@
 	 	]]>	 
 	 </update>
 	 
-	 <select id="getTotlaCount" resultType="int">
+	 <select id="getTotalCount" resultType="int">
 		select count(*) from NOTICE_TBL 
 		where 
 		<include refid="criteria"></include>
-		NOTICE_NUM>0
+		NOTICE_NUM>0 AND NOTICE_CATEGORY=1 AND NOTICE_DELETE ='N'
 	</select>
 	
 	<sql id="criteria">
