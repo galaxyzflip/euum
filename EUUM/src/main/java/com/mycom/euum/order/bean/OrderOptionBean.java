@@ -10,7 +10,7 @@ public class OrderOptionBean {
 	
 	private String orderOptNum;
 	private String orderNum;
-	private String goodsNum;
+	private int goodsNum;
 	//private String goodsOptContentNum;
 	private String orderOptPrice;
 	private String orderOptCount;

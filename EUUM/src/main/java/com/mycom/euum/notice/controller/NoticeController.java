@@ -37,7 +37,7 @@ public class NoticeController {
 		model.addAttribute("list",noticeService.noticeList(cri));
 		model.addAttribute("FAQ", noticeService.FAQList());
 		
-		int total=noticeService.getTotal(cri);
+		int total=noticeService.getTotal(cri);     //공지사항(1)번만 토탈로 불러오게 함 
 		model.addAttribute("pageMaker", new PageDTO(cri, total));
 		
 		log.info("sql돌려요=======================" + noticeService.noticeList(cri));

@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<script src="webjars/jquery/3.5.1/dist/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <div class="container" style="margin:100px">
 
@@ -74,7 +74,25 @@
 		</div>
 		
 		<div>
-			--- 추가옵션부분 ---
+			<!-- 추가옵션 입력칸 -->
+<!-- 				<button type="button" id="opAdd_bt" onclick="return opAddList();">옵션추가</button> -->
+			<button type="button" id="opAdd_bt">옵션추가</button>
+			<!-- <button type="button" id="opDel_bt">삭제</button> -->
+			<table style="width: 100%;">
+				<!-- 개수 추가되는 부분 -->
+				<tbody class="opBody" id="opBody">
+					<tr class="opList_1" id="opList_1">
+						<td>
+<!-- 							<input type="text" name="goodsOptions[0].goodsOptName" style="width: 160px;"> -->
+<!-- 							<input type="text" name="goodsOptions[0].goodsOptContent" style="width: 500px"> -->
+<!-- 							<input type="text" name="goodsOptions[0].goodsOptPrice" style="width: 160px;"> -->
+							<input type="text" name="goodsOptName" style="width: 160px;">
+							<input type="text" name="goodsOptContent" style="width: 500px">
+							<input type="text" name="goodsOptPrice" style="width: 160px;">
+						</td>
+					</tr>
+				</tbody>
+			</table>
 		</div>
 	
 		<div>
@@ -87,8 +105,6 @@
 		</div>
 		
 		<div style="position: fixed; bottom: 100px; right: 0; z-index: 10">
-<!-- 			<div>임시 저장</div> -->
-<!-- 			<div class="btn1" onclick="return checkForm();" style="margin-top: 8px">등 록</div> -->
 			<div>
 				<button type="button" id="registerTempBtn">임시 저장</button>
 			</div>
@@ -116,6 +132,50 @@ $(function() {
 		form.submit();
     })
 });
+
+$(document).ready(function() {
+	let opNum = 1;
+// 	let opContNum = 1;
+	
+	/* 옵션 추가 */
+	$('#opAdd_bt').on('click',function() {
+		let newBox = "";
+		let opBody = document.querySelector('.opBody');
+		
+		opNum++;
+		
+		newBox += '<tr class="opList_' + opNum + '" id="opList_' + opNum + '">';
+		newBox += '<td>';
+		newBox += '<input type="text" name="goodsOptName" style="width: 160px;">';
+		newBox += '<input type="text" name="goodsOptContent" style="width: 500px">';
+		newBox += '<input type="text" name="goodsOptPrice" style="width: 160px;">';
+		newBox += '<button type="button" id="opContentDel_bt" onclick="opContentDel(' + opNum + ');">X</button>';
+		newBox += '</td></tr>';
+		
+// 		newBox += '<tr class="opList_' + opNum + '" id="opList_' + opNum + '">';
+// 		newBox += '<td>';
+// 		newBox += '<input type="text" name="goodsOptions[' + (opNum-1) + '].goodsOptName" style="width: 160px;">';
+// 		newBox += '<input type="text" name="goodsOptions[' + (opNum-1) + '].goodsOptContent" style="width: 500px">';
+// 		newBox += '<input type="text" name="goodsOptions[' + (opNum-1) + '].goodsOptPrice" style="width: 160px;">';
+// 		newBox += '<button type="button" id="opContentDel_bt" onclick="opContentDel(' + opNum + ');">X</button>';
+// 		newBox += '</td></tr>';
+		
+// 		newBox += '<tr class="opList_' + opNum + '" id="opList_' + opNum + '">';
+// 		newBox += '<td>';
+// 		newBox += '<input type="text" name="opName_' + opNum + '" style="width: 160px;">';
+// 		newBox += '<input type="text" name="opContent_' + opNum + '" style="width: 500px">';
+// 		newBox += '<input type="text" name="opPrice_' + opNum + '" style="width: 160px;">';
+// 		newBox += '<button type="button" id="opContentDel_bt" onclick="opContentDel(' + opNum + ');">X</button>';
+// 		newBox += '</td></tr>';
+	
+		opBody.insertAdjacentHTML('beforeend', newBox);
+	})
+});
+
+function opContentDel(index) {
+    var opList = document.getElementById("opList_" + index);
+    opList.remove();
+}
 </script>
 
 <style>

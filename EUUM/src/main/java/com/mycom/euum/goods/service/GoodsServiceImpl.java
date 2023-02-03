@@ -31,20 +31,20 @@ public class GoodsServiceImpl implements GoodsService {
 	
 	/** 은정: 상품 리스트 검색결과 가져오기 (List) */
 	@Override
-	public List<GoodsBean> selectGoodsSearchList(String searchKeyword) throws Exception {
-		return goodsMapper.selectGoodsSearchList(searchKeyword);
+	public List<GoodsBean> selectGoodsSearchList(String searchKeyword, String searchOption) throws Exception {
+		return goodsMapper.selectGoodsSearchList(searchKeyword, searchOption);
 	}
 	
 	/** 선민: 나의 상품 리스트 가져오기 - 승인완료 상품 (List) */
 	@Override
-	public Map<String, List<GoodsBean>> selectMyGoodsList(int goodsMemberNum) throws Exception {
+	public Map<String, List<GoodsBean>> selectMyGoodsList(int memberNum) throws Exception {
 		List<GoodsBean> myGoodsList = new ArrayList<GoodsBean>();
 		List<GoodsBean> myUnapprovedGoodsList = new ArrayList<GoodsBean>();
 		List<GoodsBean> myTempList = new ArrayList<GoodsBean>();
 		
-		myGoodsList = goodsMapper.selectMyGoodsList(goodsMemberNum);
-		myUnapprovedGoodsList = goodsMapper.selectMyUnapprovedGoodsList(goodsMemberNum);
-		myTempList = goodsMapper.selectMyTempGoodsList(goodsMemberNum);
+		myGoodsList = goodsMapper.selectMyGoodsList(memberNum);
+		myUnapprovedGoodsList = goodsMapper.selectMyUnapprovedGoodsList(memberNum);
+		myTempList = goodsMapper.selectMyTempGoodsList(memberNum);
 		
 		Map<String, List<GoodsBean>> myGoodsMap = new HashMap<String, List<GoodsBean>>();
 		myGoodsMap.put("myGoodsList", myGoodsList);
@@ -56,14 +56,14 @@ public class GoodsServiceImpl implements GoodsService {
 
 	/** 선민: 나의 상품 리스트 가져오기 - 승인대기 상품 (List) */
 	@Override
-	public List<GoodsBean> selectMyUnapprovedGoodsList(int goodsMemberNum) throws Exception {
-		return goodsMapper.selectMyUnapprovedGoodsList(goodsMemberNum);
+	public List<GoodsBean> selectMyUnapprovedGoodsList(int memberNum) throws Exception {
+		return goodsMapper.selectMyUnapprovedGoodsList(memberNum);
 	}
 
 	/** 선민: 나의 상품 리스트 가져오기 - 임시저장 상품 (List) */
 	@Override
-	public List<GoodsBean> selectMyTempGoodsList(int goodsMemberNum) throws Exception {
-		return goodsMapper.selectMyTempGoodsList(goodsMemberNum);
+	public List<GoodsBean> selectMyTempGoodsList(int memberNum) throws Exception {
+		return goodsMapper.selectMyTempGoodsList(memberNum);
 	}
 
 	/* ---------------------------- 상품 등록 ---------------------------- */
@@ -74,9 +74,25 @@ public class GoodsServiceImpl implements GoodsService {
 		goodsMapper.insertGoods(goodsBean);
 	}
 	
+	/** 선민: 상품 추가옵션 등록 - 등록될 상품의 추가옵션 데이터를 DB에 삽입하기 */
+	@Override
+	public void insertGoodsOption(GoodsOptionBean goodsOptionBean) throws Exception {
+		goodsMapper.insertGoodsOption(goodsOptionBean);
+	}
+	
 	/** 선민: 상품 임시저장 - 상품 등록 폼의 내용을 임시 저장 */
-	public void insertTempGoods(GoodsBean goodsBean) {
+	@Override
+	public void insertTempGoods(GoodsBean goodsBean) throws Exception {
 		goodsMapper.insertTempGoods(goodsBean);
+	}
+	
+	
+	/* ---------------------------- 상품 삭제 ---------------------------- */
+	
+	/** 선민: 상품 삭제 - DB에서 데이터 삭제 */
+	@Override
+	public void deleteGoods(int goodsNum) throws Exception {
+		goodsMapper.deleteGoods(goodsNum);
 	}
 	
 	/* ---------------------------- 상품 상세보기 ---------------------------- */
@@ -105,5 +121,5 @@ public class GoodsServiceImpl implements GoodsService {
 	public List<GoodsOptionBean> selectGoodsOptionContent(String goodsNum, String goodsOptNameNum) throws Exception {
 		return goodsMapper.selectGoodsOptionContent(goodsNum, goodsOptNameNum);
 	}
-
+	
 }

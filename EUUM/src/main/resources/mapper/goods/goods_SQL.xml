@@ -16,7 +16,7 @@
 			GOODS_CONTENT,
 			GOODS_PRICE,
 			GOODS_SELLER_NICKNAME,
-			GOODS_MEMBER_NUM,
+			MEMBER_NUM,
 			GOODS_FORMAT,
 			GOODS_RESOLUTION,
 			GOODS_SIZE,
@@ -37,7 +37,7 @@
 			#{goodsContent},
 			#{goodsPrice},
 			#{goodsSellerNickname},
-			#{goodsMemberNum},
+			#{memberNum},
 			#{goodsFormat},
 			#{goodsResolution},
 			#{goodsSize},
@@ -61,7 +61,7 @@
 			GOODS_NAME = #{goodsName},
 		    GOODS_CONTENT = #{goodsContent},
 			GOODS_PRICE = #{goodsPrice},
-			GOODS_SELLER_NICKNAME = #{goodsSellerNickname},  --없어도 될듯
+			GOODS_SELLER_NICKNAME = #{goodsSellerNickname},
 			GOODS_FORMAT = #{goodsFormat},
 			GOODS_RESOLUTION = #{goodsResolution},
 			GOODS_SIZE = #{goodsSize},
@@ -79,12 +79,13 @@
 	
 	
 	<!-- 선민: 상품 삭제 (deleteGoods) -->
+	<!-- <update id="deleteGoods" parameterType="_int"> -->
 	<update id="deleteGoods" parameterType="int">
 	update GOODS_TBL
 	set
 		GOODS_STATUS = '삭제완료'
 	where
-		GOODS_NUM = #{goodsNum};
+		GOODS_NUM = #{goodsNum}
 	</update>
 	
 	
@@ -137,7 +138,7 @@
 			GOODS_CONTENT,
 			GOODS_PRICE,
 			GOODS_SELLER_NICKNAME,
-			GOODS_MEMBER_NUM,
+			MEMBER_NUM,
 			GOODS_FORMAT,
 			GOODS_RESOLUTION,
 			GOODS_SIZE,
@@ -158,7 +159,7 @@
 			#{goodsContent},
 			#{goodsPrice},
 			#{goodsSellerNickname},
-			#{goodsMemberNum},
+			#{memberNum},
 			#{goodsFormat},
 			#{goodsResolution},
 			#{goodsSize},
@@ -228,7 +229,7 @@
 		select *
 		from GOODS_TBL
 		where GOODS_STATUS = '승인완료'
-		and GOODS_MEMBER_NUM = #{goodsMemberNum}
+		and MEMBER_NUM = #{memberNum}
 		order by GOODS_NUM DESC
 	</select>
 	
@@ -238,7 +239,7 @@
 		select *
 		from GOODS_TBL
 		where GOODS_STATUS = '승인대기'
-		and GOODS_MEMBER_NUM = #{goodsMemberNum}
+		and MEMBER_NUM = #{memberNum}
 		order by GOODS_NUM DESC
 	</select>
 	
@@ -248,7 +249,7 @@
 		select *
 		from GOODS_TBL
 		where GOODS_STATUS = '임시저장'
-		and GOODS_MEMBER_NUM = #{goodsMemberNum}
+		and MEMBER_NUM = #{memberNum}
 		order by GOODS_NUM DESC
 	</select>
 	
@@ -277,7 +278,12 @@
 		select *
 		from GOODS_TBL
 		where GOODS_STATUS = '승인완료'
+		<if test="searchOption != null and searchOption.equals('goodsName')">
 		and GOODS_NAME like '%' || #{searchKeyword} || '%' 
+	    </if>  
+	    <if test="searchOption != null and searchOption.equals('goodsWriter')">
+		and GOODS_SELLER_NICKNAME like '%' || #{searchKeyword} || '%' 
+	    </if>     
 		order by GOODS_NUM DESC
 	</select>
 	
