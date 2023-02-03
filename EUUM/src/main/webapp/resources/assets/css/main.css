@@ -1210,7 +1210,7 @@ section {
 # Book A Table Section
 --------------------------------------------------------------*/
 .book-a-table .reservation-img {
-  min-height: 500px;
+  min-height: 300px;
   background-size: cover;
   background-position: center;
 }

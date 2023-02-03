@@ -15,7 +15,13 @@ public class AdminController {
 	
 	@GetMapping("/admin")
 	public String adminMain(HttpServletRequest request) {
-		return"admin/main/main";
+		return "admin/main";
+	}
+	
+	
+	@GetMapping("/admin/memberList")
+	public String adminList() {
+		return "admin/memberList";
 	}
 	
 }

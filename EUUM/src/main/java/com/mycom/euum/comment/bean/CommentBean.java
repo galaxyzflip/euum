@@ -7,16 +7,16 @@ import lombok.Data;
 @Data
 public class CommentBean {
 	
-	private int commentNum; //´ñ±Û¹øÈ£
-	private int memberNum;  //È¸¿ø¹øÈ£
-	private String commentWriter; //´ñ±ÛÀÛ¼ºÀÚ
-	private String commentTitle; //´ñ±Û Á¦¸ñ
-	private String commentContent; //´ñ±Û ³»¿ë
-	private Date commentRegdate; //´ñ±Û ³¯Â¥
-	private String commentDelete; //´ñ±Û »èÁ¦¿©ºÎ
-	private int commentOriginalNum; //¿ø±Û ¹øÈ£
-	private int commentNickname; //Àü¹®°¡ ´Ð³×ÀÓ
-	private int commentCategory; //´ñ±Û Ä«Å×°í¸®
+	private int commentNum; //ï¿½ï¿½Û¹ï¿½È£
+	private int memberNum;  //È¸ï¿½ï¿½ï¿½ï¿½È£
+	private String commentWriter; //ï¿½ï¿½ï¿½ï¿½Û¼ï¿½ï¿½ï¿½
+	private String commentTitle; //ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+	private String commentContent; //ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+	private Date commentRegdate; //ï¿½ï¿½ï¿½ ï¿½ï¿½Â¥
+	private String commentDelete; //ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	private int commentOriginalNum; //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È£
+	private int commentNickname; //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ð³ï¿½ï¿½ï¿½
+	private int commentCategory; //ï¿½ï¿½ï¿½ Ä«ï¿½×°ï¿½
 	
 
 }
