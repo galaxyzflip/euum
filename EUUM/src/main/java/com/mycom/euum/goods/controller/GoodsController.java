@@ -21,6 +21,8 @@ import com.mycom.euum.goods.bean.GoodsOptionBean;
 import com.mycom.euum.goods.service.GoodsServiceImpl;
 
 import com.mycom.euum.goodsQNA.service.GoodsQNAService;
+import com.mycom.euum.image.bean.ImageBean;
+import com.mycom.euum.image.service.ImageServiceImpl;
 import com.mycom.euum.page.Criteria;
 import com.mycom.euum.page.PageDTO;
 import com.mycom.euum.page.RCriteria;
