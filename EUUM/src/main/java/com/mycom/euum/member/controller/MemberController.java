@@ -150,11 +150,11 @@ public class MemberController {
 	
 		@GetMapping("/member/joinForm1")
 		public String joinForm1() {
-			return "member/joinForm1";
+			return "./member/joinForm1";
 		}
 		@GetMapping("/member/joinForm2")
 		public String joinForm2() {
-			return "member/joinForm2";
+			return "./member/joinForm2";
 		}
 
 		@PostMapping("/member/joinPro")
@@ -166,7 +166,7 @@ public class MemberController {
 
 		@GetMapping("/member/joinOk")
 		public String joinOk() {
-			return "member/joinOk";
+			return "./member/joinOk";
 		}
 
 		@ResponseBody
