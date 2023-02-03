@@ -5,8 +5,8 @@
 
 <tiles-definitions>
 
- <!-- 1. ±âº» ÅÛÇÃ¸´ »ý¼º
-    	header, body, footer¸¦ °¡Áø layout.jsp¶ó´Â ±âº» ·¹ÀÌ¾Æ¿ôÀ» Á¤ÀÇ
+ <!-- 1. ê¸°ë³¸ í…œí”Œë¦¿ ìƒì„±
+    	header, body, footerë¥¼ ê°€ì§„ layout.jspë¼ëŠ” ê¸°ë³¸ ë ˆì´ì•„ì›ƒì„ ì •ì˜
      -->
 	<definition name="main_layout" template="/WEB-INF/tiles/layout.jsp">
 		<put-attribute name="header" value="/WEB-INF/tiles/header.jsp" />
@@ -35,10 +35,6 @@
 		<put-attribute name="body" value="/WEB-INF/views/{1}/{2}.jsp"/>
 	</definition>
 
-	<definition name="*/*/*" extends="main_layout">
-		<put-attribute name="body"
-			value="/WEB-INF/views/{1}/{2}/{3}.jsp" />
-	</definition>
 
 	
 </tiles-definitions>
