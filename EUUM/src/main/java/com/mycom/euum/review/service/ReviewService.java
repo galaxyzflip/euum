@@ -15,7 +15,11 @@ public interface ReviewService {
 	
 	public ReviewBean reviewDetail(int reviewNum);
 	
-	public int reviewModify(int reviewNum);
+	public ReviewBean reviewModifyForm(int reviewNum);
+	
+	public int myReview(int memberNum);
+	
+	public int reviewModifyPro(ReviewBean reviewBean);
 	
 	public int reviewDelete(int reviewNum);
 	

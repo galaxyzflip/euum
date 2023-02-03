@@ -1,12 +1,13 @@
 package com.mycom.euum.review.controller;
 
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import com.mycom.euum.notice.bean.NoticeBean;
 import com.mycom.euum.page.RCriteria;
 import com.mycom.euum.page.RPageDTO;
 import com.mycom.euum.review.bean.ReviewBean;
@@ -27,10 +28,7 @@ public class ReviewController {
 	
 	@GetMapping("/review/list")
 	public String noticeList(Model model, RCriteria rcri) {
-	
-//		int amount= rcri.getAmount();
-//		int pageNum=rcri.getPageNum();
-//		int total=reviewService.getTotal(rcri, goodsNum);		 
+	 
 		
 		
 		int total=reviewService.getTotal(rcri);
@@ -53,6 +51,31 @@ public class ReviewController {
 	public String reviewInsertPro(ReviewBean reviewBean) {
 		
 		reviewService.reviewInsert(reviewBean);
+		
+		return "redirect:/review/list";
+	}
+	
+	@GetMapping("/review/reviewModifyForm")
+	public String reviewModify(@RequestParam("reviewNum") int reviewNum, Model model) {
+		
+		System.out.println(reviewNum+"-============================");
+		
+		model.addAttribute("modify", reviewService.reviewModifyForm(reviewNum));
+		
+		System.out.println("수정받냐???????????????????"+reviewService.reviewModifyForm(reviewNum));
+		
+		return "review/reviewModifyForm";
+		
+	}
+	
+	@PostMapping("review/reviewModifyPro")
+	public String reviewModifyPro(@RequestParam("reviewNum")int reviewNum, ReviewBean reviewBean) {
+		
+		//noticeBean.setNoticeNum(noticeNum);
+		System.out.println(reviewBean);
+		reviewService.reviewModifyPro(reviewBean);
+		
+		System.out.println("수정 되냐?????????????????????"+reviewService.reviewModifyPro(reviewBean));
 		
 		return "redirect:/review/list";
 	}

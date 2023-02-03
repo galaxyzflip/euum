@@ -28,8 +28,8 @@
 		from (select rownum rn, R.REVIEW_NUM, R.REVIEW_TITLE, R.REVIEW_REGDATE, R.MEMBER_NUM, R.REVIEW_STAR,
 		               R.REVIEW_WRITER, R.REVIEW_DELETE, R.REVIEW_CONTENT, G.GOODS_NUM
 		                FROM REVIEW_TBL R inner join GOODS_TBL G on R.GOODS_NUM = G.GOODS_NUM
-		                WHERE rownum <=#{pageNum} * #{amount} AND G.GOODS_NUM =#{goodsNum} AND R.REVIEW_DELETE = 'N')
-		where rn>(#{pageNum}-1) * #{amount} ORDER BY REVIEW_NUM	DESC	
+		                WHERE rownum <=#{rpageNum} * #{ramount} AND G.GOODS_NUM =#{goodsNum} AND R.REVIEW_DELETE = 'N')
+		where rn>(#{rpageNum}-1) * #{ramount} ORDER BY REVIEW_NUM	DESC	
 	 ]]>
 	 	   
   </select>
@@ -50,13 +50,30 @@
   	]]>
   </select>
   
+  <select id="myReview" resultType="com.mycom.euum.review.bean.ReviewBean">
+  	<![CDATA[
+  		SELECT REVIEW_NUM, REVIEW_WRITER, REVIEW_CONTENT, REVIEW_REGDATE, REVIEW_TITLE
+  		FROM REVIEW_TBL
+  		WHERE MEMBER_NUM =#{memberNum}
+  	]]>
+  </select>
+  
+  <select id="reviewModifyForm" resultType="com.mycom.euum.review.bean.ReviewBean">
+  	<![CDATA[
+  		SELECT REVIEW_NUM, REVIEW_WRITER, REVIEW_CONTENT, REVIEW_REGDATE, REVIEW_TITLE, REVIEW_STAR
+  		FROM REVIEW_TBL
+  		WHERE REVIEW_NUM = #{reviewNum}
+  	]]>
+  </select>
+  
   
   <update id="reviewModifyPro">
 	 	<![CDATA[
 	 		update REVIEW_TBL
 			set REVIEW_TITLE = #{reviewTitle},
-			    REVIEW_CONTENT = #{reviewContent},				
-			where REVIEW_NUM = #{reviewNum}
+			    REVIEW_CONTENT = #{reviewContent},	
+			    REVIEW_STAR =#{reviewStar}			
+			where REVIEW_NUM = #{reviewNum} AND MEMBER_NUM =#{memberNum}
 	 	]]>	 
 	 </update>
 	 

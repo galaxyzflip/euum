@@ -52,12 +52,18 @@ html,body {
 </head>
 <body>
 
+
 <div id="main">
 
 <div class="container">
    
     <br><br><br><br><br><br>
-    <button type="button" class="btn btn-default" onclick="location.href='/goodsQNA/InsertForm';">문의하기</button>   
+    <h2>문의 및 답변</h2>
+    <form action="/goodsQNA/InsertForm" method="get">
+    <button type="submit" class="btn btn-default" >문의하기</button>   
+    <input type="hidden" name="goodsNum" value="${goodsNum}"/>
+    </form>
+     
     <table class="table table-bordered table-striped table-dark table-hover">
      
       <thead class="thead-light text-center">
@@ -71,10 +77,14 @@ html,body {
         </tr>
       </thead>
       <c:forEach items="${list}" var="var" varStatus="vs">
+        
+      <input type="hidden" id="goodsNum" name="goodsNum" value="${var.goodsNum}"/> 
+   
       <tbody class="text-center">
         <tr>
           <td>${var.goodsQNANum}</td>
-          <td>답변 중</td>
+          <td>답변 중 </td>
+         
           <td class="text-left" width="50%">
             <div class="panel-faq-container">
               <p class="panel-faq-title">${var.goodsQNATitle }</p>
@@ -105,9 +115,10 @@ html,body {
 				            <label for="message-text" class="col-form-label">Message:</label>
 				            <textarea class="form-control" id="message-text" name="goodsQNAComment" ></textarea>
 				          </div>
-				      
+				       
+				        <input type="hidden" id="goodsNum" name="goodsNum" value="${var.goodsNum}"/>
 				        <input type="hidden" id="goodsQNANum" name="goodsQNANum" value="${var.goodsQNANum}"/> 
-				      
+				        
 				      </div>
 				      <div class="modal-footer">
 				        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
@@ -137,6 +148,39 @@ html,body {
     </table>
   </div>
 
+<div id="goodsQNAPaging">
+
+<div class='pull-right'>
+  <ul class="pagination">
+ 
+  <c:if test="${pageMaker.prev}">
+     <li class="page-item">
+     <a class="page-link" href="${pageMaker.startPage -1}" tabindex="-1">Previous</a>
+     </li>
+  </c:if> 
+    
+    <c:forEach var="num" begin="${pageMaker.startPage}" end="${pageMaker.endPage}">
+      <li class="page-item ${pageMaker.cri.pageNum == num ? " active":""} ">
+      <a class="page-link" href="${num}">${num}</a></li>     
+    </c:forEach>
+    
+   <c:if test="${pageMaker.next}">
+     <li class="page-item">
+     <a class="page-link" href="${pageMaker.endPage +1}" tabindex="-1">Next</a>
+     </li>
+   </c:if>
+    
+  </ul>
+</div>	
+
+
+<form id="actionForm" action="/goods/goodsDetail" method='get'>
+	<input type='hidden' name='pageNum' value='${pageMaker.cri.pageNum}'>
+	<input type='hidden' name='amount' value='${pageMaker.cri.amount}'>
+	<input type='hidden' name='goodsNum' value='${goodsNum}'>
+</form>
+
+</div>
 
 </div>
 
@@ -167,6 +211,48 @@ function reply() {
 	$('#commentOriginalNum').val(rid)
 }
 
+function test(){
+	var num = $('#goodsNum').val() 
+	
+	alert(num);
+}
+$(document).ready(function(){
+	var actionForm = $("#actionForm");
+
+	$(".page-link").on("click", function(e) {
+
+		e.preventDefault();
+              
+		var targetPage = $(this).attr("href");
+        
+	    console.log(targetPage);
+	    
+	    actionForm.find("input[name='pageNum']").val(targetPage);  
+	    actionForm.submit();
+	});
+	
+	var searchForm = $("#searchForm");
+
+	$("#searchForm button").on("click",function(e) {
+		
+
+		if (!searchForm.find("option:selected").val()) {
+			alert("검색종류를 선택하세요");
+			return false;
+			}
+
+			if (!searchForm.find("input[name='keyword']").val()) {
+			alert("키워드를 입력하세요");
+			return false;
+			}
+
+			searchForm.find("input[name='pageNum']").val("1");
+			e.preventDefault();
+			searchForm.submit();
+
+			});
+
+})						
 </script>
 
 </html>

@@ -9,8 +9,8 @@ import lombok.ToString;
 @ToString
 public class RCriteria {
 	
-	private int pageNum;
-	private int amount;
+	private int rpageNum;
+	private int ramount;
 	
 	private int goodsNum;
 	
@@ -18,12 +18,12 @@ public class RCriteria {
 	private String keyword;
 	
 	public RCriteria() {
-		this(1,10);
+		this(1,5);
 	}
 	
-	public RCriteria(int pageNum, int amount) {
-		this.pageNum=pageNum;
-		this.amount=amount;
+	public RCriteria(int rpageNum, int ramount) {
+		this.rpageNum=rpageNum;
+		this.ramount=ramount;
 	}
 	
 	public String[] getTypeArr() {

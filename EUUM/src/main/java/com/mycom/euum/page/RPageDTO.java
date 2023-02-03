@@ -19,11 +19,11 @@ public class RPageDTO {
 		this.rcri=rcri;
 		this.total=total;
 		
-		this.endPage = (int)(Math.ceil(rcri.getPageNum()/10.0))*10;
+		this.endPage = (int)(Math.ceil(rcri.getRpageNum()/10.0))*10;
 		
 		this.startPage = this.endPage - 9;
 		
-		int realEnd = (int)(Math.ceil((total*1.0)/rcri.getAmount()));
+		int realEnd = (int)(Math.ceil((total*1.0)/rcri.getRamount()));
 		
 		if(realEnd < this.endPage) {
 			this.endPage = realEnd;

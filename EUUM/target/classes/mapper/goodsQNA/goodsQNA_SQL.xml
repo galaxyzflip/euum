@@ -6,13 +6,40 @@
 <mapper namespace="com.mycom.euum.goodsQNA.mapper.GoodsQNAMapper">
 
    <!-- 상품문의글 리스트 -->
-  <select id="goodsQNAList" resultType="com.mycom.euum.goodsQNA.bean.GoodsQNABean">		
+<!--   <select id="goodsQNAList" resultType="com.mycom.euum.goodsQNA.bean.GoodsQNABean">		
      <![CDATA[
 		SELECT GOODS_QNA_NUM, MEMBER_NUM,GOODS_QNA_TITLE, GOODS_QNA_COMMENT,
 		       GOODS_QNA_WRITER, GOODS_QNA_REGDATE, GOODS_QNA_CONTENT
               FROM(SELECT * FROM GOODS_QNA_TBL WHERE GOODS_QNA_DELETE='N')
 	 ]]>		   
-  </select>
+  </select> -->
+  
+  <!-- 상품문의글 리스트 -->
+  <!-- <select id="goodsQNAList" resultType="com.mycom.euum.goodsQNA.bean.GoodsQNABean">		
+     <![CDATA[
+		SELECT Q.GOODS_QNA_NUM, Q.MEMBER_NUM, Q.GOODS_QNA_TITLE, Q.GOODS_QNA_COMMENT,
+         Q.GOODS_QNA_WRITER, Q.GOODS_QNA_REGDATE, Q.GOODS_QNA_CONTENT, G.GOODS_NUM
+            FROM GOODS_QNA_TBL Q inner join GOODS_TBL G on Q.GOODS_NUM = G.GOODS_NUM
+            WHERE G.GOODS_NUM = #{goodsNum} AND GOODS_QNA_DELETE='N'
+	 ]]>		   
+  </select> -->
+  
+   <!-- 상품문의글 리스트 -->
+   <select id="goodsQNAList" resultType="com.mycom.euum.goodsQNA.bean.GoodsQNABean" parameterType="map">		
+     <![CDATA[
+		SELECT * 
+		 FROM (select rownum rn, Q.GOODS_QNA_NUM, Q.MEMBER_NUM,
+		         Q.GOODS_QNA_TITLE, Q.GOODS_QNA_COMMENT,
+		         Q.GOODS_QNA_WRITER, Q.GOODS_QNA_REGDATE, Q.GOODS_QNA_CONTENT, G.GOODS_NUM
+		         from GOODS_QNA_TBL Q 
+			inner join GOODS_TBL G 
+				on Q.GOODS_NUM = G.GOODS_NUM
+				  where rownum <= #{pageNum} * #{amount} and Q.GOODS_QNA_DELETE='N' and G.GOODS_NUM =#{goodsNum})
+				  where rn>(#{pageNum}-1) * #{amount}
+				  order by GOODS_QNA_NUM DESC
+		 ]]>		   
+    </select> 
+
 
   <!-- 상품문의글 등록 -->
   <insert id="goodsQNAInsert" parameterType="com.mycom.euum.goodsQNA.bean.GoodsQNABean">
@@ -32,6 +59,14 @@
 		WHERE GOODS_QNA_NUM = #{goodsQNANum}
         ]]>	
   </update> 
+  
+  <!-- 상품 문의 총개수-->
+  <select id="getGoodsQNATotalCount" resultType="int">
+	   <![CDATA[ 
+		select count(*) from GOODS_QNA_TBL where GOODS_QNA_NUM>0
+		and GOODS_NUM = #{goodsNum}
+		]]>	
+	</select>
 
 
 </mapper>   

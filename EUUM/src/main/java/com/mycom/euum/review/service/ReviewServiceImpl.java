@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.mycom.euum.notice.bean.NoticeBean;
 import com.mycom.euum.page.RCriteria;
 import com.mycom.euum.review.bean.ReviewBean;
 import com.mycom.euum.review.mapper.ReviewMapper;
@@ -37,9 +38,9 @@ public class ReviewServiceImpl implements ReviewService {
 	}
 
 	@Override
-	public int reviewModify(int reviewNum) {
+	public int reviewModifyPro(ReviewBean reviewBean) {
 		// TODO Auto-generated method stub
-		return reviewMapper.reviewModify(reviewNum);
+		return reviewMapper.reviewModifyPro(reviewBean);
 	}
 
 	@Override
@@ -54,6 +55,18 @@ public class ReviewServiceImpl implements ReviewService {
 		return reviewMapper.reviewDetail(reviewNum);
 	}
 	
+
+	@Override
+	public ReviewBean reviewModifyForm(int reviewNum) {
+		// TODO Auto-generated method stub
+		return reviewMapper.reviewModifyForm(reviewNum);
+	}
+
+	@Override
+	public int myReview(int memberNum) {
+		// TODO Auto-generated method stub
+		return reviewMapper.myReview(memberNum);
+	}
 	
 	@Override
 	public int getTotal(RCriteria rcri) {
