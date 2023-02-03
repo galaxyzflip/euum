@@ -2327,13 +2327,13 @@ html[lang=en] .btn_global, html[lang=zh-Hans] .btn_global, html[lang=zh-Hant] .b
 	}
 	:root .input_chk input:checked+label:before {
 		background:
-			url(https://static.nid.naver.com/images/ui/myinfo/m_chcek_on_s_20.png)
+			url(../img/icon/pc_chcek_on_s_20.png)
 			no-repeat 0 0;
 		background-size: 20px 20px
 	}
 	:root .terms_chk_all .input_chk input:checked+label:before {
 		background:
-			url(https://static.nid.naver.com/images/ui/myinfo/m_check_on_l_24.png)
+			url(../img/icon/pc_check_on_l_24.png)
 			no-repeat 0 0;
 		background-size: 24px 24px
 	}

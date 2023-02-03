@@ -25,7 +25,7 @@ import lombok.extern.log4j.Log4j;
 
 @Controller
 @Log4j
-@AllArgsConstructor
+@AllArgsConstructor 
 public class MemberController {
 
 	private MemberService memberService;
@@ -33,7 +33,6 @@ public class MemberController {
 	// 테스트용... 임시 사용
 	@GetMapping("/main")
 	public String test(HttpServletRequest request) {
-<<<<<<< HEAD
 		
 		
 		/*
@@ -45,20 +44,18 @@ public class MemberController {
 		 * loginUser);
 		 * 
 		 */
-=======
 
 
-		// 로그인 귀찮아서 임시로 만든것... 세션 저장해줌
-		HttpSession session = request.getSession();
-		MemberBean loginUser = new MemberBean();
-		loginUser.setMemberNum(1);
-		loginUser.setMemberName("최창선");
-		loginUser.setMemberEmail("sonsun33@naver.com");
-		loginUser.setMemberMobile("01041746137");
-		session.setAttribute("loginUser", loginUser);
+		/*
+		 * // 로그인 귀찮아서 임시로 만든것... 세션 저장해줌 HttpSession session = request.getSession();
+		 * MemberBean loginUser = new MemberBean(); loginUser.setMemberNum(1);
+		 * loginUser.setMemberName("최창선");
+		 * loginUser.setMemberEmail("sonsun33@naver.com");
+		 * loginUser.setMemberMobile("01041746137"); session.setAttribute("loginUser",
+		 * loginUser);
+		 */
 
 
->>>>>>> refs/remotes/euum/kms_dev
 		return "main/main";
 	}
 
@@ -187,7 +184,6 @@ public class MemberController {
 
 		return null;
 	}
-<<<<<<< HEAD
 	
 	// 회원가입
 	
@@ -198,14 +194,9 @@ public class MemberController {
 		@GetMapping("/member/joinForm2")
 		public String joinForm2() {
 			return "./member/joinForm2";
-=======
+		}
 
 
-
-	@GetMapping("/member/joinOk")
-	public String joinOk() {
-		return "./member/joinOk";
-	}
 
 	@ResponseBody
 	@GetMapping(value = "/member/emailCheck")
@@ -217,21 +208,17 @@ public class MemberController {
 			return "Y";
 		} else {
 			return "N";
->>>>>>> refs/remotes/euum/kms_dev
 		}
 
 	}
 
-<<<<<<< HEAD
 		@GetMapping("/member/joinOk")
 		public String joinOk() {
 			return "./member/joinOk";
 		}
-=======
 	@ResponseBody
 	@GetMapping(value = "/member/pwCheck")
 	public String pwCheck(@RequestParam("email") String email, @RequestParam("pw") String pw) {
->>>>>>> refs/remotes/euum/kms_dev
 
 		System.out.println("------------------ email = " + email);
 		System.out.println("------------------ pw = " + pw);
