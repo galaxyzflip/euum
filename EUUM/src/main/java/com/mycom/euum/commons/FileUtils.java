@@ -29,7 +29,24 @@ public class FileUtils {
 	public List<ImageBean> fileUpload(MultipartFile[] uploadFile, HttpServletRequest request, String fileUse) {
 		log.info("===== 첨부파일 업로드 =====");
 		
+<<<<<<< HEAD
+		List<String> fileInfoList = new ArrayList<String>();
+		
+		// *** 각자의 경로로 변경해주세요 ***
+//		String uploadFolder = "C:\\Aisu\\stsApp\\EUUM\\src\\main\\webapp\\resources\\img";
+//		String uploadFolder = "C:/Aisu/stsApp/EUUM/src/main/webapp/resources/img";
+//		String uploadFolder = "C:/Users/AISU/git/repository/EUUM/src/main/webapp/resources/img";
+		String uploadFolder = "./resources/img";
+		log.info("---------------------------------");
+		log.info("uploadFolder: " + uploadFolder);
+		log.info("uploadFile: " + uploadFile);
+		log.info("index length: " + uploadFile.length);
+		log.info("index 0: " + uploadFile[0].getOriginalFilename());
+		log.info("index 1: " + uploadFile[1].getOriginalFilename());
+		log.info("index 2: " + uploadFile[2].getOriginalFilename());
+=======
 		List<ImageBean> imageBeanList = new ArrayList<ImageBean>();
+>>>>>>> refs/remotes/euum/kms_dev
 
 
 
