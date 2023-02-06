@@ -66,35 +66,33 @@ public class MemberController {
 		return "member/loginForm";
 	}
 
-	// 로그인 처리
+	//로그인 처리
 	@PostMapping("/member/loginPro")
 	public String loginPro(MemberBean bean, SellerBean sellerBean, HttpServletRequest request, RedirectAttributes rttr) {
 		HttpSession session = request.getSession();
 
-	
 		MemberBean loginUser = memberService.loginService(bean); 
-		SellerBean loginSeller = memberService.getSeller(loginUser.getMemberNum());
+		SellerBean loginSeller = memberService.getSeller(loginUser.getMemberNum()); // 수정 필요할듯..? -> bean
+		log.info("loginUser: " + loginUser + "/ loginSeller: " + loginSeller);
 		
-		if(loginUser != null ^ loginSeller == null) {
-
+		
+		if(loginUser != null && loginSeller == null) { // ^ -> &&
 			session.setAttribute("loginUser", loginUser);
 			session.setMaxInactiveInterval(60 * 30);
-
+			log.info("*** 멤버만");
 			return "redirect:/main";
-
 			
-		}else if(loginUser != null ^ loginSeller != null) {
+		}else if(loginUser != null && loginSeller != null) { // ^ -> &&
 			session.setAttribute("loginUser", loginUser);
-			session.setAttribute("seller", loginSeller);
+			session.setAttribute("loginSeller", loginSeller); // "seller" -> "loginSeller"
 			session.setMaxInactiveInterval(60 * 30);
+			log.info("*** 멤버 + 셀러");
 			
 			return "redirect:/main";
 		}else {
-
 			rttr.addFlashAttribute("result", "loginFail");
 			return "redirect:/member/loginForm";
 		}
-
 	}
 
 

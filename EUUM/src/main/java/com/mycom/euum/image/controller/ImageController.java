@@ -14,25 +14,7 @@ import lombok.extern.log4j.Log4j;
 @Log4j
 @AllArgsConstructor
 public class ImageController {
-
-	private ImageServiceImpl imageService;
-	private FileUtils fileUtils;
 	
-	@RequestMapping(value = "/image/imageInsertPro")
-	public String imageInsertPro(ImageBean imageBean) throws Exception {
-		
-		imageBean.setImageFileName("test-fileName");
-		imageBean.setImageFileType("i");
-		imageBean.setImageUploadPath("test-uploadPath");
-		imageBean.setImageUse("test-use");
-		imageBean.setImageUseNum(999);
-		imageBean.setImageUUID("test-uuid");
-		
-		imageService.insertImage(imageBean);
-		
-		return "main_layout";
-	}
-//	insertImage
-	
+	// 사용안함
 	
 }

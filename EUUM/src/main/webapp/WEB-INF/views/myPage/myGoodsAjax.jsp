@@ -14,11 +14,34 @@
 								<td class="myg_category">${row.goodsCategory}</td>
 								<%-- <td class="myg_category">${row.goodsNum}</td> --%>
 								<td>
-									<img class="thumb" src="/resources/img/${row.goodsImageDate}s_${row.goodsImage1}"> <img class="thumb" src="/resources/img/${row.goodsImageDate}s_${row.goodsImage2}"> <img class="thumb" src="/resources/img/${row.goodsImageDate}s_${row.goodsImage3}">
+									<c:choose>
+										<c:when test="${row.goodsImage1 eq null}">
+											<img class="thumb" src="/resources/img/no_image.png">
+										</c:when>
+										<c:otherwise>
+											<img class="thumb" src="/resources/img/${row.goodsImageDate}s_${row.goodsImage1}">
+										</c:otherwise>
+									</c:choose>
+									<c:choose>
+										<c:when test="${row.goodsImage2 eq null}">
+											<img class="thumb" src="/resources/img/no_image.png">
+										</c:when>
+										<c:otherwise>
+											<img class="thumb" src="/resources/img/${row.goodsImageDate}s_${row.goodsImage2}">
+										</c:otherwise>
+									</c:choose>
+									<c:choose>
+										<c:when test="${row.goodsImage3 == null}">
+											<img class="thumb" src="/resources/img/no_image.png">
+										</c:when>
+										<c:otherwise>
+											<img class="thumb" src="/resources/img/${row.goodsImageDate}s_${row.goodsImage3}">
+										</c:otherwise>
+									</c:choose>
 								</td>
 								<td class="myg_info">
-									<li>${row.goodsName}/ ${row.goodsUse}</li>
-									<li>${row.goodsSellerNickname}/ ${row.goodsPrice}</li>
+									<li>${row.goodsName} / ${row.goodsUse}</li>
+									<li>${row.goodsSellerNickname} / ${row.goodsPrice}</li>
 								</td>
 								<td class="myg_button">
 									<input type="hidden" id="goodsNum_${status.index}" value="${row.goodsNum}" />
@@ -47,11 +70,34 @@
 								<td class="myg_category">${row.goodsCategory}</td>
 								<%-- <td class="myg_category">${row.goodsNum}</td> --%>
 								<td>
-									<img class="thumb" src="/resources/img/${row.goodsImageDate}s_${row.goodsImage1}"> <img class="thumb" src="/resources/img/${row.goodsImageDate}s_${row.goodsImage2}"> <img class="thumb" src="/resources/img/${row.goodsImageDate}s_${row.goodsImage3}">
+									<c:choose>
+										<c:when test="${row.goodsImage1 eq null}">
+											<img class="thumb" src="/resources/img/no_image.png">
+										</c:when>
+										<c:otherwise>
+											<img class="thumb" src="/resources/img/${row.goodsImageDate}s_${row.goodsImage1}">
+										</c:otherwise>
+									</c:choose>
+									<c:choose>
+										<c:when test="${row.goodsImage2 eq null}">
+											<img class="thumb" src="/resources/img/no_image.png">
+										</c:when>
+										<c:otherwise>
+											<img class="thumb" src="/resources/img/${row.goodsImageDate}s_${row.goodsImage2}">
+										</c:otherwise>
+									</c:choose>
+									<c:choose>
+										<c:when test="${row.goodsImage3 == null}">
+											<img class="thumb" src="/resources/img/no_image.png">
+										</c:when>
+										<c:otherwise>
+											<img class="thumb" src="/resources/img/${row.goodsImageDate}s_${row.goodsImage3}">
+										</c:otherwise>
+									</c:choose>
 								</td>
 								<td class="myg_info">
-									<li>${row.goodsName}/ ${row.goodsUse}</li>
-									<li>${row.goodsSellerNickname}/ ${row.goodsPrice}</li>
+									<li>${row.goodsName} / ${row.goodsUse}</li>
+									<li>${row.goodsSellerNickname} / ${row.goodsPrice}</li>
 								</td>
 								<td class="myg_button">
 									<input type="hidden" id="goodsNum_${status.index}" value="${row.goodsNum}" />
@@ -80,11 +126,34 @@
 								<td class="myg_category">${row.goodsCategory}</td>
 								<%-- <td class="myg_category">${row.goodsNum}</td> --%>
 								<td>
-									<img class="thumb" src="/resources/img/${row.goodsImageDate}s_${row.goodsImage1}"> <img class="thumb" src="/resources/img/${row.goodsImageDate}s_${row.goodsImage2}"> <img class="thumb" src="/resources/img/${row.goodsImageDate}s_${row.goodsImage3}">
+									<c:choose>
+										<c:when test="${row.goodsImage1 eq null}">
+											<img class="thumb" src="/resources/img/no_image.png">
+										</c:when>
+										<c:otherwise>
+											<img class="thumb" src="/resources/img/${row.goodsImageDate}s_${row.goodsImage1}">
+										</c:otherwise>
+									</c:choose>
+									<c:choose>
+										<c:when test="${row.goodsImage2 eq null}">
+											<img class="thumb" src="/resources/img/no_image.png">
+										</c:when>
+										<c:otherwise>
+											<img class="thumb" src="/resources/img/${row.goodsImageDate}s_${row.goodsImage2}">
+										</c:otherwise>
+									</c:choose>
+									<c:choose>
+										<c:when test="${row.goodsImage3 == null}">
+											<img class="thumb" src="/resources/img/no_image.png">
+										</c:when>
+										<c:otherwise>
+											<img class="thumb" src="/resources/img/${row.goodsImageDate}s_${row.goodsImage3}">
+										</c:otherwise>
+									</c:choose>
 								</td>
 								<td class="myg_info">
-									<li>${row.goodsName}/ ${row.goodsUse}</li>
-									<li>${row.goodsSellerNickname}/ ${row.goodsPrice}</li>
+									<li>${row.goodsName} / ${row.goodsUse}</li>
+									<li>${row.goodsSellerNickname} / ${row.goodsPrice}</li>
 								</td>
 								<td class="myg_button">
 									<input type="hidden" id="goodsNum_${status.index}" name="goodsNum" value="${row.goodsNum}" />
