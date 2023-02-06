@@ -55,7 +55,7 @@ public class MemberController {
 
 		return "main/main";
 	}
-
+	//
 	// 로그인 폼 로드
 	@GetMapping("/member/loginForm")
 	public String loginForm() {
