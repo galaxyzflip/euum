@@ -50,13 +50,7 @@
   	]]>
   </select>
   
-  <select id="myReview" resultType="com.mycom.euum.review.bean.ReviewBean">
-  	<![CDATA[
-  		SELECT REVIEW_NUM, REVIEW_WRITER, REVIEW_CONTENT, REVIEW_REGDATE, REVIEW_TITLE
-  		FROM REVIEW_TBL
-  		WHERE MEMBER_NUM =#{memberNum}
-  	]]>
-  </select>
+  
   
   <select id="reviewModifyForm" resultType="com.mycom.euum.review.bean.ReviewBean">
   	<![CDATA[
@@ -92,6 +86,20 @@
 		REVIEW_NUM>0 AND REVIEW_DELETE ='N' AND GOODS_NUM=#{goodsNum}
 	</select>
 	
+	<select id="myGetTotal" resultType="int">
+		select count(*) from REVIEW_TBL 
+		where 
+		REVIEW_NUM>0 AND REVIEW_DELETE ='N'AND MEMBER_NUM=#{memberNum}
+	</select>
 	
- 
+	<select id="myReviewList" resultType="com.mycom.euum.review.bean.ReviewBean">	
+		<![CDATA[
+	 	SELECT REVIEW_NUM, REVIEW_WRITER, REVIEW_CONTENT, REVIEW_REGDATE, REVIEW_TITLE, REVIEW_STAR
+  		FROM (select rownum rn,REVIEW_NUM, REVIEW_WRITER, REVIEW_CONTENT, REVIEW_REGDATE, REVIEW_TITLE, REVIEW_STAR
+		      FROM REVIEW_TBL
+		      WHERE rownum <=#{pageNum} * #{amount} AND MEMBER_NUM =#{memberNum} AND REVIEW_DELETE = 'N')
+		where rn>(#{pageNum}-1) * #{amount} ORDER BY REVIEW_NUM	ASC	       
+	 ]]>	   
+  </select>
+	 
 </mapper>

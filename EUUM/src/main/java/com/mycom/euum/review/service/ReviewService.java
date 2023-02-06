@@ -2,6 +2,7 @@ package com.mycom.euum.review.service;
 
 import java.util.List;
 
+import com.mycom.euum.page.Criteria;
 import com.mycom.euum.page.RCriteria;
 import com.mycom.euum.review.bean.ReviewBean;
 
@@ -17,12 +18,14 @@ public interface ReviewService {
 	
 	public ReviewBean reviewModifyForm(int reviewNum);
 	
-	public int myReview(int memberNum);
+	public List<ReviewBean> myReviewList(Criteria cri);
 	
 	public int reviewModifyPro(ReviewBean reviewBean);
 	
-	public int reviewDelete(int reviewNum);
+	public int reviewDelete(ReviewBean reviewBean);
 	
 	
 	public int getTotal(RCriteria rcri);
+	
+	public int myGetTotal(Criteria cri);
 }
