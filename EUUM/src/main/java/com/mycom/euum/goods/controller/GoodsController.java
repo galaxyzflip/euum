@@ -50,7 +50,7 @@ public class GoodsController {
 		log.info("start");
 		return "main_layout";
 	}
-
+ // dfs
 	
 	/* ---------------------------- 상품 리스트 ----------------------------- */
 
