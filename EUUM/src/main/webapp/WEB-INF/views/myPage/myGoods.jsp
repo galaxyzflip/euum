@@ -25,9 +25,30 @@
 									<td class="myg_category">${row.goodsCategory}</td>
 									<%-- <td class="myg_category">${row.goodsNum}</td> --%>
 									<td>
-										<img class="thumb" src="/resources/img/${row.goodsImageDate}s_${row.goodsImage1}">
-										<img class="thumb" src="/resources/img/${row.goodsImageDate}s_${row.goodsImage2}">
-										<img class="thumb" src="/resources/img/${row.goodsImageDate}s_${row.goodsImage3}">
+										<c:choose>
+											<c:when test="${row.goodsImage1 eq null}">
+												<img class="thumb" src="/resources/img/no_image.png">
+											</c:when>
+											<c:otherwise>
+												<img class="thumb" src="/resources/img/${row.goodsImageDate}s_${row.goodsImage1}">
+											</c:otherwise>
+										</c:choose>
+										<c:choose>
+											<c:when test="${row.goodsImage2 eq null}">
+												<img class="thumb" src="/resources/img/no_image.png">
+											</c:when>
+											<c:otherwise>
+												<img class="thumb" src="/resources/img/${row.goodsImageDate}s_${row.goodsImage2}">
+											</c:otherwise>
+										</c:choose>
+										<c:choose>
+											<c:when test="${row.goodsImage3 == null}">
+												<img class="thumb" src="/resources/img/no_image.png">
+											</c:when>
+											<c:otherwise>
+												<img class="thumb" src="/resources/img/${row.goodsImageDate}s_${row.goodsImage3}">
+											</c:otherwise>
+										</c:choose>
 									</td>
 									<td class="myg_info">
 										<li>${row.goodsName} / ${row.goodsUse}</li>
@@ -35,7 +56,7 @@
 									</td>
 									<td class="myg_button">
 										<input type="hidden" id="goodsNum_${status.index}" value="${row.goodsNum}"/>
-										<button type="button" onclick="">수정</button>
+										<button type="button" onclick="modifyMyGoods('${row.goodsStatus}', ${status.index});">수정</button>
 										<button type="button" onclick="deleteMyGoods('${row.goodsStatus}', ${status.index});">삭제</button>
 									</td>
 								</tr>
@@ -60,9 +81,30 @@
 									<td class="myg_category">${row.goodsCategory}</td>
 									<%-- <td class="myg_category">${row.goodsNum}</td> --%>
 									<td>
-										<img class="thumb" src="/resources/img/${row.goodsImageDate}s_${row.goodsImage1}">
-										<img class="thumb" src="/resources/img/${row.goodsImageDate}s_${row.goodsImage2}">
-										<img class="thumb" src="/resources/img/${row.goodsImageDate}s_${row.goodsImage3}">
+										<c:choose>
+											<c:when test="${row.goodsImage1 eq null}">
+												<img class="thumb" src="/resources/img/no_image.png">
+											</c:when>
+											<c:otherwise>
+												<img class="thumb" src="/resources/img/${row.goodsImageDate}s_${row.goodsImage1}">
+											</c:otherwise>
+										</c:choose>
+										<c:choose>
+											<c:when test="${row.goodsImage2 eq null}">
+												<img class="thumb" src="/resources/img/no_image.png">
+											</c:when>
+											<c:otherwise>
+												<img class="thumb" src="/resources/img/${row.goodsImageDate}s_${row.goodsImage2}">
+											</c:otherwise>
+										</c:choose>
+										<c:choose>
+											<c:when test="${row.goodsImage3 == null}">
+												<img class="thumb" src="/resources/img/no_image.png">
+											</c:when>
+											<c:otherwise>
+												<img class="thumb" src="/resources/img/${row.goodsImageDate}s_${row.goodsImage3}">
+											</c:otherwise>
+										</c:choose>
 									</td>
 									<td class="myg_info">
 										<li>${row.goodsName} / ${row.goodsUse}</li>
@@ -70,7 +112,7 @@
 									</td>
 									<td class="myg_button">
 										<input type="hidden" id="goodsNum_${status.index}" value="${row.goodsNum}"/>
-										<button type="button" onclick="">수정</button>
+										<button type="button" onclick="modifyMyGoods('${row.goodsStatus}', ${status.index});">수정</button>
 										<button type="button" onclick="deleteMyGoods('${row.goodsStatus}', ${status.index});">삭제</button>
 									</td>
 								</tr>
@@ -95,9 +137,30 @@
 									<td class="myg_category">${row.goodsCategory}</td>
 									<%-- <td class="myg_category">${row.goodsNum}</td> --%>
 									<td>
-										<img class="thumb" src="/resources/img/${row.goodsImageDate}s_${row.goodsImage1}">
-										<img class="thumb" src="/resources/img/${row.goodsImageDate}s_${row.goodsImage2}">
-										<img class="thumb" src="/resources/img/${row.goodsImageDate}s_${row.goodsImage3}">
+										<c:choose>
+											<c:when test="${row.goodsImage1 eq null}">
+												<img class="thumb" src="/resources/img/no_image.png">
+											</c:when>
+											<c:otherwise>
+												<img class="thumb" src="/resources/img/${row.goodsImageDate}s_${row.goodsImage1}">
+											</c:otherwise>
+										</c:choose>
+										<c:choose>
+											<c:when test="${row.goodsImage2 eq null}">
+												<img class="thumb" src="/resources/img/no_image.png">
+											</c:when>
+											<c:otherwise>
+												<img class="thumb" src="/resources/img/${row.goodsImageDate}s_${row.goodsImage2}">
+											</c:otherwise>
+										</c:choose>
+										<c:choose>
+											<c:when test="${row.goodsImage3 == null}">
+												<img class="thumb" src="/resources/img/no_image.png">
+											</c:when>
+											<c:otherwise>
+												<img class="thumb" src="/resources/img/${row.goodsImageDate}s_${row.goodsImage3}">
+											</c:otherwise>
+										</c:choose>
 									</td>
 									<td class="myg_info">
 										<li>${row.goodsName} / ${row.goodsUse}</li>
@@ -105,8 +168,8 @@
 									</td>
 									<td class="myg_button">
 										<input type="hidden" id="goodsNum_${status.index}" name="goodsNum" value="${row.goodsNum}"/>
-										<button type="button" id="modifyMyGoodsBtn" onclick="">수정</button>
-										<button type="button" id="deleteMyGoodsBtn" onclick="deleteMyGoods('${row.goodsStatus}', ${status.index});">삭제</button>
+										<button type="button" onclick="modifyMyGoods('${row.goodsStatus}', ${status.index});">수정</button>
+										<button type="button" onclick="deleteMyGoods('${row.goodsStatus}', ${status.index});">삭제</button>
 									</td>
 								</tr>
 							</table>
@@ -117,6 +180,7 @@
 					<span>임시 저장된 상품이 없습니다.</span>
 				</c:otherwise>
 			</c:choose>
+			<form id="modifyForm"></form>
 		</div>
 	</div>
 	<br/>
@@ -125,6 +189,42 @@
 </div>
 
 <script>
+function modifyMyGoods(status, index) {
+    let formData = new FormData(); // 가상의 <form>태그 객체를 생성
+    let goodsNum;
+    
+    if(!confirm("상품 정보를 수정하시겠습니까?")) { return false; }
+    else {}
+    
+	switch(status) {
+		case '승인완료':
+			goodsNum = document.querySelector('div.myGoodsList input[id=goodsNum_' + index + ']').value;
+			break;
+		case '승인대기':
+			goodsNum = document.querySelector('div.myUnapprovedGoodsList input[id=goodsNum_' + index + ']').value;
+			break;
+		case '임시저장':
+			goodsNum = document.querySelector('div.myTempGoodsList input[id=goodsNum_' + index + ']').value;
+			break;
+		default:
+			alert('이거뜨면먼가오류있음');
+	}
+
+	// 1. 가상의 <form>태그에 전송할 data를 담기
+	var form = document.getElementById("modifyForm");
+	form.setAttribute("charset", "UTF-8");
+	form.setAttribute("method", "Post");  //Post 방식
+	form.setAttribute("action", "/goods/goodsModifyForm"); //요청 보낼 주소
+	
+	var input   = document.createElement('input'); 
+	input.type   = 'hidden'; 
+	input.name  = 'goodsNum'; 
+	input.value  = goodsNum; 
+	form.appendChild(input); 
+	
+	form.submit();
+}
+
 function deleteMyGoods(status, index) {
     let formData = new FormData(); // 가상의 <form>태그 객체를 생성
     let goodsNum;

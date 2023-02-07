@@ -86,9 +86,9 @@
 <!-- 							<input type="text" name="goodsOptions[0].goodsOptName" style="width: 160px;"> -->
 <!-- 							<input type="text" name="goodsOptions[0].goodsOptContent" style="width: 500px"> -->
 <!-- 							<input type="text" name="goodsOptions[0].goodsOptPrice" style="width: 160px;"> -->
-							<input type="text" name="goodsOptName" style="width: 160px;">
-							<input type="text" name="goodsOptContent" style="width: 500px">
-							<input type="text" name="goodsOptPrice" style="width: 160px;">
+							<input type="text" name="goodsOptNameArr" style="width: 160px;">
+							<input type="text" name="goodsOptContentArr" style="width: 500px">
+							<input type="text" name="goodsOptPriceArr" style="width: 160px;">
 						</td>
 					</tr>
 				</tbody>
@@ -135,7 +135,6 @@ $(function() {
 
 $(document).ready(function() {
 	let opNum = 1;
-// 	let opContNum = 1;
 	
 	/* 옵션 추가 */
 	$('#opAdd_bt').on('click',function() {
@@ -146,27 +145,11 @@ $(document).ready(function() {
 		
 		newBox += '<tr class="opList_' + opNum + '" id="opList_' + opNum + '">';
 		newBox += '<td>';
-		newBox += '<input type="text" name="goodsOptName" style="width: 160px;">';
-		newBox += '<input type="text" name="goodsOptContent" style="width: 500px">';
-		newBox += '<input type="text" name="goodsOptPrice" style="width: 160px;">';
+		newBox += '<input type="text" name="goodsOptNameArr" style="width: 160px;">';
+		newBox += '<input type="text" name="goodsOptContentArr" style="width: 500px">';
+		newBox += '<input type="text" name="goodsOptPriceArr" style="width: 160px;">';
 		newBox += '<button type="button" id="opContentDel_bt" onclick="opContentDel(' + opNum + ');">X</button>';
 		newBox += '</td></tr>';
-		
-// 		newBox += '<tr class="opList_' + opNum + '" id="opList_' + opNum + '">';
-// 		newBox += '<td>';
-// 		newBox += '<input type="text" name="goodsOptions[' + (opNum-1) + '].goodsOptName" style="width: 160px;">';
-// 		newBox += '<input type="text" name="goodsOptions[' + (opNum-1) + '].goodsOptContent" style="width: 500px">';
-// 		newBox += '<input type="text" name="goodsOptions[' + (opNum-1) + '].goodsOptPrice" style="width: 160px;">';
-// 		newBox += '<button type="button" id="opContentDel_bt" onclick="opContentDel(' + opNum + ');">X</button>';
-// 		newBox += '</td></tr>';
-		
-// 		newBox += '<tr class="opList_' + opNum + '" id="opList_' + opNum + '">';
-// 		newBox += '<td>';
-// 		newBox += '<input type="text" name="opName_' + opNum + '" style="width: 160px;">';
-// 		newBox += '<input type="text" name="opContent_' + opNum + '" style="width: 500px">';
-// 		newBox += '<input type="text" name="opPrice_' + opNum + '" style="width: 160px;">';
-// 		newBox += '<button type="button" id="opContentDel_bt" onclick="opContentDel(' + opNum + ');">X</button>';
-// 		newBox += '</td></tr>';
 	
 		opBody.insertAdjacentHTML('beforeend', newBox);
 	})
