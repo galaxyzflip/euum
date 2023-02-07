@@ -27,4 +27,14 @@ public class ImageServiceImpl implements ImageService {
 		}
 		log.info("imageBeanList: " + imageBeanList);
 	}
+
+	
+	/** 최창선 : 이미지 리스트 가져오기 Bean의 imageUse, imageUseNum 조건으로 리스트 가져오기*/
+	@Override
+	public List<ImageBean> getImageList(ImageBean imageBean){
+		
+		return imageMapper.selectImageList(imageBean);
+	}
+
 }
+
