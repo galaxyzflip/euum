@@ -34,7 +34,7 @@
 
 					console.log('click');
 
-					actionForm.find("input[name='pageNum']").val($(this).attr("href"));
+					actionForm.find("input[name='rpageNum']").val($(this).attr("href"));
 					actionForm.submit();
 				});
 	});
@@ -97,14 +97,14 @@
 		
 	</table>	
 		<c:if test="${fn:length(reviewList) == 0}">
-					<div>
-						<table>
-							<tr>
-							<td>등록된 게시글이 없습니다.</td>
-							</tr>
-						</table>
-					</div>
-				</c:if>
+			<div>
+				<table>
+					<tr>
+					<td>등록된 게시글이 없습니다.</td>
+					</tr>
+				</table>
+			</div>
+		</c:if>
 				
 		<form id='actionForm' action="/goods/goodsDetail" method='get'>
 				<input type='hidden' name='rpageNum' value='${rpageMaker.rcri.rpageNum}'>
@@ -116,8 +116,8 @@
 			<ul class="pagination">
 				
 					<c:if test="${rpageMaker.prev}">
-							<li class="paginate_button previous"><a
-								href="${rpageMaker.startPage -1}">Previous</a></li>
+							<li class="paginate_button previous">
+							<a href="${rpageMaker.startPage -1}">Previous</a></li>
 							<li class="paginate_button previous">
 							<%-- <a href="/goods/goodsDetail/?goodsNum=${detail.goodsNum}&pageNum=${rpageMaker.startPage - 1 }">Previous</a></li> --%>
 				
