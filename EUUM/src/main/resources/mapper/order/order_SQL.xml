@@ -264,6 +264,7 @@
 
 	<!-- 회원의 주문 내역 리스트 -->
 	<select id="selectOrderListByMember" resultType="com.mycom.euum.order.bean.OrderBean">
+		<![CDATA[
 		SELECT  O.ORDER_NUM,
         G.GOODS_NAME,
 		ORDER_KEY_NUM,
@@ -287,13 +288,18 @@
         ORDER_EXPIRATION_DATE,
         ORDER_PRICE,
         ORDER_REQUEST,
-        ORDER_CANCLE_DATE
+        ORDER_CANCLE_DATE,
+        nvl2(I.IMAGE_USE_NUM, 'Y', 'N') as FILE_YN
+     
 		FROM ORDER_TBL O INNER JOIN GOODS_TBL G 
         ON O.GOODS_NUM=G.GOODS_NUM
         inner join (select order_num, sum(order_opt_price) as "ORDER_PRICE" from order_opt_tbl group by order_num) p
         on o.order_num=p.order_num
-		and O.MEMBER_NUM = #{memberNum}
+        left outer join (select image_use_num from image_tbl where image_use='order' group by image_use_num ) i
+        on i.image_use_num=o.order_key_num
+		WHERE O.MEMBER_NUM = #{memberNum}
 		order by order_date desc
+		]]>
 		
 	</select>
 	
@@ -332,7 +338,7 @@
         on o.order_num=p.order_num
         left outer join (select image_use_num from image_tbl where image_use='order' group by image_use_num ) i
         on i.image_use_num=o.order_key_num
-		and O.SELLER_NUM = #{sellerNum}
+		WHERE O.SELLER_NUM = #{sellerNum}
 		order by order_date desc
 		]]>
 	</select>

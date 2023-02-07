@@ -258,11 +258,11 @@ ul li {
 				</div>
 			</div>
 
-
 			<div class="modal-footer">
 				<button type="button" id="cancle-order" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
 				<button type="button" id="add-order" class="btn btn-primary"  onClick="fileUpload()">업로드</button>
 			</div>
+			
 		</div>
 	</div>
 </div>
@@ -276,25 +276,55 @@ ul li {
 
 <script>
 
+$(document).ready(function() {
+	
+	//파일 다운로드
+	$('.file-list').on('click', 'div', function(e){
+		var liObj = $(this);
+		var path = encodeURIComponent('/' + liObj.data("path")+liObj.data("filename"));
+		console.log(path);
+		self.location ="/download?fileName="+path
+	})
+	
+	
+	//상세정보 펼치기
+	$(".que").click(function() {
+		$(this).parent().parent().next(".anw").stop().slideToggle(0);
+		//$(this).toggleClass('on').siblings().removeClass('on');
+		$(this).parent().parent().next(".anw").siblings(".anw").slideUp(0); // 1개씩 펼치기
+	});
+
+})
+
+	
+
 	let uploadModal = $('#fileUploadModal');
 	
 	function viewFile(data, orderForm){
 		
 		let inner = '';
+		let shortName = data.originalFileName.substr(0, 16) + "...";
 
 		console.log("orderForm 이름 : " + orderForm);
-		$.each(data, function(index, item){
-			inner += '<div>'+item.originalFileName+'</div>';
-			console.log(inner);
-			
-		})
+		
+		inner += '<div data-path="'+data.imageUploadPath+'" data-filename="'+data.imageFileName+'">'
+		inner += shortName+'</div>'; 
+		
+		/* inner += '<div data-path="'+data.imageUploadPath+'" data-filename="'+data.imageFileName+'">'
+		inner += '<span>'+shortName+'</span><span><img src="/resources/img/attach.png"></span></div>'; 
+		 */
+		
+		console.log(inner);
 		
 		let form = $('#'+orderForm); 
 		$(form).next().find('.file-list').html(inner);
 	}
 	
 	
-	function fileList(orderKeyNum, orderForm){
+	
+	
+	//파일보기 버튼 클릭시 파일리스트 출력
+	 function fileList(orderKeyNum, orderForm){
 		let imageUse = 'order';
 		let imageUseNum = orderKeyNum;
 		
@@ -309,7 +339,7 @@ ul li {
 	          dataType : 'json',
 	          success: function (data) {
 	        	console.log('ajax');
-				console.log(data[0].originalFileName);
+				console.log(data);
 	        	console.log('ajax');
 				viewFile(data, orderForm);
 	          },
@@ -323,6 +353,7 @@ ul li {
 	
 	
 
+	//이미지 업로드 함수
  	function fileUpload(){
  		
 		console.log($('input[name="orderKeyNum"]').val());
@@ -351,6 +382,8 @@ ul li {
  	        });
 	}
 
+ 	
+ 	//이미지 업로드 후 작업되는 함수... orderStatus, 파일보기 버튼 생성
  	function uploadResult(orderForm){
  		
  		let orderKeyNum = $('input[name="orderKeyNum"]').val();
@@ -367,16 +400,7 @@ ul li {
  	}
 
 	
-	$(document).ready(function() {
-
-		//상세정보 펼치기
-		$(".que").click(function() {
-			$(this).parent().parent().next(".anw").stop().slideToggle(0);
-			//$(this).toggleClass('on').siblings().removeClass('on');
-			$(this).parent().parent().next(".anw").siblings(".anw").slideUp(0); // 1개씩 펼치기
-		});
-
-	})
+	
 
 	//modal show
 	function openModal(orderKeyNum, orderForm, orderNum) {
@@ -389,7 +413,7 @@ ul li {
 
 	}
 
-
+	//진행중 상태 변경 함수
 	function transferOrderStatus(orderNum){
 		if(confirm("진행중 상태로 변경하시겠습니까?")){
 			$('#actionForm').find('input[name="orderNum"]').val(orderNum);

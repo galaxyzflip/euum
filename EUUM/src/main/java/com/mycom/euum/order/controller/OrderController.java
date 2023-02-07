@@ -191,7 +191,7 @@ public class OrderController {
 	//최창선 : 주문에서 파일목록 불러오는 메소드
 	@ResponseBody
 	@PostMapping(value="order/getFile", produces=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<ImageBean>> getFile(ImageBean imageBean){
+	public ResponseEntity<ImageBean> getFile(ImageBean imageBean){
 		
 		log.info("이미지 가져오기 빈 확인 : " + imageBean);
 		List<ImageBean> fileList = imageService.getImageList(imageBean);
@@ -201,10 +201,11 @@ public class OrderController {
 			String OrifileName =  fileName.substring(fileName.indexOf("_") + 1);
 			log.info("실제 파일이름 : " + OrifileName);
 			file.setOriginalFileName(OrifileName);
+			log.info("이미지 빈 내용 : " + file.toString());
 		}
 		
 		
-		return new ResponseEntity<>(fileList, HttpStatus.OK);
+		return new ResponseEntity<>(fileList.get(0), HttpStatus.OK);
 		
 		
 	}
