@@ -26,5 +26,14 @@
 			#{imageUseNum}
 		)
 	</insert>
+	
+	<select id="selectImageList" resultType="com.mycom.euum.image.bean.ImageBean">
+	
+		SELECT * 
+		FROM IMAGE_TBL 
+		WHERE IMAGE_USE=#{imageUse}
+		AND IMAGE_USE_NUM=#{imageUseNum}
+	
+	</select>
 
 </mapper>

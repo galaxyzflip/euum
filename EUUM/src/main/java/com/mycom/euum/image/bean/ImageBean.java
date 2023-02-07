@@ -18,4 +18,5 @@ public class ImageBean {
 	String imageFileType;
 	String imageUse;
 	int imageUseNum;
+	String originalFileName;
 }

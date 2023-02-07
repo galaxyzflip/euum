@@ -332,6 +332,7 @@ ul li {
 	 				orderStatus : orderStatus
 	 			},
 				success : function(data){
+					console.log(data);
 					updateOrder(data, order);
 					
 				},
@@ -364,46 +365,20 @@ ul li {
 	}
 
 	
-	
 	$('#add-order').on('click', function() {
-		let orderName = $('input[name="orderName"]').val();
-		let orderPrice = $('input[name="orderPrice"]').val();
-		let goodsNum = $('input[name="goodsNum"]').val();
-		let orderEmail = $('input[name="orderEmail"]').val();
-		let orderContact = $('input[name="orderContact"]').val();
-		let sellerNickname = $('input[name="sellerNickname"]').val();
-		let sellerNum = $('input[name="sellerNum"]').val();
-		let orderPayType = $('input[name="orderPayType"]').val();
+	
 		
-		
-		
-		console.log("추가할 orderName : " + orderName);
-		console.log("추가할 goodsNum : " + goodsNum);
-		console.log("추가할 orderEmail : " + orderEmail);
-		console.log("추가할 orderContact : " + orderContact);
-		console.log("추가할 sellerNickname : " + sellerNickname);
-		console.log("추가할 sellerNum : " + sellerNum);
-		
-		
+		let formData = $('#addOrder');
 		
 		$.ajax({
 			url : "/order/addOrder",
 			type : "post",
 			async:false,
-			contentType : "application/json; charset=utf-8",
+			//contentType : "application/json; charset=utf-8",
 			dataType : 'json',
- 			data : JSON.stringify({
-				orderName : orderName,
-				orderPrice : orderPrice,
-				goodsNum : goodsNum,
-				orderEmail : orderEmail,
-				orderContact : orderContact,
-				sellerNickname : sellerNickname,
-				sellerNum : sellerNum,
-				orderPayType : orderPayType
-			}),
+ 			data : formData.serialize(),
 			success : function(data){
-				location.reload()
+				//location.reload()
 			},
 			error : function(request, status, error){
 				console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
