@@ -440,6 +440,7 @@ ul li {
 
 		$('input[name="orderName"]').val(orderNum + " 주문의 추가 금액 결제");
 		modal.modal('show');
+		//
 	}
 
 	
