@@ -34,19 +34,30 @@ public class MemberController {
 	@GetMapping("/ccs")
 	public String test(HttpServletRequest request) {
 
-		// 로그인 귀찮아서 임시로 만든것... 세션 저장해줌
-		HttpSession session = request.getSession();
-		MemberBean loginUser = new MemberBean();
-		loginUser.setMemberNum(1);
-		loginUser.setMemberName("최창선");
-		loginUser.setMemberEmail("sonsun33@naver.com");
-		loginUser.setMemberMobile("01041746137");
-		loginUser.setMemberGrade("1");
-		session.setAttribute("loginUser", loginUser);
 
-		return "main_layout";
+		/*
+		 * //로그인 귀찮아서 임시로 만든것... 세션 저장해줌 HttpSession session = request.getSession();
+		 * MemberBean loginUser = new MemberBean(); loginUser.setMemberNum(1);
+		 * loginUser.setMemberName("최창선");
+		 * loginUser.setMemberEmail("sonsun33@naver.com");
+		 * loginUser.setMemberMobile("01041746137"); session.setAttribute("loginUser",
+		 * loginUser);
+		 * 
+		 */
+
+		/*
+		 * // 로그인 귀찮아서 임시로 만든것... 세션 저장해줌 HttpSession session = request.getSession();
+		 * MemberBean loginUser = new MemberBean(); loginUser.setMemberNum(1);
+		 * loginUser.setMemberName("최창선");
+		 * loginUser.setMemberEmail("sonsun33@naver.com");
+		 * loginUser.setMemberMobile("01041746137"); session.setAttribute("loginUser",
+		 * loginUser);
+		 */
+
+		return "main/main";
+
 	}
-
+	//
 	// 로그인 폼 로드
 	@GetMapping("/member/loginForm")
 	public String loginForm() {
@@ -61,6 +72,7 @@ public class MemberController {
 		HttpSession session = request.getSession();
 
 
+
 		MemberBean loginUser = memberService.loginService(bean); 
 		SellerBean loginSeller = memberService.getSeller(loginUser.getMemberNum()); // 수정 필요할듯..? -> bean
 		log.info("loginUser: " + loginUser + "/ loginSeller: " + loginSeller);
@@ -68,22 +80,27 @@ public class MemberController {
 		
 		if(loginUser != null && loginSeller == null) { // ^ -> &&
 
+
 			session.setAttribute("loginUser", loginUser);
 			session.setMaxInactiveInterval(60 * 30);
 			log.info("*** 멤버만");
 			return "redirect:/main";
 
+
 			
 		}else if(loginUser != null && loginSeller != null) { // ^ -> &&
+
 
 			session.setAttribute("loginUser", loginUser);
 			session.setAttribute("loginSeller", loginSeller); // "seller" -> "loginSeller"
 			session.setMaxInactiveInterval(60 * 30);
 
+
 			log.info("*** 멤버 + 셀러");
 			
+
 			return "redirect:/main";
-		}else {
+		} else {
 
 			rttr.addFlashAttribute("result", "loginFail");
 			return "redirect:/member/loginForm";
@@ -183,9 +200,18 @@ public class MemberController {
 		return "./member/joinForm1";
 	}
 
+
 	@GetMapping("/member/joinForm2")
 	public String joinForm2() {
 		return "./member/joinForm2";
+	}
+
+	@PostMapping("/member/joinPro")
+	public String joinPro(MemberBean memberBean) {
+		System.out.println(memberBean + "------------controller");
+		memberService.insertMember(memberBean);
+		return "redirect:/member/joinOk";
+
 	}
 
 	@ResponseBody
