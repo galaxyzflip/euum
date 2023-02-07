@@ -25,38 +25,26 @@ import lombok.extern.log4j.Log4j;
 
 @Controller
 @Log4j
-@AllArgsConstructor 
+@AllArgsConstructor
 public class MemberController {
 
 	private MemberService memberService;
 
 	// 테스트용... 임시 사용
-	@GetMapping("/main")
+	@GetMapping("/ccs")
 	public String test(HttpServletRequest request) {
-		
-		
-		/*
-		 * //로그인 귀찮아서 임시로 만든것... 세션 저장해줌 HttpSession session = request.getSession();
-		 * MemberBean loginUser = new MemberBean(); loginUser.setMemberNum(1);
-		 * loginUser.setMemberName("최창선");
-		 * loginUser.setMemberEmail("sonsun33@naver.com");
-		 * loginUser.setMemberMobile("01041746137"); session.setAttribute("loginUser",
-		 * loginUser);
-		 * 
-		 */
 
+		// 로그인 귀찮아서 임시로 만든것... 세션 저장해줌
+		HttpSession session = request.getSession();
+		MemberBean loginUser = new MemberBean();
+		loginUser.setMemberNum(1);
+		loginUser.setMemberName("최창선");
+		loginUser.setMemberEmail("sonsun33@naver.com");
+		loginUser.setMemberMobile("01041746137");
+		loginUser.setMemberGrade("1");
+		session.setAttribute("loginUser", loginUser);
 
-		/*
-		 * // 로그인 귀찮아서 임시로 만든것... 세션 저장해줌 HttpSession session = request.getSession();
-		 * MemberBean loginUser = new MemberBean(); loginUser.setMemberNum(1);
-		 * loginUser.setMemberName("최창선");
-		 * loginUser.setMemberEmail("sonsun33@naver.com");
-		 * loginUser.setMemberMobile("01041746137"); session.setAttribute("loginUser",
-		 * loginUser);
-		 */
-
-
-		return "main/main";
+		return "main_layout";
 	}
 
 	// 로그인 폼 로드
@@ -68,35 +56,33 @@ public class MemberController {
 
 	// 로그인 처리
 	@PostMapping("/member/loginPro")
-	public String loginPro(MemberBean bean, SellerBean sellerBean, HttpServletRequest request, RedirectAttributes rttr) {
+	public String loginPro(MemberBean bean, SellerBean sellerBean, HttpServletRequest request,
+			RedirectAttributes rttr) {
 		HttpSession session = request.getSession();
 
-	
-		MemberBean loginUser = memberService.loginService(bean); 
+		MemberBean loginUser = memberService.loginService(bean);
 		SellerBean loginSeller = memberService.getSeller(loginUser.getMemberNum());
-		
-		if(loginUser != null ^ loginSeller == null) {
+
+		if (loginUser != null ^ loginSeller == null) {
 
 			session.setAttribute("loginUser", loginUser);
 			session.setMaxInactiveInterval(60 * 30);
 
 			return "redirect:/main";
 
-			
-		}else if(loginUser != null ^ loginSeller != null) {
+		} else if (loginUser != null ^ loginSeller != null) {
 			session.setAttribute("loginUser", loginUser);
 			session.setAttribute("seller", loginSeller);
 			session.setMaxInactiveInterval(60 * 30);
-			
+
 			return "redirect:/main";
-		}else {
+		} else {
 
 			rttr.addFlashAttribute("result", "loginFail");
 			return "redirect:/member/loginForm";
 		}
 
 	}
-
 
 	// ajax 로그인 처리
 	@ResponseBody
@@ -125,7 +111,6 @@ public class MemberController {
 
 		return "redirect:/main";
 	}
-
 
 	// 계정찾기 폼 로드... 인증은 어떻게 할 것인가...
 
@@ -184,19 +169,18 @@ public class MemberController {
 
 		return null;
 	}
-	
+
 	// 회원가입
-	
-		@GetMapping("/member/joinForm1")
-		public String joinForm1() {
-			return "./member/joinForm1";
-		}
-		@GetMapping("/member/joinForm2")
-		public String joinForm2() {
-			return "./member/joinForm2";
-		}
 
+	@GetMapping("/member/joinForm1")
+	public String joinForm1() {
+		return "./member/joinForm1";
+	}
 
+	@GetMapping("/member/joinForm2")
+	public String joinForm2() {
+		return "./member/joinForm2";
+	}
 
 	@ResponseBody
 	@GetMapping(value = "/member/emailCheck")
@@ -212,10 +196,11 @@ public class MemberController {
 
 	}
 
-		@GetMapping("/member/joinOk")
-		public String joinOk() {
-			return "./member/joinOk";
-		}
+	@GetMapping("/member/joinOk")
+	public String joinOk() {
+		return "./member/joinOk";
+	}
+
 	@ResponseBody
 	@GetMapping(value = "/member/pwCheck")
 	public String pwCheck(@RequestParam("email") String email, @RequestParam("pw") String pw) {

@@ -95,6 +95,11 @@ ul li {
 	margin: auto;
 	background-color: #eeeeee;
 }
+
+.view-file{
+	background: orange;
+}
+
 </style>
 
 
@@ -204,14 +209,8 @@ ul li {
 								</ul>
 							</div>
 							
-							<div>
-								<ul>
-									<li>요청사항 : ${order.orderRequest }</li>
-								</ul>
-							</div>
-
-				
 							<div id="order-tap3">
+								<ul>
 									<c:if test="${order.orderStatus lt 3 }">
 										<button class="order-tap3" id="cancle-order" onclick="cancleOrder('${order.orderNum}', '${order.orderStatus }', 'order${status.index }')">주문 취소</button><br>
 									</c:if>
@@ -220,6 +219,17 @@ ul li {
 										<button class="order-tap3" id="add-order${status.index }"
 									onclick="openModal('${order.orderNum}', '${order.goodsNum }', '${order.orderEmail }', '${order.orderContact}', '${order.sellerNickname}', '${order.sellerNum }')">추가금액 결제</button>
 									</c:if>
+									
+									<c:if test="${order.fileYn eq 'Y' }">
+										<li class='file-yn'><button class="view-file" onclick="fileList(${order.orderKeyNum}, 'order${status.index }')">파일보기</button></li><br>
+									</c:if>
+									
+									<li class="file-list">
+										
+									</li>		
+									
+									<li>요청사항 : ${order.orderRequest }</li>
+								</ul>
 							</div>
 							
 							
@@ -288,7 +298,22 @@ ul li {
 	let modal = $('.modal');
 	
 	$(document).ready(function() {
+		
+		//파일 다운로드
+		$('.file-list').on('click', 'div', function(e){
+			
+			if(!confirm('파일을 다운로드 하면 고객 확인상태로 변경됩니다')){
+				return false;
+			}
+			
+			var liObj = $(this);
+			var path = encodeURIComponent('/' + liObj.data("path")+liObj.data("filename"));
+			console.log(path);
+			self.location ="/download?fileName="+path
+		})
 
+		
+		//자세히 클릭시 아코디언 형식으로 상세보기 출력
 		$(".que").click(function() {
 			$(this).parent().parent().next(".anw").stop().slideToggle(0);
 			//$(this).toggleClass('on').siblings().removeClass('on');
@@ -297,6 +322,57 @@ ul li {
 
 	});
 	
+	
+		//fileList의 callback 비스무리...	
+		function viewFile(data, orderForm){
+		
+		let inner = '';
+		let shortName = data.originalFileName.substr(0, 16) + "...";
+
+		console.log("orderForm 이름 : " + orderForm);
+		
+		inner += '<div data-path="'+data.imageUploadPath+'" data-filename="'+data.imageFileName+'">'
+		inner += shortName+'</div>'; 
+		
+		/* inner += '<div data-path="'+data.imageUploadPath+'" data-filename="'+data.imageFileName+'">'
+		inner += '<span>'+shortName+'</span><span><img src="/resources/img/attach.png"></span></div>'; 
+		 */
+		
+		console.log(inner);
+		
+		let form = $('#'+orderForm); 
+		$(form).next().find('.file-list').html(inner);
+	}
+	
+	//파일보기 버튼 클릭시 파일리스트 출력
+	 function fileList(orderKeyNum, orderForm){
+		let imageUse = 'order';
+		let imageUseNum = orderKeyNum;
+		
+		$.ajax({
+	          url: '/order/getFile',
+	          type: 'POST',
+	          data: {
+	        	imageUse : imageUse,
+	        	imageUseNum : imageUseNum
+	        	
+	          },
+	          dataType : 'json',
+	          success: function (data) {
+	        	console.log('ajax');
+				console.log(data);
+	        	console.log('ajax');
+				viewFile(data, orderForm);
+	          },
+	          error: function (data) {
+				alert('에러')
+				console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);	alert('에러');
+	          }
+	        });
+	}
+	
+	
+	// cancleOrder 콜백함수 비스무리... cancleOrder 함수 내  ajax 성공시 실행하는 함수...
 	function updateOrder(data, order){
 		console.log(data.orderNum);
 		console.log(data.orderStatus);
@@ -315,6 +391,8 @@ ul li {
 		
 	}
 	
+	
+	//주문 취소 함수
 	function cancleOrder(orderNum, orderStatus, order){
 		if(confirm("주문을 취소하시겠습니까?")){
 			
@@ -332,6 +410,7 @@ ul li {
 	 				orderStatus : orderStatus
 	 			},
 				success : function(data){
+					console.log(data);
 					updateOrder(data, order);
 					
 				},
@@ -364,44 +443,18 @@ ul li {
 	}
 
 	
-	
 	$('#add-order').on('click', function() {
-		let orderName = $('input[name="orderName"]').val();
-		let orderPrice = $('input[name="orderPrice"]').val();
-		let goodsNum = $('input[name="goodsNum"]').val();
-		let orderEmail = $('input[name="orderEmail"]').val();
-		let orderContact = $('input[name="orderContact"]').val();
-		let sellerNickname = $('input[name="sellerNickname"]').val();
-		let sellerNum = $('input[name="sellerNum"]').val();
-		let orderPayType = $('input[name="orderPayType"]').val();
+	
 		
-		
-		
-		console.log("추가할 orderName : " + orderName);
-		console.log("추가할 goodsNum : " + goodsNum);
-		console.log("추가할 orderEmail : " + orderEmail);
-		console.log("추가할 orderContact : " + orderContact);
-		console.log("추가할 sellerNickname : " + sellerNickname);
-		console.log("추가할 sellerNum : " + sellerNum);
-		
-		
+		let formData = $('#addOrder');
 		
 		$.ajax({
 			url : "/order/addOrder",
 			type : "post",
 			async:false,
-			contentType : "application/json; charset=utf-8",
+			//contentType : "application/json; charset=utf-8",
 			dataType : 'json',
- 			data : JSON.stringify({
-				orderName : orderName,
-				orderPrice : orderPrice,
-				goodsNum : goodsNum,
-				orderEmail : orderEmail,
-				orderContact : orderContact,
-				sellerNickname : sellerNickname,
-				sellerNum : sellerNum,
-				orderPayType : orderPayType
-			}),
+ 			data : formData.serialize(),
 			success : function(data){
 				location.reload()
 			},

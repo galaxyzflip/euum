@@ -4,17 +4,18 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mycom.euum.goods.bean.GoodsBean;
-import com.mycom.euum.goods.service.GoodsService;
+import com.mycom.euum.image.bean.ImageBean;
+import com.mycom.euum.image.service.ImageService;
 import com.mycom.euum.member.bean.MemberBean;
 import com.mycom.euum.order.bean.OrderBean;
 import com.mycom.euum.order.bean.OrderOptionBean;
@@ -29,7 +30,7 @@ import lombok.extern.log4j.Log4j;
 public class OrderController {
 
 	private OrderService orderService;
-	private GoodsService goodsService;
+	private ImageService imageService;
 
 	
 	//goodsDetail.jsp 에서 주문시 처리하는 메소드...
@@ -106,8 +107,8 @@ public class OrderController {
 	
 	//회원용 추가주문 하기 (myOrderList 에서...)
 	@ResponseBody
-	@PostMapping(value="order/addOrder", consumes = "application/json", produces=MediaType.APPLICATION_JSON_VALUE)
-	public OrderBean addOrder(@RequestBody OrderBean orderBean, HttpSession session) {
+	@PostMapping(value="order/addOrder", produces=MediaType.APPLICATION_JSON_VALUE)
+	public OrderBean addOrder(OrderBean orderBean, HttpSession session) {
 		
 		MemberBean memberBean = (MemberBean)session.getAttribute("loginUser");
 		orderBean.setMemberNum(memberBean.getMemberNum());
@@ -172,5 +173,42 @@ public class OrderController {
 		
 		return "redirect:/seller/orderList";
 	}
+	
+	@ResponseBody
+	@PostMapping(value="order/fileUpload")
+	public String fileUpload(OrderBean orderBean) throws Exception {
+		
+		log.info("fileUPload orderBean 내용 : " + orderBean.toString());
+		
+		orderService.uploadFile(orderBean.getUploadFile(), orderBean.getOrderKeyNum());
+		orderService.updateOrderStatus(orderBean);
+		
+		
+		return "upload success";
+	}
+	
+	
+	//최창선 : 주문에서 파일목록 불러오는 메소드
+	@ResponseBody
+	@PostMapping(value="order/getFile", produces=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ImageBean> getFile(ImageBean imageBean){
+		
+		log.info("이미지 가져오기 빈 확인 : " + imageBean);
+		List<ImageBean> fileList = imageService.getImageList(imageBean);
+		
+		for(ImageBean file : fileList) {
+			String fileName = file.getImageFileName();
+			String OrifileName =  fileName.substring(fileName.indexOf("_") + 1);
+			log.info("실제 파일이름 : " + OrifileName);
+			file.setOriginalFileName(OrifileName);
+			log.info("이미지 빈 내용 : " + file.toString());
+		}
+		
+		
+		return new ResponseEntity<>(fileList.get(0), HttpStatus.OK);
+		
+		
+	}
 
+	
 }

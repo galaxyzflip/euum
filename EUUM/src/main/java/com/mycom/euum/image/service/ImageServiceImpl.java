@@ -1,5 +1,7 @@
 package com.mycom.euum.image.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.mycom.euum.image.bean.ImageBean;
@@ -19,6 +21,13 @@ public class ImageServiceImpl implements ImageService {
 	@Override
 	public void insertImage(ImageBean imageBean) throws Exception {
 		imageMapper.insertImage(imageBean);
+	}
+	
+	/** 최창선 : 이미지 리스트 가져오기 Bean의 imageUse, imageUseNum 조건으로 리스트 가져오기*/
+	@Override
+	public List<ImageBean> getImageList(ImageBean imageBean){
+		
+		return imageMapper.selectImageList(imageBean);
 	}
 
 }
