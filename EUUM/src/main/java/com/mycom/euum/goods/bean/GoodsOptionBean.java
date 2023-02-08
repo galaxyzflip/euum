@@ -19,4 +19,11 @@ public class GoodsOptionBean {
 	int goodsOptNameNum;
 	String goodsOptContent;
 	int goodsOptContentNum;
+	
+//	private int goodsNum; 
+//	private List<String> goodsOptPrice;
+//	private List<String> goodsOptName;
+//	private int goodsOptNameNum;
+//	private List<String> goodsOptContent;
+//	private int goodsOptContentNum;
 }

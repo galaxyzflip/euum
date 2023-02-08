@@ -3,7 +3,9 @@ package com.mycom.euum.member.controller;
 
 
 
-import java.util.ArrayList;
+
+
+
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,6 +18,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.mycom.euum.commons.FileUtils;
+import com.mycom.euum.image.bean.ImageBean;
+import com.mycom.euum.image.service.ImageService;
 import com.mycom.euum.member.bean.MemberBean;
 import com.mycom.euum.member.bean.SellerBean;
 import com.mycom.euum.member.service.MyPageService;
@@ -29,6 +33,7 @@ import lombok.extern.log4j.Log4j;
 public class MyPageController {
 	
 	MyPageService myPageService;
+	ImageService imageService;
 	private FileUtils fileUtils;
 
 	// 회원정보 상세보기 겸 수정 창
@@ -90,6 +95,8 @@ public class MyPageController {
 		loginUser = myPageService.getMember(loginUser.getMemberNum());
 		model.addAttribute("member", loginUser);
 		log.info("------------------" + loginUser.toString());
+		SellerBean seller = myPageService.getSeller(loginUser.getMemberNum());
+		model.addAttribute("seller", seller);
 		
 		return "myPage/leaveMember";
 	}
@@ -97,32 +104,36 @@ public class MyPageController {
 	// 회원 탈퇴 처리
 	@PostMapping("/myPage/leavePro")
 	public String leavePro(String memberNum, String sellerNum, HttpServletRequest request) {
+	
+		HttpSession session = request.getSession();
 
 		myPageService.secessionMember(memberNum);
-		
-		
-//		myPageService.secessionSeller(sellerNum);
-
-		HttpSession session = request.getSession();
-		
+		myPageService.secessionSeller(sellerNum);
+			
 		session.invalidate();
-		
+			
 		return "redirect:/main";
+		
+		
 	}
 	
 	// 전문가 등급 회원으로 전환 처리
 	@PostMapping("/myPage/transSeller")
-	public String transSeller(SellerBean sellerBean, MemberBean memberBean) {
+	public String transSeller(MultipartFile[] uploadFile, HttpServletRequest request, SellerBean sellerBean, MemberBean memberBean, ImageBean imageBean) throws Exception {
 		
 		myPageService.updateMemberClass(memberBean);
 		myPageService.insertSeller(sellerBean);
+		
+		int selectKeySellerNum = (Integer)sellerBean.getSellerNum();
+		imageService.insertSellerImage(selectKeySellerNum);
+		log.info("----------------------------------------------" + selectKeySellerNum);
 		
 		return "redirect:/myPage/modifyForm";
 	}
 	
 	// 전문가 내 프로필 상세보기 겸 수정 창
 	@GetMapping("/myPage/modifySellerForm")
-	public String modifySellerInfo(Model model, HttpServletRequest request, String sellerNum) {
+	public String modifySellerInfo(MultipartFile[] uploadFile, Model model, HttpServletRequest request, String sellerNum, SellerBean sellerBean) throws Exception {
 		
 		HttpSession session = request.getSession();
 	
@@ -133,28 +144,49 @@ public class MyPageController {
 		SellerBean seller = myPageService.getSeller(loginUser.getMemberNum());
 		model.addAttribute("seller", seller);
 		
+		ImageBean image = imageService.getSellerImage(seller.getSellerNum());
+		
+		model.addAttribute("image", image);
+		
 		return "myPage/sellerDetail";
 	}
 	
 	// 전문가 프로필 수정 처리
 	@PostMapping("/myPage/modifySellerPro")
-	public String modifySellerInfoPro(MultipartFile[] uploadFile, SellerBean sellerBean) {
+	public String modifySellerInfoPro(SellerBean sellerBean, HttpServletRequest request) {
 			
-		log.info("---------------------------------");
-		log.info("uploadFile: " + uploadFile);
-		log.info("uploadFile: " + uploadFile.length);
-		log.info("index 0: " + uploadFile[0].getOriginalFilename());
 		
-		List<String> profile = new ArrayList<String>();
-			
-		profile = fileUtils.fileUpload(uploadFile);
-		
-		sellerBean.setSellerImage(profile.get(0));
-		
+		log.info("---------------전문가 정보 수정-----------------");
 		myPageService.updateSeller(sellerBean);
 		
 		return "redirect:/myPage/modifySellerForm";
 	}
 	
 	// 전문가 프로필 이미지 업로드
+	@PostMapping("/myPage/modifySellerFilePro")
+	public String modifySellerFilePro(MultipartFile[] uploadFile, SellerBean sellerBean, HttpServletRequest request, Model model) throws Exception {
+
+		log.info("---------------------------------");
+		log.info("uploadFile: " + uploadFile);
+		log.info("uploadFile: " + uploadFile.length);
+		
+		log.info("---------------------------------");
+		List<ImageBean> imageBeanList = fileUtils.sellerFileUpload(uploadFile);
+		
+		int selectKeySellerNum = (Integer)sellerBean.getSellerNum();
+		
+		log.info("---------------이미지 삭제------------------");
+		imageService.deleteImage(imageBeanList, selectKeySellerNum);
+		
+		log.info("---------------이미지 저장------------------");
+		imageService.insertImage(imageBeanList, selectKeySellerNum);
+		
+		log.info("----------------------------------------" + imageBeanList);
+		log.info("----------------------------------------" + sellerBean);
+		
+		myPageService.updateSellerFile(sellerBean, imageBeanList);
+		model.addAttribute("image", imageBeanList);
+		
+		return "redirect:/myPage/modifySellerForm";
+	}
 }

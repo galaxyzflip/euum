@@ -35,6 +35,21 @@ input[type='file'] {
     border-radius: 3px;
 }
 
+.rBtn_dGray {
+    float: left;
+    cursor: pointer;
+    padding: 0 10px;
+    height: 28px;
+    text-align: center;
+    line-height: 28px;
+    border: 1px solid #818181;
+    background: #818181;
+    font-size: 13px;
+    margin: 0 auto;
+    border-radius: 3px;
+    color: #fff;
+}
+
 #sellerProfile .profile_box .item_inp {
     width: 350px;
     margin: 42px auto 0 auto;
@@ -87,9 +102,9 @@ input[type='file'] {
 
 <input type="hidden" name="memberNum" value="${seller.memberNum}">
 
-<!--<div id="sellerInfo" class="left_div">
+<!--<c:if test="${member.memberClass = 'S'}">
+<div id="sellerInfo" class="left_div">
 <c:choose>
-<c:if test="${member.memberClass = 'S'}">
 
 <div>
 <img src="">
@@ -155,11 +170,12 @@ input[type='file'] {
 
 <div id="profile_Box">
 
-<ul><ol><img src="${pageContext.request.contextPath}/resources/img/${seller.sellerImage}"></ol></ul>
+<ul><ol><img src="${pageContext.request.contextPath}/resources/img/${image.imageUploadPath}s_${image.imageFileName}"></ol></ul>
 <ul>"권장사이즈 "<font>180 x 180 px</font></ul>
 <ul style="margin-top:14px; text-align: center;" class="cf">
-<input type="file" class="real-upload" name="sellerImage" multiple id="orgFile">
-<ol class="rBtn_lGray">이미지 선택</ol>
+<input type="file" class="real-upload" name="uploadFile" multiple id="orgFile">
+<ol class="rBtn_lGray" name="sellerImage">이미지 선택</ol>
+<input type="button" class="rBtn_dGray" value="저장" onclick="return submit2(this.form);">
 </ul>
 
 <div id="item_Inp">
@@ -246,7 +262,9 @@ input[type='file'] {
 <li style="margin-right: 30px" type="button" onclick="location.href='/myPage/modifyPassForm';">비밀번호 변경</li>
 <li style="margin-right: 30px" type="button" onclick="location.href='/myPage/leaveForm';">회원탈퇴</li>
 </div>
-
+<input type="hidden" name="memberNum" value="${member.memberNum}">
+<input type="hidden" name="sellerNum" value="${seller.sellerNum}">
+<input type="hidden" name="sellerImage" value="${image.imageFileName}">
 <input class="btn1 right"  type="submit" value="저 장">
 
 </form>
@@ -278,6 +296,12 @@ const realUpload = document.querySelector('.real-upload');
 const upload = document.querySelector('.rBtn_lGray');
 
 upload.addEventListener('click', () => realUpload.click());
+
+function submit2(frm) { 
+    frm.action='/myPage/modifySellerFilePro'; 
+    frm.submit(); 
+    return true; 
+  } 
 
 $("#sellerSpecialty").val("sellerSpecialty");
 

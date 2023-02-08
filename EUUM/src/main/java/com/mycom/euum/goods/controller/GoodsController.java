@@ -1,10 +1,10 @@
 package com.mycom.euum.goods.controller;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
@@ -17,7 +17,11 @@ import org.springframework.web.multipart.MultipartFile;
 import com.mycom.euum.commons.FileUtils;
 import com.mycom.euum.goods.bean.GoodsBean;
 import com.mycom.euum.goods.bean.GoodsOptionBean;
-import com.mycom.euum.goods.service.GoodsServiceImpl;
+import com.mycom.euum.goods.service.GoodsService;
+import com.mycom.euum.image.bean.ImageBean;
+import com.mycom.euum.image.service.ImageService;
+import com.mycom.euum.member.bean.MemberBean;
+import com.mycom.euum.member.bean.SellerBean;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
@@ -28,69 +32,84 @@ import lombok.extern.log4j.Log4j;
 public class GoodsController {
 
 //	@Resource(name = "goodsService")
-	private GoodsServiceImpl goodsService;
-	private FileUtils fileUtils;
+//	private GoodsServiceImpl goodsService;
+//	private ImageServiceImpl imageService;
+	private GoodsService goodsService;
+	private ImageService imageService;
 	
+	private FileUtils fileUtils; // 123
+
 	@RequestMapping(value = "/")
 	public String test() {
 		log.info("start");
 		return "main_layout";
 	}
+
 	
 	/* ---------------------------- 상품 리스트 ---------------------------- */
 
 	/** 선민: 상품 리스트 - 전체 상품 리스트 */
-	@GetMapping(value="/goods/goodsList")
+	@GetMapping(value = "/goods/goodsList")
 	public String selectGoodsList(Model model) throws Exception {
 		log.info("===== 상품 리스트 =====");
-		
+
 		List<GoodsBean> goodsList = goodsService.selectGoodsList();
 		log.info("상품 리스트: " + goodsList);
 		model.addAttribute("goodsList", goodsList);
-		
+
 		return "goods/goodsList";
 	}
-	
-	/** 은정: 상품 리스트 - 상품 검색결과 리스트 */
+
+	/** 은정: 상품 리스트 - 검색 */
 	@GetMapping(value = "/goods/goodsSearch")
-	public String goodsSearch(String searchKeyword, Model model) throws Exception {
+	public String goodsSearch(String searchKeyword, String searchOption, Model model) throws Exception {
 		log.info("===== 상품 검색결과 리스트 =====");
 		log.info("---------------------------------");
 		log.info("검색어: " + searchKeyword);
+		log.info("검색옵션: " + searchOption);
 
-		List<GoodsBean> goodsList = goodsService.selectGoodsSearchList(searchKeyword);
+		List<GoodsBean> goodsList = goodsService.selectGoodsSearchList(searchKeyword, searchOption);
 		model.addAttribute("goodsList", goodsList);
-		
-		return "/goods/goodsList";
+		model.addAttribute("selectedSearchOption", searchOption);
+
+		return "goods/goodsList";
 	}
-	
-	/** 은정: 상품 리스트 - 상품 정렬결과 리스트 */
+
+	/** 은정: 상품 리스트 - 정렬 */
 	// 1차 취합 전까지 일단 비워놓을게요!!
+
 	
-	/** 선민: 상품 리스트 - 전체 상품 리스트 */
-	@RequestMapping(value = "/myPage/myGoods") // GET으로 보낼지 POST로 보낼지 모르므로 RequestMapping
+	/** 선민: 상품 리스트 - 나의 상품 리스트 */
+//	@PostMapping(value = "/myPage/myGoods")
+	@RequestMapping(value = "/myPage/myGoods") // 일단 RequestMapping -> 추후 myPage 탭 완성되면 PostMapping
 	public String myGoods(HttpSession session, Model model) throws Exception {
 		log.info("===== 내 작품 관리 =====");
 		
-		Map<String, List<GoodsBean>> myGoodsMap = new HashMap<String, List<GoodsBean>>();
+		// (1) 세션 정보 확인
+		log.info("---------- (1) 세션 정보 확인 ----------");
+		SellerBean sellerBean = getSessionSeller(session);
+		int memberNum = sellerBean.getMemberNum(); 
+		log.info("memberNum: " + memberNum);
 		
-		// (임시) 테스트를 위해 goodsMemberNum을 입력받지 않고 고정된 값으로 설정
-		int goodsMemberNum = 999;
-		myGoodsMap = goodsService.selectMyGoodsList(goodsMemberNum);
 		
+		// (2) 내 작품 리스트 가져오기
+		log.info("---------- (2) 내 작품 리스트 가져오기 ----------");
+		Map<String, List<GoodsBean>> myGoodsMap = goodsService.selectMyGoodsList(memberNum);
 		model.addAttribute("myGoodsMap", myGoodsMap);
 		
 		return "myPage/myGoods";
 	}
+
 	
 	/* ---------------------------- 상품 등록 ---------------------------- */
-	
+
 	/** 선민: 상품 등록 - 약관 페이지 이동 */
 	@GetMapping(value = "/goods/goodsRegisterGuide")
 	public String goodsRegisterGuide() throws Exception {
 		log.info("===== 상품 등록 약관 =====");
 		return "goods/goodsRegisterGuide";
 	}
+
 	
 	/** 선민: 상품 등록 - 등록 폼 이동 */
 	@GetMapping(value = "/goods/goodsRegisterForm")
@@ -98,116 +117,158 @@ public class GoodsController {
 		log.info("===== 상품 등록 폼 =====");
 		return "goods/goodsRegisterForm";
 	}
-	
-	/** 선민: 상품 등록 - DB에 값 저장 (goodsStatus = '승인대기') */
-	@PostMapping(value = "/goods/goodsRegisterPro")
-	public String goodsRegisterPro(MultipartFile[] uploadFile, GoodsBean goodsBean, GoodsOptionBean goodsOptionBean, Model model) throws Exception {
-		log.info("===== 상품 등록 처리 =====");
-		log.info("---------------------------------");
-		log.info("uploadFile: " + uploadFile);
-		log.info("index length: " + uploadFile.length);
-		log.info("index 0: " + uploadFile[0].getOriginalFilename());
-		log.info("index 1: " + uploadFile[1].getOriginalFilename());
-		log.info("index 2: " + uploadFile[2].getOriginalFilename());
-		
-		List<String> fileInfoList = new ArrayList<String>();
-		
-		// 파일 업로드 메소드 fileUpload()
-		// -> 메소드 호출 시 리스트를 리턴하고, 인덱스 0번은 파일저장날짜, 이후 인덱스번호는 파일 저장명이 담겨있음
-		fileInfoList = fileUtils.fileUpload(uploadFile);
-		
-		goodsBean.setGoodsImageDate(fileInfoList.get(0)); // 파일저장날짜 (추후 <img>태그에 사용)
-		goodsBean.setGoodsImage1(fileInfoList.get(1)); // 첫번째 이미지파일 저장명
-		goodsBean.setGoodsImage2(fileInfoList.get(2)); // 두번째 이미지파일 저장명
-		goodsBean.setGoodsImage3(fileInfoList.get(3)); // 세번째 이미지파일 저장명
-		
-		log.info("---------------------------------");
-		log.info("GoodsBean: " + goodsBean);
-		log.info("---------------------------------");
-		log.info("GoodsOptionBean: " + goodsOptionBean);
-		
-		// (임시)not null에 의한 에러방지
-		goodsBean.setGoodsMemberNum(999);
-		goodsBean.setGoodsSellerNickname("홍길동");
-		goodsService.insertGoods(goodsBean);
-		
-		
-		// (임시)not null에 의한 에러방지
-		goodsOptionBean.setGoodsNum(goodsBean.getGoodsNum()); // selectKey 사용
-		log.info("*** selectKey로 뽑아온 goodsNum: " + goodsBean.getGoodsNum());
-//		goodsOptionBean.setGoodsOptName("SD전신");
-//		goodsOptionBean.setGoodsOptNameNum(1);
-//		goodsOptionBean.setGoodsOptContent("흑백");
-//		goodsOptionBean.setGoodsOptPrice(1000);
-		
-		return "redirect:/myPage/myGoods";
-	}
-	
-	/** 선민: 상품 임시저장 - DB에 값 저장 (goodsStatus = '임시저장') */
-	@PostMapping(value = "/goods/goodsRegisterTempPro")
-	public String goodsRegisterTempPro(MultipartFile[] uploadFile, GoodsBean goodsBean, GoodsOptionBean goodsOptionBean, Model model) throws Exception {
-		log.info("===== 상품 임시저장 처리 =====");
-		
-		List<String> fileInfoList = new ArrayList<String>();
-		
-		// 파일 업로드 메소드 fileUpload()
-		// -> 메소드 호출 시 리스트를 리턴하고, 인덱스 0번은 파일저장날짜, 이후 인덱스번호는 파일 저장명이 담겨있음
-		fileInfoList = fileUtils.fileUpload(uploadFile);
-		
-		goodsBean.setGoodsImageDate(fileInfoList.get(0)); // 파일저장날짜 (추후 <img>태그에 사용)
-		goodsBean.setGoodsImage1(fileInfoList.get(1)); // 첫번째 이미지파일 저장명
-		goodsBean.setGoodsImage2(fileInfoList.get(2)); // 두번째 이미지파일 저장명
-		goodsBean.setGoodsImage3(fileInfoList.get(3)); // 세번째 이미지파일 저장명
-		
-		// (임시)not null에 의한 에러방지
-		goodsBean.setGoodsMemberNum(999);
-		goodsBean.setGoodsSellerNickname("홍길동");
-		
-		goodsService.insertTempGoods(goodsBean);
-		
-		// (임시)not null에 의한 에러방지
-		goodsOptionBean.setGoodsNum(goodsBean.getGoodsNum()); // selectKey 사용
-		log.info("*** selectKey로 뽑아온 goodsNum: " + goodsBean.getGoodsNum());
-		
-		return "myPage/myGoods";
-	}
-	
-	/* ---------------------------- 상품 수정 ---------------------------- */
-	/* ---------------------------- 상품 삭제 ---------------------------- */
 
 	
+	/** 선민: 상품 등록 - DB에 데이터 저장 (goodsStatus = '승인대기') */
+	@PostMapping(value = "/goods/goodsRegisterPro")
+	public String goodsRegisterPro(HttpSession session, MultipartFile[] uploadFile, HttpServletRequest request, GoodsBean goodsBean, String[] goodsOptNameArr, String[] goodsOptContentArr, int[] goodsOptPriceArr, Model model) throws Exception {
+		log.info("===== 상품 등록 처리 =====");
+		
+		// (1) 파일 파라미터 확인
+		log.info("---------- (1) 파일 파라미터 확인 ----------");
+		log.info("파라미터 uploadFile의 객체 유무: " + uploadFile);
+		log.info("요청받은 파라미터의 개수: " + uploadFile.length);
+
+		// (2) 세션 정보 확인
+		log.info("---------- (2) 세션 정보 확인 ----------");
+		SellerBean sellerBean = getSessionSeller(session);
+		log.info("sellerBean: " + sellerBean);
+		
+		// (3) 파일 업로드
+		log.info("---------- (3) 파일 업로드 메소드 호출 ----------");
+//		List<ImageBean> imageBeanList = goodsService.goodsFileUpload(uploadFile, request);
+		List<ImageBean> imageBeanList = fileUtils.goodsFileUpload(uploadFile);
+		
+		// (4) 상품 등록
+		log.info("---------- (4) 상품 등록 ----------");
+		goodsBean.setGoodsPrice(goodsOptPriceArr[0]); // 추가옵션 첫번째 옵션의 첫번째 항목 가격을 해당 상품의 대표가격으로 set
+		int selectKeyGoodsNum = goodsService.insertGoods(sellerBean, goodsBean, imageBeanList);
+		
+		// (5) 상품 추가옵션 등록
+		log.info("---------- (5) 상품 추가옵션 등록 ----------");
+		goodsService.insertGoodsOption(selectKeyGoodsNum, goodsOptNameArr, goodsOptContentArr, goodsOptPriceArr);
+
+		// (6) 이미지파일 정보를 DB에 저장
+		log.info("---------- (6) 이미지파일 정보 DB 저장 ----------");
+		imageService.insertImage(imageBeanList, selectKeyGoodsNum);
+
+		return "redirect:/myPage/myGoods";
+	}
+
+	
+	/** 선민: 상품 임시저장 - DB에 데이터 저장 (goodsStatus = '임시저장') */
+	@PostMapping(value = "/goods/goodsRegisterTempPro")
+	public String goodsRegisterTempPro(HttpSession session, MultipartFile[] uploadFile, HttpServletRequest request, GoodsBean goodsBean, String[] goodsOptNameArr, String[] goodsOptContentArr, int[] goodsOptPriceArr, Model model) throws Exception {
+		log.info("===== 상품 임시 저장 =====");
+		
+		// (1) 파일 파라미터 확인
+		log.info("---------- (1) 파일 파라미터 확인 ----------");
+		log.info("파라미터 uploadFile의 객체 유무: " + uploadFile);
+		log.info("요청받은 파라미터의 개수: " + uploadFile.length);
+		
+		// (2) 세션 정보 확인
+		log.info("---------- (2) 세션 정보 확인 ----------");
+		SellerBean sellerBean = getSessionSeller(session);
+		log.info("sellerBean: " + sellerBean);
+		
+		// (3) 파일 업로드
+		log.info("---------- (3) 파일 업로드 메소드 호출 ----------");
+		List<ImageBean> imageBeanList = fileUtils.goodsFileUpload(uploadFile);
+		
+		// (4) 상품 등록
+		log.info("---------- (4) 상품 등록 ----------");
+		goodsBean.setGoodsPrice(goodsOptPriceArr[0]); // 추가옵션 첫번째 옵션의 첫번째 항목 가격을 해당 상품의 대표가로 책정
+		int selectKeyGoodsNum = goodsService.insertTempGoods(sellerBean, goodsBean, imageBeanList);
+		
+		// (5) 상품 추가옵션 등록
+		log.info("---------- (5) 상품 추가옵션 등록 ----------");
+		goodsService.insertGoodsOption(selectKeyGoodsNum, goodsOptNameArr, goodsOptContentArr, goodsOptPriceArr);
+
+		// (6) 이미지파일 정보를 DB에 저장
+		log.info("---------- (6) 이미지파일 정보 DB 저장 ----------");
+		imageService.insertImage(imageBeanList, selectKeyGoodsNum);
+
+		return "redirect:/myPage/myGoods";
+	}
+
+	
+	/* ---------------------------- 상품 수정 ---------------------------- */
+
+	
+	/* ---------------------------- 상품 삭제 ---------------------------- */
+
+	/** 선민: 상품 삭제 - DB에서 데이터 삭제 (Ajax가 반환한 result 데이터를 jsp에 그려서 가져오기) */
+	@PostMapping(value = "/goods/goodsDeletePro")
+	public String goodsDeletePro(HttpSession session, int goodsNum, Model model) throws Exception {
+		log.info("===== 상품 삭제 처리 =====");
+		log.info("삭제할 상품 번호: " + goodsNum);
+
+		// (1) 상품 삭제
+		log.info("---------- (1) 상품 삭제 ----------");
+		goodsService.deleteGoods(goodsNum);
+
+		// (2) 세션 정보 확인
+		log.info("---------- (2) 세션 정보 확인 ----------");
+		SellerBean sellerBean = getSessionSeller(session);
+		int memberNum = sellerBean.getMemberNum();
+		log.info("memberNum: " + memberNum);
+
+		// (3) 내 작품 리스트 가져오기
+		log.info("---------- (3) 내 작품 리스트 가져오기 ----------");
+		Map<String, List<GoodsBean>> myGoodsMap = goodsService.selectMyGoodsList(memberNum);
+		model.addAttribute("myGoodsMap", myGoodsMap);
+
+		return "myPage/myGoodsAjax";
+	}
+
 	
 	/* ---------------------------- 상품 상세보기 ---------------------------- */
-	
+
 	/** 선민: 상품 상세보기 */
 	@GetMapping(value = "/goods/goodsDetail")
 	public String goodsDetail(Model model, String goodsNum) throws Exception {
 		log.info("===== 상품 상세보기 =====");
-		int optionCount = goodsService.selectGoodsOptionCount(goodsNum);
-		List<List<GoodsOptionBean>> optionList = new ArrayList<List<GoodsOptionBean>>();
-		log.info("옵션의 개수: " + optionCount);
 		
-		/** 상품등록 - 추가옵션 구현 전까지 전체 주석 */ 
-//		// 선민: 상품의 옵션 세부항목이 존재하지 않는다는 것은 상품 자체가 존재하지 않는 것을 의미하므로 상품 리스트로 return
-//		if (optionCount == 0) {
-//			// 지금은 상품 리스트로 return하지만,
-//			// 추후에는 '검색결과가 없습니다.'를 보여줄 수 있도록 goodsList.jsp에 구현
-//			return "redirect:/goods/goodsList";
-//		}
-
-		for (int i = 1; i <= optionCount; i++) {
-			List<GoodsOptionBean> list = goodsService.selectGoodsOptionContent(goodsNum, Integer.toString(i));
-
-			log.info("---------------------------------");
-			log.info(i + "번째 옵션의 선택항목: " + list);
-			optionList.add(list);
+		// (1) 상품 정보 가져오기
+		log.info("---------- (1) 상품 정보 가져오기 ----------");
+		GoodsBean goodsBean = goodsService.selectGoodsInfo(goodsNum);
+		log.info("goodsBean: " + goodsBean);
+		
+		// (2) 상품 존재유무 판별
+		log.info("---------- (2) 상품 존재유무 ----------");
+		if (goodsBean == null) { 
+			log.info("상품이 존재하지 않음");
+			return "redirect:/goods/goodsList";
+		} else {
+			log.info("상품이 존재함");
 		}
-
-		model.addAttribute("detail", goodsService.selectGoodsInfo(goodsNum));
+		
+		// (3) 상품 추가옵션 가져오기
+		log.info("---------- (3) 상품 추가옵션 가져오기 ----------");
+		int optionCount = goodsService.selectGoodsOptionCount(goodsNum);
+		log.info("옵션의 개수: " + optionCount);
+		List<List<GoodsOptionBean>> optionList = goodsService.selectGoodsOptionContent(goodsNum, optionCount);
+		
+		model.addAttribute("detail", goodsBean);
 		model.addAttribute("optionList", optionList);
 		model.addAttribute("optionCount", optionCount);
-		
+
 		return "goods/goodsDetail";
 	}
 	
+	
+	/* ---------------------------- 기타 기능 ---------------------------- */
+	
+	/** 선민: 세션 정보 받아오기 - 일반회원 */
+	private MemberBean getSessionMember(HttpSession session) {
+		MemberBean memberBean = (MemberBean)session.getAttribute("loginMember"); // 세션 정보 저장 (이식성을 고려하여 웹 의존성이 있는 로직은 Controller에 작성)
+		return memberBean;
+	}
+	
+	
+	/** 선민: 세션 정보 받아오기 - 작가 */
+	private SellerBean getSessionSeller(HttpSession session) {
+		SellerBean sellerBean = (SellerBean)session.getAttribute("loginSeller"); // 세션 정보 저장 (이식성을 고려하여 웹 의존성이 있는 로직은 Controller에 작성)
+		return sellerBean;
+	}
 }
