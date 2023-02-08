@@ -95,6 +95,14 @@ ul li {
 	margin: auto;
 	background-color: #eeeeee;
 }
+
+.view-file{
+	background: orange;
+}
+
+.input-group > .form-control{
+	width:100%;
+}
 </style>
 
 
@@ -116,14 +124,14 @@ ul li {
 		<tbody>
 			<c:forEach items="${orderList }" var="order" varStatus='status'>
 
-				<tr>
+				<tr id="order${status.index }">
 					<td>${order.orderNum }</td>
 					<td><img src="/resources/assets/img/about-2.jpg"></img></td>
 					<td>${order.sellerNickname }</td>
 					<td class="order-name"><br> ${order.goodsName }<br>
 						${fn:replace(order.orderName,'`','<br>')}</td>
 					<td>${order.orderPrice } 원</td>
-					<td><c:if test="${order.orderStatus eq 1 }">입금대기중</c:if> <c:if
+					<td class="order-status"><c:if test="${order.orderStatus eq 1 }">입금대기중</c:if> <c:if
 							test="${order.orderStatus eq 2 }">입금확인</c:if> <c:if
 							test="${order.orderStatus eq 3 }">작업중</c:if> <c:if
 							test="${order.orderStatus eq 4 }">작업완료</c:if> <c:if
@@ -188,6 +196,21 @@ ul li {
 									<c:if test="${order.orderStatus eq '2' }">
 										<li><button onclick="transferOrderStatus('${order.orderNum}')">작업중 전환</button></li><br>
 									</c:if>
+									
+									
+									<c:if test="${order.fileYn eq 'Y' }">
+										<li class='file-yn'><button class="view-file" onclick="fileList(${order.orderKeyNum}, 'order${status.index }')">파일보기</button></li><br>
+									</c:if>
+								
+									<c:if test="${order.fileYn eq 'N'}">
+										<li class='file-yn'><button onclick="openModal('${order.orderKeyNum}', 'order${status.index}', '${order.orderNum }')">파일 업로드</button></li><br>
+									</c:if>
+								
+									<li class="file-list">
+										
+									</li>									
+									
+									
 									<li>요청사항 : ${order.orderRequest }</li>
 								</ul>
 							</div>
@@ -203,12 +226,12 @@ ul li {
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="addOptionModal" tabindex="-1"
+<div class="modal fade" id="fileUploadModal" tabindex="-1"
 	aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h1 class="modal-title fs-5" id="exampleModalLabel">추가 주문하기</h1>
+				<h1 class="modal-title fs-5" id="exampleModalLabel">파일 업로드</h1>
 				<button type="button" class="btn-close" data-bs-dismiss="modal"
 					aria-label="Close"></button>
 			</div>
@@ -216,34 +239,30 @@ ul li {
 
 			<div class="modal-body">
 				<div id="option1">
-
-					<div class="input-group mb-3">
-						<span class="input-group-text" id="inputGroup-sizing-default">결제 내용</span> <input type="text" class="form-control add-option"
-							aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" name="orderName"	value="">
-					</div>
-
-					<div class="input-group mb-3">
-						<span class="input-group-text" id="inputGroup-sizing-default">추가 금액</span> <input type="text" class="form-control add-option"
-							aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" name="orderPrice"> 원
-					</div>
 					
-					<div>
-						<input type="hidden" name="goodsNum" value=""/>
-						<input type="hidden" name="orderContact" value=""/>
-						<input type="hidden" name="orderEmail" value=""/>
-						<input type="hidden" name="sellerNickname" value=""/>
-						<input type="hidden" name="sellerNum" value=""/>
-						<input type="hidden" name="orderPayType" value="임시값"/>
-					</div>
+					<form action="/order/fileUpload" id="file-form" enctype="multipart/form-data" method="post">
+	
+						<div class="input-group">
+							<input type="file" class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload" name=uploadFile value="">
+							
+						</div>
+	
+						<div>
+							<input type="hidden" name="orderKeyNum" value=""/>
+							<input type="hidden" name="orderForm" value="">
+							<input type="hidden" name="orderStatus" value="">
+							<input type="hidden" name="orderNum" value="">
+						</div>
+					</form>
+					
 				</div>
 			</div>
 
-
 			<div class="modal-footer">
-				<button type="button" id="cancle-order" class="btn btn-secondary"
-					data-bs-dismiss="modal">취소</button>
-				<button type="button" id="add-order" class="btn btn-primary">주문</button>
+				<button type="button" id="cancle-order" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+				<button type="button" id="add-order" class="btn btn-primary"  onClick="fileUpload()">업로드</button>
 			</div>
+			
 		</div>
 	</div>
 </div>
@@ -252,10 +271,149 @@ ul li {
 <form id="actionForm" action="/order/transferOrderStatus" method="post">
 	<input type="hidden" name="orderNum" value="">
 	<input type="hidden" name="orderStatus" value="">
-	
-</form>
+</form> 
+
+
 <script>
 
+$(document).ready(function() {
+	
+	//파일 다운로드
+	$('.file-list').on('click', 'div', function(e){
+		var liObj = $(this);
+		var path = encodeURIComponent('/' + liObj.data("path")+liObj.data("filename"));
+		console.log(path);
+		self.location ="/download?fileName="+path
+	})
+	
+	
+	//상세정보 펼치기
+	$(".que").click(function() {
+		$(this).parent().parent().next(".anw").stop().slideToggle(0);
+		//$(this).toggleClass('on').siblings().removeClass('on');
+		$(this).parent().parent().next(".anw").siblings(".anw").slideUp(0); // 1개씩 펼치기
+	});
+
+})
+
+	
+
+	let uploadModal = $('#fileUploadModal');
+	
+	function viewFile(data, orderForm){
+		
+		let inner = '';
+		let shortName = data.originalFileName.substr(0, 16) + "...";
+
+		console.log("orderForm 이름 : " + orderForm);
+		
+		inner += '<div data-path="'+data.imageUploadPath+'" data-filename="'+data.imageFileName+'">'
+		inner += shortName+'</div>'; 
+		
+		/* inner += '<div data-path="'+data.imageUploadPath+'" data-filename="'+data.imageFileName+'">'
+		inner += '<span>'+shortName+'</span><span><img src="/resources/img/attach.png"></span></div>'; 
+		 */
+		
+		console.log(inner);
+		
+		let form = $('#'+orderForm); 
+		$(form).next().find('.file-list').html(inner);
+	}
+	
+	
+	
+	
+	//파일보기 버튼 클릭시 파일리스트 출력
+	 function fileList(orderKeyNum, orderForm){
+		let imageUse = 'order';
+		let imageUseNum = orderKeyNum;
+		
+		$.ajax({
+	          url: '/order/getFile',
+	          type: 'POST',
+	          data: {
+	        	imageUse : imageUse,
+	        	imageUseNum : imageUseNum
+	        	
+	          },
+	          dataType : 'json',
+	          success: function (data) {
+	        	console.log('ajax');
+				console.log(data);
+	        	console.log('ajax');
+				viewFile(data, orderForm);
+	          },
+	          error: function (data) {
+				alert('에러')
+				console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);	alert('에러');
+	          }
+	        });
+	}
+	
+	
+	
+
+	//이미지 업로드 함수
+ 	function fileUpload(){
+ 		
+		console.log($('input[name="orderKeyNum"]').val());
+ 		
+		$('input[name="orderStatus"]').val('4');
+ 		var form = $('#file-form')[0];
+ 		var formData = new FormData(form);
+ 		let orderForm = $('input[name="orderForm"]').val()
+ 		
+ 		$.ajax({
+ 	          url: '/order/fileUpload',
+ 	          type: 'POST',
+ 	          data: formData,
+ 	          success: function (data) {
+ 	          	console.log(data);
+ 	          	console.log("파일업로드한 폼 아이디 : " + orderForm);
+ 	          	uploadResult(orderForm);
+
+ 	          },
+ 	          error: function (data) {
+ 	        	 console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);	alert('에러');
+ 	          },
+ 	          cache: false,
+ 	          contentType: false,
+ 	          processData: false
+ 	        });
+	}
+
+ 	
+ 	//이미지 업로드 후 작업되는 함수... orderStatus, 파일보기 버튼 생성
+ 	function uploadResult(orderForm){
+ 		
+ 		let orderKeyNum = $('input[name="orderKeyNum"]').val();
+ 		
+ 		let inner = '<button class="view-file" onclick="fileList(\''+orderKeyNum+'\', \''+orderForm+'\')">파일보기</button>';
+ 		console.log(inner);
+ 		let form = $('#'+orderForm)
+ 		
+ 		$(form).find('.order-status').text("작업완료");
+ 		$(form).next().find('.file-yn').html(inner);
+ 		
+ 		$(uploadModal).find('input[name="uploadFile"]').val('');
+ 		uploadModal.modal('hide');
+ 	}
+
+	
+	
+
+	//modal show
+	function openModal(orderKeyNum, orderForm, orderNum) {
+		$('input[name="orderKeyNum"]').val(orderKeyNum);
+		$('input[name="orderForm"]').val(orderForm);
+		$('input[name="orderNum"]').val(orderNum);
+		
+		console.log($('input[name="orderForm"]').val());
+		uploadModal.modal('show');
+
+	}
+
+	//진행중 상태 변경 함수
 	function transferOrderStatus(orderNum){
 		if(confirm("진행중 상태로 변경하시겠습니까?")){
 			$('#actionForm').find('input[name="orderNum"]').val(orderNum);
@@ -264,90 +422,6 @@ ul li {
 		}
 		
 	}
-
-	let modal = $('.modal');
-	
-	$(document).ready(function() {
-
-		//상세정보 펼치기
-		$(".que").click(function() {
-			$(this).parent().parent().next(".anw").stop().slideToggle(0);
-			//$(this).toggleClass('on').siblings().removeClass('on');
-			$(this).parent().parent().next(".anw").siblings(".anw").slideUp(0); // 1개씩 펼치기
-		});
-
-	})
-
-	//modal show
-	function openModal(orderNum, goodsNum, orderEmail, orderContact, sellerNickname, sellerNum) {
-		//기존에 입력된 가격 초기화...
-		$('input[name="orderPrice"]').val('');
-		$(modal).find("input[name='goodsNum']").val(goodsNum);
-		$(modal).find("input[name='orderEmail']").val(orderEmail);
-		$(modal).find("input[name='orderContact']").val(orderContact);
-		$(modal).find("input[name='sellerNickname']").val(sellerNickname);
-		$(modal).find("input[name='sellerNum']").val(sellerNum);
-
-		console.log("선택한 orderNum : " + orderNum);
-		console.log("선택된 goodsNum : " + goodsNum)
-		console.log("선택된 orderContact : " + orderContact)
-		console.log("선택된 sellerNickname : " + sellerNickname)
-
-		$('input[name="orderName"]').val(orderNum + " 주문의 추가 금액 결제");
-		modal.modal('show');
-
-	}
-
-	//추가주문 처리 ajax
-	$('#add-order').on('click', function() {
-		let orderName = $('input[name="orderName"]').val();
-		let orderPrice = $('input[name="orderPrice"]').val();
-		let goodsNum = $('input[name="goodsNum"]').val();
-		let orderEmail = $('input[name="orderEmail"]').val();
-		let orderContact = $('input[name="orderContact"]').val();
-		let sellerNickname = $('input[name="sellerNickname"]').val();
-		let sellerNum = $('input[name="sellerNum"]').val();
-		let orderPayType = $('input[name="orderPayType"]').val();
-		
-		
-		
-		console.log("추가할 orderName : " + orderName);
-		console.log("추가할 goodsNum : " + goodsNum);
-		console.log("추가할 orderEmail : " + orderEmail);
-		console.log("추가할 orderContact : " + orderContact);
-		console.log("추가할 sellerNickname : " + sellerNickname);
-		console.log("추가할 sellerNum : " + sellerNum);
-		
-		
-		
-		$.ajax({
-			url : "/order/addOrder",
-			type : "post",
-			async:false,
-			contentType : "application/json; charset=utf-8",
-			dataType : 'json',
- 			data : JSON.stringify({
-				orderName : orderName,
-				orderPrice : orderPrice,
-				goodsNum : goodsNum,
-				orderEmail : orderEmail,
-				orderContact : orderContact,
-				sellerNickname : sellerNickname,
-				sellerNum : sellerNum,
-				orderPayType : orderPayType
-			}),
-			success : function(data){
-				location.reload()
-			},
-			error : function(request, status, error){
-				console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-				alert('에러');
-			} 
-		})//end ajax
-		
-		modal.modal('hide');
-	})
-	
 	
 </script>
 

@@ -5,8 +5,12 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.mycom.euum.commons.FileUtils;
 import com.mycom.euum.goods.bean.GoodsBean;
+import com.mycom.euum.image.bean.ImageBean;
+import com.mycom.euum.image.service.ImageService;
 import com.mycom.euum.order.bean.OrderBean;
 import com.mycom.euum.order.bean.OrderOptionBean;
 import com.mycom.euum.order.mapper.OrderMapper;
@@ -19,7 +23,10 @@ import lombok.extern.log4j.Log4j;
 @Log4j
 public class OrderServiceImpl implements OrderService{
 
+	
 	private OrderMapper orderMapper;
+	private FileUtils fileUtils;
+	private ImageService imageService;
 	
 	/**20230120-0003 식으로 주무넌호 생성해주는 함수*/
 	public String getOrderNum(int orderKeyNum) {
@@ -159,6 +166,18 @@ public class OrderServiceImpl implements OrderService{
 	public int updateOrderStatus(OrderBean orderBean) {
 		
 		return orderMapper.updateOrderStatus(orderBean);
+	}
+
+	@Override
+	public void uploadFile(MultipartFile[] multipart, int orderKeyNum) throws Exception {
+
+		List<ImageBean> fileList = fileUtils.orderFileUpload(multipart);
+		
+		for(ImageBean file : fileList) {
+			file.setImageUse("order");
+			file.setImageUseNum(orderKeyNum);
+			imageService.insertImage(file);
+		}
 	}
 
 

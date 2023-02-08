@@ -31,8 +31,9 @@ public class MemberController {
 	private MemberService memberService;
 
 	// 테스트용... 임시 사용
-	@GetMapping("/main")
+	@GetMapping("/ccs")
 	public String test(HttpServletRequest request) {
+
 
 		/*
 		 * //로그인 귀찮아서 임시로 만든것... 세션 저장해줌 HttpSession session = request.getSession();
@@ -54,6 +55,7 @@ public class MemberController {
 		 */
 
 		return "main/main";
+
 	}
 	//
 	// 로그인 폼 로드
@@ -63,26 +65,39 @@ public class MemberController {
 		return "member/loginForm";
 	}
 
-	// 로그인 처리
+	//로그인 처리
 	@PostMapping("/member/loginPro")
 	public String loginPro(MemberBean bean, SellerBean sellerBean, HttpServletRequest request,
 			RedirectAttributes rttr) {
 		HttpSession session = request.getSession();
 
-		MemberBean loginUser = memberService.loginService(bean);
-		SellerBean loginSeller = memberService.getSeller(loginUser.getMemberNum());
 
-		if (loginUser != null ^ loginSeller == null) {
+
+		MemberBean loginUser = memberService.loginService(bean); 
+		SellerBean loginSeller = memberService.getSeller(loginUser.getMemberNum()); // 수정 필요할듯..? -> bean
+		log.info("loginUser: " + loginUser + "/ loginSeller: " + loginSeller);
+		
+		
+		if(loginUser != null && loginSeller == null) { // ^ -> &&
+
 
 			session.setAttribute("loginUser", loginUser);
 			session.setMaxInactiveInterval(60 * 30);
-
+			log.info("*** 멤버만");
 			return "redirect:/main";
 
-		} else if (loginUser != null ^ loginSeller != null) {
+
+			
+		}else if(loginUser != null && loginSeller != null) { // ^ -> &&
+
+
 			session.setAttribute("loginUser", loginUser);
-			session.setAttribute("seller", loginSeller);
+			session.setAttribute("loginSeller", loginSeller); // "seller" -> "loginSeller"
 			session.setMaxInactiveInterval(60 * 30);
+
+
+			log.info("*** 멤버 + 셀러");
+			
 
 			return "redirect:/main";
 		} else {
@@ -90,7 +105,6 @@ public class MemberController {
 			rttr.addFlashAttribute("result", "loginFail");
 			return "redirect:/member/loginForm";
 		}
-
 	}
 
 	// ajax 로그인 처리
@@ -186,6 +200,7 @@ public class MemberController {
 		return "./member/joinForm1";
 	}
 
+
 	@GetMapping("/member/joinForm2")
 	public String joinForm2() {
 		return "./member/joinForm2";
@@ -196,6 +211,7 @@ public class MemberController {
 		System.out.println(memberBean + "------------controller");
 		memberService.insertMember(memberBean);
 		return "redirect:/member/joinOk";
+
 	}
 
 	@ResponseBody

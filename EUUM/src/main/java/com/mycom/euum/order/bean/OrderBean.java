@@ -3,6 +3,8 @@ package com.mycom.euum.order.bean;
 import java.sql.Date;
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import lombok.Data;
 
 @Data
@@ -32,12 +34,13 @@ public class OrderBean {
 	private String sellerNickname;
 	private String goodsName;
 	private int orderPrice;
+	private String fileYn;
 	
 	
 	
 	private List<OrderOptionBean> optionList;
-
 	private List<OrderBean> orderList;
+	private MultipartFile[] uploadFile;
 	
 	
 	
