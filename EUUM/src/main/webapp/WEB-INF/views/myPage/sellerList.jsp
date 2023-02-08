@@ -71,6 +71,11 @@ color: #333;
 	color: #333;
 }
 
+.stars{
+	color: #fb8500;
+}
+
+
 </style>
 <!-- 
 
@@ -105,7 +110,7 @@ color: #333;
 				</ul>
 			</div>
 		</div> -->
-		<div class="mpmain"  style="width: 82%;">
+		<div class="mpmain"  >
 		
 		<!-- 메인 내용 -->
 		
