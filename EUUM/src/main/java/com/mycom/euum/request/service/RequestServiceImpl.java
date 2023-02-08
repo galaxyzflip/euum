@@ -24,9 +24,21 @@ public class RequestServiceImpl implements RequestService {
 	}
 
 	@Override
-	public List<RequestBean> reviewList(RqCriteria rqcri) {
+	public List<RequestBean> requestList(RqCriteria rqcri) {
 		// TODO Auto-generated method stub
 		return requestMapper.requestList(rqcri);
+	}
+
+	@Override
+	public int getTotal(RqCriteria rqcri) {
+		// TODO Auto-generated method stub
+		return requestMapper.getTotalCount(rqcri);
+	}
+
+	@Override
+	public RequestBean requestDetail(int requestNum) {
+		// TODO Auto-generated method stub
+		return requestMapper.requestDetail(requestNum);
 	}
 	
 

@@ -61,36 +61,7 @@ $(document).ready(function(){
 		$(this).addClass('current');
 		$("#"+tab_id).addClass('current');
 	})
-	
-	
-
-	/*	var result = '<c:out value="${result}"/>';
-
-		checkModal(result);
-
-		history.replaceState({}, null, null);
-
-		 function checkModal(result) {
-
-			if (result === '' || history.state) {
-				return;
-			}
-
-			if (parseInt(result) > 0) {
-				$(".modal-body").html(
-						"게시글 " + parseInt(result)
-								+ " 번이 등록되었습니다.");
-			}
-
-			$("#myModal").modal("show");
-		}
-
-		$("#regBtn").on("click", function() {
-
-			self.location = "/board/register";
-
-		}); */
-		
+			
 		$(".move").on("click", function(e){
 			e.preventDefault();
 			actionForm.append("<input type='hidden' name='noticeNum' value='"+$(this).attr("href")+"'>");
@@ -130,6 +101,35 @@ $(document).ready(function(){
 				searchForm.submit();
 
 				});
+		$("#regBtn").on("click", function() {
+
+			self.location = "/board/register";
+
+		}); 
+		
+
+		/*	var result = '<c:out value="${result}"/>';
+
+			checkModal(result);
+
+			history.replaceState({}, null, null);
+
+			 function checkModal(result) {
+
+				if (result === '' || history.state) {
+					return;
+				}
+
+				if (parseInt(result) > 0) {
+					$(".modal-body").html(
+							"게시글 " + parseInt(result)
+									+ " 번이 등록되었습니다.");
+				}
+
+				$("#myModal").modal("show");
+			}
+		*/
+			
 
 })
 </script>
@@ -259,57 +259,6 @@ $(document).ready(function(){
 					</c:if>
 				</c:forEach>
 			</div>
-			
-			<%-- <div class='row'>
-					<div class="col-lg-12">
-
-						<form id='searchForm' action="/notice/notice" method='get'>
-							<select name='type'>
-								<option value=""
-									<c:out value="${pageMaker.cri.type == null?'selected':''}"/>>--</option>
-								<option value="T"
-									<c:out value="${pageMaker.cri.type eq 'T'?'selected':''}"/>>제목</option>
-								<option value="C"
-									<c:out value="${pageMaker.cri.type eq 'C'?'selected':''}"/>>내용</option>
-								<option value="W"
-									<c:out value="${pageMaker.cri.type eq 'W'?'selected':''}"/>>작성자</option>
-								<option value="TC"
-									<c:out value="${pageMaker.cri.type eq 'TC'?'selected':''}"/>>제목 or 내용</option>
-								<option value="TW"
-									<c:out value="${pageMaker.cri.type eq 'TW'?'selected':''}"/>>제목 or 작성자</option>
-								<option value="TWC"
-									<c:out value="${pageMaker.cri.type eq 'TWC'?'selected':''}"/>>제목 or 내용 or 작성자</option>
-							</select> 
-							<input type='text' name='keyword'value='<c:out value="${pageMaker.cri.keyword}"/>' /> 
-							<input type='hidden' name='pageNum' value='<c:out value="${pageMaker.cri.pageNum}"/>' /> 
-							<input type='hidden' name='amount' value='<c:out value="${pageMaker.cri.amount}"/>' />
-							<button class='btn btn-default'>Search</button>
-						</form>
-					</div>
-				</div>
-			
-			<div class='pull-right'>
-				<ul class="pagination">
-				
-					<c:if test="${pageMaker.prev}">
-							<li class="paginate_button previous"><a
-								href="${pageMaker.startPage -1}">Previous</a></li>
-						</c:if>
-
-						<c:forEach var="num" begin="${pageMaker.startPage}"
-							end="${pageMaker.endPage}">
-							<li class="paginate_button  ${pageMaker.cri.pageNum == num ? "active":""} ">
-								<a href="${num}">${num}</a>
-							</li>
-						</c:forEach>
-
-						<c:if test="${pageMaker.next}">
-							<li class="paginate_button next"><a
-								href="${pageMaker.endPage +1 }">Next</a></li>
-						</c:if>
-				</ul>
-			</div> --%>
-			
 			
 			<form id='actionForm' action="/notice/notice" method='get'>
 				<input type='hidden' name='pageNum' value='${pageMaker.cri.pageNum}'>

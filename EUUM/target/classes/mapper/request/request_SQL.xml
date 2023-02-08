@@ -3,16 +3,53 @@
    PUBLIC "-//mybatis.org//DTD Mapper 3.0/EN"
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
    
-<mapper namespace="com.mycom.euum.review.mapper.ReviewMapper">
+<mapper namespace="com.mycom.euum.request.mapper.RequestMapper">
 
 	<insert id="requestInsert">	
 		<![CDATA[
 			insert into REQUEST_TBL(REQUEST_NUM, REQUEST_CATEGORY, REQUEST_USE, REQUEST_MONEY,
-									MEMBER_NUM, REQUEST_WRITER, REQUEST_CONTENT, REQUEST_TITLE)
+									MEMBER_NUM, REQUEST_WRITER, REQUEST_CONTENT, REQUEST_TITLE, REQUEST_FINISH, REQUEST_DEAD)
 			values(REQUEST_NUM_SEQ.NEXTVAL, #{requestCategory}, #{requestUse}, #{requestMoney}, #{memberNum},
-					#{requestWriter}, #{requestContent}, #{requestTitle})
+					#{requestWriter}, #{requestContent}, #{requestTitle}, #{requestFinish}, #{requestDead})
 		]]>
-		
 	</insert>
+	
+	<select id="requestList" resultType="com.mycom.euum.request.bean.RequestBean">
+		<![CDATA[
+		select REQUEST_NUM, REQUEST_STATUS, REQUEST_CATEGORY, REQUEST_USE, REQUEST_TITLE, 
+			   REQUEST_WRITER, REQUEST_DELETE, REQUEST_FINISH, REQUEST_DEAD 
+		from (select rownum rn, REQUEST_NUM, REQUEST_STATUS, REQUEST_CATEGORY, REQUEST_USE, REQUEST_TITLE, 
+			  		 REQUEST_WRITER, REQUEST_DELETE, REQUEST_FINISH, REQUEST_DEAD
+		      FROM REQUEST_TBL
+		      WHERE rownum <=#{rqpageNum} * #{rqamount} AND REQUEST_DELETE = 'N')
+		where rn>(#{rqpageNum}-1) * #{rqamount} ORDER BY REQUEST_NUM DESC
+		]]>	
+	</select>
+	
+	<select id="requestDetail" resultType="com.mycom.euum.request.bean.RequestBean">
+		select REQUEST_NUM, REQUEST_CATEGORY, REQUEST_USE, REQUEST_MONEY, MEMBER_NUM,
+				REQUEST_CONTENT, REQUEST_STATUS, REQUEST_TITLE, REQUEST_WRITER,
+				REQUEST_FINISH, REQUEST_DEAD, REQUEST_DELETE
+		from REQUEST_TBL
+		where REQUEST_NUM = #{requestNum} AND REQUEST_DELETE='N'
+	</select>
+	
+	
+	<select id="requestModify" resultType="com.mycom.euum.request.bean.RequestBean">
+	
+	</select>
+	
+	<update id="requestModifyPro">
+	
+	</update>
+	
+	<update id="requestDelete">
+	
+	</update>
+	
+	<select id="getTotalCount" resultType="int">
+		select count(*) from REQUEST_TBL 
+		where REQUEST_NUM>0 AND REQUEST_DELETE ='N'
+	</select>
 
 </mapper>
