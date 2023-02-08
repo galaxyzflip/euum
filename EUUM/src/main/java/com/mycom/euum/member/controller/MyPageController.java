@@ -31,6 +31,13 @@ public class MyPageController {
 	MyPageService myPageService;
 	private FileUtils fileUtils;
 
+	// 찜목록
+	@GetMapping("/myPage/sellerList")
+	public String test() {
+		return "myPage/sellerList";
+	}
+	
+	
 	// 회원정보 상세보기 겸 수정 창
 	@GetMapping("/myPage/modifyForm")
 	public String memberDetail(Model model, HttpServletRequest request) {
@@ -147,7 +154,7 @@ public class MyPageController {
 		
 		List<String> profile = new ArrayList<String>();
 			
-		profile = fileUtils.fileUpload(uploadFile);
+		/* profile = fileUtils.fileUpload(uploadFile); */
 		
 		sellerBean.setSellerImage(profile.get(0));
 		

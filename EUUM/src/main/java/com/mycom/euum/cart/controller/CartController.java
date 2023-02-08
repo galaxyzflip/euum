@@ -11,10 +11,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class CartController {
 
-	@GetMapping("/myPage/favorite")
-	public String test() {
-		return "myPage/favorite";
-	}
+
 	
 	
 }
