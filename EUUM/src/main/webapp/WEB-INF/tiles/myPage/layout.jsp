@@ -34,49 +34,46 @@
 	display: inline-block;
 }
 
-.profile_con{
+.profile_con {
 	margin-top: 40px;
 	margin-bottom: 20px;
-
 }
 
-
-.profile_mp{
-    width: 130px;
-    height: 130px;
-    display: inline-block;
-    border-radius: 50%;
-    background-repeat: no-repeat;
-    background-position: 50% 50%;
-    background-size: cover;
-    border:0;
+.profile_mp {
+	width: 130px;
+	height: 130px;
+	display: inline-block;
+	border-radius: 50%;
+	background-repeat: no-repeat;
+	background-position: 50% 50%;
+	background-size: cover;
+	border: 0;
 }
 
-.hrline{
-	width:80%;
+.hrline {
+	width: 80%;
 	height: 1px;
 	background: #D5D5D5;
-	margin: 0 auto;	
+	margin: 0 auto;
 	margin-bottom: 20px;
 }
 
-.category_mp li{
-margin-bottom:30px;
-font-size:17px;
+.category_mp li {
+	margin-bottom: 30px;
+	font-size: 17px;
 }
 
-.category_mp a{
-color: #333;
-}
-.category_mp a{
-color: #333;
-}
-
-
-.boardimg a{
+.category_mp a {
 	color: #333;
 }
 
+.category_mp a {
+	color: #333;
+}
+
+.boardimg a {
+	color: #333;
+}
 </style>
 <title>이음</title>
 
@@ -107,7 +104,8 @@ color: #333;
 							style="background-image: url('https://cdna.artstation.com/p/assets/images/images/059/006/526/20230203043155/smaller_square/german-reina-carmona-p6-zaltornpc-turnaround-13oct2020.jpg?1675420316');"></button>
 						<div style="margin-top: 10px; font-size: 23px;">
 							<div>
-								<strong>${loginUser.memberName}</strong><span style="font-size: 21px; color: #777"><strong>님</strong></span>
+								<strong>${loginUser.memberName}</strong><span
+									style="font-size: 21px; color: #777"><strong>님</strong></span>
 							</div>
 							<span style="font-size: 14px; color: #999;">일반회원</span>
 						</div>
@@ -127,9 +125,9 @@ color: #333;
 				</div>
 			</div>
 			<div class="mpmain" style="width: 82%;">
-				
+
 				<tiles:insertAttribute name="body" />
-				
+
 			</div>
 
 		</div>
