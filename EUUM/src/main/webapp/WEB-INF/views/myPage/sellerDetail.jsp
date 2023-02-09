@@ -10,6 +10,72 @@
     float: left;
 }
 
+.modifySellerbody {
+    width: 1080px;
+    margin: 0 auto;
+    clear: both;
+    padding-top: 56px;
+    padding-bottom: 150px;
+}
+
+#sellerInfo {
+    height: 180px;
+    border: 1px solid #dadada;
+    margin-bottom: 50px;
+    box-sizing: border-box;
+    padding: 34px 0 0 46px;
+    color: #626262;
+}
+
+.round_face2 {
+    width: 90px;
+    height: 90px;
+    border-radius: 45px;
+    overflow: hidden;
+}
+
+#sellerInfo .name {
+    font-size: 18px;
+    color: #242424;
+}
+
+#sellerInfo .brief {
+    margin-top: 12px;
+    line-height: 130%;
+    margin-bottom: 8px;
+}
+
+.default {
+    font-size: 13px;
+    letter-spacing: -0.6px;
+    line-height: 140%;
+}
+
+#sellerInfo #section1 {
+    margin-left: 30px;x`
+}
+
+#sellerInfo #section2 {
+    margin-left: 54px;
+}
+
+#sellerInfo #section3 {
+    margin-left: 54px;
+    overflow: hidden;
+}
+
+.left_div div {
+    float: left;
+}
+
+#bank_main {
+    float: right;
+}
+
+#profile_Box {
+    float: left;
+}
+
 #orgFile {
     display: none; 
 }
@@ -19,6 +85,13 @@ input[type='file'] {
     text-indent: 0px;
     font-size: 12px;
     height: 30px;
+}
+
+.round_face {
+    width: 108px;
+    height: 108px;
+    border-radius: 54px;
+    overflow: hidden;
 }
 
 .rBtn_lGray {
@@ -102,23 +175,27 @@ input[type='file'] {
 
 <input type="hidden" name="memberNum" value="${seller.memberNum}">
 
-<!--<c:if test="${member.memberClass = 'S'}">
+<c:if test="${member.memberClass = 'S'}">
 <div id="sellerInfo" class="left_div">
 <c:choose>
 
 <div>
-<img src="">
+<img class="round_face2" src="${pageContext.request.contextPath}/resources/img/${image.imageUploadPath}s_${image.imageFileName}">
+<ul style="height:8px"></ul>
 </div>
 
 
 <div id="section1">
-<ul>${seller.sellerNickName}</ul>
-<ul></ul>
+<ul class="name">${seller.sellerNickName}</ul>
+<ul class="brief default">${seller.sellerDescription}</ul>
 </div>
 
 
 <div id="section2">
-<ul class="line left_right_ol"></ul>
+<ul class="line left_right_ol"><ol>결제완료</ol></ul>
+<ul class="line left_right_ol"><ol>진행중</ol></ul>
+<ul class="line left_right_ol"><ol>입금예정</ol></ul>
+<ul class="left_right_ol"><ol>거래완료</ol></ul>
 </div>
 
 
@@ -131,7 +208,7 @@ input[type='file'] {
 
 </c:if>
 </c:choose>
-</div>-->
+</div>
 <!-- sellerInfo -->
 
 <div class="sellerProfile">
@@ -170,7 +247,7 @@ input[type='file'] {
 
 <div id="profile_Box">
 
-<ul><ol><img src="${pageContext.request.contextPath}/resources/img/${image.imageUploadPath}s_${image.imageFileName}"></ol></ul>
+<ul><ol><img class="round_face" src="${pageContext.request.contextPath}/resources/img/${image.imageUploadPath}s_${image.imageFileName}"></ol></ul>
 <ul>"권장사이즈 "<font>180 x 180 px</font></ul>
 <ul style="margin-top:14px; text-align: center;" class="cf">
 <input type="file" class="real-upload" name="uploadFile" multiple id="orgFile">
@@ -257,7 +334,7 @@ input[type='file'] {
 </div>
 <!-- sellerProfile -->
 
-<div class="blank"></div>
+<div class="blank" style="height:70px;"></div>
 <div class="left left_li" style="padding-left:4px">
 <li style="margin-right: 30px" type="button" onclick="location.href='/myPage/modifyPassForm';">비밀번호 변경</li>
 <li style="margin-right: 30px" type="button" onclick="location.href='/myPage/leaveForm';">회원탈퇴</li>
@@ -306,6 +383,8 @@ function submit2(frm) {
 $("#sellerSpecialty").val("sellerSpecialty");
 
 $("#sellerSpecialty").val("${seller.sellerSpecialty}").prop("selected", true);
+
+
 
 </script>
 </html>
