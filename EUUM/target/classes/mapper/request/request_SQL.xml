@@ -21,7 +21,11 @@
 		from (select rownum rn, REQUEST_NUM, REQUEST_STATUS, REQUEST_CATEGORY, REQUEST_USE, REQUEST_TITLE, 
 			  		 REQUEST_WRITER, REQUEST_DELETE, REQUEST_FINISH, REQUEST_DEAD
 		      FROM REQUEST_TBL
-		      WHERE rownum <=#{rqpageNum} * #{rqamount} AND REQUEST_DELETE = 'N')
+		      WHERE
+		]]>	 
+		<include refid="rqcriteria"></include>
+		<![CDATA[
+					rownum <=#{rqpageNum} * #{rqamount} AND REQUEST_DELETE = 'N')
 		where rn>(#{rqpageNum}-1) * #{rqamount} ORDER BY REQUEST_NUM DESC
 		]]>	
 	</select>
@@ -51,5 +55,24 @@
 		select count(*) from REQUEST_TBL 
 		where REQUEST_NUM>0 AND REQUEST_DELETE ='N'
 	</select>
-
+	
+	<sql id="rqcriteria">
+		<trim prefix="(" suffix=") AND " prefixOverrides="OR">
+			<foreach item='type' collection="typeArr">
+				<trim prefix="OR">
+					<choose>
+						<when test="type == 'T'.toString()">
+							REQUEST_TITLE like '%'||#{rqkeyword}||'%'
+						</when>
+						<when test="type == 'C'.toString()">
+							REQUEST_CONTENT like '%'||#{rqkeyword}||'%'
+						</when>
+						<when test="type == 'W'.toString()">
+							REQUEST_WRITER like '%'||#{rqkeyword}||'%'
+						</when>
+					</choose>
+				</trim>
+			</foreach>
+		</trim>
+	</sql>
 </mapper>

@@ -5,6 +5,26 @@
 <!DOCTYPE html>
 <html>
 <head>
+<script type="text/javascript">
+	$(document).ready(function() {
+
+		var operForm = $("#operForm");
+
+		$("button[data-oper='modify']").on("click", function(e) {
+
+			operForm.attr("action", "/request/requestModifyForm").submit();
+
+		});
+		
+		$("button[data-oper='list']").on("click", function(e) {
+			
+			operForm.find("#requestNum").remove();
+			operForm.attr("action", "/request/requestList")
+			operForm.submit();
+
+		});
+	});
+</script>
 <meta charset="EUC-KR">
 <title>Insert title here</title>
 </head>
@@ -28,9 +48,20 @@
 		<tr>
 			<th><c:out value="${detail.requestContent }"/></th>
 		</tr>
-	</table>
+	</table>	
 	
+	<div>
+		<form id="operForm" action="/request/requestModifyForm" method="get">
+			<input type='hidden' name='rqpageNum' value='${rqcri.rqpageNum}'>
+			<input type='hidden' name='rqamount' value='${rqcri.rqamount}'>
+		<%-- 	<input type='hidden' name='rqtype' value='<c:out value="${ rqpageMaker.rqcri.rqtype }"/>'> 
+			<input type='hidden' name='rqkeyword' value='<c:out value="${ rqpageMaker.rqcri.rqkeyword }"/>'> --%>
+		</form>
+		
+		<button data-oper='modify'>수정</button>
+		<button data-oper='list'>목록</button>
+	
+	</div>	
 </div>
-
 </body>
 </html>

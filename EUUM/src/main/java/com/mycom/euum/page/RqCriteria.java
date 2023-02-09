@@ -16,7 +16,7 @@ public class RqCriteria {
 	private String rqkeyword;
 	
 	public RqCriteria() {
-		this(1,20);
+		this(1,15);
 	}
 	
 	public RqCriteria(int rqpageNum, int rqamount) {

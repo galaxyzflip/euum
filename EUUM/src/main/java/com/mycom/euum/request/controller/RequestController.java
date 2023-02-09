@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -53,7 +54,7 @@ public class RequestController {
 	}
 	
 	@GetMapping("/request/requestDetail")
-	public String requestDetail(@RequestParam("requestNum") int requestNum, Model model) {
+	public String requestDetail(@RequestParam("requestNum") int requestNum, Model model, @ModelAttribute("rqcri") RqCriteria rqcri) {
 		
 		System.out.println("의뢰게시판 번호 몇번???????????????????"+requestNum);
 		
