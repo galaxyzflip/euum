@@ -1,3 +1,4 @@
+
 package com.mycom.euum.goods.controller;
 
 import java.util.List;
@@ -321,4 +322,5 @@ public class GoodsController {
 		return sellerBean;
 	}
 	
+
 }

@@ -1,3 +1,4 @@
+
 package com.mycom.euum.goods.service;
 
 import java.util.List;
@@ -68,3 +69,4 @@ public interface GoodsService {
 	/** 선민: 상품 등록 시 이미지 업로드 */
 	public List<ImageBean> goodsFileUpload(MultipartFile[] uploadFile, HttpServletRequest request) throws Exception;
 }
+

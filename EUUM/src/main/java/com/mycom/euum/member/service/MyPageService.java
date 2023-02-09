@@ -1,5 +1,8 @@
 package com.mycom.euum.member.service;
 
+import java.util.List;
+
+import com.mycom.euum.image.bean.ImageBean;
 import com.mycom.euum.member.bean.MemberBean;
 import com.mycom.euum.member.bean.SellerBean;
 
@@ -11,6 +14,8 @@ public interface MyPageService {
 	public int updateMember(MemberBean bean);
 	
 	public int updateSeller(SellerBean bean);
+	
+	public int updateSellerFile(SellerBean bean, List<ImageBean> imageBeanList);
 	
 	public int updatePassword(MemberBean bean);
 	

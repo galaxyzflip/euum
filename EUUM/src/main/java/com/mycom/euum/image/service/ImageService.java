@@ -1,3 +1,4 @@
+
 package com.mycom.euum.image.service;
 
 import java.util.List;
@@ -13,6 +14,13 @@ public interface ImageService {
 	public void insertImage(ImageBean imageBean) throws Exception;
 	
 	public List<ImageBean> getImageList(ImageBean imageBean);
+  
+  public void deleteImage(List<ImageBean> imageBeanList, int imageUseNum) throws Exception;
+	
+	public void insertSellerImage(int imageUseNum) throws Exception;
+	
+	public ImageBean getSellerImage(int imageUseNum) throws Exception;
 
 
 }
+
