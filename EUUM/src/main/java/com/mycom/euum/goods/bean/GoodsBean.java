@@ -1,3 +1,4 @@
+
 /**
  * 작성일 : 2023-01-13
  * 용도 : 상품 정보 Bean
@@ -33,3 +34,4 @@ public class GoodsBean {
 	String goodsImage2;
 	String goodsImage3;
 }
+

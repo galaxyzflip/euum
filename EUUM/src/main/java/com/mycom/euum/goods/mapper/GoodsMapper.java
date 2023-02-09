@@ -6,7 +6,6 @@ import org.apache.ibatis.annotations.Param;
 
 import com.mycom.euum.goods.bean.GoodsBean;
 import com.mycom.euum.goods.bean.GoodsOptionBean;
-import com.mycom.euum.page.Criteria2;
 
 //@Repository("goodsMapper")
 public interface GoodsMapper {
@@ -15,8 +14,8 @@ public interface GoodsMapper {
 //	private SqlSessionTemplate sqlSession;
 
 	/* ---------------------------- 상품 리스트 ---------------------------- */
-	
-	/** 은정: 상품 리스트 가져오기 (List) */
+
+		/** 은정: 상품 리스트 가져오기 (List) */
 	public List<GoodsBean> selectGoodsList(Criteria2 cri);
 	
 	/** 은정: 상품리스트 페이징 */
@@ -69,8 +68,5 @@ public interface GoodsMapper {
 	// 선민: mybatis로 2개 이상의 파라미터를 보낼 때 @Param으로 명시해주기
 	public List<GoodsOptionBean> selectGoodsOptionContent(@Param("goodsNum") String goodsNum, @Param("goodsOptNameNum") String goodsOptNameNum) throws Exception;
 
-	
-
-	
 
 }

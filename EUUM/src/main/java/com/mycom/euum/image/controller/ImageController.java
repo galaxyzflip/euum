@@ -28,26 +28,8 @@ import lombok.extern.log4j.Log4j;
 @Log4j
 @AllArgsConstructor
 public class ImageController {
+	
 
-	private ImageServiceImpl imageService;
-	private FileUtils fileUtils;
-	
-	@RequestMapping(value = "/image/imageInsertPro")
-	public String imageInsertPro(ImageBean imageBean) throws Exception {
-		
-		imageBean.setImageFileName("test-fileName");
-		imageBean.setImageFileType("i");
-		imageBean.setImageUploadPath("test-uploadPath");
-		imageBean.setImageUse("test-use");
-		imageBean.setImageUseNum(999);
-		imageBean.setImageUUID("test-uuid");
-		
-		imageService.insertImage(imageBean);
-		
-		return "main_layout";
-	}
-//	insertImage
-	
 	@GetMapping(value = "/download", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
 	@ResponseBody
 	public ResponseEntity<Resource> downloadFile(@RequestHeader("User-Agent") String userAgent, HttpServletRequest request, String fileName) {
@@ -84,4 +66,5 @@ public class ImageController {
 
 		return new ResponseEntity<Resource>(resource, headers, HttpStatus.OK);
 	}
+
 }

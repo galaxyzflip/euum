@@ -85,7 +85,7 @@ div {
 <ul>비밀번호는 8자리 이상으로 설정해주세요 (영문,숫자,특수문자 조합)</ul>
 </div>
 
-<form method="post" name="join">
+<form method="post" name="join" action="/myPage/modifyPassPro" id="modifyPassForm">
 
 <div id="pass_inp">
 
@@ -110,7 +110,7 @@ div {
 <div class="left_right_ul" style="width:393px; margin:0 auto">
 <input type="hidden" name="memberNum" value="${member.memberNum}">
 <input type="hidden" name="memberEmail" value="${member.memberEmail}">
-<ul><input type="submit" class="btn1" onclick="return modifyPass();" value="비밀번호 변경">
+<ul><input type="submit" class="btn1" onclick="modifyPass();" value="비밀번호 변경">
 <ul class="btn3" onclick="history.back();">이전 페이지</ul>
 </div>
 
