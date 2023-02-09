@@ -88,6 +88,7 @@
 				<div class="btnCon">
 						<button class="submitbtn reset" type="reset"><span>다시작성</span></button>
 						<button class="submitbtn done" type="button"><span>회원가입</span></button>
+						<button data-oper='list'>취소</button>
 				</div>
 			</form>
 		</div>

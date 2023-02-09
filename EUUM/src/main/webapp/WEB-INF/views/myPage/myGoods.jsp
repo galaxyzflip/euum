@@ -13,160 +13,289 @@
 		<button type="button" onclick="location.href='/goods/goodsRegisterGuide'">작품 등록</button>
 	</div><br/>
 
-	<div class="myGoodsList">
-		<li>[내 상품]</li>
-		<c:choose>
-			<c:when test="${fn:length(myGoodsMap.myGoodsList) > 0}">
-				<c:forEach items="${myGoodsMap.myGoodsList}" var="row" varStatus="status">
-					<div style="padding-bottom: 15px">
-						<table style="border: solid 1px">
-							<tr>
-								<%-- <td class="myg_category">${row.goodsCategory}</td> --%>
-								<td class="myg_category">${row.goodsNum}</td>
-								<td>
-									<img class="thumb" src="/resources/img/${row.goodsImageDate}s_${row.goodsImage1}">
-									<img class="thumb" src="/resources/img/${row.goodsImageDate}s_${row.goodsImage2}">
-									<img class="thumb" src="/resources/img/${row.goodsImageDate}s_${row.goodsImage3}">
-								</td>
-								<td class="myg_info">
-									<li>${row.goodsName} / ${row.goodsUse}</li>
-									<li>${row.goodsSellerNickname} / ${row.goodsPrice}</li>
-								</td>
-								<td class="myg_button">
-									<input type="hidden" id="goodsNum_${status.index}" value="${row.goodsNum}"/>
-									<button type="button" onclick="">수정</button>
-									<button type="button" onclick="deleteMyGoods('${row.goodsStatus}', ${status.index});">삭제</button>
-								</td>
-							</tr>
-						</table>
-					</div>
-				</c:forEach>
-			</c:when>
-			<c:otherwise>
-				판매중인 내 상품이 없습니다.
-			</c:otherwise>
-		</c:choose>
+	<div class="myGoods">
+		<div class="myGoodsList" style="padding-bottom:20px">
+			<li>[내 상품]</li>
+			<c:choose>
+				<c:when test="${fn:length(myGoodsMap.myGoodsList) > 0}">
+					<c:forEach items="${myGoodsMap.myGoodsList}" var="row" varStatus="status">
+						<div style="padding-bottom: 15px">
+							<table style="border: solid 1px">
+								<tr id="tr_${row.goodsNum}">
+									<td class="myg_category">${row.goodsCategory}</td>
+									<%-- <td class="myg_category">${row.goodsNum}</td> --%>
+									<td>
+										<c:choose>
+											<c:when test="${row.goodsImage1 eq null}">
+												<img class="thumb" src="/resources/img/no_image.png">
+											</c:when>
+											<c:otherwise>
+												<img class="thumb" src="/resources/img/${row.goodsImageDate}s_${row.goodsImage1}">
+											</c:otherwise>
+										</c:choose>
+										<c:choose>
+											<c:when test="${row.goodsImage2 eq null}">
+												<img class="thumb" src="/resources/img/no_image.png">
+											</c:when>
+											<c:otherwise>
+												<img class="thumb" src="/resources/img/${row.goodsImageDate}s_${row.goodsImage2}">
+											</c:otherwise>
+										</c:choose>
+										<c:choose>
+											<c:when test="${row.goodsImage3 == null}">
+												<img class="thumb" src="/resources/img/no_image.png">
+											</c:when>
+											<c:otherwise>
+												<img class="thumb" src="/resources/img/${row.goodsImageDate}s_${row.goodsImage3}">
+											</c:otherwise>
+										</c:choose>
+									</td>
+									<td class="myg_info">
+										<li>${row.goodsName} / ${row.goodsUse}</li>
+										<li>${row.goodsSellerNickname} / ${row.goodsPrice}</li>
+									</td>
+									<td class="myg_button">
+										<input type="hidden" id="goodsNum_${status.index}" value="${row.goodsNum}"/>
+										<button type="button" onclick="modifyMyGoods('${row.goodsStatus}', ${status.index});">수정</button>
+										<button type="button" onclick="deleteMyGoods('${row.goodsStatus}', ${status.index});">삭제</button>
+									</td>
+								</tr>
+							</table>
+						</div>
+					</c:forEach>
+				</c:when>
+				<c:otherwise>
+					판매중인 내 상품이 없습니다.
+				</c:otherwise>
+			</c:choose>
+		</div>
+	
+		<div class="myUnapprovedGoodsList" style="padding-bottom:20px">
+			<li>[승인대기 중인 상품]</li>
+			<c:choose>
+				<c:when test="${fn:length(myGoodsMap.myUnapprovedGoodsList) > 0}">
+					<c:forEach items="${myGoodsMap.myUnapprovedGoodsList}" var="row" varStatus="status">
+						<div style="padding-bottom: 15px">
+							<table style="border: solid 1px">
+								<tr id="tr_unapproved_${row.goodsNum}">
+									<td class="myg_category">${row.goodsCategory}</td>
+									<%-- <td class="myg_category">${row.goodsNum}</td> --%>
+									<td>
+										<c:choose>
+											<c:when test="${row.goodsImage1 eq null}">
+												<img class="thumb" src="/resources/img/no_image.png">
+											</c:when>
+											<c:otherwise>
+												<img class="thumb" src="/resources/img/${row.goodsImageDate}s_${row.goodsImage1}">
+											</c:otherwise>
+										</c:choose>
+										<c:choose>
+											<c:when test="${row.goodsImage2 eq null}">
+												<img class="thumb" src="/resources/img/no_image.png">
+											</c:when>
+											<c:otherwise>
+												<img class="thumb" src="/resources/img/${row.goodsImageDate}s_${row.goodsImage2}">
+											</c:otherwise>
+										</c:choose>
+										<c:choose>
+											<c:when test="${row.goodsImage3 == null}">
+												<img class="thumb" src="/resources/img/no_image.png">
+											</c:when>
+											<c:otherwise>
+												<img class="thumb" src="/resources/img/${row.goodsImageDate}s_${row.goodsImage3}">
+											</c:otherwise>
+										</c:choose>
+									</td>
+									<td class="myg_info">
+										<li>${row.goodsName} / ${row.goodsUse}</li>
+										<li>${row.goodsSellerNickname} / ${row.goodsPrice}</li>
+									</td>
+									<td class="myg_button">
+										<input type="hidden" id="goodsNum_${status.index}" value="${row.goodsNum}"/>
+										<button type="button" onclick="modifyMyGoods('${row.goodsStatus}', ${status.index});">수정</button>
+										<button type="button" onclick="deleteMyGoods('${row.goodsStatus}', ${status.index});">삭제</button>
+									</td>
+								</tr>
+							</table>
+						</div>
+					</c:forEach>
+				</c:when>
+				<c:otherwise>
+					<span>승인 대기중인 상품이 없습니다.</span>
+				</c:otherwise>
+			</c:choose>
+		</div>
+	
+		<div class="myTempGoodsList" style="padding-bottom:20px">
+			<li>[임시 저장된 상품]</li>	
+			<c:choose>
+				<c:when test="${fn:length(myGoodsMap.myTempGoodsList) > 0}">
+					<c:forEach items="${myGoodsMap.myTempGoodsList}" var="row" varStatus="status">
+						<div style="padding-bottom: 15px">
+							<table style="border: solid 1px">
+								<tr id="tr_temp_${row.goodsNum}">
+									<td class="myg_category">${row.goodsCategory}</td>
+									<%-- <td class="myg_category">${row.goodsNum}</td> --%>
+									<td>
+										<c:choose>
+											<c:when test="${row.goodsImage1 eq null}">
+												<img class="thumb" src="/resources/img/no_image.png">
+											</c:when>
+											<c:otherwise>
+												<img class="thumb" src="/resources/img/${row.goodsImageDate}s_${row.goodsImage1}">
+											</c:otherwise>
+										</c:choose>
+										<c:choose>
+											<c:when test="${row.goodsImage2 eq null}">
+												<img class="thumb" src="/resources/img/no_image.png">
+											</c:when>
+											<c:otherwise>
+												<img class="thumb" src="/resources/img/${row.goodsImageDate}s_${row.goodsImage2}">
+											</c:otherwise>
+										</c:choose>
+										<c:choose>
+											<c:when test="${row.goodsImage3 == null}">
+												<img class="thumb" src="/resources/img/no_image.png">
+											</c:when>
+											<c:otherwise>
+												<img class="thumb" src="/resources/img/${row.goodsImageDate}s_${row.goodsImage3}">
+											</c:otherwise>
+										</c:choose>
+									</td>
+									<td class="myg_info">
+										<li>${row.goodsName} / ${row.goodsUse}</li>
+										<li>${row.goodsSellerNickname} / ${row.goodsPrice}</li>
+									</td>
+									<td class="myg_button">
+										<input type="hidden" id="goodsNum_${status.index}" name="goodsNum" value="${row.goodsNum}"/>
+										<button type="button" onclick="modifyMyGoods('${row.goodsStatus}', ${status.index});">수정</button>
+										<button type="button" onclick="deleteMyGoods('${row.goodsStatus}', ${status.index});">삭제</button>
+									</td>
+								</tr>
+							</table>
+						</div>
+					</c:forEach>
+				</c:when>
+				<c:otherwise>
+					<span>임시 저장된 상품이 없습니다.</span>
+				</c:otherwise>
+			</c:choose>
+			<form id="modifyForm"></form>
+		</div>
 	</div>
-	<br/>
-
-	<div class="myUnapprovedGoodsList">
-		<li>[승인대기 중인 상품]</li>
-		<c:choose>
-			<c:when test="${fn:length(myGoodsMap.myUnapprovedGoodsList) > 0}">
-				<c:forEach items="${myGoodsMap.myUnapprovedGoodsList}" var="row" varStatus="status">
-					<div style="padding-bottom: 15px">
-						<table style="border: solid 1px">
-							<tr>
-								<%-- <td class="myg_category">${row.goodsCategory}</td> --%>
-								<td class="myg_category">${row.goodsNum}</td>
-								<td>
-									<img class="thumb" src="/resources/img/${row.goodsImageDate}s_${row.goodsImage1}">
-									<img class="thumb" src="/resources/img/${row.goodsImageDate}s_${row.goodsImage2}">
-									<img class="thumb" src="/resources/img/${row.goodsImageDate}s_${row.goodsImage3}">
-								</td>
-								<td class="myg_info">
-									<li>${row.goodsName} / ${row.goodsUse}</li>
-									<li>${row.goodsSellerNickname} / ${row.goodsPrice}</li>
-								</td>
-								<td class="myg_button">
-									<input type="hidden" id="goodsNum_${status.index}" value="${row.goodsNum}"/>
-									<button type="button" onclick="">수정</button>
-									<button type="button" onclick="deleteMyGoods('${row.goodsStatus}', ${status.index});">삭제</button>
-								</td>
-							</tr>
-						</table>
-					</div>
-				</c:forEach>
-			</c:when>
-			<c:otherwise>
-				<span>승인 대기중인 상품이 없습니다.</span>
-			</c:otherwise>
-		</c:choose>
-	</div>
-	<br/>
-
-	<div class="myTempGoodsList">
-		<li>[임시 저장된 상품]</li>	
-		<c:choose>
-			<c:when test="${fn:length(myGoodsMap.myTempGoodsList) > 0}">
-				<c:forEach items="${myGoodsMap.myTempGoodsList}" var="row" varStatus="status">
-					<div style="padding-bottom: 15px">
-						<table style="border: solid 1px">
-							<tr>
-								<%-- <td class="myg_category">${row.goodsCategory}</td> --%>
-								<td class="myg_category">${row.goodsNum}</td>
-								<td>
-									<img class="thumb" src="/resources/img/${row.goodsImageDate}s_${row.goodsImage1}">
-									<img class="thumb" src="/resources/img/${row.goodsImageDate}s_${row.goodsImage2}">
-									<img class="thumb" src="/resources/img/${row.goodsImageDate}s_${row.goodsImage3}">
-								</td>
-								<td class="myg_info">
-									<li>${row.goodsName} / ${row.goodsUse}</li>
-									<li>${row.goodsSellerNickname} / ${row.goodsPrice}</li>
-								</td>
-								<td class="myg_button">
-									<input type="hidden" id="goodsNum_${status.index}" name="goodsNum" value="${row.goodsNum}"/>
-									<button type="button" id="modifyMyGoodsBtn" onclick="">수정</button>
-									<button type="button" id="deleteMyGoodsBtn" onclick="deleteMyGoods('${row.goodsStatus}', ${status.index});">삭제</button>
-								</td>
-							</tr>
-						</table>
-					</div>
-				</c:forEach>
-			</c:when>
-			<c:otherwise>
-				<span>임시 저장된 상품이 없습니다.</span>
-			</c:otherwise>
-		</c:choose>
-	</div>
-	<br/>
 	<br/>
 	
 	<div>맵: ${myGoodsMap}</div><br/>
 </div>
 
 <script>
-function deleteMyGoods(status, index) {
+function modifyMyGoods(status, index) {
     let formData = new FormData(); // 가상의 <form>태그 객체를 생성
     let goodsNum;
     
+    if(!confirm("상품 정보를 수정하시겠습니까?")) { return false; }
+    else {}
+    
 	switch(status) {
 		case '승인완료':
-			alert('승인완료');
 			goodsNum = document.querySelector('div.myGoodsList input[id=goodsNum_' + index + ']').value;
-			alert(goodsNum);
 			break;
 		case '승인대기':
-			alert('승인대기');
 			goodsNum = document.querySelector('div.myUnapprovedGoodsList input[id=goodsNum_' + index + ']').value;
-			alert(goodsNum);
 			break;
 		case '임시저장':
-			alert('임시저장');
 			goodsNum = document.querySelector('div.myTempGoodsList input[id=goodsNum_' + index + ']').value;
-			alert(goodsNum);
 			break;
 		default:
 			alert('이거뜨면먼가오류있음');
 	}
 
-	// 1. 가상의 <form>태그에 data를 넣는 과정
+	// 1. 가상의 <form>태그에 전송할 data를 담기
+	var form = document.getElementById("modifyForm");
+	form.setAttribute("charset", "UTF-8");
+	form.setAttribute("method", "Post");  //Post 방식
+	form.setAttribute("action", "/goods/goodsModifyForm"); //요청 보낼 주소
+	
+	var input   = document.createElement('input'); 
+	input.type   = 'hidden'; 
+	input.name  = 'goodsNum'; 
+	input.value  = goodsNum; 
+	form.appendChild(input); 
+	
+	form.submit();
+}
+
+function deleteMyGoods(status, index) {
+    let formData = new FormData(); // 가상의 <form>태그 객체를 생성
+    let goodsNum;
+    
+    if(!confirm("정말 삭제하시겠습니까?")) { return false; }
+    else {}
+    
+	switch(status) {
+		case '승인완료':
+			goodsNum = document.querySelector('div.myGoodsList input[id=goodsNum_' + index + ']').value;
+			break;
+		case '승인대기':
+			goodsNum = document.querySelector('div.myUnapprovedGoodsList input[id=goodsNum_' + index + ']').value;
+			break;
+		case '임시저장':
+			goodsNum = document.querySelector('div.myTempGoodsList input[id=goodsNum_' + index + ']').value;
+			break;
+		default:
+			alert('이거뜨면먼가오류있음');
+	}
+
+	// 1. 가상의 <form>태그에 전송할 data를 담기
 	formData.append("goodsNum", goodsNum);
 		
-	// 2. Ajax로 전송 시 약간의 옵션이 붙는 과정
+	// 2-1. 약간의 옵션을 설정하고 Ajax로 전송 후 html 코드를 remove()
+// 	$.ajax({
+// 		url: '/goods/goodsDeletePro',
+// 		processData: false,
+// 		contentType: false,
+// 		data: formData,
+// 		type: 'POST',
+		
+// 		success: function(result) { alert("상품이 정상적으로 삭제되었습니다."); }	
+// 	}); // $.ajax
+	
+	// 2-2. 약간의 옵션을 설정하고 Ajax로 전송 후 새 DB 데이터를 result로 받아오기
 	$.ajax({
-		url: '/~~~',
+		url: '/goods/goodsDeletePro',
 		processData: false,
 		contentType: false,
 		data: formData,
 		type: 'POST',
 		
-		dataType: 'json', // Ajax를 호출했을 때의 결과타입 = dataType
-		
-		success: function(result) {
-		    alert("업로드 됨");
-		}
+		success: function(result) { 
+		    alert("상품이 정상적으로 삭제되었습니다.");
+		    var html = jQuery('<div>').html(result);
+			var contents = html.find("div.myGoods").html();
+			$(".myGoods").html(contents);
+		}	
 	}); // $.ajax
+	
+	
+	// 3. 삭제결과를 화면에 반영하기 위해 html 코드를 remove() (2-1 이후에 사용)
+// 	let tr;
+	
+// 	switch(status) {
+// 	case '승인완료':
+// 		// $('#tr_'+goodsNum).remove();
+// 	    tr = 'tr_' + goodsNum;
+// 		break;
+// 	case '승인대기':
+// 	    tr = 'tr_unapproved_' + goodsNum;
+// 		break;
+// 	case '임시저장':
+// 	    tr = 'tr_temp_' + goodsNum;
+// 		break;
+// 	default:
+// 		alert('이거뜨면먼가오류있음');
+// 	}
+	
+	document.getElementById(tr).remove();
 }
 </script>
 

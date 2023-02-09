@@ -1,16 +1,17 @@
-1. DB �꽕怨꾨룄 �젏寃�...
+1. 메인 하단 개인정보 처리방침 달아주세요~
 
-�씠由� 洹쒖튃...	
-	option - opt
-	goods_seller_nickname - seller_nickname
-	
-	GOODS_OPTION_CONTENT_NUM_SEQ - goods_opt_content_num
-	
-	goods_use �겕湲� �궎�슦湲�
-	
-2. 諛붾�� �뀒�씠釉� �뀒�씠釉� �깮�꽦 DDL �닔�젙�빐二쇱꽭�슂
+2. DB 테스트계정 연결시 master에 merge 되지 않게 해주세요
 
-3. request.getRealPath
+3. master에 merge는 1 명만
 
-notice/notice - notice/noticelist
-dkfnlsf
+4. 작업 된것 / 안된것 체크
+
+5. 커밋메시지 
+	1 번째 줄 : 제목
+	3 번째 줄 이하 : 내용
+	
+6. 커밋&푸시 > 마스터에 머지 > 마스터에 있는것 pull > 작업
+    커밋&푸시 > 마스터에 머지 > 마스터에서 브런치 생성 후 clone a repository >작업 
+    마스터에 바로 커밋&푸시 하지 않기~
+    
+7. 기존 프로젝트 백업 > 브랜치 pull > 복구 > 커밋&푸시

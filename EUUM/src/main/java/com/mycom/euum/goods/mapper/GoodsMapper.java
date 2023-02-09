@@ -1,3 +1,4 @@
+
 package com.mycom.euum.goods.mapper;
 
 import java.util.List;
@@ -65,5 +66,6 @@ public interface GoodsMapper {
 	
 
 	
+
 
 }

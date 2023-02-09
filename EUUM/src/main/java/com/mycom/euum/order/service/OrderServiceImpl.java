@@ -5,8 +5,12 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.mycom.euum.commons.FileUtils;
 import com.mycom.euum.goods.bean.GoodsBean;
+import com.mycom.euum.image.bean.ImageBean;
+import com.mycom.euum.image.service.ImageService;
 import com.mycom.euum.order.bean.OrderBean;
 import com.mycom.euum.order.bean.OrderOptionBean;
 import com.mycom.euum.order.mapper.OrderMapper;
@@ -19,7 +23,10 @@ import lombok.extern.log4j.Log4j;
 @Log4j
 public class OrderServiceImpl implements OrderService{
 
+	
 	private OrderMapper orderMapper;
+	private FileUtils fileUtils;
+	private ImageService imageService;
 	
 	/**20230120-0003 식으로 주무넌호 생성해주는 함수*/
 	public String getOrderNum(int orderKeyNum) {
@@ -105,4 +112,83 @@ public class OrderServiceImpl implements OrderService{
 		return orderMapper.selectOrderListByMember(memberNum);
 	}
 
+	@Override
+	public List<OrderBean> selectAdminOrderList() {
+		
+		return orderMapper.selectAdminOrderList();
+	}
+
+	@Override
+	public OrderBean addOrder(OrderBean orderBean) {
+
+		int orderKeyNum = orderMapper.getOrderKeyNum();
+		String orderNum = getOrderNum(orderKeyNum);
+		
+		orderBean.setOrderKeyNum(orderKeyNum);
+		orderBean.setOrderNum(orderNum);
+		
+		orderMapper.insertOrder(orderBean);
+		
+		
+		OrderOptionBean optionBean = new OrderOptionBean();
+		optionBean.setOrderNum(orderNum);
+		optionBean.setOrderOptPrice(Integer.toString(orderBean.getOrderPrice()));
+		optionBean.setGoodsNum(orderBean.getGoodsNum());
+		optionBean.setOrderOptCount("1");
+		optionBean.setOrderOptPayType(orderBean.getOrderPayType());
+		optionBean.setOrderOptName(orderBean.getOrderName());
+		optionBean.setOrderOptNum(orderBean.getOrderNum()+"-1");
+		orderMapper.insertOrderOpt(optionBean);
+		
+		
+		 
+		return orderMapper.selectOrder(orderNum);
+	}
+
+	@Override
+	public List<OrderBean> selectOrderListBySeller(int sellerNum) {
+
+		return orderMapper.selectOrderListBySeller(sellerNum);
+	}
+	@Override	
+	public int cancleOrder(OrderBean orderBean) {
+		
+		if(orderBean.getOrderStatus().equals("1")) {
+			orderBean.setOrderStatus("9");
+		}else if(orderBean.getOrderStatus().equals("2")) {
+			orderBean.setOrderStatus("7");
+		}
+		
+		return orderMapper.updateOrderCancel(orderBean);
+	}
+	
+	@Override
+	public int updateOrderStatus(OrderBean orderBean) {
+		
+		return orderMapper.updateOrderStatus(orderBean);
+	}
+
+	@Override
+	public void uploadFile(MultipartFile[] multipart, int orderKeyNum) throws Exception {
+
+		List<ImageBean> fileList = fileUtils.orderFileUpload(multipart);
+		
+		for(ImageBean file : fileList) {
+			file.setImageUse("order");
+			file.setImageUseNum(orderKeyNum);
+			imageService.insertImage(file);
+		}
+	}
+
+
+	 
 }
+
+
+
+
+
+
+
+
+

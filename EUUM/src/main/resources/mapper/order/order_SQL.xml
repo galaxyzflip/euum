@@ -6,10 +6,12 @@
 
 <mapper namespace="com.mycom.euum.order.mapper.OrderMapper">
 
+
+
 <!-- 작성자 : 최창선, 주문시 보여주는 셀러닉네임 포함, 상품 정보 -->
 	<select id="getGoodsInfo" resultType="com.mycom.euum.goods.bean.GoodsBean">
 
-		select goods_num, goods_seller_nickname , goods_image1, goods_name, 
+		select goods_num, goods_seller_nickname , member_num, goods_image1, goods_name, 
 		goods_format, goods_resolution, goods_size, goods_modify_count,
 		 GOODS_PERIOD
 		from goods_tbl
@@ -30,6 +32,7 @@
 		ORDER_NUM,
 		GOODS_NUM,
 		MEMBER_NUM,
+		SELLER_NUM,
 		ORDER_STATUS,
 		ORDER_CONTACT,
 		ORDER_EMAIL,
@@ -51,6 +54,54 @@
 		#{orderNum},
 		#{goodsNum},
 		#{memberNum},
+		#{sellerNum},
+		'1',
+		#{orderContact},
+		#{orderEmail},
+		SYSDATE,
+		#{orderRequest, jdbcType=VARCHAR},
+		#{orderPayType},
+		#{orderName},
+		#{orderFormat, jdbcType=VARCHAR},
+		#{orderResolution, jdbcType=VARCHAR},
+		#{orderSize, jdbcType=VARCHAR},
+		#{orderModifyCount,  jdbcType=VARCHAR},
+		#{orderPeriod, jdbcType=VARCHAR},
+		#{orderImage, jdbcType=VARCHAR},
+		#{sellerNickname, jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<!-- <insert id="insertOrder">
+		INSERT INTO
+		ORDER_TBL(
+		ORDER_KEY_NUM,
+		ORDER_NUM,
+		GOODS_NUM,
+		MEMBER_NUM,
+		SELLER_NUM,
+		ORDER_STATUS,
+		ORDER_CONTACT,
+		ORDER_EMAIL,
+		ORDER_DATE,
+		ORDER_REQUEST,
+		ORDER_PAY_TYPE,
+		ORDER_NAME,
+		ORDER_FORMAT,
+		ORDER_RESOLUTION,
+		ORDER_SIZE,
+		ORDER_MODIFY_COUNT,
+		ORDER_PERIOD,
+		ORDER_IMAGE,
+		SELLER_NICKNAME
+		)
+		
+		VALUES(
+		#{orderKeyNum},
+		#{orderNum},
+		#{goodsNum},
+		#{memberNum},
+		#{sellerNum},
 		'1',
 		#{orderContact},
 		#{orderEmail},
@@ -66,7 +117,7 @@
 		#{orderImage},
 		#{sellerNickname}
 		)
-	</insert>
+	</insert> -->
 
 	<!-- 회원 주문 옵션 -->
 	<insert id="insertOrderOpt">
@@ -104,57 +155,62 @@
 
 	<!-- 상태 변경 -->
 	<update id="updateOrderStatus">
-		UPDATE ORDER_TBL
-		SET ORDER_STATUS = #{ORDER_STATUS}
-		WHERE ORDER_NUM = #{ORDER_NUM};
+		UPDATE ORDER_TBL O
+		SET ORDER_STATUS = #{orderStatus}
+		
+		<if test="orderStatus == 3">
+			, ORDER_EXPIRATION_DATE = SYSDATE + ORDER_PERIOD
+		</if>
+		
+		WHERE ORDER_NUM = #{orderNum}
 	</update>
 
 	<!-- 옵션 상태 변경 -->
 	<update id="updateOrderOptStatus">
 		UPDATE ORDER_OPT_TBL
 		SET ORDER_OPT_STATUS = #{ORDER_OPT_STATUS}
-		WHERE ORDER_NUM = #{ORDER_NUM};
+		WHERE ORDER_NUM = #{ORDER_NUM}
 	</update>
 
 
 	<!-- 완료 상태 변경 -->
 	<update id="updateOrderStatusOk">
 		UPDATE ORDER_TBL
-		SET ORDER_STATUS = #{ORDER_STATUS},
-		ORDER_DONE_DATE = TO CHAR(SYSDATE, 'YYYY-MM-DD')
-		WHERE ORDER_NUM = #{ORDER_NUM}
+		SET ORDER_STATUS = #{orderStatus},
+		ORDER_DONE_DATE = SYSDATE
+		WHERE ORDER_NUM = #{orderNum}
 	</update>
 
 	<!-- 완료 옵션 상태 변경 -->
 	<update id="updateOrderOptStatusOk">
 		UPDATE ORDER_OPT_TBL
 		SET ORDER_OPT_STATUS = #{ORDER_OPT_STATUS}
-		WHERE ORDER_NUM = #{ORDER_NUM};
+		WHERE ORDER_NUM = #{ORDER_NUM}
 	</update>
 
 	<!-- 취소 상태 변경 -->
 	<update id="updateOrderCancel">
 		UPDATE ORDER_TBL
-		SET ORDER_STATUS = #{ORDER_STATUS},
-		ORDER_CANCLE_DATE = TO CHAR(SYSDATE, 'YYYY-MM-DD');
-		WHERE ORDER_NUM = #{ORDER_NUM};
+		SET ORDER_STATUS = #{orderStatus},
+		ORDER_CANCLE_DATE = SYSDATE
+		WHERE ORDER_NUM = #{orderNum}
 	</update>
 
 	<!-- 취소 옵션 상태 변경 -->
 	<update id="updateOrderOptCancel">
 		UPDATE ORDER_OPT_TBL
 		SET ORDER_OPT_STATUS = #{ORDER_OPT_STATUS},
-		ORDER_OPT_CANCLE_DATE = TO CHAR(SYSDATE, 'YYYY-MM-DD');
-		WHERE ORDER_NUM = #{ORDER_NUM};
+		ORDER_OPT_CANCLE_DATE = TO CHAR(SYSDATE, 'YYYY-MM-DD')
+		WHERE ORDER_NUM = #{ORDER_NUM}
 	</update>
 
 	<!-- 주문 수정 -->
 	<update id="updateOrder">
 		UPDATE ORDER_TBL
-		SET ORDER_EMAIL = #{ORDER_EMAIL},
-		ORDER_CONTACT = #{ORDER_CONTACT},
-		ORDER_REQUEST = #{ORDER_REQUEST}
-		WHERE ORDER_NUM = #{ORDER_NUM};
+		SET ORDER_EMAIL = #{orderEmail},
+		ORDER_CONTACT = #{orderContact},
+		ORDER_REQUEST = #{orderRequest}
+		WHERE ORDER_NUM = #{orderNum}
 	</update>
 
 
@@ -164,7 +220,7 @@
 		SET ORDER_OPT_PRICE = #{ORDER_OPT_PRICE},
 		ORDER_OPT_COUNT = #{ORDER_OPT_COUNT},
 		ORDER_OPT_REQUEST = #{ORDER_OPT_REQUEST}
-		WHERE ORDER_NUM = #{ORDER_NUM};
+		WHERE ORDER_NUM = #{ORDER_NUM}
 	</update>
 	
 	
@@ -206,15 +262,16 @@
 		<result property="orderOptName" column="order_opt_name"/>
 	</resultMap>
 
-	<!-- 주문 내역 리스트 -->
+	<!-- 회원의 주문 내역 리스트 -->
 	<select id="selectOrderListByMember" resultType="com.mycom.euum.order.bean.OrderBean">
-		SELECT 
+		<![CDATA[
+		SELECT  O.ORDER_NUM,
         G.GOODS_NAME,
 		ORDER_KEY_NUM,
-		ORDER_NUM,
 		SELLER_NICKNAME,
 		G.GOODS_NUM,
-		MEMBER_NUM,
+		G.MEMBER_NUM,
+		O.SELLER_NUM,
 		ORDER_STATUS,
 		ORDER_CONTACT,
 		ORDER_EMAIL,
@@ -228,10 +285,62 @@
 		ORDER_MODIFY_COUNT,
 		ORDER_PERIOD,
 		ORDER_IMAGE,
-		ORDER_DATE+ORDER_PERIOD as "ORDER_EXPIRATION_DATE"
-		FROM ORDER_TBL O INNER JOIN GOODS_TBL G
+        ORDER_EXPIRATION_DATE,
+        ORDER_PRICE,
+        ORDER_REQUEST,
+        ORDER_CANCLE_DATE,
+        nvl2(I.IMAGE_USE_NUM, 'Y', 'N') as FILE_YN
+     
+		FROM ORDER_TBL O INNER JOIN GOODS_TBL G 
         ON O.GOODS_NUM=G.GOODS_NUM
-		WHERE MEMBER_NUM = #{memberNum}
+        inner join (select order_num, sum(order_opt_price*order_opt_count) as "ORDER_PRICE" from order_opt_tbl group by order_num) p
+        on o.order_num=p.order_num
+        left outer join (select image_use_num from image_tbl where image_use='order' group by image_use_num ) i
+        on i.image_use_num=o.order_key_num
+		WHERE O.MEMBER_NUM = #{memberNum}
+		order by order_date desc
+		]]>
+		
+	</select>
+	
+	<!-- 셀러의 주문 내역 리스트 -->
+	<select id="selectOrderListBySeller" resultType="com.mycom.euum.order.bean.OrderBean">
+		<![CDATA[
+		SELECT  O.ORDER_NUM,
+        G.GOODS_NAME,
+		ORDER_KEY_NUM,
+		SELLER_NICKNAME,
+		G.GOODS_NUM,
+		G.MEMBER_NUM,
+		O.SELLER_NUM,
+		ORDER_STATUS,
+		ORDER_CONTACT,
+		ORDER_EMAIL,
+		ORDER_DATE,
+		ORDER_REQUEST,
+		ORDER_PAY_TYPE,
+		ORDER_NAME,
+		ORDER_FORMAT,
+		ORDER_RESOLUTION,
+		ORDER_SIZE,
+		ORDER_MODIFY_COUNT,
+		ORDER_PERIOD,
+		ORDER_IMAGE,
+        ORDER_EXPIRATION_DATE,
+        ORDER_PRICE,
+        ORDER_REQUEST,
+        ORDER_CANCLE_DATE,
+        nvl2(I.IMAGE_USE_NUM, 'Y', 'N') as FILE_YN
+     
+		FROM ORDER_TBL O INNER JOIN GOODS_TBL G 
+        ON O.GOODS_NUM=G.GOODS_NUM
+        inner join (select order_num, sum(order_opt_price*order_opt_count) as "ORDER_PRICE" from order_opt_tbl group by order_num) p
+        on o.order_num=p.order_num
+        left outer join (select image_use_num from image_tbl where image_use='order' group by image_use_num ) i
+        on i.image_use_num=o.order_key_num
+		WHERE O.SELLER_NUM = #{sellerNum}
+		order by order_date desc
+		]]>
 	</select>
 
 
@@ -268,50 +377,46 @@
 		order_opt_pay_type,
 		order_option_name
 		FROM ORDER_TBL, ORDER_OPT_TBL
-		WHERE SELLER_NUM = #{SELLER_NUM}
+		WHERE SELLER_NUM = #{sellerNum}
 	</select>
 
 	<!-- 어드민 주문 관리 내역 -->
 	<select id="selectAdminOrderList"
 		resultType="com.mycom.euum.order.bean.OrderBean">
-		SELECT
-		order_key_num,
-		order_num,
-		goods_num,
-		member_num,
-		order_status,
-		order_contact,
-		order_email,
-		order_date,
-		order_request,
-		order_pay_type,
-		order_name,
-		order_format,
-		order_resolution,
-		order_size,
-		order_modify_count,
-		order_period,
-		order_image,
-		order_opt_num,
-		goods_num,
-		goods_option_content_num,
-		order_opt_price,
-		order_opt_count,
-		order_opt_date,
-		order_opt_status,
-		order_opt_request,
-		order_opt_pay_type,
-		order_option_name
-		FROM
-		order_tbl,
-		order_opt_tbl
+		SELECT 
+        G.GOODS_NAME,
+		ORDER_KEY_NUM,
+		o.ORDER_NUM,
+		SELLER_NICKNAME,
+		G.GOODS_NUM,
+		MEMBER_NUM,
+		ORDER_STATUS,
+		ORDER_CONTACT,
+		ORDER_EMAIL,
+		ORDER_DATE,
+		ORDER_REQUEST,
+		ORDER_PAY_TYPE,
+		ORDER_NAME,
+		ORDER_FORMAT,
+		ORDER_RESOLUTION,
+		ORDER_SIZE,
+		ORDER_MODIFY_COUNT,
+		ORDER_PERIOD,
+		ORDER_IMAGE,
+        ORDER_DATE+ORDER_PERIOD as "ORDER_EXPIRATION_DATE",
+        ORDER_PRICE
+        
+		FROM ORDER_TBL O INNER JOIN GOODS_TBL G 
+        ON O.GOODS_NUM=G.GOODS_NUM
+        inner join (select order_num, sum(order_opt_price) as "ORDER_PRICE" from order_opt_tbl group by order_num) p
+        on o.order_num=p.order_num
 	</select>
 
 
 	
 	
 
-	<!-- 주문 완료 -->
+	<!-- ORDER_NUM 조건으로 레코드 1개 가져오기 -->
 	<!-- <select id="selectOrder" resultType="com.mycom.euum.order.bean.OrderBean"> -->
 	<select id="selectOrder" resultMap="orderMap">
 		SELECT

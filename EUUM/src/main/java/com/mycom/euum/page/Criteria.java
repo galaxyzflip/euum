@@ -12,7 +12,7 @@ public class Criteria {
 	private int pageNum;
 	private int amount;
 	
-	private int noticeCategory;
+	private int memberNum;
 	
 	private String type;
 	private String keyword;

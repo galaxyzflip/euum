@@ -13,7 +13,7 @@
 	<div class="middleDiv">
 		<div class="middleLeftDiv">
 			<div>
-				<img src="${pageContext.request.contextPath}/resources/img/${detail.goodsImageDate}${detail.goodsImage1}" style="width: 625px;" />
+				<img src="${pageContext.request.contextPath}/resources/img/${detail.goodsImageDate}   ${detail.goodsImage1}" style="width: 625px;" />
 			</div>
 			<div>
 				<img src="${pageContext.request.contextPath}/resources/img/${detail.goodsImageDate}${detail.goodsImage2}" style="width: 625px;" />
@@ -67,7 +67,8 @@
 										<option value="0">선택하세요</option>
 										<c:forEach items="${selectList}" var="row" varStatus="status">
 											<option value="${row.goodsOptContent} ${row.goodsOptPrice}">
-												<span class="option-content">${row.goodsOptContent}</span> <span class="option-price">(<fmt:formatNumber value="${row.goodsOptPrice}" groupingUsed="true" />)</span>
+												<span class="option-content">${row.goodsOptContent}</span>
+												<span class="option-price">(<fmt:formatNumber value="${row.goodsOptPrice}" groupingUsed="true" />)</span>
 											</option>
 										</c:forEach>
 									</select>
@@ -113,7 +114,7 @@
 
 <!-- 주문시 아래 폼에 input 태그 입력 후 서브밋 -->
 <form id="orderForm" action="/order/orderForm" method="post">
-	<input type="hidden" name="" value="${detail.goodsMemberNum }"/> 
+	<input type="hidden" name="" value="${detail.memberNum }"/> 
 	<input type="hidden" name="" value="${detail.goodsSellerNickname }"/> 
 	
 </form>
@@ -149,7 +150,6 @@ function buy(){
 			inner += '<input type="hidden" name="optionList['+index+'].orderOptCount" value="'+buyOptionCount+'">';
 			inner += '<input type="hidden" name="optionList['+index+'].goodsNum" value="'+goodsNum+'">';
 			
-			
 			console.log('입력할 input 태그들... : ' + inner);
 			
 			$('#orderForm').append(inner);
@@ -164,13 +164,17 @@ function buy(){
 	}
 }
 
-//옵션명, 옵션내용, 금액 넣어주면 선택된 옵션 추가해주는 함수...
+// 창선: 옵션명, 옵션내용, 금액 넣어주면 선택된 옵션 추가해주는 함수...
 function insertSelectedOption(optionName, optionContent, optionPrice){
 	
 	
 	let selectedOptionList = $('.option-name');
 	let orderOptionName = optionName + ' / ' + optionContent;
 	
+	// 선민: toLocaleString()을 위한 Number타입 형변환
+	let toLocaleStringOptionPrice = parseInt(optionPrice).toLocaleString();
+	console.log("toLocaleStringOptionPrice: " + toLocaleStringOptionPrice);
+		
 	if(dulicateCheck(selectedOptionList, orderOptionName) != 0){
 		console.log(optionName);
 		
@@ -179,7 +183,7 @@ function insertSelectedOption(optionName, optionContent, optionPrice){
 		inner += '<div class="option-data" id="optionData'+num+'"><div>';
 		inner += '<div class="option-name">' + orderOptionName + '</div>';
 		inner += '<div class="optionCountPrice"><span class="#">  <button class="plus" onclick="counter(\'plus\', '+num+')"> + </button> <span class="option-count" id="count' +num +'">1</span>';
-		inner += '<button class="minus" onclick="counter(\'minus\', '+num+')"> - </button></span> <span class="option-price" id="price' + num + '">' + optionPrice + '</span>';
+		inner += '<button class="minus" onclick="counter(\'minus\', '+num+')"> - </button></span> <span class="option-price" id="price' + num + '">' + toLocaleStringOptionPrice + '</span>';
 		inner += '<button id="delete' + num + '" onclick="deleteOption('+num+')" > x </button>'
 		inner += '</div><input type="hidden" class="ori-price" id="ori-price' +num + '" value="'+optionPrice+'"/></div></div>';
 
@@ -189,7 +193,6 @@ function insertSelectedOption(optionName, optionContent, optionPrice){
 		
 		setTotalPrice();
 	}
-	
 	
 }
 
@@ -216,14 +219,14 @@ function setTotalInfo(index) {
 	[optionContent, optionPrice] = optionStr.split(' ');
 	
 	//선택하세요. 옵션 선택시에는 옵션 추가 안되게...
-	if(optionContent === '0'){
+	if(optionContent === '0') {
 		return false;
 	}
 
 	//선택된 옵션정보 로그 찍어보기
-	//console.log(optionName);
-	//console.log(optionContent);
-	//console.log(optionPrice);
+console.log(optionName);
+console.log(optionContent);
+console.log(optionPrice);
 	
 	insertSelectedOption(optionName, optionContent, optionPrice);
 	
@@ -315,8 +318,9 @@ function deleteOption(index){
 	});
 	
 	console.log('합계금액 : ' + totalPrice);
+    
 	// 최종 합계 금액
-	$(".total_price").text(totalPrice.toLocaleString());		
+	$(".total_price").text(totalPrice.toLocaleString());
 }
 </script>
 

@@ -9,6 +9,8 @@ public interface NoticeService {
 	
 	public List<NoticeBean> noticeList(Criteria cri);
 	
+
+	
 	public List<NoticeBean> FAQList();
 	
 	public int category();

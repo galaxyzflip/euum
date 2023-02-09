@@ -1,3 +1,4 @@
+
 /**
  * 작성일 : 2023-01-20
  * 용도 : 파일(이미지) Bean
@@ -15,8 +16,9 @@ public class ImageBean {
 	String imageUUID;
 	String imageUploadPath;
 	String imageFileName;
-//	String imageFileOriginalName;
 	String imageFileType;
 	String imageUse;
 	int imageUseNum;
+	String originalFileName;
 }
+

@@ -1,6 +1,6 @@
+
 package com.mycom.euum.goods.controller;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -22,6 +22,10 @@ import com.mycom.euum.image.bean.ImageBean;
 import com.mycom.euum.image.service.ImageService;
 import com.mycom.euum.member.bean.MemberBean;
 import com.mycom.euum.member.bean.SellerBean;
+import com.mycom.euum.page.Criteria;
+import com.mycom.euum.page.PageDTO;
+import com.mycom.euum.page.RCriteria;
+import com.mycom.euum.page.RPageDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
@@ -137,6 +141,7 @@ public class GoodsController {
 		// (3) 파일 업로드
 		log.info("---------- (3) 파일 업로드 메소드 호출 ----------");
 //		List<ImageBean> imageBeanList = goodsService.goodsFileUpload(uploadFile, request);
+		
 		List<ImageBean> imageBeanList = fileUtils.goodsFileUpload(uploadFile);
 		
 		// (4) 상품 등록
@@ -194,6 +199,17 @@ public class GoodsController {
 	
 	/* ---------------------------- 상품 수정 ---------------------------- */
 
+	/** 선민: 상품 수정 - 수정 폼 이동 */
+	@PostMapping(value = "/goods/goodsModifyForm")
+	public String goodsModifyForm(String goodsNum, Model model) throws Exception {
+		log.info("===== 상품 수정 폼 =====");
+		log.info("goodsNum: " + goodsNum);
+		
+		GoodsBean goodsBean = goodsService.selectGoodsInfo(goodsNum);
+		model.addAttribute("goods", goodsBean);
+		return "goods/goodsRegisterForm";
+	}
+	
 	
 	/* ---------------------------- 상품 삭제 ---------------------------- */
 
@@ -226,7 +242,7 @@ public class GoodsController {
 
 	/** 선민: 상품 상세보기 */
 	@GetMapping(value = "/goods/goodsDetail")
-	public String goodsDetail(Model model, String goodsNum) throws Exception {
+	public String goodsDetail(Model model, String goodsNum, Criteria cri, RCriteria rcri) throws Exception {
 		log.info("===== 상품 상세보기 =====");
 		
 		// (1) 상품 정보 가져오기
@@ -253,6 +269,40 @@ public class GoodsController {
 		model.addAttribute("optionList", optionList);
 		model.addAttribute("optionCount", optionCount);
 
+		
+		
+		
+//		// 게시판 쪽 페이징
+//		/** 의종: goodsQNA 리스트 가져오기 및 페이징 */
+//		int amount = cri.getAmount();
+//		int pageNum = cri.getPageNum();
+//		int total=goodsQNAService.getGoodsQNATotalCount(cri,goodsNum); 
+//		
+//		model.addAttribute("list" , goodsQNAService.goodsQNAList(goodsNum, pageNum, amount));
+//		model.addAttribute("pageMaker", new PageDTO(cri, total));
+//		model.addAttribute("goodsNum" , goodsNum);
+//		
+//		
+//		model.addAttribute("detail", goodsService.selectGoodsInfo(goodsNum));
+//		model.addAttribute("optionList", optionList);
+//		model.addAttribute("optionCount", optionCount);
+//
+//		
+//		
+//		/*================= 용주 작업중===============*/
+//		
+//		
+//		
+//		int rtotal=reviewService.getTotal(rcri);
+//		model.addAttribute("rpageMaker", new RPageDTO(rcri, rtotal));
+//		
+//						
+//		model.addAttribute("reviewList", reviewService.reviewList(rcri));
+//		
+//		log.info("sql돌려요=======================" + reviewService.reviewList(rcri));
+//
+//		return "goods/goodsDetail";
+
 		return "goods/goodsDetail";
 	}
 	
@@ -271,4 +321,6 @@ public class GoodsController {
 		SellerBean sellerBean = (SellerBean)session.getAttribute("loginSeller"); // 세션 정보 저장 (이식성을 고려하여 웹 의존성이 있는 로직은 Controller에 작성)
 		return sellerBean;
 	}
+	
+
 }

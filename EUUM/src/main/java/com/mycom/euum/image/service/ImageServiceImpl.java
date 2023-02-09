@@ -1,3 +1,4 @@
+
 package com.mycom.euum.image.service;
 
 import java.util.List;
@@ -27,7 +28,16 @@ public class ImageServiceImpl implements ImageService {
 		}
 		log.info("imageBeanList: " + imageBeanList);
 	}
-	/** 이미지 삭제 - 이미지 데이터 DB에서 삭제 */
+
+	
+	/** 최창선 : 이미지 리스트 가져오기 Bean의 imageUse, imageUseNum 조건으로 리스트 가져오기*/
+	@Override
+	public List<ImageBean> getImageList(ImageBean imageBean){
+		
+		return imageMapper.selectImageList(imageBean);
+	}
+  
+  	/** 이미지 삭제 - 이미지 데이터 DB에서 삭제 */
 	@Override
 	public void deleteImage(List<ImageBean> imageBeanList, int imageUseNum) throws Exception {
 		for (ImageBean imageBean : imageBeanList) {
@@ -51,5 +61,6 @@ public class ImageServiceImpl implements ImageService {
 		return imageMapper.getSellerImage(imageUseNum);
 		
 	}
-	
+
 }
+
