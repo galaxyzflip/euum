@@ -194,7 +194,6 @@ function insertSelectedOption(optionName, optionContent, optionPrice){
 		setTotalPrice();
 	}
 	
-	
 }
 
  
@@ -225,9 +224,9 @@ function setTotalInfo(index) {
 	}
 
 	//선택된 옵션정보 로그 찍어보기
-	//console.log(optionName);
-	//console.log(optionContent);
-	//console.log(optionPrice);
+console.log(optionName);
+console.log(optionContent);
+console.log(optionPrice);
 	
 	insertSelectedOption(optionName, optionContent, optionPrice);
 	

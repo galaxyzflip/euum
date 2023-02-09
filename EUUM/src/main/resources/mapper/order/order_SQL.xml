@@ -159,7 +159,7 @@
 		SET ORDER_STATUS = #{orderStatus}
 		
 		<if test="orderStatus == 3">
-			, ORDER_EXPIRATION_DATE = SYSDATE + (SELECT GOODS_PERIOD FROM GOODS_TBL G WHERE G.GOODS_NUM =O.GOODS_NUM )
+			, ORDER_EXPIRATION_DATE = SYSDATE + ORDER_PERIOD
 		</if>
 		
 		WHERE ORDER_NUM = #{orderNum}
@@ -293,7 +293,7 @@
      
 		FROM ORDER_TBL O INNER JOIN GOODS_TBL G 
         ON O.GOODS_NUM=G.GOODS_NUM
-        inner join (select order_num, sum(order_opt_price) as "ORDER_PRICE" from order_opt_tbl group by order_num) p
+        inner join (select order_num, sum(order_opt_price*order_opt_count) as "ORDER_PRICE" from order_opt_tbl group by order_num) p
         on o.order_num=p.order_num
         left outer join (select image_use_num from image_tbl where image_use='order' group by image_use_num ) i
         on i.image_use_num=o.order_key_num
@@ -334,7 +334,7 @@
      
 		FROM ORDER_TBL O INNER JOIN GOODS_TBL G 
         ON O.GOODS_NUM=G.GOODS_NUM
-        inner join (select order_num, sum(order_opt_price) as "ORDER_PRICE" from order_opt_tbl group by order_num) p
+        inner join (select order_num, sum(order_opt_price*order_opt_count) as "ORDER_PRICE" from order_opt_tbl group by order_num) p
         on o.order_num=p.order_num
         left outer join (select image_use_num from image_tbl where image_use='order' group by image_use_num ) i
         on i.image_use_num=o.order_key_num

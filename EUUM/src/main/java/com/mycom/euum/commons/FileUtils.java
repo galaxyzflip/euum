@@ -98,6 +98,8 @@ public class FileUtils {
 					Thumbnailator.createThumbnail(multipartFile.getInputStream(), thumbnail, 160, 160);
 					thumbnail.close();
 					imageBean.setImageFileType("i"); // 파일타입을 i로 지정
+				}else {
+					imageBean.setImageFileType("f"); // 최창선 : 이미지 아닐 경우 f로 저장, 없으면 디비저장 에러
 				}
 			} catch (Exception e) {
 				log.error(e.getMessage());

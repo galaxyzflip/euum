@@ -192,24 +192,31 @@ ul li {
 							</div>
 							
 							<div>
-								<ul>
-									<c:if test="${order.orderStatus eq '2' }">
-										<li><button onclick="transferOrderStatus('${order.orderNum}')">작업중 전환</button></li><br>
-									</c:if>
+								<ul class="status-info-list">
+									<li class="trans-btn">
+										<c:if test="${order.orderStatus eq '2' }">
+											<button onclick="transferOrderStatus('${order.orderNum}', '3', 'order${status.index }', '${order.orderKeyNum }')">작업중 전환</button><br>
+										</c:if>
+									</li>
+									
+									<li class='file-yn'>
+										<c:if test="${order.fileYn eq 'Y' }">
+											<button class="view-file" onclick="fileList(${order.orderKeyNum}, 'order${status.index }')">파일보기</button><br>
+										</c:if>
+									</li>
 									
 									
-									<c:if test="${order.fileYn eq 'Y' }">
-										<li class='file-yn'><button class="view-file" onclick="fileList(${order.orderKeyNum}, 'order${status.index }')">파일보기</button></li><br>
+									<li class='file-upload'>
+										<c:if test="${order.orderStatus eq '3' }">
+											<c:if test="${order.fileYn eq 'N'}">
+												<button onclick="openModal('${order.orderKeyNum}', 'order${status.index}', '${order.orderNum }')">파일 업로드</button><br>
+											</c:if>
 									</c:if>
-								
-									<c:if test="${order.fileYn eq 'N'}">
-										<li class='file-yn'><button onclick="openModal('${order.orderKeyNum}', 'order${status.index}', '${order.orderNum }')">파일 업로드</button></li><br>
-									</c:if>
-								
+									</li>
+									
 									<li class="file-list">
-										
-									</li>									
-									
+											
+									</li>	
 									
 									<li>요청사항 : ${order.orderRequest }</li>
 								</ul>
@@ -357,6 +364,7 @@ $(document).ready(function() {
  	function fileUpload(){
  		
 		console.log($('input[name="orderKeyNum"]').val());
+		let orderKeyNum = $('input[name="orderKeyNum"]').val();
  		
 		$('input[name="orderStatus"]').val('4');
  		var form = $('#file-form')[0];
@@ -370,11 +378,11 @@ $(document).ready(function() {
  	          success: function (data) {
  	          	console.log(data);
  	          	console.log("파일업로드한 폼 아이디 : " + orderForm);
- 	          	uploadResult(orderForm);
+ 	          	uploadResult(orderForm, orderKeyNum);
 
  	          },
  	          error: function (data) {
- 	        	 console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);	alert('에러');
+ 	        	// console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);	alert('에러');
  	          },
  	          cache: false,
  	          contentType: false,
@@ -384,16 +392,16 @@ $(document).ready(function() {
 
  	
  	//이미지 업로드 후 작업되는 함수... orderStatus, 파일보기 버튼 생성
- 	function uploadResult(orderForm){
- 		
- 		let orderKeyNum = $('input[name="orderKeyNum"]').val();
+ 	function uploadResult(orderForm, orderKeyNum){
  		
  		let inner = '<button class="view-file" onclick="fileList(\''+orderKeyNum+'\', \''+orderForm+'\')">파일보기</button>';
  		console.log(inner);
- 		let form = $('#'+orderForm)
+ 		let form = $('#'+orderForm);
  		
  		$(form).find('.order-status').text("작업완료");
  		$(form).next().find('.file-yn').html(inner);
+ 		$(form).next().find('.file-upload').remove();
+ 		
  		
  		$(uploadModal).find('input[name="uploadFile"]').val('');
  		uploadModal.modal('hide');
@@ -414,15 +422,57 @@ $(document).ready(function() {
 	}
 
 	//진행중 상태 변경 함수
-	function transferOrderStatus(orderNum){
+	function transferOrderStatus(orderNum, orderStatus, orderForm, orderKeyNum){
+		if(!confirm("진행중 상태로 변경하시겠습니까?")){
+			return false;			
+		}
+		updateStatus(orderNum, orderStatus, orderForm, orderKeyNum);
+	}
+	
+	/* function transferOrderStatus(orderNum){
 		if(confirm("진행중 상태로 변경하시겠습니까?")){
 			$('#actionForm').find('input[name="orderNum"]').val(orderNum);
 			$('#actionForm').find('input[name="orderStatus"]').val(3);	
 			$('#actionForm').submit();
 		}
 		
+	} */
+	
+	function updateStatus(orderNum, orderStatus, orderForm, orderKeyNum){
+		 $.ajax({
+				url : "/order/transferOrderStatusAjax",
+				type : "post",
+				data : {
+					orderNum : orderNum,
+					orderStatus : orderStatus
+				},
+				dataType : 'json',
+		        success: function (data) {
+					console.log(data);
+					console.log('성공');
+					resultUpdate(data, orderForm, orderKeyNum);
+		       },
+		       error: function (data) {
+					alert('에러')
+					console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);	alert('에러');
+		       }
+			}) 
 	}
 	
+	function resultUpdate(data, orderForm, orderKeyNum){
+		let status = data.orderStatus;
+		let form = $('#'+orderForm);
+		let inner = '';
+		$(form).find('.order-status').text("작업중");
+		$(form).next().find('.trans-btn').remove();
+// 		$(form).next().find('.trans-btn').css('display', 'none');
+		
+		inner += '<button onclick="openModal(\''+orderKeyNum+'\', \''+orderForm+'\', \''+data.orderNum+'\')">파일 업로드</button><br>'
+		$(form).next().find('.file-yn').html(inner);
+		
+		
+		
+	}
 </script>
 
 
