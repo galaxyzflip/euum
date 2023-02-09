@@ -169,20 +169,34 @@ public class OrderController {
 	@PostMapping("order/transferOrderStatus")
 	public String transferOrderStatus(OrderBean orderBean) {
 		
+		log.info("주문변경 ajax controller 받은 빈 : "+ orderBean.toString());
+		log.info("주문변경 ajax controller 받은 빈 : "+ orderBean.toString());
+		log.info("주문변경 ajax controller 받은 빈 : "+ orderBean.toString());
+		
 		orderService.updateOrderStatus(orderBean);
 		
 		return "redirect:/seller/orderList";
 	}
 	
 	@ResponseBody
+	@PostMapping(value = "order/transferOrderStatusAjax", produces=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<OrderBean> updateOrderStatus(OrderBean orderBean) throws Exception {
+//		public String updateOrderStatus(OrderBean orderBean) throws Exception {
+
+		log.info("파일다운 orderBean 내용 : " + orderBean.toString());
+
+		return orderService.updateOrderStatus(orderBean) == 1 
+				? new ResponseEntity<OrderBean>(orderBean, HttpStatus.OK)
+				: new ResponseEntity<OrderBean>(HttpStatus.INTERNAL_SERVER_ERROR);
+
+	}
+	
+	@ResponseBody
 	@PostMapping(value="order/fileUpload")
 	public String fileUpload(OrderBean orderBean) throws Exception {
 		
-		log.info("fileUPload orderBean 내용 : " + orderBean.toString());
-		
 		orderService.uploadFile(orderBean.getUploadFile(), orderBean.getOrderKeyNum());
 		orderService.updateOrderStatus(orderBean);
-		
 		
 		return "upload success";
 	}
