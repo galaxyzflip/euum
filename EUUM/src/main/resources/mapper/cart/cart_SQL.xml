@@ -21,11 +21,14 @@
 	
 	<!-- 찜 목록 가져오기 -->
 	<select id="getCartList" resultType="com.mycom.euum.cart.bean.CartBean">
-	
-		select g.*, c.cart_regdate
-		from cart_tbl c inner join goods_tbl g
-		on c.goods_num=g.goods_num
-		and c.member_num=#{memberNum}
+	select SELLER_SPECIALTY,SELLER_DESCRIPTION,SELLER_IMAGE,SELLER_NICKNAME,GOODS_NUM,GOODS_CATEGORY,GOODS_NAME,GOODS_PRICE,GOODS_IMAGE1,GOODS_IMAGE2,GOODS_IMAGE3
+	from seller_tbl inner join goods_tbl
+	on goods_tbl.member_num = seller_tbl.member_num 
+	where goods_tbl.member_num in(select member_num 
+	from goods_tbl
+	where goods_num in(select goods_num
+	from cart_tbl
+	where member_num = #{memberNum}));
 	</select>
 
 

@@ -31,7 +31,7 @@ public class MemberController {
 	private MemberService memberService;
 
 	// 테스트용... 임시 사용
-	@GetMapping("/ccs")
+	@GetMapping("/main")
 	public String test(HttpServletRequest request) {
 
 
