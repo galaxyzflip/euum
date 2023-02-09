@@ -5,10 +5,17 @@ import java.util.Map;
 
 import com.mycom.euum.goods.bean.GoodsBean;
 import com.mycom.euum.goods.bean.GoodsOptionBean;
+import com.mycom.euum.page.Criteria2;
 
 public interface GoodsService {
 	
 	/* ---------------------------- 상품 리스트 ---------------------------- */
+	
+	/** 은정: 상품 리스트 가져오기 (List) */
+	public List<GoodsBean> selectGoodsList(Criteria2 cri) ;
+	
+	/** 은정: 상품 리스트 페이징 */
+	public int getTotal(Criteria2 cri);
 	
 	/** 선민: 상품 리스트 가져오기 (List) */
 	public List<GoodsBean> selectGoodsList() throws Exception;

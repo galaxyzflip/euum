@@ -231,7 +231,7 @@ ul li {
 									</li>
 									
 									<c:if test="${order.fileYn eq 'Y' }">
-										<li class='file-yn'><button class="view-file" onclick="fileList(${order.orderKeyNum}, 'order${status.index }' ,'${order.orderNum }')">파일보기</button></li><br>
+										<li class='file-yn'><button class="view-file" onclick="fileList(${order.orderKeyNum}, 'order${status.index }' ,'${order.orderNum }', '${order.orderStatus }')">파일보기</button></li><br>
 									</c:if>
 									
 									<li class="file-list">
@@ -312,21 +312,32 @@ ul li {
 		//파일 다운로드
 		$('.file-list').on('click', 'div', function(e){
 			
-			if(!confirm('파일을 다운로드 하면 고객 확인상태로 변경됩니다')){
-				return false;
-			}
-			
 			var liObj = $(this);
 			var path = encodeURIComponent('/' + liObj.data("path")+liObj.data("filename"));
 			console.log(path);
-			self.location ="/download?fileName="+path;
 			
-			let orderNum = liObj.data("key");
-			let orderStatus = '5';
-			let orderForm = liObj.data("form");
-			console.log("파일다운한 주문번호 : " + orderNum);
-			updateStatus(orderNum, orderStatus, orderForm);
 			
+			let status = liObj.data("status");
+			console.log('파일다운 status 값 : ' + status);
+			if(status != '6'){
+				
+				if(!confirm('파일을 다운로드 하면 고객 확인상태로 변경됩니다')){
+					return false;
+				}
+				
+				self.location ="/download?fileName="+path;
+				
+				let orderNum = liObj.data("key");
+				let orderStatus = '5';
+				let orderForm = liObj.data("form");
+				console.log("파일다운한 주문번호 : " + orderNum);
+				
+				updateStatus(orderNum, orderStatus, orderForm);
+			}
+			
+			if(status == '6'){
+				self.location ="/download?fileName="+path;
+			}
 		})
 		
 		
@@ -392,6 +403,7 @@ ul li {
  		
  		if(orderStatus == '6'){
  			$(form).find('.order-status').text("완료");	
+ 			$(form).next().find('.file-list').find('div').data('status', '6');
  			$(form).next().find('.confirm-order').remove();
  		
  		}
@@ -399,7 +411,7 @@ ul li {
 	
 	
 		//fileList의 callback 비스무리...	
-		function viewFile(data, orderForm, orderKeyNum, orderNum){
+		function viewFile(data, orderForm, orderKeyNum, orderNum, orderStatus){
 		
 		let inner = '';
 		let shortName = data.originalFileName.substr(0, 16) + "...";
@@ -407,7 +419,7 @@ ul li {
 		console.log("orderForm 이름 : " + orderForm);
 		
 		inner += '<div data-path="'+data.imageUploadPath+'" data-filename="'+data.imageFileName
-		inner += '" data-key="'+orderNum+'" data-form="'+orderForm+'">'+shortName+'</div>'; 
+		inner += '" data-key="'+orderNum+'" data-form="'+orderForm+'" data-status="'+orderStatus+'">'+shortName+'</div>'; 
 		
 		/* inner += '<div data-path="'+data.imageUploadPath+'" data-filename="'+data.imageFileName+'">'
 		inner += '<span>'+shortName+'</span><span><img src="/resources/img/attach.png"></span></div>'; 
@@ -420,7 +432,7 @@ ul li {
 	}
 	
 	//파일보기 버튼 클릭시 파일리스트 출력
-	 function fileList(orderKeyNum, orderForm, orderNum){
+	 function fileList(orderKeyNum, orderForm, orderNum, orderStatus){
 		let imageUse = 'order';
 		let imageUseNum = orderKeyNum;
 		
@@ -437,7 +449,7 @@ ul li {
 	        	console.log('ajax');
 				console.log(data);
 	        	console.log('ajax');
-				viewFile(data, orderForm, orderKeyNum, orderNum);
+				viewFile(data, orderForm, orderKeyNum, orderNum, orderStatus);
 	          },
 	          error: function (data) {
 				alert('에러')

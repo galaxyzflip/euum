@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 
 import com.mycom.euum.goods.bean.GoodsBean;
 import com.mycom.euum.goods.bean.GoodsOptionBean;
+import com.mycom.euum.page.Criteria2;
 
 //@Repository("goodsMapper")
 public interface GoodsMapper {
@@ -14,6 +15,12 @@ public interface GoodsMapper {
 //	private SqlSessionTemplate sqlSession;
 
 	/* ---------------------------- 상품 리스트 ---------------------------- */
+	
+	/** 은정: 상품 리스트 가져오기 (List) */
+	public List<GoodsBean> selectGoodsList(Criteria2 cri);
+	
+	/** 은정: 상품리스트 페이징 */
+	public int getTotalCount(Criteria2 cri);
 
 	/** 선민: 상품 리스트 가져오기 (List) */
 	public List<GoodsBean> selectGoodsList() throws Exception;

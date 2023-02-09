@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.mycom.euum.goods.bean.GoodsBean;
 import com.mycom.euum.goods.bean.GoodsOptionBean;
 import com.mycom.euum.goods.mapper.GoodsMapper;
+import com.mycom.euum.page.Criteria2;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
@@ -23,6 +24,20 @@ public class GoodsServiceImpl implements GoodsService {
 	
 	/* ---------------------------- 상품 리스트 ---------------------------- */
 
+	/** 은정: 상품 리스트 가져오기 (List)*/
+	@Override
+	public List<GoodsBean> selectGoodsList(Criteria2 cri) {
+		return goodsMapper.selectGoodsList(cri);
+	}
+	
+	/** 은정: 상품 리스트 페이징 */
+	@Override
+	public int getTotal(Criteria2 cri) {
+		// TODO Auto-generated method stub
+		return goodsMapper.getTotalCount(cri);
+	}
+	
+	
 	/** 선민: 상품 리스트 가져오기 (List) */
 	@Override
 	public List<GoodsBean> selectGoodsList() throws Exception {

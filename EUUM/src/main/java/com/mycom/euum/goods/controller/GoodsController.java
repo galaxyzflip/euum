@@ -19,16 +19,16 @@ import com.mycom.euum.commons.FileUtils;
 import com.mycom.euum.goods.bean.GoodsBean;
 import com.mycom.euum.goods.bean.GoodsOptionBean;
 import com.mycom.euum.goods.service.GoodsServiceImpl;
-
 import com.mycom.euum.goodsQNA.service.GoodsQNAService;
 import com.mycom.euum.image.bean.ImageBean;
 import com.mycom.euum.image.service.ImageServiceImpl;
 import com.mycom.euum.page.Criteria;
+import com.mycom.euum.page.Criteria2;
 import com.mycom.euum.page.PageDTO;
+import com.mycom.euum.page.PageDTO2;
 import com.mycom.euum.page.RCriteria;
 import com.mycom.euum.page.RPageDTO;
 import com.mycom.euum.review.service.ReviewService;
-
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
@@ -52,34 +52,31 @@ public class GoodsController {
 	}
 
 	
-	/* ---------------------------- 상품 리스트 ----------------------------- */
+	/* ---------------------------- 상품 리스트 ---------------------------- */
 
-
-	/** 선민: 상품 리스트 - 전체 상품 리스트 */
-	@GetMapping(value = "/goods/goodsList")
-	public String selectGoodsList(Model model) throws Exception {
+	/** 은정: 상품 리스트 - 전체 상품 리스트(02/01 페이징추가) */
+	@GetMapping(value="/goods/goodsList")
+	public String selectGoodsList(Model model, Criteria2 cri) throws Exception {
 		log.info("===== 상품 리스트 =====");
-
-		List<GoodsBean> goodsList = goodsService.selectGoodsList();
+		
+		System.out.println("cri 내용 : " +cri.toString());
+		System.out.println("cri 내용 : " +cri.toString());
+		System.out.println("cri 내용 : " +cri.toString());
+		System.out.println("cri 내용 : " +cri.toString());
+		
+		
+		
+		List<GoodsBean> goodsList = goodsService.selectGoodsList(cri);
 		log.info("상품 리스트: " + goodsList);
 		model.addAttribute("goodsList", goodsList);
+		
+		int total=goodsService.getTotal(cri);
+        
+		
+		model.addAttribute("pageMaker", new PageDTO2(cri, total));
 
-		return "goods/goodsList";
-	}
-
-	/** 은정: 상품 리스트 - 상품 검색결과 리스트 */
-	@GetMapping(value = "/goods/goodsSearch")
-	public String goodsSearch(String searchKeyword, String searchOption, Model model) throws Exception {
-		log.info("===== 상품 검색결과 리스트 =====");
-		log.info("---------------------------------");
-		log.info("검색어: " + searchKeyword);
-		log.info("검색옵션: " + searchOption);
-
-		List<GoodsBean> goodsList = goodsService.selectGoodsSearchList(searchKeyword, searchOption);
-		model.addAttribute("goodsList", goodsList);
-		model.addAttribute("selectedSearchOption", searchOption);
-
-		return "goods/goodsList";
+		return "goods/goodsList";  
+		
 	}
 
 	@GetMapping(value = "/goods/goodsSearch2")
