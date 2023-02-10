@@ -139,17 +139,6 @@ public class OrderController {
 	}
 	
 	
-
-	//admin용 주문리스트 불러오는 메소드
-	@GetMapping("admin/order/orderList")
-	public String adminOrderList(Model model) {
-		
-		List<OrderBean> orderList = orderService.selectAdminOrderList();
-		model.addAttribute("orderList", orderList);
-		return "admin/order/orderList";
-	}
-	
-	
 	//회원용 주문 취소하기
 	@ResponseBody
 	@PostMapping(value="order/cancleOrder", produces=MediaType.APPLICATION_JSON_VALUE)

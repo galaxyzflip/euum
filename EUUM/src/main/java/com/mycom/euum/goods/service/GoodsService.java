@@ -22,12 +22,11 @@ public interface GoodsService {
 	
 	/* ---------------------------- 상품 리스트 ---------------------------- */
 	
-	/** 선민: 상품 리스트 가져오기 (List) */
-	public List<GoodsBean> selectGoodsList() throws Exception;
+	/** 은정: 상품 리스트 가져오기 (List) */
+	public List<GoodsBean> selectGoodsList(Criteria2 cri) ;
 	
-	/** 은정: 상품 리스트 검색결과 가져오기 (List) */
-	public List<GoodsBean> selectGoodsSearchList(String searchKeyword, String searchOption) throws Exception;
-	
+	/** 은정: 상품 리스트 페이징 */
+	public int getTotal(Criteria2 cri);
 	/** 선민: 나의 상품 리스트 가져오기 - 승인완료 상품 (List) */
 //	public Map<String, List<GoodsBean>> selectMyGoodsList(int memberNum, int pageNum, int amount) throws Exception;
 	public Map<String, List<GoodsBean>> selectMyGoodsList(int memberNum, CriteriaForGoods cri) throws Exception;
@@ -95,8 +94,5 @@ public interface GoodsService {
 	public List<ImageBean> goodsFileUpload(MultipartFile[] uploadFile, HttpServletRequest request) throws Exception;
 
 	
-	
-
-	
-
 }
+

@@ -124,8 +124,20 @@ ul li {
 				
 
 				<tr id="order${status.index }">
+				
+					<input type="hidden" name="orderKeyNum" value="${order.orderKeyNum }"/>
+					<input type="hidden" name="orderNum" value="${order.orderNum }"/>
+					<input type="hidden" name="goodsNum" value="${order.goodsNum }"/>
+					
+				
 					<td id="order-num">${order.orderNum }</td>
-					<td><a href="/goods/goodsDetail?goodsNum=${order.goodsNum }"><img src="/resources/assets/img/about-2.jpg"></img></a></td>
+					<td>
+						<c:if test="${!empty order.imageName }">
+							<a href="/goods/goodsDetail?goodsNum=${order.goodsNum }">
+								<img src="${pageContext.request.contextPath}/resources/img/${order.imageName}"></img>
+							</a>
+						</c:if>
+					</td>
 					<td>${order.sellerNickname }</td>
 					<td class="order-name"><br> ${order.goodsName }<br>
 						${fn:replace(order.orderName,'`','<br>')}</td>
@@ -230,8 +242,14 @@ ul li {
 										</c:if>	
 									</li>
 									
+									<li class="go-review">
+										<c:if test="${order.orderStatus eq 6 }">
+											<button onclick="postReview('${order.orderKeyNum}','${order.orderNum }','${order.goodsNum }','order${status.index }')">리뷰작성</button>		
+										</c:if>	
+									</li>
+									
 									<c:if test="${order.fileYn eq 'Y' }">
-										<li class='file-yn'><button class="view-file" onclick="fileList(${order.orderKeyNum}, 'order${status.index }' ,'${order.orderNum }')">파일보기</button></li><br>
+										<li class='file-yn'><button class="view-file" onclick="fileList(${order.orderKeyNum}, 'order${status.index }' ,'${order.orderNum }', '${order.orderStatus }')">파일보기</button></li><br>
 									</c:if>
 									
 									<li class="file-list">
@@ -305,6 +323,15 @@ ul li {
 <!-- /.modal -->
 <script>
 
+	function postReview(orderKeyNum, orderNum, goodsNum, orderForm){
+		if(!confirm(orderNum + "의 리뷰를 작성하시겠습니까?")){
+			return false;
+		}		
+		
+		let url = "/review/insertForm?orderKeyNum="+orderKeyNum+"?goodsNum="+goodsNum;
+		self.location.href = url;
+	}
+
 	let modal = $('.modal');
 	
 	$(document).ready(function() {
@@ -312,21 +339,32 @@ ul li {
 		//파일 다운로드
 		$('.file-list').on('click', 'div', function(e){
 			
-			if(!confirm('파일을 다운로드 하면 고객 확인상태로 변경됩니다')){
-				return false;
-			}
-			
 			var liObj = $(this);
 			var path = encodeURIComponent('/' + liObj.data("path")+liObj.data("filename"));
 			console.log(path);
-			self.location ="/download?fileName="+path;
 			
-			let orderNum = liObj.data("key");
-			let orderStatus = '5';
-			let orderForm = liObj.data("form");
-			console.log("파일다운한 주문번호 : " + orderNum);
-			updateStatus(orderNum, orderStatus, orderForm);
 			
+			let status = liObj.attr("data-status");
+			console.log('파일다운 status 값 : ' + status);
+			if(status != '6'){
+				
+				if(!confirm('파일을 다운로드 하면 고객 확인상태로 변경됩니다')){
+					return false;
+				}
+				
+				self.location ="/download?fileName="+path;
+				
+				let orderNum = liObj.data("key");
+				let orderStatus = '5';
+				let orderForm = liObj.data("form");
+				console.log("파일다운한 주문번호 : " + orderNum);
+				
+				updateStatus(orderNum, orderStatus, orderForm);
+			}
+			
+			if(status == '6'){
+				self.location ="/download?fileName="+path;
+			}
 		})
 		
 		
@@ -346,7 +384,7 @@ ul li {
 	function updateStatus(orderNum, orderStatus, orderForm){
 		
 		if(orderStatus == '6'){
-			if(!confirm('"고객확인" 시 다시 되돌리리 수 없습니다')){
+			if(!confirm('"고객확인" 시 다시 되돌릴 수 없습니다')){
 				return false;
 			}			
 		}
@@ -392,6 +430,19 @@ ul li {
  		
  		if(orderStatus == '6'){
  			$(form).find('.order-status').text("완료");	
+ 			$(form).next().find('.file-list').find('div').attr('data-status', '6');
+ 			
+ 			
+ 			let orderNum = $(form).find('input[name="orderNum"]').val();
+ 			let orderKeyNum = $(form).find('input[name="orderKeyNum"]').val();
+ 			let goodsNum= $(form).find('input[name="goodsNum"]').val();
+ 			
+ 			
+ 			let inner ='<button onclick="postReview(\''+orderKeyNum+'\',\''+orderNum+'\',\''+goodsNum+'\',\''+orderForm+'\')">리뷰작성</button>' 
+ 			
+ 			$(form).next().find('.go-review').html(inner);
+ 			
+ 			
  			$(form).next().find('.confirm-order').remove();
  		
  		}
@@ -399,7 +450,11 @@ ul li {
 	
 	
 		//fileList의 callback 비스무리...	
-		function viewFile(data, orderForm, orderKeyNum, orderNum){
+		function viewFile(data, orderForm, orderKeyNum, orderNum, orderStatus){
+			
+		let form = $('#'+orderForm);
+		
+		$(form).next().find('.view-file').attr('onclick', null);
 		
 		let inner = '';
 		let shortName = data.originalFileName.substr(0, 16) + "...";
@@ -407,7 +462,7 @@ ul li {
 		console.log("orderForm 이름 : " + orderForm);
 		
 		inner += '<div data-path="'+data.imageUploadPath+'" data-filename="'+data.imageFileName
-		inner += '" data-key="'+orderNum+'" data-form="'+orderForm+'">'+shortName+'</div>'; 
+		inner += '" data-key="'+orderNum+'" data-form="'+orderForm+'" data-status="'+orderStatus+'">'+shortName+'</div>'; 
 		
 		/* inner += '<div data-path="'+data.imageUploadPath+'" data-filename="'+data.imageFileName+'">'
 		inner += '<span>'+shortName+'</span><span><img src="/resources/img/attach.png"></span></div>'; 
@@ -415,12 +470,11 @@ ul li {
 		
 		console.log(inner);
 		
-		let form = $('#'+orderForm); 
 		$(form).next().find('.file-list').html(inner);
 	}
 	
 	//파일보기 버튼 클릭시 파일리스트 출력
-	 function fileList(orderKeyNum, orderForm, orderNum){
+	 function fileList(orderKeyNum, orderForm, orderNum, orderStatus){
 		let imageUse = 'order';
 		let imageUseNum = orderKeyNum;
 		
@@ -437,7 +491,8 @@ ul li {
 	        	console.log('ajax');
 				console.log(data);
 	        	console.log('ajax');
-				viewFile(data, orderForm, orderKeyNum, orderNum);
+	        	
+				viewFile(data, orderForm, orderKeyNum, orderNum, orderStatus);
 	          },
 	          error: function (data) {
 				alert('에러')
@@ -544,16 +599,6 @@ ul li {
 	})
 	
 </script>
-
-
-
-
-
-
-
-
-
-
 
 
 

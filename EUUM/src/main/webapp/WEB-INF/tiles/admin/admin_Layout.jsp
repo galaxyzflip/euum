@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles" %>
+<%@ include file="/WEB-INF/includes/include-header.jspf"%>
 
 	
 <!DOCTYPE html>
@@ -31,7 +32,7 @@
 
 </head>
 
-<body id="page-top">
+<body id="page-top" class>
 
 	<!-- Page Wrapper -->
 	<div id="wrapper">

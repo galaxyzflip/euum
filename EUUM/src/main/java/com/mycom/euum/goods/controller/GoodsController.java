@@ -54,32 +54,29 @@ public class GoodsController {
 	
 	
 	/* ---------------------------- 상품 리스트 ---------------------------- */
-
-	/** 선민: 상품리스트 - 전체 상품 리스트 */
-	@GetMapping(value = "/goods/goodsList")
-	public String selectGoodsList(Model model) throws Exception {
+/** 은정: 상품 리스트 - 전체 상품 리스트(02/01 페이징추가) */
+	@GetMapping(value="/goods/goodsList")
+	public String selectGoodsList(Model model, Criteria2 cri) throws Exception {
 		log.info("===== 상품 리스트 =====");
-
-		List<GoodsBean> goodsList = goodsService.selectGoodsList();
+		
+		System.out.println("cri 내용 : " +cri.toString());
+		System.out.println("cri 내용 : " +cri.toString());
+		System.out.println("cri 내용 : " +cri.toString());
+		System.out.println("cri 내용 : " +cri.toString());
+		
+		
+		
+		List<GoodsBean> goodsList = goodsService.selectGoodsList(cri);
 		log.info("상품 리스트: " + goodsList);
 		model.addAttribute("goodsList", goodsList);
+		
+		int total=goodsService.getTotal(cri);
+        
+		
+		model.addAttribute("pageMaker", new PageDTO2(cri, total));
 
-		return "goods/goodsList";
-	}
-
-	/** 은정: 상품리스트 - 검색 */
-	@GetMapping(value = "/goods/goodsSearch")
-	public String goodsSearch(String searchKeyword, String searchOption, Model model) throws Exception {
-		log.info("===== 상품 검색결과 리스트 =====");
-		log.info("---------------------------------");
-		log.info("검색어: " + searchKeyword);
-		log.info("검색옵션: " + searchOption);
-
-		List<GoodsBean> goodsList = goodsService.selectGoodsSearchList(searchKeyword, searchOption);
-		model.addAttribute("goodsList", goodsList);
-		model.addAttribute("selectedSearchOption", searchOption);
-
-		return "goods/goodsList";
+		return "goods/goodsList";  
+		
 	}
 
 	/** 은정: 상품리스트 - 정렬 */
@@ -418,5 +415,3 @@ public class GoodsController {
 		SellerBean sellerBean = (SellerBean)session.getAttribute("loginSeller"); // 세션 정보 저장 (이식성을 고려하여 웹 의존성이 있는 로직은 Controller에 작성)
 		return sellerBean;
 	}
-	
-}

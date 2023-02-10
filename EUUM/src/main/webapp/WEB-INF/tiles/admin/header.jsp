@@ -45,7 +45,7 @@
 					<i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
 				</c:when>
 				<c:otherwise>
-					<c:if test="${loginUser.memberGrade == '2'}">
+					<c:if test="${loginUser.memberClass == 'A'}">
 						<a href="/admin" style="margin-right: 10px;">관리자</a>
 						<a href="/member/logout">로그아웃</a>
 						<a class="btn-book-a-table" href="/myPage/modifyForm">마이페이지</a>
@@ -53,7 +53,7 @@
 						<i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
 
 					</c:if>
-					<c:if test="${loginUser.memberGrade == '1'}">
+					<c:if test="${loginUser.memberGrade == 'M' || loginUser.memberGrade == 'S' }">
 						<!-- 로그인한 사람이 관리자가 아닐 때 --> 
 						<a href="/member/logout">로그아웃</a>
 						<a class="btn-book-a-table" href="/myPage/modifyForm">마이페이지</a>
