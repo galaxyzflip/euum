@@ -1,9 +1,13 @@
 package com.mycom.euum.member.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
+import com.mycom.euum.member.bean.CartBean;
 import com.mycom.euum.member.bean.MemberBean;
 import com.mycom.euum.member.bean.SellerBean;
+import com.mycom.euum.member.mapper.CartMapper;
 import com.mycom.euum.member.mapper.MemberMapper;
 
 import lombok.AllArgsConstructor;
@@ -14,7 +18,7 @@ import lombok.AllArgsConstructor;
 public class MyPageServiceImpl implements MyPageService {
 	
 	private MemberMapper memberMapper;
-
+	private CartMapper cartMapper;
 
 	// 회원 정보 상세보기
 	@Override
@@ -77,5 +81,20 @@ public class MyPageServiceImpl implements MyPageService {
 	
 		return memberMapper.updateMemberClass(bean);
 	}
+
+	@Override
+	public List<CartBean> getCartList(int memberNum) {
+		
+		return cartMapper.getCartList(memberNum);
+	}
+
+	@Override
+	public int deleteCart(int memberNum, int goodsNum) {
+		return cartMapper.deleteCart(memberNum, goodsNum);
+	}
+	
+	
+	
+	
 	
 }

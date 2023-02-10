@@ -20,7 +20,7 @@
 	
 	
 	<!-- 찜 목록 가져오기 -->
-	<select id="getCartList" resultType="com.mycom.euum.cart.bean.CartBean">
+	<select id="getCartList" resultType="com.mycom.euum.member.bean.CartListBean">
 	select SELLER_SPECIALTY,SELLER_DESCRIPTION,SELLER_IMAGE,SELLER_NICKNAME,GOODS_NUM,GOODS_CATEGORY,GOODS_NAME,GOODS_PRICE,GOODS_IMAGE1,GOODS_IMAGE2,GOODS_IMAGE3
 	from seller_tbl inner join goods_tbl
 	on goods_tbl.member_num = seller_tbl.member_num 
@@ -28,14 +28,16 @@
 	from goods_tbl
 	where goods_num in(select goods_num
 	from cart_tbl
-	where member_num = #{memberNum}));
+	where member_num = #{memberNum}))
 	</select>
 
 
 	<!-- 카트(찜) 1개 삭제 -->
 	<delete id="deleteCart">
-		delete from cart_tbl
-		where cart_num=#{cartNum}
+		delete 	
+		from 	cart_tbl
+		where 	member_num	= ${memberNum}
+		and 	goods_num	= ${goodsNum}
 	</delete> 
 
 </mapper>

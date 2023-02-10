@@ -1,10 +1,11 @@
-package com.mycom.euum.cart.mapper;
+package com.mycom.euum.member.mapper;
 
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
-import com.mycom.euum.cart.bean.CartBean;
+import com.mycom.euum.member.bean.CartBean;
+
 
 public interface CartMapper {
 
@@ -18,5 +19,5 @@ public interface CartMapper {
 	
 	
 	/**찜 삭제*/
-	public int deleteCart(int cartNum);
+	public int deleteCart(@Param("memberNum")int memberNum, @Param("goodsNum")int goodsNum);
 }
