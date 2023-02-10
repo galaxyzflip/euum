@@ -35,6 +35,7 @@ public class OrderBean {
 	private String goodsName;
 	private int orderPrice;
 	private String fileYn;
+	private String imageName;
 	
 	
 	

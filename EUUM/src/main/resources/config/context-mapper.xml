@@ -27,6 +27,9 @@
 	
 	<!-- mapper 자동 스캔 -->
 	<mybatis-spring:scan base-package="com.mycom.euum.*.mapper"/>
+	<mybatis-spring:scan base-package="com.mycom.euum.**.mapper"/>
+	
+	
 	
 	
 	

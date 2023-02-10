@@ -126,7 +126,13 @@ ul li {
 
 				<tr id="order${status.index }">
 					<td>${order.orderNum }</td>
-					<td><img src="/resources/assets/img/about-2.jpg"></img></td>
+					<td>
+					<c:if test="${!empty order.imageName }">
+						<a href="/goods/goodsDetail?goodsNum=${order.goodsNum }">
+							<img src="${pageContext.request.contextPath}/resources/img/${order.imageName}"></img>
+						</a>
+					</c:if>
+					</td>
 					<td>${order.sellerNickname }</td>
 					<td class="order-name"><br> ${order.goodsName }<br>
 						${fn:replace(order.orderName,'`','<br>')}</td>
