@@ -1,3 +1,4 @@
+
 package com.mycom.euum.image.mapper;
 
 import java.util.List;
@@ -12,5 +13,12 @@ public interface ImageMapper {
 	
 	/** 최창선 : 이미지 목록 가져오기 bean 의 imageUse, imageUseNum 조건으로 조회*/
 	public List<ImageBean> selectImageList(ImageBean imageBean);
+  
+  void deleteImage(ImageBean imageBean) throws Exception;
+	
+	void insertSellerImage(int imageUseNum) throws Exception;
+	
+	ImageBean getSellerImage(int imageUseNum) throws Exception;
 
 }
+

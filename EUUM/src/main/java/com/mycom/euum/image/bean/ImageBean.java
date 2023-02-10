@@ -1,3 +1,4 @@
+
 /**
  * 작성일 : 2023-01-20
  * 용도 : 파일(이미지) Bean
@@ -20,3 +21,4 @@ public class ImageBean {
 	int imageUseNum;
 	String originalFileName;
 }
+

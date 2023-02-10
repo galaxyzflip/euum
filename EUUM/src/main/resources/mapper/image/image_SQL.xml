@@ -1,3 +1,4 @@
+
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
@@ -35,5 +36,36 @@
 		AND IMAGE_USE_NUM=#{imageUseNum}
 	
 	</select>
+  
+  <delete id="deleteImage">
+		delete from IMAGE_TBL
+		where IMAGE_USE = #{imageUse} and IMAGE_USE_NUM = #{imageUseNum}
+	</delete>
+	
+	<insert id="insertSellerImage" parameterType="com.mycom.euum.image.bean.ImageBean">
+		insert into IMAGE_TBL
+		(
+			IMAGE_NUM,
+			IMAGE_FILE_NAME,
+			IMAGE_FILE_TYPE,
+			IMAGE_USE,
+			IMAGE_USE_NUM
+		)
+		values
+		(
+			IMAGE_NUM_SEQ.nextval,
+			'image.png',
+			'i',
+			'seller',
+			#{imageUseNum}
+		)
+	</insert>
+	
+	<select id="getSellerImage" resultType="com.mycom.euum.image.bean.ImageBean">
+		select *
+		from IMAGE_TBL
+		where image_use_num = #{imageUseNum}
+	</select>
+
 
 </mapper>

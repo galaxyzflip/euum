@@ -2,9 +2,7 @@ package com.mycom.euum.review.mapper;
 
 import java.util.List;
 
-import org.apache.ibatis.annotations.Param;
-
-import com.mycom.euum.notice.bean.NoticeBean;
+import com.mycom.euum.page.Criteria;
 import com.mycom.euum.page.RCriteria;
 import com.mycom.euum.review.bean.ReviewBean;
 
@@ -16,17 +14,21 @@ public interface ReviewMapper {
 	
 	public void reviewInsert(ReviewBean reviewBean);
 	
-	public int myReview(int memberNum);
+
 	
 	public ReviewBean reviewModifyForm(int reviewNum);
 	
 	public int reviewModifyPro(ReviewBean reviewBean);
 	
-	public int reviewDelete(int reviewNum);
+	public int reviewDelete(ReviewBean reviewBean);
 	
 	public ReviewBean reviewDetail(int reviewNum);
 	
+	public List<ReviewBean> myReviewList(Criteria cri);
+	
 	
 	public int getTotalCount(RCriteria rcri);
+	
+	public int myGetTotal(Criteria cri);
 
 }

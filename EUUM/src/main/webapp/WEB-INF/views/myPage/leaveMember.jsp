@@ -97,7 +97,7 @@ div {
 <div>동일한 아이디로는 재가입하실 수 없습니다.</div>
 </div>
 
-<form method="post" name="join">
+<form method="post" name="join" action="/myPage/leavePro" id="leaveForm">
 
 <div id="quit_inp" class="cf">
 
@@ -116,6 +116,7 @@ div {
 <div class="blank" style="height:90px;">&nbsp;</div>
 <div class="left_right_ul" style="width:393px; margin:0 auto">
 <input type="hidden" name="memberNum" value="${member.memberNum}">
+<input type="hidden" name="sellerNum" value="${seller.sellerNum}">
 <ul><input type="submit" class="btn1" onclick="leavePro();" value="회원 탈퇴"></ul>
 <ul class="btn3" onclick="history.back();">이전 페이지</ul>
 </div>
