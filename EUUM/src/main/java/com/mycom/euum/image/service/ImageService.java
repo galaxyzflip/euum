@@ -6,21 +6,24 @@ import java.util.List;
 import com.mycom.euum.image.bean.ImageBean;
 
 public interface ImageService {
-	
+
 	/** 선민: 이미지 등록 - 새로운 이미지 데이터를 DB에 삽입하기 */
 
 	public void insertImage(List<ImageBean> imageBeanList, int imageUseNum) throws Exception;
 
 	public void insertImage(ImageBean imageBean) throws Exception;
-	
+
 	public List<ImageBean> getImageList(ImageBean imageBean);
-  
-  public void deleteImage(List<ImageBean> imageBeanList, int imageUseNum) throws Exception;
-	
+
+	public void deleteImage(List<ImageBean> imageBeanList, int imageUseNum) throws Exception;
+
 	public void insertSellerImage(int imageUseNum) throws Exception;
-	
+
 	public ImageBean getSellerImage(int imageUseNum) throws Exception;
 
+	/** 의종: 고객문의 이미지 가져오기 */
+	public List<ImageBean> selectQNAImage(int qnaNum);
 
+	/** 의종: 상품문의 이미지 가져오기 */
+	public List<ImageBean> selectGoodsQNAImage(int goodsQNANum);
 }
-

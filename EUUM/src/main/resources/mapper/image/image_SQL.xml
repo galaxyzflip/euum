@@ -65,6 +65,24 @@
 		from IMAGE_TBL
 		where image_use_num = #{imageUseNum}
 	</select>
+	
+		 <!-- 의종: 고객문의 이미지 가져오기-->
+  <select id="selectQNAImage" resultType="com.mycom.euum.image.bean.ImageBean">		
+     <![CDATA[
+		SELECT * FROM IMAGE_TBL
+		  WHERE IMAGE_USE = 'qna'
+			AND IMAGE_USE_NUM = #{qnaNum}
+	 ]]>		   
+  </select>
+  
+   <!-- 의종: 상품문의 이미지 가져오기-->
+    <select id="selectGoodsQNAImage" resultType="com.mycom.euum.image.bean.ImageBean">		
+     <![CDATA[
+		SELECT * FROM IMAGE_TBL
+		  WHERE IMAGE_USE = 'goodsQNA'
+			AND IMAGE_USE_NUM = #{goodsQNANum}
+	 ]]>		   
+  </select>
 
 
 </mapper>

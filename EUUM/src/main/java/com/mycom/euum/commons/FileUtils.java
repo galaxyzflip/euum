@@ -227,10 +227,10 @@ public class FileUtils {
 	}
 	
 	// 상품 QnA
-	public List<ImageBean> gQnaFileUpload(MultipartFile[] uploadFile) throws Exception {
+	public List<ImageBean> goodsQNAFileUpload(MultipartFile[] uploadFile) throws Exception {
 		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
 		List<ImageBean> imageBeanList = new ArrayList<ImageBean>();
-		imageBeanList = fileUpload(uploadFile, request, "gQna");
+		imageBeanList = fileUpload(uploadFile, request, "goodsQNA");
 		
 		return imageBeanList;
 	}

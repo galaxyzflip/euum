@@ -25,15 +25,20 @@
 <br><br><br><br><br><br>
 <div id="writeForm">
 <div class="container">
-  <h2>고객 문의</h2>
-  <form action="/goodsQNA/InsertPro" method="post">
+  <h2>상품 문의</h2>
+  <form action="/goodsQNA/InsertPro" method="post" enctype="multipart/form-data">
     
     <div class="form-group" >
     <label for="title">제목</label>
     
+    <br>
+    <input type="file" name="uploadFile">
+    <input type="file" name="uploadFile">
+    <input type="file" name="uploadFile">
+    
     <input type="hidden" name="goodsNum" value="${goodsNum}"/> 
-    <input type="hidden" name="memberNum" value="1"/> 
-    <input type="hidden" id="goodsQNAWriter" name="goodsQNAWriter" value="zzz"/>
+    <input type="hidden" name="memberNum" value="${memberNum}"/> 
+    <input type="hidden" name="goodsQNAWriter" value="${memberName}"/>
     
     <input type="text" class="form-control" id="goodsQNATitle" name="goodsQNATitle" placeholder="제목 입력" 
        required="required" pattern=".{3,30}" />

@@ -17,14 +17,16 @@ import com.mycom.euum.commons.FileUtils;
 import com.mycom.euum.goods.bean.GoodsBean;
 import com.mycom.euum.goods.bean.GoodsOptionBean;
 import com.mycom.euum.goods.service.GoodsService;
+import com.mycom.euum.goodsQNA.bean.GoodsQNABean;
+import com.mycom.euum.goodsQNA.service.GoodsQNAService;
 import com.mycom.euum.image.bean.ImageBean;
 import com.mycom.euum.image.service.ImageService;
 import com.mycom.euum.member.bean.MemberBean;
 import com.mycom.euum.member.bean.SellerBean;
 import com.mycom.euum.page.Criteria;
 import com.mycom.euum.page.Criteria2;
+import com.mycom.euum.page.PageDTO;
 import com.mycom.euum.page.PageDTO2;
-import com.mycom.euum.page.RCriteria;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
@@ -39,6 +41,7 @@ public class GoodsController {
 //	private ImageServiceImpl imageService;
 	private GoodsService goodsService;
 	private ImageService imageService;
+	private GoodsQNAService goodsQNAService;
 	
 	private FileUtils fileUtils; // 123
 
@@ -254,7 +257,7 @@ public class GoodsController {
 
 	/** 선민: 상품 상세보기 */
 	@GetMapping(value = "/goods/goodsDetail")
-	public String goodsDetail(Model model, String goodsNum, Criteria cri, RCriteria rcri) throws Exception {
+	public String goodsDetail(Model model, String goodsNum, Criteria cri,GoodsQNABean goodsQNABean) throws Exception {
 		log.info("===== 상품 상세보기 =====");
 		
 		// (1) 상품 정보 가져오기
@@ -284,36 +287,31 @@ public class GoodsController {
 		
 		
 		
-//		// 게시판 쪽 페이징
-//		/** 의종: goodsQNA 리스트 가져오기 및 페이징 */
-//		int amount = cri.getAmount();
-//		int pageNum = cri.getPageNum();
-//		int total=goodsQNAService.getGoodsQNATotalCount(cri,goodsNum); 
-//		
-//		model.addAttribute("list" , goodsQNAService.goodsQNAList(goodsNum, pageNum, amount));
-//		model.addAttribute("pageMaker", new PageDTO(cri, total));
-//		model.addAttribute("goodsNum" , goodsNum);
-//		
-//		
-//		model.addAttribute("detail", goodsService.selectGoodsInfo(goodsNum));
-//		model.addAttribute("optionList", optionList);
-//		model.addAttribute("optionCount", optionCount);
-//
-//		
-//		
-//		/*================= 용주 작업중===============*/
-//		
-//		
-//		
-//		int rtotal=reviewService.getTotal(rcri);
-//		model.addAttribute("rpageMaker", new RPageDTO(rcri, rtotal));
-//		
-//						
-//		model.addAttribute("reviewList", reviewService.reviewList(rcri));
-//		
-//		log.info("sql돌려요=======================" + reviewService.reviewList(rcri));
-//
-//		return "goods/goodsDetail";
+		/** 의종: goodsQNA 리스트 가져오기 및 페이징 */
+		int amount = cri.getAmount();
+		int pageNum = cri.getPageNum();
+		int total=goodsQNAService.getGoodsQNATotalCount(cri,goodsNum); 
+		
+		//goodsQNANum 받기
+		int goodsQNANum = 1;
+		model.addAttribute("qnaImage", imageService.selectGoodsQNAImage(goodsQNANum));
+		
+		log.info("이미지가져오는지======================" + imageService.selectGoodsQNAImage(goodsQNANum));
+		log.info("goodsQNAnum가져오는지===============" + goodsQNABean.getGoodsQNANum());
+		
+		model.addAttribute("list" , goodsQNAService.goodsQNAList(goodsNum, pageNum, amount));
+		model.addAttribute("pageMaker", new PageDTO(cri, total));
+		model.addAttribute("goodsNum" , goodsNum);
+		
+		
+		model.addAttribute("detail", goodsService.selectGoodsInfo(goodsNum));
+		model.addAttribute("optionList", optionList);
+		model.addAttribute("optionCount", optionCount);
+		
+		
+		model.addAttribute("detail", goodsBean);
+		model.addAttribute("optionList", optionList);
+		model.addAttribute("optionCount", optionCount);
 
 		return "goods/goodsDetail";
 	}
