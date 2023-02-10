@@ -206,14 +206,7 @@ public class FileUtils {
 		return imageBeanList;
 	}
 
-	// 주문
-	public List<ImageBean> orderFileUpload(MultipartFile[] uploadFile) throws Exception {
-		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
-		List<ImageBean> imageBeanList = new ArrayList<ImageBean>();
-		imageBeanList = fileUpload(uploadFile, request, "order");
 
-		return imageBeanList;
-	}
 	
 	// 공지사항
 	public List<ImageBean> noticeFileUpload(MultipartFile[] uploadFile) throws Exception {

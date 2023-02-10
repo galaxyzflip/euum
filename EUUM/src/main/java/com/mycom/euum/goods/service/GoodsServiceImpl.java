@@ -15,8 +15,8 @@ import com.mycom.euum.goods.bean.GoodsBean;
 import com.mycom.euum.goods.bean.GoodsOptionBean;
 import com.mycom.euum.goods.mapper.GoodsMapper;
 import com.mycom.euum.image.bean.ImageBean;
-import com.mycom.euum.image.service.ImageServiceImpl;
 import com.mycom.euum.member.bean.SellerBean;
+import com.mycom.euum.page.Criteria2;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
@@ -45,12 +45,6 @@ public class GoodsServiceImpl implements GoodsService {
 		return goodsMapper.getTotalCount(cri);
 	}
 	
-	
-	/** 선민: 상품 리스트 가져오기 (List) */
-	@Override
-	public List<GoodsBean> selectGoodsList() throws Exception {
-		return goodsMapper.selectGoodsList();
-	}
 	
 	/** 은정: 상품 리스트 검색결과 가져오기 (List) */
 	@Override
