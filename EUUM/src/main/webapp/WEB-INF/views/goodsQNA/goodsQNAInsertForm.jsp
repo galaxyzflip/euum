@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt"%>    
@@ -25,31 +25,36 @@
 <br><br><br><br><br><br>
 <div id="writeForm">
 <div class="container">
-  <h2>绊按 巩狼</h2>
-  <form action="/goodsQNA/InsertPro" method="post">
+  <h2>靸來拡 氍胳潣</h2>
+  <form action="/goodsQNA/InsertPro" method="post" enctype="multipart/form-data">
     
     <div class="form-group" >
-    <label for="title">力格</label>
+    <label for="title">鞝滊</label>
     
-    <input type="hidden" name="goodsNum" value="1"/>   
-    <input type="hidden" name="memberNum" value="1"/> 
-    <input type="hidden" id="goodsQNAWriter" name="goodsQNAWriter" value="zzz"/>
+    <br>
+    <input type="file" name="uploadFile">
+    <input type="file" name="uploadFile">
+    <input type="file" name="uploadFile">
     
-    <input type="text" class="form-control" id="goodsQNATitle" name="goodsQNATitle" placeholder="力格 涝仿" 
+    <input type="hidden" name="goodsNum" value="${goodsNum}"/> 
+    <input type="hidden" name="memberNum" value="${memberNum}"/> 
+    <input type="hidden" name="goodsQNAWriter" value="${memberName}"/>
+    
+    <input type="text" class="form-control" id="goodsQNATitle" name="goodsQNATitle" placeholder="鞝滊 鞛呺牓" 
        required="required" pattern=".{3,30}" />
     </div>
     
   
     <div class="form-group">
-   <label for="content">郴侩</label>
+   <label for="content">雮挫毄</label>
    <textarea class="form-control" rows="5" id="goodsQNAContent" name="goodsQNAContent"
-     placeholder="api 眠饶 利侩"></textarea>
+     placeholder="api 於旐泟 鞝侅毄"></textarea>
  </div>
     
     
     
-    <button type="submit" class="btn btn-default" >殿废</button>
-    <button type="button" class="btn btn-default" onclick="location.href='/goodsQNA/List';">格废栏肺</button>
+    <button type="submit" class="btn btn-default" >霌彪</button>
+    <button type="button" class="btn btn-default" onclick="location.href='/goods/goodsDetail?goodsNum=${goodsNum}';">氇╇鞙茧</button>
   <br><br><br>
   </form>
 </div>

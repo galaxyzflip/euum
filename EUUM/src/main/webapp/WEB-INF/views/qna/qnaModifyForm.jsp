@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt"%>  
@@ -21,10 +21,10 @@
 
 
 <div id="main">
-<form role="form" action="/qna/modifyPro" method="post">
+<form role="form" action="/qna/modifyPro" method="post" enctype="multipart/form-data">
 <div id="detail">
 
-<p>¼öÁ¤ÇÏ±â</p>
+<p>ìˆ˜ì •í•˜ê¸°</p>
 <table class="table table-sm">
 		<colgroup>
 			<col width="15%"/>
@@ -34,27 +34,41 @@
 		</colgroup>
 		<tbody>
 			<tr>
-				<th scope="row">Á¦¸ñ</th>
+				<th scope="row">ì œëª©</th>
 				<td><input type="text" class="form-control" name="qnaTitle" value="${detail.qnaTitle}"></td>
 			</tr>
 			<tr>
-				<th scope="row">ÀÛ¼ºÀÚ</th>
+				<th scope="row">ì‘ì„±ì</th>
 				<td>${detail.qnaWriter }</td>
-				<th scope="row">ÀÛ¼ºÀÏ</th>
+				<th scope="row">ì‘ì„±ì¼</th>
 				<td>${detail.qnaRegdate } </td>
 			</tr>
 			<tr>
-		        <td><input type="text" class="form-control" name="qnaContent" value="${detail.qnaContent}"></td>             			
+		         <td colspan="4">
+		        
+		        <!--  ì´ë¯¸ì§€ ë¦¬ìŠ¤íŠ¸ -->
+		        <div id="qnaImage" >
+	             <c:forEach items="${image}" var="row">
+	             <img src="/resources/img/${row.imageUploadPath}${row.imageFileName}" width=350; height=350;>        
+	             </c:forEach>
+	             
+	             <input type="file" name="uploadFile">
+	             <input type="file" name="uploadFile">	
+	             <input type="file" name="uploadFile">		
+		        </div>
+		        
+		         <input type="text" class="form-control" name="qnaContent" value="${detail.qnaContent}">
+		         </td>             			
 			</tr>
 			
 		</tbody>
 	</table>
 <input type="hidden" name="qnaNum" value="${detail.qnaNum }"/>
 </div>
-<button type="button" class="btn btn-primary" onclick="location.href='/qna/List';">¸ñ·ÏÀ¸·Î</button>
+<button type="button" class="btn btn-primary" onclick="location.href='/qna/List';">ëª©ë¡ìœ¼ë¡œ</button>
 
 <div id="detailButton" name="detailButton" align="right">
-<button type="submit" class="btn btn-primary">¼öÁ¤ÇÏ±â</button>
+<button type="submit" class="btn btn-primary" onclick="modify()">ìˆ˜ì •í•˜ê¸°</button>
 </div>
 
 </form>
@@ -66,7 +80,10 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script type="text/javascript">
+function modify(){
 
+	
+}
 
 </script>
 </html>

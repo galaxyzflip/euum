@@ -6,32 +6,124 @@
 <mapper namespace="com.mycom.euum.goodsQNA.mapper.GoodsQNAMapper">
 
    <!-- 상품문의글 리스트 -->
-  <select id="goodsQNAList" resultType="com.mycom.euum.goodsQNA.bean.GoodsQNABean">		
+<!--   <select id="goodsQNAList" resultType="com.mycom.euum.goodsQNA.bean.GoodsQNABean">		
      <![CDATA[
 		SELECT GOODS_QNA_NUM, MEMBER_NUM,GOODS_QNA_TITLE, GOODS_QNA_COMMENT,
 		       GOODS_QNA_WRITER, GOODS_QNA_REGDATE, GOODS_QNA_CONTENT
               FROM(SELECT * FROM GOODS_QNA_TBL WHERE GOODS_QNA_DELETE='N')
 	 ]]>		   
-  </select>
+  </select> -->
+  
+  <!-- 상품문의글 리스트 -->
+  <!-- <select id="goodsQNAList" resultType="com.mycom.euum.goodsQNA.bean.GoodsQNABean">		
+     <![CDATA[
+		SELECT Q.GOODS_QNA_NUM, Q.MEMBER_NUM, Q.GOODS_QNA_TITLE, Q.GOODS_QNA_COMMENT,
+         Q.GOODS_QNA_WRITER, Q.GOODS_QNA_REGDATE, Q.GOODS_QNA_CONTENT, G.GOODS_NUM
+            FROM GOODS_QNA_TBL Q inner join GOODS_TBL G on Q.GOODS_NUM = G.GOODS_NUM
+            WHERE G.GOODS_NUM = #{goodsNum} AND GOODS_QNA_DELETE='N'
+	 ]]>		   
+  </select> -->
+  
+   <!-- 상품문의글 리스트 -->
+   <select id="goodsQNAList" resultType="com.mycom.euum.goodsQNA.bean.GoodsQNABean" parameterType="map">		
+     <![CDATA[
+		SELECT * 
+		 FROM (select rownum rn, Q.GOODS_QNA_NUM, Q.MEMBER_NUM,
+		         Q.GOODS_QNA_TITLE, Q.GOODS_QNA_COMMENT,
+		         Q.GOODS_QNA_WRITER, Q.GOODS_QNA_REGDATE, Q.GOODS_QNA_CONTENT, G.GOODS_NUM
+		         from GOODS_QNA_TBL Q 
+			inner join GOODS_TBL G 
+				on Q.GOODS_NUM = G.GOODS_NUM
+				  where rownum <= #{pageNum} * #{amount} and Q.GOODS_QNA_DELETE='N' and G.GOODS_NUM =#{goodsNum})
+				  where rn>(#{pageNum}-1) * #{amount}
+				  order by GOODS_QNA_NUM DESC
+		 ]]>		   
+    </select> 
+
 
   <!-- 상품문의글 등록 -->
-  <insert id="goodsQNAInsert" parameterType="com.mycom.euum.goodsQNA.bean.GoodsQNABean">
+  <!-- <insert id="goodsQNAInsert" parameterType="com.mycom.euum.goodsQNA.bean.GoodsQNABean">
         <![CDATA[       
 		INSERT INTO GOODS_QNA_TBL (GOODS_QNA_NUM, GOODS_NUM,
 		       MEMBER_NUM, GOODS_QNA_WRITER, GOODS_QNA_TITLE, GOODS_QNA_CONTENT)
             VALUES (GOODS_QNA_NUM_SEQ.NEXTVAL, #{goodsNum}, #{memberNum},
                     #{goodsQNAWriter}, #{goodsQNATitle}, #{goodsQNAContent})     
         ]]>	
+  </insert>  -->
+  
+  <!-- 상품문의글 등록 -->
+  <insert id="goodsQNAInsert" parameterType="com.mycom.euum.goodsQNA.bean.GoodsQNABean">
+        <selectKey keyProperty="goodsQNANum" order="BEFORE" resultType="int">
+          SELECT GOODS_QNA_NUM_SEQ.NEXTVAL FROM DUAL
+        </selectKey>
+        <![CDATA[       
+		INSERT INTO GOODS_QNA_TBL (GOODS_QNA_NUM, GOODS_NUM,
+		       MEMBER_NUM, GOODS_QNA_WRITER, GOODS_QNA_TITLE, GOODS_QNA_CONTENT)
+            VALUES (#{goodsQNANum}, #{goodsNum}, #{memberNum},
+                    #{goodsQNAWriter}, #{goodsQNATitle}, #{goodsQNAContent})     
+        ]]>	
   </insert> 
   
   <!-- 상품문의 답변-->
-   <update id="insertGqnaComment" parameterType="com.mycom.euum.goodsQNA.bean.GoodsQNABean">
+  <update id="insertGqnaComment" parameterType="com.mycom.euum.goodsQNA.bean.GoodsQNABean">
         <![CDATA[       
 		UPDATE GOODS_QNA_TBL 
 		SET GOODS_QNA_COMMENT = #{goodsQNAComment}
 		WHERE GOODS_QNA_NUM = #{goodsQNANum}
         ]]>	
   </update> 
-
+  
+  <!-- 상품 문의 총개수-->
+  <select id="getGoodsQNATotalCount" resultType="int">
+	   <![CDATA[ 
+		select count(*) from GOODS_QNA_TBL where GOODS_QNA_NUM>0
+		and GOODS_NUM = #{goodsNum}
+		]]>	
+	</select>
+	
+	<!--마이페이지 상품문의 삭제-->
+	<update id="deleteGQNA" parameterType="com.mycom.euum.goodsQNA.bean.GoodsQNABean">
+        <![CDATA[       
+		UPDATE GOODS_QNA_TBL 
+		SET GOODS_QNA_DELETE = 'Y'
+		WHERE GOODS_QNA_NUM = #{goodsQNANum}
+        ]]>	
+    </update> 
+	
+	<!--마이페이지 상품 문의 수정-->
+	<update id="modifyGQNA" parameterType="com.mycom.euum.goodsQNA.bean.GoodsQNABean">
+        <![CDATA[       
+		UPDATE GOODS_QNA_TBL 
+		SET GOODS_QNA_TITLE = #{goodsQNATitle},
+            GOODS_QNA_CONTENT = #{goodsQNAContent}
+		WHERE GOODS_QNA_NUM = #{goodsQNANum}
+        ]]>	
+    </update>
+    
+	<!--마이페이지 상품 문의 내역-->
+    <select id="myGoodsQNAList" resultType="com.mycom.euum.goodsQNA.bean.GoodsQNABean">		
+     <![CDATA[
+	 SELECT * 
+        FROM (select rownum rn, Q.GOODS_QNA_NUM, M.MEMBER_NUM,
+            Q.GOODS_QNA_TITLE, Q.GOODS_QNA_COMMENT, Q.GOODS_QNA_DELETE,
+            Q.GOODS_QNA_WRITER, Q.GOODS_QNA_REGDATE, Q.GOODS_QNA_CONTENT, Q.GOODS_NUM
+            from GOODS_QNA_TBL Q 
+        inner join MEMBER_TBL M 
+           on Q.MEMBER_NUM = M.MEMBER_NUM
+             where rownum <= #{pageNum} * #{amount} and Q.GOODS_QNA_DELETE='N' and M.MEMBER_NUM= #{memberNum}
+                and Q.GOODS_QNA_DELETE='N')
+             where rn>(#{pageNum}-1) * #{amount}
+             order by GOODS_QNA_NUM DESC
+	  ]]>		   
+    </select> 
+    
+    <!-- 나의문의 내역 총개수-->
+    <select id="getmyGQNATotalCount" resultType="int">
+	   <![CDATA[ 
+		select count(*) from GOODS_QNA_TBL where GOODS_QNA_NUM>0
+		and MEMBER_NUM = #{memberNum}
+		]]>	
+	</select> 
+	
 
 </mapper>   

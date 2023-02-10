@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt"%>    
@@ -19,20 +19,20 @@
 
 <div class="container">
 
-  <h2>翠函 窍扁</h2>
+  <h2>雼惦硛 頃橁赴</h2>
   <form action="/qna/rewritePro" method="post">
     
     <div class="form-group" align="500px;">
-     <label for="title">力格</label>  
-    <input type="text" class="form-control" id="qnaTitle" name="qnaTitle" placeholder="力格 涝仿" 
+     <label for="title">鞝滊</label>  
+    <input type="text" class="form-control" id="qnaTitle" name="qnaTitle" placeholder="鞝滊 鞛呺牓" 
        required="required" pattern=".{4,100}" />
     </div>
     
   
     <div class="form-group">
-   <label for="content">郴侩</label>
+   <label for="content">雮挫毄</label>
    <textarea class="form-control" rows="5" id="qnaContent" name="qnaContent"
-     placeholder="api 眠饶 利侩"></textarea>
+     placeholder="api 於旐泟 鞝侅毄"></textarea>
  </div>
     
     <input type="hidden" name="qnaLayer" value="${re.qnaLayer }"/>
@@ -41,8 +41,8 @@
     <input type="hidden" name="memberNum" value="1"/> 
     <input type="hidden" id="qnaWriter" name="qnaWriter" value="zzz"/>
     
-    <button type="submit" class="btn btn-default" >殿废</button>
-    <button type="list" class="btn btn-default" onclick="location.href='/qna/List';">格废栏肺</button>
+    <button type="submit" class="btn btn-default" >霌彪</button>
+    <button type="list" class="btn btn-default" onclick="location.href='/qna/List';">氇╇鞙茧</button>
   </form>
 </div>
 </body>

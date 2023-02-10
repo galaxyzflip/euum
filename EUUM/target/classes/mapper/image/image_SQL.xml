@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mycom.euum.image.mapper.ImageMapper">
+
+	<!-- 선민: 이미지 등록 (insertImage) -->
+	<insert id="insertImage" parameterType="com.mycom.euum.image.bean.ImageBean">
+		insert into IMAGE_TBL
+		(
+			IMAGE_NUM,
+			IMAGE_UUID,
+			IMAGE_UPLOAD_PATH,
+			IMAGE_FILE_NAME,
+			IMAGE_FILE_TYPE,
+			IMAGE_USE,
+			IMAGE_USE_NUM,
+			IMAGE_SEQUENCE
+		)
+		values
+		(
+			IMAGE_NUM_SEQ.nextval,
+			#{imageUUID},
+			#{imageUploadPath},
+			#{imageFileName},
+			#{imageFileType},
+			#{imageUse},
+			#{imageUseNum},
+			#{imageSequence}
+		)
+	</insert>
+	
+	<!-- 선민: 이미지 수정 (updateImage) -->
+	<update id="updateImage" parameterType="com.mycom.euum.image.bean.ImageBean">
+		update IMAGE_TBL
+		set
+			IMAGE_UUID = #{imageUUID},
+			IMAGE_UPLOAD_PATH = #{imageUploadPath},
+			IMAGE_FILE_NAME = #{imageFileName}
+		where
+			IMAGE_USE = #{imageUse}
+		and
+			IMAGE_USE_NUM = #{imageUseNum}
+		and
+			IMAGE_SEQUENCE = #{imageSequence}
+	</update>
+
+	<!-- 선민: 이미지 삭제 (deleteImage) -->
+	<delete id="deleteImage" parameterType="String">
+		delete from IMAGE_TBL
+		where
+			IMAGE_USE = #{imageUse}
+		and
+			IMAGE_USE_NUM = #{imageUseNum}
+	</delete>
+	
+	 <!-- 의종: 고객문의 이미지 가져오기-->
+  <select id="selectQNAImage" resultType="com.mycom.euum.image.bean.ImageBean">		
+     <![CDATA[
+		SELECT * FROM IMAGE_TBL
+		  WHERE IMAGE_USE = 'qna'
+			AND IMAGE_USE_NUM = #{qnaNum}
+	 ]]>		   
+  </select>
+  
+   <!-- 의종: 상품문의 이미지 가져오기-->
+    <select id="selectGoodsQNAImage" resultType="com.mycom.euum.image.bean.ImageBean">		
+     <![CDATA[
+		SELECT * FROM IMAGE_TBL
+		  WHERE IMAGE_USE = 'goodsQNA'
+			AND IMAGE_USE_NUM = #{goodsQNANum}
+	 ]]>		   
+  </select>
+
+</mapper>

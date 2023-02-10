@@ -1,0 +1,76 @@
+package com.mycom.euum.image.service;
+
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+import com.mycom.euum.image.bean.ImageBean;
+import com.mycom.euum.image.mapper.ImageMapper;
+
+import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j;
+
+@Service
+@Log4j
+@AllArgsConstructor
+public class ImageServiceImpl implements ImageService {
+
+	private ImageMapper imageMapper;
+
+	/** 선민: 이미지 등록 - 새로운 이미지 데이터를 DB에 삽입하기 */
+	@Override
+	public void insertImage(List<ImageBean> imageBeanList, int imageUseNum) throws Exception {
+		int sequence = 1;
+
+		for (ImageBean imageBean : imageBeanList) {
+//			if (imageBean.getImageFileName().equals("")) { continue; } // 파일을 업로드 하지 않았을 때
+			if (!imageBean.isNew()) { continue; } // 파일을 업로드 하지 않았을 때
+			imageBean.setImageUseNum(imageUseNum);
+			imageBean.setImageSequence(sequence);
+			imageMapper.insertImage(imageBean);
+			sequence++;
+		}
+		log.info("imageBeanList: " + imageBeanList);
+	}
+
+	/** 선민: 이미지 수정 - 수정된 이미지만 데이터를 DB에 업데이트 */
+	@Override
+	public void updateImage(List<ImageBean> imageBeanList, int imageUseNum) throws Exception {
+		int sequence = 1;
+
+		for (ImageBean imageBean : imageBeanList) {
+			if (!imageBean.isNew()) { // 파일을 업로드 하지 않았을 때
+				imageBean.setImageSequence(sequence);
+				sequence++;
+				continue;
+			} 
+			imageBean.setImageUseNum(imageUseNum);
+			imageBean.setImageSequence(sequence);
+			imageMapper.updateImage(imageBean);
+			sequence++;
+			log.info(imageBean.getImageSequence() + "번째 이미지 수정");
+		}
+		log.info("imageBeanList: " + imageBeanList);
+	}
+
+	/** 선민: 이미지 삭제 - 기존 이미지 데이터를 DB에서 삭제하기 */
+	@Override
+	public void deleteImage(String imageUse, int imageUseNum) throws Exception {
+		imageMapper.deleteImage(imageUse, Integer.toString(imageUseNum));
+	}
+	
+	/** 의종: 고객문의 이미지 가져오기*/
+	@Override
+	public List<ImageBean> selectQNAImage(int qnaNum) {
+		
+		return imageMapper.selectQNAImage(qnaNum);
+	}
+    
+	/** 의종: 상품문의 이미지 가져오기*/
+	@Override
+	public List<ImageBean> selectGoodsQNAImage(int goodsQNANum) {
+		
+		return imageMapper.selectGoodsQNAImage(goodsQNANum);
+	}
+
+}
