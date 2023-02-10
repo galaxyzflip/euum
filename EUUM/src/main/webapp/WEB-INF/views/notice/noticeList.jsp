@@ -6,10 +6,10 @@
 <!DOCTYPE html>
 <html>
 <style>
-	body{
-	margin-top: 100px;
-	font-family: 'Trebuchet MS', serif;
-	line-height: 1.6
+body{
+margin-top: 100px;
+font-family: 'Trebuchet MS', serif;
+line-height: 1.6
 }
 .container{
 	width: 5000px;
@@ -243,6 +243,7 @@ $(document).ready(function(){
 					</c:if>
 				</c:forEach>
 			</div>
+			
 			<div id="tab-3" class="tab-content">
 				<c:forEach items="${FAQ }" var="FAQ">
 					<c:if test= "${ FAQ.noticeCategory eq 3}">

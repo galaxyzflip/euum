@@ -15,6 +15,8 @@ public class RqCriteria {
 	private String rqtype;
 	private String rqkeyword;
 	
+	private String requestCategoey;
+	
 	public RqCriteria() {
 		this(1,15);
 	}

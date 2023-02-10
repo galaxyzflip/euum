@@ -11,6 +11,8 @@ public interface RequestService {
 	
 	public List<RequestBean> requestList(RqCriteria rqcri);
 	
+	public List<RequestBean> requestCategoryChange(RqCriteria rqcri);
+	
 	public RequestBean requestDetail(int requestNum);
 	
 	public int getTotal(RqCriteria rqcri);

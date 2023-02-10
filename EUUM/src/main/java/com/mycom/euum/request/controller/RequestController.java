@@ -53,6 +53,22 @@ public class RequestController {
 		return "request/requestList";
 	}
 	
+	@PostMapping("/request/requestCategoryChange")
+	public String requestCategoryChange(Model model, RqCriteria rqcri) {				
+		
+		model.addAttribute("rqlist", requestService.requestList(rqcri));
+		log.info("모델에 뭐들었지=======================" + model);
+		
+		int total=requestService.getTotal(rqcri);     
+		model.addAttribute("rqpageMaker", new RqPageDTO(rqcri, total));
+		
+		log.info("sql돌려요=======================" + requestService.requestList(rqcri));
+		log.info("이거 전체 몇개냐=======================" + new RqPageDTO(rqcri, total));
+		
+		
+		return "request/requestList";
+	}
+	
 	@GetMapping("/request/requestDetail")
 	public String requestDetail(@RequestParam("requestNum") int requestNum, Model model, @ModelAttribute("rqcri") RqCriteria rqcri) {
 		
