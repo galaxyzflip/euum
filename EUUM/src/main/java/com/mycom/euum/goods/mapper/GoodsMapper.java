@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 
 import com.mycom.euum.goods.bean.GoodsBean;
 import com.mycom.euum.goods.bean.GoodsOptionBean;
+import com.mycom.euum.page.Criteria2;
 
 //@Repository("goodsMapper")
 public interface GoodsMapper {

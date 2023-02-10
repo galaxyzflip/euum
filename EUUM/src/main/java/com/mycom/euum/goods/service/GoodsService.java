@@ -7,12 +7,11 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import com.mycom.euum.commons.FileUtils;
 import com.mycom.euum.goods.bean.GoodsBean;
 import com.mycom.euum.goods.bean.GoodsOptionBean;
 import com.mycom.euum.image.bean.ImageBean;
-import com.mycom.euum.image.service.ImageServiceImpl;
 import com.mycom.euum.member.bean.SellerBean;
+import com.mycom.euum.page.Criteria2;
 
 public interface GoodsService {
 	
