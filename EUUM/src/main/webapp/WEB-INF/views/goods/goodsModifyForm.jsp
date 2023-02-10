@@ -6,10 +6,17 @@
 
 <div class="container" style="margin:100px">
 
-	<form action="/goods/goodsModifyPro" method="post" id="goodsForm" enctype="multipart/form-data">
+	<c:choose>
+		<c:when test="${goods.goodsStatus eq '임시저장'}">
+			<form action="/goods/goodsModifyTempToRegularPro" method="post" id="goodsForm" enctype="multipart/form-data">
+		</c:when>
+		<c:otherwise>
+			<form action="/goods/goodsModifyPro" method="post" id="goodsForm" enctype="multipart/form-data">
+		</c:otherwise>
+	</c:choose>
 		<div>
 			<span>카테고리</span>
-			<select name="goodsCategory">
+			<select name="goodsCategory" id="goodsCategory_select">
 				<option value="">선택하세요</option>
 				<option value="캐릭터 일러스트">캐릭터 일러스트</option>
 				<option value="일러스트">일러스트</option>
@@ -21,12 +28,14 @@
 		
 		<div>	
 			<span>상품 번호</span>
-			<input type="text" name="goodsNum" value="${goods.goodsNum}">
+			<span>${goods.goodsNum}</span>
+			<input type="hidden" name="goodsNum" value="${goods.goodsNum}">
+			<input type="hidden" name="goodsStatus" value="${goods.goodsStatus}">
 		</div>
 		
 		<div>	
 			<span>제목</span>
-			<input type="text" name="goodsName" value="${goods.}">
+			<input type="text" name="goodsName" value="${goods.goodsName}">
 		</div>
 		
 		<div>
@@ -37,7 +46,7 @@
 						<img class="thumb" src="/resources/img/no_image.png">
 					</c:when>
 					<c:otherwise>
-						<img class="thumb" src="/resources/img/${goods.goodsImageDate}s_${goods.goodsImage1}">
+						<img class="thumb" src="/resources/img/${goods.goodsImageDate1}s_${goods.goodsImage1}">
 					</c:otherwise>
 				</c:choose>
 				<c:choose>
@@ -45,7 +54,7 @@
 						<img class="thumb" src="/resources/img/no_image.png">
 					</c:when>
 					<c:otherwise>
-						<img class="thumb" src="/resources/img/${goods.goodsImageDate}s_${goods.goodsImage2}">
+						<img class="thumb" src="/resources/img/${goods.goodsImageDate2}s_${goods.goodsImage2}">
 					</c:otherwise>
 				</c:choose>
 				<c:choose>
@@ -53,7 +62,7 @@
 						<img class="thumb" src="/resources/img/no_image.png">
 					</c:when>
 					<c:otherwise>
-						<img class="thumb" src="/resources/img/${goods.goodsImageDate}s_${goods.goodsImage3}">
+						<img class="thumb" src="/resources/img/${goods.goodsImageDate3}s_${goods.goodsImage3}">
 					</c:otherwise>
 				</c:choose>
 			</li>
@@ -98,9 +107,9 @@
 				<input type="text" name="goodsModifyCount" value="${goods.goodsModifyCount}"> 회
 			</div>
 			<div>
-				<span>작업 소요기간</span>
-				<input type="text" name="goodsPeriodPre" value="주문승인 일로부터" readonly>
-				<input type="text" name="goodsPeriod" value="${goods.}"> 일
+				<span style="padding-right:30px;">작업 소요기간</span>
+				<span>주문 승인일로부터</span>
+				<input type="text" name="goodsPeriod" value="${goods.goodsPeriod}"> 일
 			</div>
 		</div>
 		
@@ -112,16 +121,36 @@
 			<table style="width: 100%;">
 				<!-- 개수 추가되는 부분 -->
 				<tbody class="opBody" id="opBody">
-					<tr class="opList_1" id="opList_1">
-						<td>
+				<c:choose>
+					<c:when test="${fn:length(optionList) > 0}">
+						<c:forEach items="${optionList}" var="row" varStatus="status">
+							<tr class="opList_${status.count}" id="opList_${status.count}">
+								<td>
+									<input type="text" name="goodsOptNameArr" value="${row.goodsOptName}" style="width: 160px;">
+									<input type="text" name="goodsOptContentArr" value="${row.goodsOptContent}" style="width: 500px">
+									<input type="text" name="goodsOptPriceArr" value="${row.goodsOptPrice}" style="width: 160px;">
+									<c:if test="${status.count ne 1}">
+										<button type="button" id="opContentDel_bt" onclick="opContentDel(${status.count});">X</button>
+									</c:if>
+								</td>
+							</tr>
+						</c:forEach>
+					</c:when>
+				</c:choose>
+				
+				
+<!-- 					<tr class="opList_1" id="opList_1"> -->
+<!-- 						<td> -->
 <!-- 							<input type="text" name="goodsOptions[0].goodsOptName" style="width: 160px;"> -->
 <!-- 							<input type="text" name="goodsOptions[0].goodsOptContent" style="width: 500px"> -->
 <!-- 							<input type="text" name="goodsOptions[0].goodsOptPrice" style="width: 160px;"> -->
-							<input type="text" name="goodsOptNameArr" style="width: 160px;">
-							<input type="text" name="goodsOptContentArr" style="width: 500px">
-							<input type="text" name="goodsOptPriceArr" style="width: 160px;">
-						</td>
-					</tr>
+<!-- 							<input type="text" name="goodsOptNameArr" style="width: 160px;"> -->
+<!-- 							<input type="text" name="goodsOptContentArr" style="width: 500px"> -->
+<!-- 							<input type="text" name="goodsOptPriceArr" style="width: 160px;"> -->
+<!-- 						</td> -->
+<!-- 					</tr> -->
+				
+				
 				</tbody>
 			</table>
 		</div>
@@ -154,8 +183,30 @@
 
 <script>
 $(document).ready(function() {
-    let goodsUse = ${goods.goodsUse};
-    alert(goodsUse);
+    let goodsUse = "<c:out value='${goods.goodsUse}'/>";
+    let goodsCategory = "<c:out value='${goods.goodsCategory}'/>";
+    let goodsUseInput;
+    
+    /* goodsUse 초기화 */
+    switch(goodsUse) {
+		case '상업용':
+			goodsUseInput = document.querySelector('input[id=commercial]');
+			break;
+		case '비상업용':
+		    goodsUseInput = document.querySelector('input[id=no_commercial]');
+			break;
+		case '상업용+비상업용':
+		    goodsUseInput = document.querySelector('input[id=all_for_use]');
+			break;
+		default:
+			alert('이거뜨면먼가오류있음');
+			break;
+	}
+	goodsUseInput.setAttribute('checked', true);
+	
+    /* goodsCategory 초기화 */
+    $("#goodsCategory_select").val(goodsCategory).attr("selected","selected");
+    
 });
 
 
@@ -171,7 +222,9 @@ $(function() {
 });
 
 $(document).ready(function() {
-	let opNum = 1;
+// 	let opNum = "<c:out value='${optionCount}'/>";
+	let opNum = "<c:out value='${fn:length(optionList)}'/>"; 
+	alert(opNum);
 	
 	/* 옵션 추가 */
 	$('#opAdd_bt').on('click',function() {
@@ -189,6 +242,8 @@ $(document).ready(function() {
 		newBox += '</td></tr>';
 	
 		opBody.insertAdjacentHTML('beforeend', newBox);
+		
+		alert(opNum);
 	})
 });
 
@@ -201,5 +256,9 @@ function opContentDel(index) {
 <style>
 ul, ol, dl, li {
 	list-style: none;
+}
+.thumb {
+	width: 160px;
+	height:120px; 
 }
 </style>

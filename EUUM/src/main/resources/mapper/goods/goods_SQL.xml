@@ -12,45 +12,51 @@
 		</selectKey>
 		insert into GOODS_TBL
 		(
-		GOODS_NUM,
-		GOODS_CATEGORY,
-		GOODS_NAME,
-		GOODS_CONTENT,
-		GOODS_PRICE,
-		GOODS_SELLER_NICKNAME,
-		MEMBER_NUM,
-		GOODS_FORMAT,
-		GOODS_RESOLUTION,
-		GOODS_SIZE,
-		GOODS_USE,
-		GOODS_MODIFY_COUNT,
-		GOODS_PERIOD,
-		GOODS_IMAGE1,
-		GOODS_IMAGE2,
-		GOODS_IMAGE3,
-		GOODS_IMAGE_DATE,
-		GOODS_STATUS
+
+			GOODS_NUM,
+			GOODS_CATEGORY,
+			GOODS_NAME,
+			GOODS_CONTENT,
+			GOODS_PRICE,
+			GOODS_SELLER_NICKNAME,
+			MEMBER_NUM,
+			GOODS_FORMAT,
+			GOODS_RESOLUTION,
+			GOODS_SIZE,
+			GOODS_USE,
+			GOODS_MODIFY_COUNT,
+			GOODS_PERIOD,
+			GOODS_IMAGE1,
+			GOODS_IMAGE2,
+			GOODS_IMAGE3,
+			GOODS_IMAGE_DATE1,
+			GOODS_IMAGE_DATE2,
+			GOODS_IMAGE_DATE3,
+			GOODS_STATUS
 		)
 		values
 		(
-		#{goodsNum},
-		#{goodsCategory},
-		#{goodsName},
-		#{goodsContent},
-		#{goodsPrice},
-		#{goodsSellerNickname},
-		#{memberNum},
-		#{goodsFormat},
-		#{goodsResolution},
-		#{goodsSize},
-		#{goodsUse},
-		#{goodsModifyCount},
-		#{goodsPeriod},
-		#{goodsImage1},
-		#{goodsImage2},
-		#{goodsImage3},
-		#{goodsImageDate},
-		'승인대기'
+			#{goodsNum},
+			#{goodsCategory},
+			#{goodsName},
+			#{goodsContent},
+			#{goodsPrice},
+			#{goodsSellerNickname},
+			#{memberNum},
+			#{goodsFormat},
+			#{goodsResolution},
+			#{goodsSize},
+			#{goodsUse},
+			#{goodsModifyCount},
+			#{goodsPeriod},
+			#{goodsImage1},
+			#{goodsImage2},
+			#{goodsImage3},
+			#{goodsImageDate1},
+			#{goodsImageDate2},
+			#{goodsImageDate3},
+			'승인대기'
+
 		)
 	</insert>
 
@@ -60,31 +66,44 @@
 		parameterType="com.mycom.euum.goods.bean.GoodsBean">
 		update GOODS_TBL
 		set
-		GOODS_CATEGORY = #{goodsCategory},
-		GOODS_NAME = #{goodsName},
-		GOODS_CONTENT = #{goodsContent},
-		GOODS_PRICE
-		= #{goodsPrice},
-		GOODS_SELLER_NICKNAME = #{goodsSellerNickname},
-		GOODS_FORMAT = #{goodsFormat},
-		GOODS_RESOLUTION = #{goodsResolution},
-		GOODS_SIZE = #{goodsSize},
-		GOODS_USE = #{goodsUse},
-		GOODS_MODIFY_COUNT =
-		#{goodsModifyCount},
-		GOODS_PERIOD = #{goodsPeriod},
-		GOODS_IMAGE1 =
-		#{goodsImage1},
-		GOODS_IMAGE2 = #{goodsImage2},
-		GOODS_IMAGE3 =
-		#{goodsImage3},
-		GOODS_IMAGE_DATE = #{goodsImageDate},
-		GOODS_DATE =
-		SYSDATE
+
+			GOODS_CATEGORY = #{goodsCategory},
+			GOODS_NAME = #{goodsName},
+			GOODS_STATUS = '승인대기',
+		    GOODS_CONTENT = #{goodsContent},
+			GOODS_PRICE = #{goodsPrice},
+			GOODS_SELLER_NICKNAME = #{goodsSellerNickname},
+			GOODS_FORMAT = #{goodsFormat},
+			GOODS_RESOLUTION = #{goodsResolution},
+			GOODS_SIZE = #{goodsSize},
+			GOODS_USE = #{goodsUse},
+			GOODS_MODIFY_COUNT = #{goodsModifyCount},
+			GOODS_PERIOD = #{goodsPeriod},
+		    GOODS_DATE = SYSDATE
+
 		where
 		GOODS_NUM = #{goodsNum}
 	</update>
 
+	<update id="updateGoodsImage">
+		update GOODS_TBL
+		set
+			<if test="sequence == 1">
+				GOODS_IMAGE1 = #{goodsBean.goodsImage1},
+				GOODS_IMAGE_DATE1 = #{goodsBean.goodsImageDate1}
+		    </if>  
+			<if test="sequence == 2">
+				GOODS_IMAGE2 = #{goodsBean.goodsImage2},
+				GOODS_IMAGE_DATE2 = #{goodsBean.goodsImageDate2}
+		    </if>  
+			<if test="sequence == 3">
+				GOODS_IMAGE3 = #{goodsBean.goodsImage3},
+				GOODS_IMAGE_DATE3 = #{goodsBean.goodsImageDate3}
+		    </if>  
+		where
+			GOODS_NUM = #{goodsBean.goodsNum}
+	</update>
+	
 
 	<!-- 선민: 상품 삭제 (deleteGoods) -->
 	<!-- <update id="deleteGoods" parameterType="_int"> -->
@@ -134,6 +153,15 @@
 	<!-- 수정할 상품의 추가옵션을 상품번호로 찾아 (1)모두 삭제하고 (deleteGoodsOption) -->
 	<!-- 새로 지정한 상품의 추가옵션을 (2)새로 등록 (insertGoodsOption) -->
 
+	
+	<!-- 선민: 상품 수정 - 수정페이지에 기존 추가옵션 불러오기 (selectModifyGoodsOption) -->
+	<select id="selectModifyGoodsOption" parameterType="String" resultType="com.mycom.euum.goods.bean.GoodsOptionBean">
+		select *
+		from GOODS_OPTION_TBL
+		where GOODS_NUM = #{goodsNum}
+		order by GOODS_OPT_CONTENT_NUM ASC
+	</select>
+
 
 	<!-- 선민: 상품 임시저장 - 최초 저장 (insertTempGoods) -->
 	<insert id="insertTempGoods"
@@ -144,45 +172,51 @@
 		</selectKey>
 		insert into GOODS_TBL
 		(
-		GOODS_NUM,
-		GOODS_CATEGORY,
-		GOODS_NAME,
-		GOODS_CONTENT,
-		GOODS_PRICE,
-		GOODS_SELLER_NICKNAME,
-		MEMBER_NUM,
-		GOODS_FORMAT,
-		GOODS_RESOLUTION,
-		GOODS_SIZE,
-		GOODS_USE,
-		GOODS_MODIFY_COUNT,
-		GOODS_PERIOD,
-		GOODS_IMAGE1,
-		GOODS_IMAGE2,
-		GOODS_IMAGE3,
-		GOODS_IMAGE_DATE,
-		GOODS_STATUS
+
+			GOODS_NUM,
+			GOODS_CATEGORY,
+			GOODS_NAME,
+			GOODS_CONTENT,
+			GOODS_PRICE,
+			GOODS_SELLER_NICKNAME,
+			MEMBER_NUM,
+			GOODS_FORMAT,
+			GOODS_RESOLUTION,
+			GOODS_SIZE,
+			GOODS_USE,
+			GOODS_MODIFY_COUNT,
+			GOODS_PERIOD,
+			GOODS_IMAGE1,
+			GOODS_IMAGE2,
+			GOODS_IMAGE3,
+			GOODS_IMAGE_DATE1,
+			GOODS_IMAGE_DATE2,
+			GOODS_IMAGE_DATE3,
+			GOODS_STATUS
 		)
 		values
 		(
-		#{goodsNum},
-		#{goodsCategory},
-		#{goodsName},
-		#{goodsContent},
-		#{goodsPrice},
-		#{goodsSellerNickname},
-		#{memberNum},
-		#{goodsFormat},
-		#{goodsResolution},
-		#{goodsSize},
-		#{goodsUse},
-		#{goodsModifyCount},
-		#{goodsPeriod},
-		#{goodsImage1},
-		#{goodsImage2},
-		#{goodsImage3},
-		#{goodsImageDate},
-		'임시저장'
+			#{goodsNum},
+			#{goodsCategory},
+			#{goodsName},
+			#{goodsContent},
+			#{goodsPrice},
+			#{goodsSellerNickname},
+			#{memberNum},
+			#{goodsFormat},
+			#{goodsResolution},
+			#{goodsSize},
+			#{goodsUse},
+			#{goodsModifyCount},
+			#{goodsPeriod},
+			#{goodsImage1},
+			#{goodsImage2},
+			#{goodsImage3},
+			#{goodsImageDate1},
+			#{goodsImageDate2},
+			#{goodsImageDate3},
+			'임시저장'
+
 		)
 	</insert>
 
@@ -192,95 +226,181 @@
 		parameterType="com.mycom.euum.goods.bean.GoodsBean">
 		update GOODS_TBL
 		set
-		GOODS_CATEGORY = #{goodsCategory},
-		GOODS_NAME = #{goodsName},
-		GOODS_CONTENT = #{goodsContent},
-		GOODS_PRICE
-		= #{goodsPrice},
-		GOODS_SELLER_NICKNAME = #{goodsSellerNickname},
-		GOODS_FORMAT = #{goodsFormat},
-		GOODS_RESOLUTION = #{goodsResolution},
-		GOODS_SIZE = #{goodsSize},
-		GOODS_USE = #{goodsUse},
-		GOODS_MODIFY_COUNT =
-		#{goodsModifyCount},
-		GOODS_PERIOD = #{goodsPeriod},
-		GOODS_IMAGE1 =
-		#{goodsImage1},
-		GOODS_IMAGE2 = #{goodsImage2},
-		GOODS_IMAGE3 =
-		#{goodsImage3},
-		GOODS_IMAGE_DATE = #{goodsImageDate}
-		where
-		GOODS_NUM =
-		#{goodsNum}
+
+			GOODS_CATEGORY = #{goodsCategory},
+			GOODS_NAME = #{goodsName},
+			GOODS_CONTENT = #{goodsContent},
+			GOODS_PRICE = #{goodsPrice},
+			GOODS_SELLER_NICKNAME = #{goodsSellerNickname},
+			GOODS_FORMAT = #{goodsFormat},
+			GOODS_RESOLUTION = #{goodsResolution},
+			GOODS_SIZE = #{goodsSize},
+			GOODS_USE = #{goodsUse},
+			GOODS_MODIFY_COUNT = #{goodsModifyCount},
+			GOODS_PERIOD = #{goodsPeriod},
+			GOODS_IMAGE1 = #{goodsImage1},
+			GOODS_IMAGE2 = #{goodsImage2},
+			GOODS_IMAGE3 = #{goodsImage3},
+			GOODS_IMAGE_DATE1 = #{goodsImageDate1},
+			GOODS_IMAGE_DATE2 = #{goodsImageDate2},
+			GOODS_IMAGE_DATE3 = #{goodsImageDate3}
+		where 
+			GOODS_NUM = #{goodsNum}
 	</update>
-
-
-	<!-- 선민: 상품 임시저장 - 최종 등록 (updateTempGoodsToGoods) -->
-	<update id="updateTempGoodsToGoods"
-		parameterType="com.mycom.euum.goods.bean.GoodsBean">
+	
+	
+	<!-- 선민: 상품 임시저장 - 최종 등록 (updateGoodsTempToOfficial) -->
+	<update id="updateGoodsTempToOfficial" parameterType="com.mycom.euum.goods.bean.GoodsBean">
 		update GOODS_TBL
 		set
-		GOODS_CATEGORY = #{goodsCategory},
-		GOODS_NAME = #{goodsName},
-		GOODS_CONTENT = #{goodsContent},
-		GOODS_PRICE
-		= #{goodsPrice},
-		GOODS_SELLER_NICKNAME = #{goodsSellerNickname},
-		GOODS_FORMAT = #{goodsFormat},
-		GOODS_RESOLUTION = #{goodsResolution},
-		GOODS_SIZE = #{goodsSize},
-		GOODS_USE = #{goodsUse},
-		GOODS_MODIFY_COUNT =
-		#{goodsModifyCount},
-		GOODS_PERIOD = #{goodsPeriod},
-		GOODS_IMAGE1 =
-		#{goodsImage1},
-		GOODS_IMAGE2 = #{goodsImage2},
-		GOODS_IMAGE3 =
-		#{goodsImage3},
-		GOODS_IMAGE_DATE = #{goodsImageDate},
-		GOODS_STATUS =
-		'승인대기'
+			GOODS_CATEGORY = #{goodsCategory},
+			GOODS_NAME = #{goodsName},
+			GOODS_CONTENT = #{goodsContent},
+			GOODS_PRICE = #{goodsPrice},
+			GOODS_SELLER_NICKNAME = #{goodsSellerNickname},
+			GOODS_FORMAT = #{goodsFormat},
+			GOODS_RESOLUTION = #{goodsResolution},
+			GOODS_SIZE = #{goodsSize},
+			GOODS_USE = #{goodsUse},
+			GOODS_MODIFY_COUNT = #{goodsModifyCount},
+			GOODS_PERIOD = #{goodsPeriod},
+			GOODS_IMAGE1 = #{goodsImage1},
+			GOODS_IMAGE2 = #{goodsImage2},
+			GOODS_IMAGE3 = #{goodsImage3},
+			GOODS_IMAGE_DATE1 = #{goodsImageDate1},
+			GOODS_IMAGE_DATE2 = #{goodsImageDate2},
+			GOODS_IMAGE_DATE3 = #{goodsImageDate3},
+			GOODS_STATUS = '승인대기'
+
 		where
 		GOODS_NUM = #{goodsNum}
 	</update>
 
-
+	
+		
+	
 	<!-- 선민: 내 등록상품 리스트 가져오기 -->
-	<select id="selectMyGoodsList" parameterType="int"
-		resultType="com.mycom.euum.goods.bean.GoodsBean">
-		select *
-		from GOODS_TBL
-		where GOODS_STATUS = '승인완료'
-		and
-		MEMBER_NUM = #{memberNum}
+	<select id="selectMyGoodsList" parameterType="int" resultType="com.mycom.euum.goods.bean.GoodsBean">
+	<![CDATA[
+		select * from
+		(
+	        SELECT ROWNUM rn,
+	        GOODS_NUM,
+	        GOODS_CATEGORY,
+	        GOODS_NAME,
+	        GOODS_CONTENT,
+	        GOODS_PRICE,
+	        GOODS_SELLER_NICKNAME,
+	        GOODS_FORMAT,
+	        GOODS_RESOLUTION,
+	        GOODS_SIZE,
+	        GOODS_USE,
+	        GOODS_MODIFY_COUNT,
+	        GOODS_PERIOD,
+	        GOODS_IMAGE1,
+	        GOODS_IMAGE2,
+	        GOODS_IMAGE3,
+	        GOODS_IMAGE_DATE1,
+	        GOODS_IMAGE_DATE2,
+	        GOODS_IMAGE_DATE3
+	        from GOODS_TBL
+	        where GOODS_STATUS = '승인완료'
+	        and MEMBER_NUM = #{memberNum}
+	        and ROWNUM <= #{pageNum} * #{amount}
+	    )
+		where rn > (#{pageNum} - 1) * #{amount}
+
 		order by GOODS_NUM DESC
+	]]>
+<!-- 		select * -->
+<!-- 		from GOODS_TBL -->
+<!-- 		where GOODS_STATUS = '승인완료' -->
+<!-- 		and MEMBER_NUM = #{memberNum} -->
+<!-- 		order by GOODS_NUM DESC -->
 	</select>
 
 
 	<!-- 선민: 내 등록대기상품 리스트 가져오기 -->
-	<select id="selectMyUnapprovedGoodsList" parameterType="int"
-		resultType="com.mycom.euum.goods.bean.GoodsBean">
-		select *
-		from GOODS_TBL
-		where GOODS_STATUS = '승인대기'
-		and
-		MEMBER_NUM = #{memberNum}
+
+	<select id="selectMyUnapprovedGoodsList" parameterType="int" resultType="com.mycom.euum.goods.bean.GoodsBean">
+	<![CDATA[
+		select * from
+		(
+	        SELECT ROWNUM rn,
+	        GOODS_NUM,
+	        GOODS_CATEGORY,
+	        GOODS_NAME,
+	        GOODS_CONTENT,
+	        GOODS_PRICE,
+	        GOODS_SELLER_NICKNAME,
+	        GOODS_FORMAT,
+	        GOODS_RESOLUTION,
+	        GOODS_SIZE,
+	        GOODS_USE,
+	        GOODS_MODIFY_COUNT,
+	        GOODS_PERIOD,
+	        GOODS_IMAGE1,
+	        GOODS_IMAGE2,
+	        GOODS_IMAGE3,
+	        GOODS_IMAGE_DATE1,
+	        GOODS_IMAGE_DATE2,
+	        GOODS_IMAGE_DATE3
+	        from GOODS_TBL
+	        where GOODS_STATUS = '승인대기'
+	        and MEMBER_NUM = #{memberNum}
+	        and ROWNUM <= #{pageNum} * #{amount}
+	    )
+		where rn > (#{pageNum} - 1) * #{amount}
+
 		order by GOODS_NUM DESC
+	]]>
+<!-- 		select * -->
+<!-- 		from GOODS_TBL -->
+<!-- 		where GOODS_STATUS = '승인대기' -->
+<!-- 		and MEMBER_NUM = #{memberNum} -->
+<!-- 		order by GOODS_NUM DESC -->
 	</select>
 
 
 	<!-- 선민: 내 임시상품 리스트 가져오기 -->
-	<select id="selectMyTempGoodsList" parameterType="int"
-		resultType="com.mycom.euum.goods.bean.GoodsBean">
-		select *
-		from GOODS_TBL
-		where GOODS_STATUS = '임시저장'
-		and
-		MEMBER_NUM = #{memberNum}
+
+	<select id="selectMyTempGoodsList" parameterType="int" resultType="com.mycom.euum.goods.bean.GoodsBean">
+	<![CDATA[
+		select * from
+		(
+	        SELECT ROWNUM rn,
+	        GOODS_NUM,
+	        GOODS_CATEGORY,
+	        GOODS_NAME,
+	        GOODS_CONTENT,
+	        GOODS_PRICE,
+	        GOODS_SELLER_NICKNAME,
+	        GOODS_FORMAT,
+	        GOODS_RESOLUTION,
+	        GOODS_SIZE,
+	        GOODS_USE,
+	        GOODS_MODIFY_COUNT,
+	        GOODS_PERIOD,
+	        GOODS_IMAGE1,
+	        GOODS_IMAGE2,
+	        GOODS_IMAGE3,
+	        GOODS_IMAGE_DATE1,
+	        GOODS_IMAGE_DATE2,
+	        GOODS_IMAGE_DATE3
+	        from GOODS_TBL
+	        where GOODS_STATUS = '임시저장'
+	        and MEMBER_NUM = #{memberNum}
+	        and ROWNUM <= #{pageNum} * #{amount}
+	    )
+		where rn > (#{pageNum} - 1) * #{amount}
+
 		order by GOODS_NUM DESC
+	]]>
+<!-- 		select * -->
+<!-- 		from GOODS_TBL -->
+<!-- 		where GOODS_STATUS = '임시저장' -->
+<!-- 		and MEMBER_NUM = #{memberNum} -->
+<!-- 		order by GOODS_NUM DESC -->
 	</select>
 
 
@@ -288,10 +408,10 @@
 	<update id="updateAdminGoods"
 		parameterType="com.mycom.euum.goods.bean.GoodsBean">
 		update GOODS_TBL
-		set
-		GOODS_STATUS = #{goodsStatus}
-		where
-		GOODS_NUM = #{goodsNum}
+
+		set GOODS_STATUS = #{goodsStatus}
+		where GOODS_NUM = #{goodsNum}
+
 	</update>
 
 	<!-- 은정: 상품 리스트 가져오기 (selectGoodsList) -->
@@ -368,6 +488,15 @@
 
 	</select>
 
+
+	<!-- 선민: (페이징) 상품 총개수 -->
+	<select id="getGoodsTotalCount" resultType="int">
+	   <![CDATA[ 
+			select count(*) from GOODS_TBL
+			where MEMBER_NUM = #{memberNum}
+			and GOODS_STATUS = #{goodsStatus}
+		]]>
+	</select>
 
 	<!-- 은정: 상품 리스트 검색결과 가져오기 (selectGoodsSearchList) -->
 	<select id="selectGoodsSearchList" parameterType="string"
