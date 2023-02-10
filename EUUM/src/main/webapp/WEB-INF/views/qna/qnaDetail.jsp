@@ -45,11 +45,21 @@
 				<td>${detail.qnaRegdate } </td>
 			</tr>
 			<tr>
-				<td colspan="4">${detail.qnaContent}</td>
+            
+            
+             <td colspan="4">
+            <!--  이미지 리스트 -->
+             <c:forEach items="${image}" var="row">
+             <img src="/resources/img/${row.imageUploadPath}${row.imageFileName}" width=350; height=350;>        
+             </c:forEach>			
+			
+			<p>${detail.qnaContent}</p>
+			</td>
 			</tr>
 		</tbody>
 	</table>
 
+   
 </div>
 
 <button type="button" class="btn btn-primary" onclick="location.href='/qna/List';">목록으로</button>

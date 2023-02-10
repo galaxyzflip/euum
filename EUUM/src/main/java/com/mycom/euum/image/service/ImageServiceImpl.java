@@ -124,5 +124,19 @@ public class ImageServiceImpl implements ImageService {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	/** 의종: 고객문의 이미지 가져오기*/
+	@Override
+	public List<ImageBean> selectQNAImage(int qnaNum) {
+		
+		return imageMapper.selectQNAImage(qnaNum);
+	}
+    
+	/** 의종: 상품문의 이미지 가져오기*/
+	@Override
+	public List<ImageBean> selectGoodsQNAImage(int goodsQNANum) {
+		
+		return imageMapper.selectGoodsQNAImage(goodsQNANum);
+	}
 
 }

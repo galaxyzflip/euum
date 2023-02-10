@@ -119,6 +119,10 @@
 	
 </form>
 
+<div id="goodsQNAList">
+	   <jsp:include	page="/WEB-INF/views/goodsQNA/goodsQNAList.jsp"></jsp:include>
+</div>
+
 <script>
 
 let num = 0;

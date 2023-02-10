@@ -341,63 +341,33 @@ public class GoodsController {
 		
 		
 		
-		/** 의종: goodsQNA 리스트 가져오기 및 페이징 */
+	/** 의종: goodsQNA 리스트 가져오기 및 페이징 */
 		int amount = cri.getAmount();
 		int pageNum = cri.getPageNum();
 		int total=goodsQNAService.getGoodsQNATotalCount(cri,goodsNum); 
 		
 		//goodsQNANum 받기
-//		int goodsQNANum = 1;
-//		model.addAttribute("qnaImage", imageService.selectGoodsQNAImage(goodsQNANum));
-//		
-//		log.info("이미지가져오는지======================" + imageService.selectGoodsQNAImage(goodsQNANum));
-//		log.info("goodsQNAnum가져오는지===============" + goodsQNABean.getGoodsQNANum());
+		int goodsQNANum = 1;
+		model.addAttribute("qnaImage", imageService.selectGoodsQNAImage(goodsQNANum));
+		
+		log.info("이미지가져오는지======================" + imageService.selectGoodsQNAImage(goodsQNANum));
+		log.info("goodsQNAnum가져오는지===============" + goodsQNABean.getGoodsQNANum());
 		
 		model.addAttribute("list" , goodsQNAService.goodsQNAList(goodsNum, pageNum, amount));
 		model.addAttribute("pageMaker", new PageDTO(cri, total));
 		model.addAttribute("goodsNum" , goodsNum);
 		
 		
+		model.addAttribute("detail", goodsService.selectGoodsInfo(goodsNum));
+		model.addAttribute("optionList", optionList);
+		model.addAttribute("optionCount", optionCount);
+		
 		
 		model.addAttribute("detail", goodsBean);
 		model.addAttribute("optionList", optionList);
 		model.addAttribute("optionCount", optionCount);
-
-		
-		
-		
-//		// 게시판 쪽 페이징
-//		/** 의종: goodsQNA 리스트 가져오기 및 페이징 */
-//		int amount = cri.getAmount();
-//		int pageNum = cri.getPageNum();
-//		int total=goodsQNAService.getGoodsQNATotalCount(cri,goodsNum); 
-//		
-//		model.addAttribute("list" , goodsQNAService.goodsQNAList(goodsNum, pageNum, amount));
-//		model.addAttribute("pageMaker", new PageDTO(cri, total));
-//		model.addAttribute("goodsNum" , goodsNum);
-//		
-//		
-//		model.addAttribute("detail", goodsService.selectGoodsInfo(goodsNum));
-//		model.addAttribute("optionList", optionList);
-//		model.addAttribute("optionCount", optionCount);
-//
-//		
-//		
-//		/*================= 용주 작업중===============*/
-//		
-//		
-//		
-//		int rtotal=reviewService.getTotal(rcri);
-//		model.addAttribute("rpageMaker", new RPageDTO(rcri, rtotal));
-//		
-//						
-//		model.addAttribute("reviewList", reviewService.reviewList(rcri));
-//		
-//		log.info("sql돌려요=======================" + reviewService.reviewList(rcri));
-//
-//		return "goods/goodsDetail";
-
-		return "goods/goodsDetail";
+    
+    return "goods/goodsDetail";
 	}
 	
 	
@@ -415,3 +385,4 @@ public class GoodsController {
 		SellerBean sellerBean = (SellerBean)session.getAttribute("loginSeller"); // 세션 정보 저장 (이식성을 고려하여 웹 의존성이 있는 로직은 Controller에 작성)
 		return sellerBean;
 	}
+

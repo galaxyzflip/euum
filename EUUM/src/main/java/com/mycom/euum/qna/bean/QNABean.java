@@ -18,6 +18,7 @@ public class QNABean {
 	private int qnaNid;
 	private int qnaOrdered;
 	private int qnaLayer;
+	private int qnaHitcount;
 
 
 }
