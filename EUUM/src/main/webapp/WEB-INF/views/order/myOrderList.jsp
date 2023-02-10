@@ -130,7 +130,7 @@ ul li {
 					<td class="order-name"><br> ${order.goodsName }<br>
 						${fn:replace(order.orderName,'`','<br>')}</td>
 					<td>${order.orderPrice } 원</td>
-					<td id="order-status"><c:if test="${order.orderStatus eq 1 }">입금대기중</c:if> <c:if
+					<td class="order-status"><c:if test="${order.orderStatus eq 1 }">입금대기중</c:if> <c:if
 							test="${order.orderStatus eq 2 }">입금확인</c:if> <c:if
 							test="${order.orderStatus eq 3 }">작업중</c:if> <c:if
 							test="${order.orderStatus eq 4 }">작업완료</c:if> <c:if
@@ -138,7 +138,8 @@ ul li {
 							test="${order.orderStatus eq 6 }">완료</c:if> <c:if
 							test="${order.orderStatus eq 7 }">취소(환불대기중)</c:if> <c:if
 							test="${order.orderStatus eq 8 }">취소(환불완료)</c:if> <c:if
-							test="${order.orderStatus eq 9 }">취소(입금전 취소)</c:if></td>
+							test="${order.orderStatus eq 9 }">취소(입금전 취소)</c:if>
+					</td>
 					<td><span class="que">자세히</span> <!-- <span class="arrow-top">↑</span>
 	                        <span class="arrow-bottom">↓</span> --></td>
 				</tr>
@@ -210,18 +211,27 @@ ul li {
 							</div>
 							
 							<div id="order-tap3">
+								
 								<ul>
-									<c:if test="${order.orderStatus lt 3 }">
-										<button class="order-tap3" id="cancle-order" onclick="cancleOrder('${order.orderNum}', '${order.orderStatus }', 'order${status.index }')">주문 취소</button><br>
-									</c:if>
+									<li class="status-info-list">
+										<c:if test="${order.orderStatus lt 3 }">
+											<button class="order-tap3" id="cancle-order" onclick="cancleOrder('${order.orderNum}', '${order.orderStatus }', 'order${status.index }')">주문 취소</button><br>
+										</c:if>
+										
+										<c:if test="${order.orderStatus lt 4 }">
+											<button class="order-tap3" id="add-order${status.index }"
+										onclick="openModal('${order.orderNum}', '${order.goodsNum }', '${order.orderEmail }', '${order.orderContact}', '${order.sellerNickname}', '${order.sellerNum }')">추가금액 결제</button>
+										</c:if>
+									</li>
 									
-									<c:if test="${order.orderStatus lt 4 }">
-										<button class="order-tap3" id="add-order${status.index }"
-									onclick="openModal('${order.orderNum}', '${order.goodsNum }', '${order.orderEmail }', '${order.orderContact}', '${order.sellerNickname}', '${order.sellerNum }')">추가금액 결제</button>
-									</c:if>
+									<li class="confirm-order">
+										<c:if test="${order.orderStatus eq 5 }">
+											<button onclick="updateStatus('${order.orderNum}','${order.orderStatus + 1 }','order${status.index }')">고객확인</button>
+										</c:if>	
+									</li>
 									
 									<c:if test="${order.fileYn eq 'Y' }">
-										<li class='file-yn'><button class="view-file" onclick="fileList(${order.orderKeyNum}, 'order${status.index }')">파일보기</button></li><br>
+										<li class='file-yn'><button class="view-file" onclick="fileList(${order.orderKeyNum}, 'order${status.index }' ,'${order.orderNum }', '${order.orderStatus }')">파일보기</button></li><br>
 									</c:if>
 									
 									<li class="file-list">
@@ -302,15 +312,35 @@ ul li {
 		//파일 다운로드
 		$('.file-list').on('click', 'div', function(e){
 			
-			if(!confirm('파일을 다운로드 하면 고객 확인상태로 변경됩니다')){
-				return false;
-			}
-			
 			var liObj = $(this);
 			var path = encodeURIComponent('/' + liObj.data("path")+liObj.data("filename"));
 			console.log(path);
-			self.location ="/download?fileName="+path
+			
+			
+			let status = liObj.data("status");
+			console.log('파일다운 status 값 : ' + status);
+			if(status != '6'){
+				
+				if(!confirm('파일을 다운로드 하면 고객 확인상태로 변경됩니다')){
+					return false;
+				}
+				
+				self.location ="/download?fileName="+path;
+				
+				let orderNum = liObj.data("key");
+				let orderStatus = '5';
+				let orderForm = liObj.data("form");
+				console.log("파일다운한 주문번호 : " + orderNum);
+				
+				updateStatus(orderNum, orderStatus, orderForm);
+			}
+			
+			if(status == '6'){
+				self.location ="/download?fileName="+path;
+			}
 		})
+		
+		
 
 		
 		//자세히 클릭시 아코디언 형식으로 상세보기 출력
@@ -323,16 +353,73 @@ ul li {
 	});
 	
 	
+	
+	function updateStatus(orderNum, orderStatus, orderForm){
+		
+		if(orderStatus == '6'){
+			if(!confirm('"고객확인" 시 다시 되돌리리 수 없습니다')){
+				return false;
+			}			
+		}
+		
+		console.log("완료처리 파라미터 : " + orderNum + ", " + orderStatus);
+		
+		 $.ajax({
+				url : "/order/transferOrderStatusAjax",
+				type : "post",
+				data : {
+					orderNum : orderNum,
+					orderStatus : orderStatus
+				},
+				dataType : 'json',
+		        success: function (data) {
+					console.log(data);
+					console.log('성공');
+					downloadResult(orderForm, orderStatus, orderNum);
+		       },
+		       error: function (data) {
+					alert('에러')
+					console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);	alert('에러');
+		       }
+			}) 
+	}
+	
+	
+	function downloadResult(orderForm, orderStatus, orderNum){
+ 		
+ 		let form = $('#'+orderForm)
+			
+ 		
+ 		$(form).find('.order-status').text("고객확인중");
+ 		
+ 		
+ 		if(orderStatus == '5'){
+ 			
+ 			inner = '';
+ 			inner += '<button class="" id="" onclick="updateStatus(\''+orderNum+'\', \'6\',\''+orderForm+'\')">고객확인</button>'
+ 			
+ 			$(form).next().find('.confirm-order').html(inner);	
+ 		}
+ 		
+ 		if(orderStatus == '6'){
+ 			$(form).find('.order-status').text("완료");	
+ 			$(form).next().find('.file-list').find('div').data('status', '6');
+ 			$(form).next().find('.confirm-order').remove();
+ 		
+ 		}
+ 	}
+	
+	
 		//fileList의 callback 비스무리...	
-		function viewFile(data, orderForm){
+		function viewFile(data, orderForm, orderKeyNum, orderNum, orderStatus){
 		
 		let inner = '';
 		let shortName = data.originalFileName.substr(0, 16) + "...";
 
 		console.log("orderForm 이름 : " + orderForm);
 		
-		inner += '<div data-path="'+data.imageUploadPath+'" data-filename="'+data.imageFileName+'">'
-		inner += shortName+'</div>'; 
+		inner += '<div data-path="'+data.imageUploadPath+'" data-filename="'+data.imageFileName
+		inner += '" data-key="'+orderNum+'" data-form="'+orderForm+'" data-status="'+orderStatus+'">'+shortName+'</div>'; 
 		
 		/* inner += '<div data-path="'+data.imageUploadPath+'" data-filename="'+data.imageFileName+'">'
 		inner += '<span>'+shortName+'</span><span><img src="/resources/img/attach.png"></span></div>'; 
@@ -345,7 +432,7 @@ ul li {
 	}
 	
 	//파일보기 버튼 클릭시 파일리스트 출력
-	 function fileList(orderKeyNum, orderForm){
+	 function fileList(orderKeyNum, orderForm, orderNum, orderStatus){
 		let imageUse = 'order';
 		let imageUseNum = orderKeyNum;
 		
@@ -362,7 +449,7 @@ ul li {
 	        	console.log('ajax');
 				console.log(data);
 	        	console.log('ajax');
-				viewFile(data, orderForm);
+				viewFile(data, orderForm, orderKeyNum, orderNum, orderStatus);
 	          },
 	          error: function (data) {
 				alert('에러')
@@ -382,12 +469,12 @@ ul li {
 		let status;
 		
 		if(data.orderStatus == '7'){
-			$(orderForm).find('#order-status').text('취소(환불대기중)');
+			$(orderForm).find('.order-status').text('취소(환불대기중)');
 		}else if(data.orderStatus == '9'){
-			$(orderForm).find('#order-status').text('취소(입금 전 취소)');
+			$(orderForm).find('.order-status').text('취소(입금 전 취소)');
 		}
 		
-		$(orderForm).next().find('#order-tap3').css('display', 'none');
+		$(orderForm).next().find('.status-info-list').css('display', 'none');
 		
 	}
 	
@@ -440,6 +527,7 @@ ul li {
 
 		$('input[name="orderName"]').val(orderNum + " 주문의 추가 금액 결제");
 		modal.modal('show');
+		//
 	}
 
 	

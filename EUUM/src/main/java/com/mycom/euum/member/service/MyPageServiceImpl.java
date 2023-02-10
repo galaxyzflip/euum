@@ -1,22 +1,25 @@
 package com.mycom.euum.member.service;
 
-import java.util.List;
 
+import java.util.List;
 import org.springframework.stereotype.Service;
 
+
 import com.mycom.euum.member.bean.CartBean;
+import com.mycom.euum.image.bean.ImageBean;
 import com.mycom.euum.member.bean.MemberBean;
 import com.mycom.euum.member.bean.SellerBean;
 import com.mycom.euum.member.mapper.CartMapper;
 import com.mycom.euum.member.mapper.MemberMapper;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j;
 
-
+@Log4j
 @Service
 @AllArgsConstructor
 public class MyPageServiceImpl implements MyPageService {
-	
+
 	private MemberMapper memberMapper;
 	private CartMapper cartMapper;
 
@@ -46,6 +49,13 @@ public class MyPageServiceImpl implements MyPageService {
 	public int updateSeller(SellerBean sellerBean) {
 		
 		return memberMapper.updateSeller(sellerBean);
+	}
+	
+	// 전문가 프로필 수정
+	@Override
+	public int updateSellerFile(SellerBean bean, List<ImageBean> imageBeanList) {
+		
+		return memberMapper.updateSellerFile(bean);
 	}
 	
 	// 비밀번호 변경

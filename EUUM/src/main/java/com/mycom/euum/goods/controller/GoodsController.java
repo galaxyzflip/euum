@@ -1,3 +1,5 @@
+
+
 package com.mycom.euum.goods.controller;
 
 import java.util.List;
@@ -51,16 +53,29 @@ public class GoodsController {
 	
 	/* ---------------------------- 상품 리스트 ---------------------------- */
 
-	/** 선민: 상품 리스트 - 전체 상품 리스트 */
-	@GetMapping(value = "/goods/goodsList")
-	public String selectGoodsList(Model model) throws Exception {
+	/** 은정: 상품 리스트 - 전체 상품 리스트(02/01 페이징추가) */
+	@GetMapping(value="/goods/goodsList")
+	public String selectGoodsList(Model model, Criteria2 cri) throws Exception {
 		log.info("===== 상품 리스트 =====");
-
-		List<GoodsBean> goodsList = goodsService.selectGoodsList();
+		
+		System.out.println("cri 내용 : " +cri.toString());
+		System.out.println("cri 내용 : " +cri.toString());
+		System.out.println("cri 내용 : " +cri.toString());
+		System.out.println("cri 내용 : " +cri.toString());
+		
+		
+		
+		List<GoodsBean> goodsList = goodsService.selectGoodsList(cri);
 		log.info("상품 리스트: " + goodsList);
 		model.addAttribute("goodsList", goodsList);
+		
+		int total=goodsService.getTotal(cri);
+        
+		
+		model.addAttribute("pageMaker", new PageDTO2(cri, total));
 
-		return "goods/goodsList";
+		return "goods/goodsList";  
+		
 	}
 
 	/** 은정: 상품 리스트 - 검색 */
@@ -321,4 +336,5 @@ public class GoodsController {
 		return sellerBean;
 	}
 	
+
 }

@@ -18,9 +18,12 @@ public interface GoodsService {
 	
 	/* ---------------------------- 상품 리스트 ---------------------------- */
 	
-	/** 선민: 상품 리스트 가져오기 (List) */
-	public List<GoodsBean> selectGoodsList() throws Exception;
+	/** 은정: 상품 리스트 가져오기 (List) */
+	public List<GoodsBean> selectGoodsList(Criteria2 cri) ;
 	
+	/** 은정: 상품 리스트 페이징 */
+	public int getTotal(Criteria2 cri);
+		
 	/** 은정: 상품 리스트 검색결과 가져오기 (List) */
 	public List<GoodsBean> selectGoodsSearchList(String searchKeyword, String searchOption) throws Exception;
 	
@@ -68,3 +71,5 @@ public interface GoodsService {
 	/** 선민: 상품 등록 시 이미지 업로드 */
 	public List<ImageBean> goodsFileUpload(MultipartFile[] uploadFile, HttpServletRequest request) throws Exception;
 }
+
+

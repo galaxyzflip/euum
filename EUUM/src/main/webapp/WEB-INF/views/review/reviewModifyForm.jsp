@@ -58,7 +58,7 @@
 		
 		<input type="hidden" name="reviewWriter" value="ㅇㅅㅇ주">
 		
-		<input type="hidden" name="reviewNum" value="${modify.reviewNum }">
+		<input type="text" name="reviewNum" value="${modify.reviewNum }">
 		<fieldset>
 		<span class="text-bold">별점을 선택해주세요</span>
 		<input type="radio" name="reviewStar" value="5" id="rate1">

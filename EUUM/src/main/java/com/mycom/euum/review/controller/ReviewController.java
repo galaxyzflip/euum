@@ -7,7 +7,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.mycom.euum.notice.bean.NoticeBean;
+import com.mycom.euum.page.Criteria;
+import com.mycom.euum.page.PageDTO;
 import com.mycom.euum.page.RCriteria;
 import com.mycom.euum.page.RPageDTO;
 import com.mycom.euum.review.bean.ReviewBean;
@@ -27,12 +28,12 @@ public class ReviewController {
 	
 	
 	@GetMapping("/review/list")
-	public String noticeList(Model model, RCriteria rcri) {
+	public String reviewList(Model model, RCriteria rcri) {
 	 
 		
 		
 		int total=reviewService.getTotal(rcri);
-		model.addAttribute("pageMaker", new RPageDTO(rcri, total));
+		model.addAttribute("rpageMaker", new RPageDTO(rcri, total));
 		
 						
 		model.addAttribute("reviewList", reviewService.reviewList(rcri));
@@ -72,7 +73,7 @@ public class ReviewController {
 	public String reviewModifyPro(@RequestParam("reviewNum")int reviewNum, ReviewBean reviewBean) {
 		
 		//noticeBean.setNoticeNum(noticeNum);
-		System.out.println(reviewBean);
+		System.out.println("수정처리 빈에 무엇이 들었습니까>??????????????????"+reviewBean);
 		reviewService.reviewModifyPro(reviewBean);
 		
 		System.out.println("수정 되냐?????????????????????"+reviewService.reviewModifyPro(reviewBean));
@@ -80,4 +81,28 @@ public class ReviewController {
 		return "redirect:/review/list";
 	}
 	
+	@PostMapping("review/reviewDelete")
+	public String reviewDeletePro(@RequestParam("reviewNum")int reviewNum, ReviewBean reviewBean) {
+		
+		//noticeBean.setNoticeNum(noticeNum);
+		System.out.println(reviewBean);
+		reviewService.reviewDelete(reviewBean);
+		
+		System.out.println("삭제 되냐?????????????????????"+reviewService.reviewDelete(reviewBean));
+		
+		return "redirect:/review/list";
+	}
+	
+	@GetMapping("/review/myReviewList")
+	public String myReviewList(Model model, Criteria cri) {
+	
+		int total=reviewService.myGetTotal(cri);
+		model.addAttribute("pageMaker", new PageDTO(cri, total));
+							
+		model.addAttribute("reviewList", reviewService.myReviewList(cri));
+		
+		log.info("sql돌려요=======================" + reviewService.myReviewList(cri));
+		
+		return "review/myReviewList";
+	}
 }
