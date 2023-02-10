@@ -1,4 +1,3 @@
-
 /**
  * 작성일 : 2023-01-20
  * 용도 : 파일(이미지) Bean
@@ -18,7 +17,15 @@ public class ImageBean {
 	String imageFileName;
 	String imageFileType;
 	String imageUse;
+	String originalFileName; // 창선님이 만들었는지 확인
 	int imageUseNum;
-	String originalFileName;
+	
+	
+	int imageSequence; 
+	boolean newImage = false;
+	
+	public boolean isNew() {
+		return this.newImage;
+	}
+	
 }
-
