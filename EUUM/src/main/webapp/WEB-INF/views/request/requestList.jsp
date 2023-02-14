@@ -197,6 +197,9 @@ function search(){
 		<input type='hidden' name='category' value='${rqpageMaker.rqcri.requestCategoey}'>
 	</form>
 	
+	<a href="/request/requestInsertForm">
+		<button type="submit" value="글쓰기">글쓰기</button>
+	</a>
 	
 </div>
 
