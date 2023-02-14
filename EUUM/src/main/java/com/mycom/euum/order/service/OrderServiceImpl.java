@@ -112,11 +112,6 @@ public class OrderServiceImpl implements OrderService{
 		return orderMapper.selectOrderListByMember(memberNum);
 	}
 
-	@Override
-	public List<OrderBean> selectAdminOrderList() {
-		
-		return orderMapper.selectAdminOrderList();
-	}
 
 	@Override
 	public OrderBean addOrder(OrderBean orderBean) {

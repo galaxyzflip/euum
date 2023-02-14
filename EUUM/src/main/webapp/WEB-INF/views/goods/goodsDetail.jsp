@@ -13,13 +13,13 @@
 	<div class="middleDiv">
 		<div class="middleLeftDiv">
 			<div>
-				<img src="${pageContext.request.contextPath}/resources/img/${detail.goodsImageDate}   ${detail.goodsImage1}" style="width: 625px;" />
+				<img src="${pageContext.request.contextPath}/resources/img/${detail.goodsImageDate1}   ${detail.goodsImage1}" style="width: 625px;" />
 			</div>
 			<div>
-				<img src="${pageContext.request.contextPath}/resources/img/${detail.goodsImageDate}${detail.goodsImage2}" style="width: 625px;" />
+				<img src="${pageContext.request.contextPath}/resources/img/${detail.goodsImageDate2}${detail.goodsImage2}" style="width: 625px;" />
 			</div>
 			<div>
-				<img src="${pageContext.request.contextPath}/resources/img/${detail.goodsImageDate}${detail.goodsImage3}" style="width: 625px;" />
+				<img src="${pageContext.request.contextPath}/resources/img/${detail.goodsImageDate3}${detail.goodsImage3}" style="width: 625px;" />
 			</div>
 		</div>
 		<div class="middleRightDiv">
@@ -118,6 +118,8 @@
 	<input type="hidden" name="" value="${detail.goodsSellerNickname }"/> 
 	
 </form>
+
+
 
 <div id="goodsQNAList">
 	   <jsp:include	page="/WEB-INF/views/goodsQNA/goodsQNAList.jsp"></jsp:include>
