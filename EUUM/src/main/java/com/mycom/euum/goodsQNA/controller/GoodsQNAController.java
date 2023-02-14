@@ -94,7 +94,7 @@ public class GoodsQNAController {
 	}
 	
 	// 나의 상품문의 내역 가져오기
-	@GetMapping("/goodsQNA/myGoodsQNA")
+	@GetMapping("/myPage/goodsQNA")
 	public String myGQNA(Model model, HttpSession session, Criteria cri) {
         
 		// 세션 정보 가져오기
@@ -121,7 +121,7 @@ public class GoodsQNAController {
 
 		goodsQNAService.deleteGQNA(goodsQNABean);
         		
-		return "redirect:/goodsQNA/myGoodsQNA";
+		return "redirect:/myPage/goodsQNA";
 	}
 	
 	//마이페이지 상품문의 수정
@@ -130,7 +130,7 @@ public class GoodsQNAController {
 
 		goodsQNAService.modifyGQNA(goodsQNABean);
         		
-		return "redirect:/goodsQNA/myGoodsQNA";
+		return "redirect:/myPage/goodsQNA";
 	}
 
 }

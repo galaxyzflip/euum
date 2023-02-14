@@ -122,7 +122,7 @@
 
 
 <div id="goodsQNAList">
-	   <jsp:include	page="/WEB-INF/views/goodsQNA/goodsQNAList.jsp"></jsp:include>
+	 <jsp:include page="/WEB-INF/views/goodsQNA/goodsQNAList.jsp"></jsp:include>
 </div>
 
 <script>

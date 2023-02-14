@@ -33,8 +33,6 @@
     
     <br>
     <input type="file" name="uploadFile">
-    <input type="file" name="uploadFile">
-    <input type="file" name="uploadFile">
     
     <input type="hidden" name="goodsNum" value="${goodsNum}"/> 
     <input type="hidden" name="memberNum" value="${memberNum}"/> 

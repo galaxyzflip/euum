@@ -1,4 +1,3 @@
-
 package com.mycom.euum.image.service;
 
 import java.util.List;
@@ -116,6 +115,7 @@ public class ImageServiceImpl implements ImageService {
 	/** 주문 파일 업로드에 사용하니 지우지 마시오!!*/
 	@Override
 	public void insertImage(ImageBean imageBean) throws Exception {
+
 		imageMapper.insertImage(imageBean);
 	}
 

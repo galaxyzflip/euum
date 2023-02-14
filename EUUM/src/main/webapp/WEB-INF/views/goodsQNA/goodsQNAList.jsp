@@ -96,7 +96,8 @@ html,body {
             <div class="panel-faq-container">
               <p class="panel-faq-title">${var.goodsQNATitle }</p>
               <div class="panel-faq-answer">              
-       
+                   
+             <%--  <img src="/resources/img/${var.imageUploadPath}${var.imageFileName}" width=200; height=200;>  --%>
                 <p>${var.goodsQNAContent }</p>
             
                 <p>${var.goodsQNAComment }</p>
