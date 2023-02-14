@@ -1,4 +1,3 @@
-
 package com.mycom.euum.image.service;
 
 import java.util.List;
@@ -111,13 +110,6 @@ public class ImageServiceImpl implements ImageService {
 		return imageMapper.getSellerImage(imageUseNum);
 
 	}
-
-	@Override
-	public void insertImage(ImageBean imageBean) throws Exception {
-		// TODO Auto-generated method stub
-
-	}
-
 
 	@Override
 	public void insertImage(ImageBean imageBean) throws Exception {

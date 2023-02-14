@@ -24,8 +24,10 @@ import com.mycom.euum.image.service.ImageService;
 import com.mycom.euum.member.bean.MemberBean;
 import com.mycom.euum.member.bean.SellerBean;
 import com.mycom.euum.page.Criteria;
+import com.mycom.euum.page.Criteria2;
 import com.mycom.euum.page.CriteriaForGoods;
 import com.mycom.euum.page.PageDTO;
+import com.mycom.euum.page.PageDTO2;
 import com.mycom.euum.page.PageForGoodsDTO;
 
 import lombok.AllArgsConstructor;
@@ -346,12 +348,14 @@ public class GoodsController {
 		int pageNum = cri.getPageNum();
 		int total=goodsQNAService.getGoodsQNATotalCount(cri,goodsNum); 
 		
-		//goodsQNANum 받기
-		int goodsQNANum = 1;
-		model.addAttribute("qnaImage", imageService.selectGoodsQNAImage(goodsQNANum));
-		
-		log.info("이미지가져오는지======================" + imageService.selectGoodsQNAImage(goodsQNANum));
-		log.info("goodsQNAnum가져오는지===============" + goodsQNABean.getGoodsQNANum());
+		//goodsQNA 이미지가져오기
+		/*
+		 * int goodsQNANum = 1; 
+		 * model.addAttribute("qnaImage",
+		 * imageService.selectGoodsQNAImage(goodsQNANum));
+		 */
+
+		log.info("goods리스트 가져오는거===============" + goodsQNAService.goodsQNAList(goodsNum, pageNum, amount));
 		
 		model.addAttribute("list" , goodsQNAService.goodsQNAList(goodsNum, pageNum, amount));
 		model.addAttribute("pageMaker", new PageDTO(cri, total));
@@ -386,3 +390,4 @@ public class GoodsController {
 		return sellerBean;
 	}
 
+}

@@ -24,6 +24,7 @@
 <form role="form" action="/qna/modifyPro" method="post" enctype="multipart/form-data">
 <div id="detail">
 
+<br><br><br><br><br><br>
 <p>수정하기</p>
 <table class="table table-sm">
 		<colgroup>
@@ -51,10 +52,11 @@
 	             <c:forEach items="${image}" var="row">
 	             <img src="/resources/img/${row.imageUploadPath}${row.imageFileName}" width=350; height=350;>        
 	             </c:forEach>
-	             
+	            <p> 
 	             <input type="file" name="uploadFile">
 	             <input type="file" name="uploadFile">	
 	             <input type="file" name="uploadFile">		
+		        </p>
 		        </div>
 		        
 		         <input type="text" class="form-control" name="qnaContent" value="${detail.qnaContent}">

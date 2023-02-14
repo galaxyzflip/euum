@@ -133,11 +133,20 @@ public class QNAController {
 	 
 	 //수정하기
 	 @PostMapping("/qna/modifyPro")
-		public String qnaModifyPro(Model model,QNABean qnaBean) {
-		   
+		public String qnaModifyPro(Model model,QNABean qnaBean, MultipartFile[] uploadFile)throws Exception {
 		 
-		   qnaService.qnaModifyPro(qnaBean);
-		  
+		 int qnaNum = qnaBean.getQnaNum();
+		 
+		 log.info("===== 상품 수정 처리 =====");
+		 List<ImageBean> imageBeanList = fileUtils.qnaFileUpload(uploadFile);
+		 
+		 qnaService.qnaModifyPro(qnaBean);
+		 
+		 log.info("---------- (6) 이미지파일 정보 DB 저장 ----------");
+		 log.info("이미지 쿼리 동작하기 전 imageBeanList: " + imageBeanList);
+		 imageService.updateImage(imageBeanList, qnaNum);
+		 
+		 
 		   return "redirect:/qna/List";
 		}
 	 
