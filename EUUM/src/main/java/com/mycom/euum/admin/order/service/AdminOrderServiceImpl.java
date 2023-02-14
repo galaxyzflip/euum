@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.mycom.euum.order.bean.OrderBean;
 import com.mycom.euum.order.mapper.OrderMapper;
+import com.mycom.euum.page.OrderCriteria;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
@@ -20,9 +21,15 @@ public class AdminOrderServiceImpl implements AdminOrderService {
 	private OrderMapper orderMapper;
 
 	@Override
-	public List<OrderBean> adminOrderList() {
+	public List<OrderBean> adminOrderList(OrderCriteria cri) {
 		
-		return orderMapper.selectAdminOrderList();
+		return orderMapper.selectAdminOrderList(cri);
+	}
+
+	@Override
+	public int selectAdminOrderCount(OrderCriteria cri) {
+		return orderMapper.selectAdminOrderCount(cri); 
+		
 	}
 	
 

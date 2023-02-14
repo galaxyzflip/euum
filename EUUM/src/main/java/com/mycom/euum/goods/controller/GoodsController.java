@@ -24,8 +24,10 @@ import com.mycom.euum.image.service.ImageService;
 import com.mycom.euum.member.bean.MemberBean;
 import com.mycom.euum.member.bean.SellerBean;
 import com.mycom.euum.page.Criteria;
+import com.mycom.euum.page.Criteria2;
 import com.mycom.euum.page.CriteriaForGoods;
 import com.mycom.euum.page.PageDTO;
+import com.mycom.euum.page.PageDTO2;
 import com.mycom.euum.page.PageForGoodsDTO;
 
 import lombok.AllArgsConstructor;
@@ -386,3 +388,4 @@ public class GoodsController {
 		return sellerBean;
 	}
 
+}

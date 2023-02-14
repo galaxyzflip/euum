@@ -17,6 +17,7 @@ import com.mycom.euum.goods.mapper.GoodsMapper;
 import com.mycom.euum.image.bean.ImageBean;
 import com.mycom.euum.image.mapper.ImageMapper;
 import com.mycom.euum.member.bean.SellerBean;
+import com.mycom.euum.page.Criteria2;
 import com.mycom.euum.page.CriteriaForGoods;
 import com.mycom.euum.page.PageForGoodsDTO;
 
@@ -47,11 +48,6 @@ public class GoodsServiceImpl implements GoodsService {
 		return goodsMapper.getTotalCount(cri);
 	}
 
-	/** 은정: 상품 리스트 검색결과 가져오기 (List) */
-	@Override
-	public List<GoodsBean> selectGoodsSearchList(String searchKeyword, String searchOption) throws Exception {
-		return goodsMapper.selectGoodsSearchList(searchKeyword, searchOption);
-	}
 
 	/** 선민: 나의 상품 리스트 가져오기 - 승인완료 상품 (List) */
 	@Override

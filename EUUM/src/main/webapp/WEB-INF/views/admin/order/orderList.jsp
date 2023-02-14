@@ -7,7 +7,7 @@
 
 <style>
 .container {
-	margin-top: 150px;
+	margin-top: 100px;
 	margin-bottom: 100px;
 }
 
@@ -85,6 +85,53 @@ ul li {
 </style>
 
 <div class="container">
+
+	<div id="searchBox">
+		<form id='actionForm' action="/admin/orderList" method='get'>
+		
+			<input type='hidden' name='pageNum' value='${pageMaker.cri.pageNum}'>
+			<%-- <input type="hidden" name="orderStatus" value="${pageMaker.cri.orderStatus }"> --%>
+			
+			<select name="type">
+				<option value="S">작가 닉네임</option>
+				<option value="M">고객명</option>
+				<option value="G">상품명</option>
+			</select>
+			
+			<span> <input type="text" name="keyword" id="searchKeyword"
+				value='<c:out value="${pageMaker.cri.keyword }"/>' style="width: 200px; height: 30px; display: inline-block;">
+			</span>
+			
+			<select name="amount" id="amount">
+				<option value="5" ${pageMaker.cri.amount eq '5' ? 'selected' : '' }>5줄씩</option>
+				<option value="10" ${pageMaker.cri.amount eq '10' ? 'selected' : '' }>10줄씩</option>
+				<option value="25" ${pageMaker.cri.amount eq '25' ? 'selected' : '' }>25줄씩</option>
+				<option value="50" ${pageMaker.cri.amount eq '50' ? 'selected' : '' }>50줄씩</option>
+				<option value="100" ${pageMaker.cri.amount eq '100' ? 'selected' : '' }>100줄씩</option>
+			</select> 
+			
+			<fieldset>
+				<label><input type="checkbox" name="" value="" onclick='selectAll(this)'/>전체선택</label>
+				<br>
+				<label><input type="checkbox" name="orderStatus" value="1"  ${fn:contains(pageMaker.cri.orderStatus, '1') ? 'checked' : ''} />입금대기중</label>
+				<label><input type="checkbox" name="orderStatus" value="2"  ${fn:contains(pageMaker.cri.orderStatus, '2') ? 'checked' : ''} />입금완료</label>
+				<label><input type="checkbox" name="orderStatus" value="3"  ${fn:contains(pageMaker.cri.orderStatus, '3') ? 'checked' : ''} />작업중</label>
+				<label><input type="checkbox" name="orderStatus" value="4"  ${fn:contains(pageMaker.cri.orderStatus, '4') ? 'checked' : ''} />작업완료</label>
+				<label><input type="checkbox" name="orderStatus" value="5"  ${fn:contains(pageMaker.cri.orderStatus, '5') ? 'checked' : ''} />고객확인중</label>
+				<label><input type="checkbox" name="orderStatus" value="6"  ${fn:contains(pageMaker.cri.orderStatus, '6') ? 'checked' : ''} />완료</label>
+				<label><input type="checkbox" name="orderStatus" value="7"  ${fn:contains(pageMaker.cri.orderStatus, '7') ? 'checked' : ''} />취소(환불대기중)</label>
+				<label><input type="checkbox" name="orderStatus" value="8"  ${fn:contains(pageMaker.cri.orderStatus, '8') ? 'checked' : ''} />취소(환불완료)</label>
+				<label><input type="checkbox" name="orderStatus" value="9"  ${fn:contains(pageMaker.cri.orderStatus, '9') ? 'checked' : ''} />취소(입금전 취소)</label>
+			</fieldset>
+			 
+			<span>
+				<button type="button" id="search" style="height: 32px; width: 80px;">검색</button>
+				<button type="button" id="resetSearch" style="height: 32px; width: 80px;">전체보기</button>
+			</span>
+		</form>
+		
+		
+	</div>
 
 	<table class="order-list-table">
 		<thead>
@@ -234,7 +281,32 @@ ul li {
 		</tbody>
 
 	</table>
+
 </div>
+<!-- 페이징 작업할 부분 -->
+<div style="margin:auto; text-align:center; width:700px">
+	<div class="inner">
+			<ul class="pagination" style="text-align: center; justify-content: center;">
+			
+				<c:if test="${pageMaker.prev }">
+					<li class="paginate_button previous"><a class="page-link" href="${pageMaker.startPage - 1 }"
+						tabindex="-1" aria-disabled="true">Previous</a></li>
+				</c:if>		
+						
+					<c:forEach var="num" begin="${pageMaker.startPage }" end ="${pageMaker.endPage }">
+						<li class="page-item paginate_button ${pageMaker.cri.pageNum == num ? 'active' : '' }">
+							<a class="page-link" href="${num }">${num }</a>
+						</li>
+					</c:forEach>
+					
+				<c:if test="${pageMaker.next }">
+					<li class="paginate_button next"><a class="page-link" href="${pageMaker.endPage + 1 }">Next</a></li>
+				</c:if>	
+			</ul>
+	</div>
+</div>
+
+
 
 <!-- Modal -->
 <div class="modal fade" id="addOptionModal" tabindex="-1"
@@ -285,6 +357,8 @@ ul li {
 		</div>
 	</div>
 
+	
+
 </div>    
     
 <script>
@@ -292,6 +366,39 @@ ul li {
 	let modal = $('.modal');
 	
 	$(document).ready(function() {
+		
+		var actionForm = $("#actionForm");
+		actionForm.find("input[name='pageNum']").val('1');
+		
+		$('#amount').on('change', function(){
+			$(actionForm).submit();			
+		})
+		
+		$(".paginate_button a").on("click", function(e) {
+
+			e.preventDefault();
+			actionForm.find("input[name='pageNum']").val($(this).attr("href"));
+			actionForm.submit();
+		});
+		
+		
+		$('#search').on('click', function(e){
+			e.preventDefault();
+			$('input[name="pageNum"]').val('1');
+			actionForm.submit();
+		})
+		
+		
+		$('#resetSearch').on('click', function(){
+			self.location.href="/admin/orderList";
+		})
+		
+		
+		function search(){
+			$(actionForm).submit();
+		
+		}
+		
 		
 		//파일 다운로드
 		$('.file-list').on('click', 'div', function(e){
@@ -312,7 +419,17 @@ ul li {
 			$(this).parent().parent().next(".anw").siblings(".anw").slideUp(0); // 1개씩 펼치기
 		});
 
-	});
+	});	
+	
+		
+		function selectAll(selectAll)  {
+		  const checkboxes 
+		       = document.getElementsByName('orderStatus');
+		  
+		  checkboxes.forEach((checkbox) => {
+		    checkbox.checked = selectAll.checked;
+		  })
+		}
 	
 	
 		//fileList의 callback 비스무리...	

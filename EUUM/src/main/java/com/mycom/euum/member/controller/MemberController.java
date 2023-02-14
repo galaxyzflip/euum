@@ -34,7 +34,6 @@ public class MemberController {
 	@GetMapping("/main")
 	public String test(HttpServletRequest request) {
 
-
 		/*
 		 * //로그인 귀찮아서 임시로 만든것... 세션 저장해줌 HttpSession session = request.getSession();
 		 * MemberBean loginUser = new MemberBean(); loginUser.setMemberNum(1);
@@ -57,6 +56,7 @@ public class MemberController {
 		return "main/main";
 
 	}
+
 	//
 	// 로그인 폼 로드
 	@GetMapping("/member/loginForm")
@@ -65,40 +65,26 @@ public class MemberController {
 		return "member/loginForm";
 	}
 
-	//로그인 처리
 	@PostMapping("/member/loginPro")
 	public String loginPro(MemberBean bean, SellerBean sellerBean, HttpServletRequest request,
 			RedirectAttributes rttr) {
 		HttpSession session = request.getSession();
 
+		MemberBean loginUser = memberService.loginService(bean);
 
-
-		MemberBean loginUser = memberService.loginService(bean); 
-		SellerBean loginSeller = memberService.getSeller(loginUser.getMemberNum()); // 수정 필요할듯..? -> bean
-		log.info("loginUser: " + loginUser + "/ loginSeller: " + loginSeller);
-		
-		
-		if(loginUser != null && loginSeller == null) { // ^ -> &&
-
-
+		if (loginUser != null) {
+			SellerBean loginSeller = memberService.getSeller(loginUser.getMemberNum()); // 수정 필요할듯..? -> bean
 			session.setAttribute("loginUser", loginUser);
+
+			if (loginSeller != null) {
+				session.setAttribute("loginUser", loginUser);
+				session.setAttribute("loginSeller", loginSeller); // "seller" -> "loginSeller"
+				session.setMaxInactiveInterval(60 * 30);
+				log.info("일반회원, loginUser 세션 정보 : " + loginUser.toString());
+				return "redirect:/main";
+			}
 			session.setMaxInactiveInterval(60 * 30);
-			log.info("*** 멤버만");
-			return "redirect:/main";
-
-
-			
-		}else if(loginUser != null && loginSeller != null) { // ^ -> &&
-
-
-			session.setAttribute("loginUser", loginUser);
-			session.setAttribute("loginSeller", loginSeller); // "seller" -> "loginSeller"
-			session.setMaxInactiveInterval(60 * 30);
-
-
-			log.info("*** 멤버 + 셀러");
-			
-
+			log.info("셀러회원, loginUser 세션 정보 : " + loginUser.toString() + ", loginSeller 세션 정보 : " + loginSeller.toString());
 			return "redirect:/main";
 		} else {
 
@@ -199,7 +185,6 @@ public class MemberController {
 	public String joinForm1() {
 		return "./member/joinForm1";
 	}
-
 
 	@GetMapping("/member/joinForm2")
 	public String joinForm2() {
