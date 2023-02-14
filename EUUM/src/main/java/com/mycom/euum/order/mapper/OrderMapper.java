@@ -2,10 +2,10 @@ package com.mycom.euum.order.mapper;
 
 import java.util.List;
 
-
 import com.mycom.euum.goods.bean.GoodsBean;
 import com.mycom.euum.order.bean.OrderBean;
 import com.mycom.euum.order.bean.OrderOptionBean;
+import com.mycom.euum.page.OrderCriteria;
 
 public interface OrderMapper {
 
@@ -27,7 +27,9 @@ public interface OrderMapper {
 	
 	public List<OrderBean> selectOrderListBySeller(int sellerNum);
 	
-	public List<OrderBean> selectAdminOrderList();
+	public List<OrderBean> selectAdminOrderList(OrderCriteria cri);
+	
+	public int selectAdminOrderCount(OrderCriteria cri);
 	
 	public int updateOrderStatus(OrderBean orderBean);
 	

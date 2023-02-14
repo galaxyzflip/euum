@@ -64,11 +64,11 @@ tbody .order-name {
 	width: 300px;
 }
 
-ul {
+.order-list-table ul {
 	text-align: center;
 }
 
-ul li {
+.order-list-table ul li {
 	display: inline-block;
 	padding: 0px;
 }
@@ -87,7 +87,7 @@ ul li {
 	width: 350px !important;
 }
 
-.input-group>.form-control {
+.input-group >.form-control {
 	flex: none;
 }
 

@@ -27,16 +27,6 @@ $(document).ready(function(){
 				actionForm.submit();
 			});
 	
-	/* var actionForm1 = $("#actionForm1");
-	$('#requestSort').on('change', function(){
-		let requestSort = $(this).find('option:selected').val();
-		console.log(requestSort);
-		$('input[name="requestCategoey"]').val(requestCategoey);
-		console.log($('input[name="requestCategoey"]').val());
-		alert(requestSort);
-		$('#actionForm1').submit();
-	}) */
-	
 	var searchForm = $("#searchForm");
 
 	$("#searchForm button").on("click",function(e) {
@@ -58,16 +48,6 @@ $(document).ready(function(){
 
 			});
 });
-</script type="text/javascript">
-
-<script>
-
-function search(){
-	var search= document.requestCategoey;
-	search.submit();
-	return false;
-}
-
 </script>
 <meta charset="EUC-KR">
 <title>Insert title here</title>
@@ -75,39 +55,8 @@ function search(){
 <body>
 <br/><br/><br/><br/><br/><br/><br/>
 <div>
-	<div class="requestSort">
-		<ul>
-			<form method="post" action="/request/requestCategoryChange" name="requestCategoey">
-	
-				<select id="requestSort" name="requestCategoey" onchange="search()">
-					<option value="">선택해주세요</option>
-					<option value="1"
-						${rqpageMaker.rqcri.requestCategoey eq "일러스트" ? 'selected' : ''}>일러스트</option>
-					<option value="2"
-						${rqpageMaker.rqcri.requestCategoey eq "디자인" ? 'selected' : ''}>디자인</option>
-					<option value="3"
-						${pageMaker.rqcri.requestCategoey eq "버츄얼" ? 'selected' : ''}>버츄얼</option>
-					<option value="4"
-						${rqpageMaker.rqcri.requestCategoey eq "영상" ? 'selected' : ''}>영상</option>
-					<option value="5"
-					${rqpageMaker.rqcri.requestCategoey eq "웹툰" ? 'selected' : ''}>웹툰</option>
-					<option value="6"
-					${rqpageMaker.rqcri.requestCategoey eq "기타" ? 'selected' : ''}>기타</option>
-				</select>
-			
-				<select id="useSort" name="requestUse" onchange="search()">
-					<option value="">선택해주세요</option>
-					<option value="1"
-						${rqpageMaker.rqcri.requestCategoey eq "상업용" ? 'selected' : ''}>상업용</option>
-					<option value="2"
-						${rqpageMaker.rqcri.requestCategoey eq "방송용" ? 'selected' : ''}>방송용</option>
-					<option value="3"
-						${pageMaker.rqcri.requestCategoey eq "비상업용" ? 'selected' : ''}>비상업용</option>
-				</select>
-			</form>
-		</ul>
-	</div>
-	
+
+
 	<div class='row'>
 		<div class="col-lg-12">
 	
@@ -194,13 +143,7 @@ function search(){
 		<input type='hidden' name='rqamount' value='${rqpageMaker.rqcri.rqamount}'>
 		<input type='hidden' name='rqtype' value='<c:out value="${ rqpageMaker.rqcri.rqtype }"/>'> 
 		<input type='hidden' name='rqkeyword' value='<c:out value="${ pageMaker.rqcri.rqkeyword }"/>'>
-		<input type='hidden' name='category' value='${rqpageMaker.rqcri.requestCategoey}'>
 	</form>
-	
-	<a href="/request/requestInsertForm">
-		<button type="submit" value="글쓰기">글쓰기</button>
-	</a>
-	
 </div>
 
 </body>

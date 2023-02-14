@@ -7,13 +7,8 @@
 $(document).ready(function(){
 	$("#changeCategory").change(function(){
 		$("#category").val($(this).val());
-
-	});
-	
-	
-	
+	});	
  });
-
 
 </script>
 

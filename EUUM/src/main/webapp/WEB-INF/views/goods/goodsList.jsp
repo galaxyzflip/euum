@@ -230,9 +230,9 @@ function OnDisplayToggle(szObjName)
 								  
 									<tr>
 										<td>    
-											<img class="thumb" src="${pageContext.request.contextPath}/resources/assets/img/zz1.jpeg/${row.goodsImageDate}s_${row.goodsImage1}"> 
-											<img class="thumb" src="${pageContext.request.contextPath}/resources/assets/img/zz2.jpeg/${row.goodsImageDate}s_${row.goodsImage2}"> 
-											<img class="thumb" src="${pageContext.request.contextPath}/resources/assets/img/zz3.jpeg/${row.goodsImageDate}s_${row.goodsImage3}">
+											<img class="thumb" src="${pageContext.request.contextPath}/resources/assets/img/zz1.jpeg/${row.goodsImageDate1}s_${row.goodsImage1}"> 
+											<img class="thumb" src="${pageContext.request.contextPath}/resources/assets/img/zz2.jpeg/${row.goodsImageDate2}s_${row.goodsImage2}"> 
+											<img class="thumb" src="${pageContext.request.contextPath}/resources/assets/img/zz3.jpeg/${row.goodsImageDate3}s_${row.goodsImage3}">
 										</td>
 										<td class="myg_info">
 											<li>${row.goodsName} / ${row.goodsUse}</li>

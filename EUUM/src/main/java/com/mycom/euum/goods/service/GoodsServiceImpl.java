@@ -48,7 +48,7 @@ public class GoodsServiceImpl implements GoodsService {
 		return goodsMapper.getTotalCount(cri);
 	}
 
-	
+
 
 	/** 선민: 나의 상품 리스트 가져오기 - 승인완료 상품 (List) */
 	@Override

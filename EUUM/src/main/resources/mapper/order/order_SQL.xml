@@ -364,9 +364,14 @@
 	<!-- 어드민 주문 관리 내역 -->
 	<select id="selectAdminOrderList"
 		resultType="com.mycom.euum.order.bean.OrderBean">
+		
+		<include refid="pagingPre"></include> 
 		<![CDATA[
-		SELECT  O.ORDER_NUM,
+		SELECT  
+		ROWNUM RNUM,		
+		O.ORDER_NUM,
         G.GOODS_NAME,
+        M.MEMBER_NAME,
 		ORDER_KEY_NUM,
 		SELLER_NICKNAME,
 		G.GOODS_NUM,
@@ -387,7 +392,6 @@
 		ORDER_IMAGE,
         ORDER_EXPIRATION_DATE,
         ORDER_PRICE,
-        ORDER_REQUEST,
         ORDER_CANCLE_DATE,
         nvl2(I.IMAGE_USE_NUM, 'Y', 'N') as FILE_YN,
         nvl2(image_file_name, gi.image_upload_path||'s_'||image_file_name, null) as image_name
@@ -399,14 +403,50 @@
         inner join (select order_num, sum(order_opt_price*order_opt_count) as "ORDER_PRICE" from order_opt_tbl group by order_num) p
         on o.order_num=p.order_num
         
+        inner join member_tbl m
+        on m.member_num = o.member_num
+        
         left outer join (select image_use_num from image_tbl where image_use='order' group by image_use_num ) i
         on i.image_use_num=o.order_key_num
         
         left outer join  (select * from(select rownum,gi.* from image_tbl gi where image_use='goods' order by image_use_num asc) where rowNum <=1 )gi
         on  gi.image_use_num=g.goods_num
-		
-		order by order_date desc
 		]]>
+
+		<include refid="criteriaForStatus"></include>
+			
+		<!-- order by order_date desc -->
+		
+		<include refid="pagingPost"></include> 
+	</select>
+	
+	<select id="selectAdminOrderCount"
+		resultType="int">
+		
+		<![CDATA[
+		SELECT COUNT(1)
+        
+		FROM ORDER_TBL O 
+        INNER JOIN GOODS_TBL G 
+        ON O.GOODS_NUM=G.GOODS_NUM
+        
+        inner join (select order_num, sum(order_opt_price*order_opt_count) as "ORDER_PRICE" from order_opt_tbl group by order_num) p
+        on o.order_num=p.order_num
+        
+        inner join member_tbl m
+        on m.member_num = o.member_num
+        
+        left outer join (select image_use_num from image_tbl where image_use='order' group by image_use_num ) i
+        on i.image_use_num=o.order_key_num
+        
+        left outer join  (select * from(select rownum,gi.* from image_tbl gi where image_use='goods' order by image_use_num asc) where rowNum <=1 )gi
+        on  gi.image_use_num=g.goods_num
+		]]>
+
+		<include refid="criteriaForStatus"></include>
+			
+		<!-- order by order_date desc -->
+		
 	</select>
 
 
@@ -454,6 +494,63 @@
 		and o.ORDER_NUM = #{orderNum}
 	</select>
 
+   
+    <sql id="pagingPre">
+      <![CDATA[
+         SELECT
+             AAA.*
+         FROM
+             (SELECT
+                 COUNT(*) OVER() AS TOTAL_COUNT,
+                 AA.*
+             FROM(
+       ]]>
+   </sql>
+   
+   <sql id="pagingPost">
+      <![CDATA[
+            )AA
+          )AAA
+         WHERE
+             (#{pageNum} -1)*#{amount} <AAA.RNUM  AND AAA.RNUM <= #{pageNum} * #{amount}
+      ]]>
+   </sql>
+   
+<sql id="criteriaForStatus">
+
+	
+	<trim prefix="where" prefixOverrides="AND | OR">
+		<if test="orderStatus != null and orderStatus.size != 0">
+		order_status in
+			<foreach item='orderStatus' collection="orderStatus" open="(" close=")" separator=",">
+				 #{orderStatus}
+			</foreach>
+		</if>
+	
+		<if test="keyword != null and keyword != '' ">
+			<trim prefix="AND (" suffix=")" prefixOverrides="OR | AND" >
+				<foreach item='type' collection="typeArr">
+					<trim prefix="OR">
+						<choose>
+							<when test="type == 'S'.toString()">
+								SELLER_NICKNAME like '%'||#{keyword}||'%'
+							</when>
+							<when test="type == 'M'.toString()">
+								MEMBER_NAME like '%'||#{keyword}||'%'
+							</when>
+							<when test="type == 'G'.toString()">
+								GOODS_NAME like '%'||#{keyword}||'%'
+							</when>
+						</choose>
+					</trim>
+				</foreach>
+			</trim>
+		</if>
+		
+	
+	</trim>
+	
+</sql>
 
 
 </mapper>

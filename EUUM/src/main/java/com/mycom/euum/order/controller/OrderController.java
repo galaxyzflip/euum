@@ -85,7 +85,7 @@ public class OrderController {
 	}
 	
 	//회원용 내 주문 보기
-	@GetMapping("order/myOrderList")
+	@GetMapping("myPage/orderList")
 	public String myOrderList(Model model, HttpSession session) {
 		
 		MemberBean member = (MemberBean)session.getAttribute("loginUser");

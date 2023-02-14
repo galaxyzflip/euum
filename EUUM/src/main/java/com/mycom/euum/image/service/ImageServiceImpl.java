@@ -111,11 +111,14 @@ public class ImageServiceImpl implements ImageService {
 
 	}
 
+	/** 선민: 이미지 등록 - 새로운 이미지 데이터를 DB에 삽입하기 */
+	/** 주문 파일 업로드에 사용하니 지우지 마시오!!*/
 	@Override
 	public void insertImage(ImageBean imageBean) throws Exception {
-		// TODO Auto-generated method stub
-		
+
+		imageMapper.insertImage(imageBean);
 	}
+
 	
 	/** 의종: 고객문의 이미지 가져오기*/
 	@Override
