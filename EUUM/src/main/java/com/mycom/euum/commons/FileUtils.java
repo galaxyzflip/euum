@@ -259,6 +259,7 @@ public class FileUtils {
 		return imageBeanList;
 	}
 	
+
 	// request
 	public List<ImageBean> orderFileUpload(MultipartFile[] uploadFile) throws Exception {
 		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
@@ -268,5 +269,6 @@ public class FileUtils {
 
 		return imageBeanList;
 	}
+
 
 }

@@ -134,4 +134,11 @@ public class ImageServiceImpl implements ImageService {
 		return imageMapper.selectGoodsQNAImage(goodsQNANum);
 	}
 
+
+	@Override
+	public void insertImage(ImageBean imageBean) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
