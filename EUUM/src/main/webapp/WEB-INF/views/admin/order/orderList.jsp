@@ -89,13 +89,16 @@ ul li {
 	<div id="searchBox">
 		<form id='actionForm' action="/admin/orderList" method='get'>
 		
+			<input type="hidden" name="sortType" value="${pageMaker.cri.sortType }">
+			<input type="hidden" name="sortValue" value="${pageMaker.cri.sortValue }">
+			
 			<input type='hidden' name='pageNum' value='${pageMaker.cri.pageNum}'>
 			<%-- <input type="hidden" name="orderStatus" value="${pageMaker.cri.orderStatus }"> --%>
 			
 			<select name="type">
-				<option value="S">작가 닉네임</option>
-				<option value="M">고객명</option>
-				<option value="G">상품명</option>
+				<option value="S" ${pageMaker.cri.type == 'S' ? 'selected' : '' }>작가 닉네임</option>
+				<option value="M" ${pageMaker.cri.type == 'M' ? 'selected' : '' }>고객명</option>
+				<option value="G" ${pageMaker.cri.type == 'G' ? 'selected' : '' }>상품명</option>
 			</select>
 			
 			<span> <input type="text" name="keyword" id="searchKeyword"
@@ -136,12 +139,12 @@ ul li {
 	<table class="order-list-table">
 		<thead>
 			<tr>
-				<td width="12%">주문번호 </td>
+				<td width="12%" onclick="sort('order_num', '${pageMaker.cri.sortType == 'order_num' ? (pageMaker.cri.sortValue =='desc' ? 'asc' : 'desc') : 'desc'}' )">주문번호</td>
 				<td width="13%">이미지</td>
-				<td width="15%">작가명</td>
+				<td width="15%" onclick="sort('seller_nickname', '${pageMaker.cri.sortType == 'seller_nickname' ? (pageMaker.cri.sortValue =='desc' ? 'asc' : 'desc') : 'desc'}' )">작가명</td>
 				<td class="order-name" width="*">주문내용</td>
-				<td width="10%">결제금액</td>
-				<td width="10%">주문상태</td>
+				<td width="10%" onclick="sort('ORDER_PRICE', '${pageMaker.cri.sortType == 'ORDER_PRICE' ? (pageMaker.cri.sortValue =='desc' ? 'asc' : 'desc') : 'desc'}' )">결제금액</td>
+				<td width="10%" onclick="sort('order_status', '${pageMaker.cri.sortType == 'order_status' ? (pageMaker.cri.sortValue =='desc' ? 'asc' : 'desc') : 'desc'}' )">주문상태</td>
 				<td width="10%"></td>
 			</tr>
 		</thead>
@@ -393,10 +396,11 @@ ul li {
 			self.location.href="/admin/orderList";
 		})
 		
-		
-		function search(){
-			$(actionForm).submit();
-		
+		function sort(sortType, sortValue){
+			$('input[name="sortType"]').val(sortType);
+			$('input[name="sortValue"]').val(sortValue);
+			$('input[name="pageNum"]').val('1');
+			actionForm.submit();
 		}
 		
 		
@@ -421,6 +425,12 @@ ul li {
 
 	});	
 	
+	function sort(sortType, sortValue){
+		$('input[name="sortType"]').val(sortType);
+		$('input[name="sortValue"]').val(sortValue);
+		$('input[name="pageNum"]').val('1');
+		actionForm.submit();
+	}
 		
 		function selectAll(selectAll)  {
 		  const checkboxes 

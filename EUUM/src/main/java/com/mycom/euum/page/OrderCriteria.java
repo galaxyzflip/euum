@@ -1,6 +1,5 @@
 package com.mycom.euum.page;
 
-import java.util.Collections;
 import java.util.List;
 
 import lombok.Data;
@@ -9,6 +8,9 @@ import lombok.Data;
 public class OrderCriteria extends Criteria{
 
 	private List<String> orderStatus;
+	private String sortType;
+	private String sortValue;
+	private int sellerNum;
 	
 	public OrderCriteria() {
 		super();
