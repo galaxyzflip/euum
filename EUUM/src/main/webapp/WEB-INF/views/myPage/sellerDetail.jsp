@@ -14,12 +14,12 @@
     width: 1080px;
     margin: 0 auto;
     clear: both;
-    padding-top: 56px;
+    padding-top: 106px;
     padding-bottom: 150px;
 }
 
 #sellerInfo {
-    height: 180px;
+    height: 200px;
     border: 1px solid #dadada;
     margin-bottom: 50px;
     box-sizing: border-box;
@@ -45,6 +45,18 @@
     margin-bottom: 8px;
 }
 
+.left_right_ol ol:nth-child(1) {
+    float: left;
+}
+
+.left_right_ol ol:nth-child(2) {
+    float: right;
+}
+
+.lsp0 {
+    letter-spacing: 0;
+}
+
 .default {
     font-size: 13px;
     letter-spacing: -0.6px;
@@ -52,20 +64,49 @@
 }
 
 #sellerInfo #section1 {
-    margin-left: 30px;x`
+    margin-left: 30px;
+   	
 }
 
 #sellerInfo #section2 {
     margin-left: 54px;
+    width: 267px;
 }
 
 #sellerInfo #section3 {
     margin-left: 54px;
+    width: 300px;
     overflow: hidden;
 }
 
-.left_div div {
-    float: left;
+#sellerInfo .line {
+    border-bottom: 1px solid #dadada;
+}
+
+#sellerInfo #section2 ul:nth-child(1) {
+    height: 22px;
+}
+
+#sellerInfo #section2 ul:nth-child(2) {
+    height: 32px;
+    padding-top: 8px;
+    box-sizing: border-box;
+}
+
+#sellerInfo #section2 ul:nth-child(3) {
+    height: 32px;
+    padding-top: 8px;
+    box-sizing: border-box;
+}
+
+#sellerInfo #section2 ul:nth-child(4) {
+    height: 22px;
+    padding-top: 8px;
+}
+
+.s_title {
+    font-size: 24px;
+    letter-spacing: -1px;
 }
 
 #bank_main {
@@ -175,12 +216,10 @@ input[type='file'] {
 
 <input type="hidden" name="memberNum" value="${seller.memberNum}">
 
-<c:if test="${member.memberClass = 'S'}">
 <div id="sellerInfo" class="left_div">
-<c:choose>
 
 <div>
-<img class="round_face2" src="${pageContext.request.contextPath}/resources/img/${image.imageUploadPath}s_${image.imageFileName}">
+<img class="round_face2" src="${pageContext.request.contextPath}/resources/img/${image.imageUploadPath}${image.imageFileName}">
 <ul style="height:8px"></ul>
 </div>
 
@@ -192,10 +231,10 @@ input[type='file'] {
 
 
 <div id="section2">
-<ul class="line left_right_ol"><ol>결제완료</ol></ul>
-<ul class="line left_right_ol"><ol>진행중</ol></ul>
-<ul class="line left_right_ol"><ol>입금예정</ol></ul>
-<ul class="left_right_ol"><ol>거래완료</ol></ul>
+<ul class="line left_right_ol"><ol>결제완료</ol><ol class="lsp0">0건 / 0원</ol></ul>
+<ul class="line left_right_ol"><ol>작업중</ol><ol class="lsp0">0건 / 0원</ol></ul>
+<ul class="line left_right_ol"><ol>입금대기중</ol><ol class="lsp0">0건 / 0원</ol></ul>
+<ul class="left_right_ol"><ol>완료</ol><ol class="lsp0">0건 / 0원</ol></ul>
 </div>
 
 
@@ -206,8 +245,6 @@ input[type='file'] {
 <ul>${seller.sellerContact2}</ul>
 </div>
 
-</c:if>
-</c:choose>
 </div>
 <!-- sellerInfo -->
 
@@ -227,18 +264,18 @@ input[type='file'] {
 <div id="bank_sub" class="cf">
 <ul>
 <ol>은행명</ol>
-<ol><input type="text" name="sellerBankName" maxlength="30" value="${seller.sellerBankName}"></ol>
+<ol><input type="text" name="sellerBankName" id="sellerBankName" maxlength="30" value="${seller.sellerBankName}"></ol>
 </ul>
 
 <ul>
 <ol>계좌번호</ol>
-<ol><dl><input type="text" name="sellerAccountNum" maxlength="30" value="${seller.sellerAccountNum}" placeholder="정확하게 기입해 주세요">
-		<span style="margin-left:20px" class="fsize13">' - ' 포함하여 기입</span></dl></ol>
+<ol><dl><input type="text" name="sellerAccountNum" id="sellerAccountNum" maxlength="30" value="${seller.sellerAccountNum}" placeholder="정확하게 기입해 주세요">
+		<span style="margin-left:20px" class="fsize13">' - ' 제외하고 기입</span></dl></ol>
 </ul>
 
 <ul>
 <ol>예금주</ol>
-<ol><dl><input type="text" name="sellerAccountName" maxlength="30" value="${seller.sellerAccountName}"></dl></ol>
+<ol><dl><input type="text" name="sellerAccountName" id="sellerAccountName" maxlength="30" value="${seller.sellerAccountName}"></dl></ol>
 </ul>
 
 </div>
@@ -247,7 +284,7 @@ input[type='file'] {
 
 <div id="profile_Box">
 
-<ul><ol><img class="round_face" src="${pageContext.request.contextPath}/resources/img/${image.imageUploadPath}s_${image.imageFileName}"></ol></ul>
+<ul><ol><img class="round_face" src="${pageContext.request.contextPath}/resources/img/${image.imageUploadPath}${image.imageFileName}"></ol></ul>
 <ul>"권장사이즈 "<font>180 x 180 px</font></ul>
 <ul style="margin-top:14px; text-align: center;" class="cf">
 <input type="file" class="real-upload" name="uploadFile" multiple id="orgFile">
@@ -282,9 +319,9 @@ input[type='file'] {
 </dl>
 <dl>
 <font class="comment orange Ldefault">
-"* 연락수단과 관련된 내용 불가"
+* 연락수단과 관련된 내용 불가
 <br>
-"* SNS 홍보 불가"
+* SNS 홍보 불가
 </font>
 </dl>
 </ol>
@@ -316,9 +353,9 @@ input[type='file'] {
 </span>
 <div>
 <i></i>
-"정보 수정 후 아래에 있는 "
+정보 수정 후 아래에 있는 '
 <font>저장 버튼</font>
-"을 눌러주세요"
+'을 눌러주세요
 </div>
 </div>
 </ul>
@@ -352,22 +389,13 @@ input[type='file'] {
 
 <script>
 
+/* radio 버튼 값 표시 */
+
 window.onload = function(){
 	 document.querySelector("#sellerBuisnessYn input[value='${seller.sellerBuisnessYn}']").setAttribute('checked' , true);
 }
 
-</script>
-
-<script>
-function modifySellerPro() {
-	//var form = document.getElementById("modifySellerForm");
-	if (confirm("전문가 정보를 변경하시겠습니까?") == true) {
-		alert("전문가 정보가 변경 되었습니다.");
-		return true;
-	} else {
-		return false;
-	} 
-}
+/* 프로필 이미지 업로드 버튼 연동 및 업로드 기능 실행 및 select 태그 값 표시 */
 
 const realUpload = document.querySelector('.real-upload');
 const upload = document.querySelector('.rBtn_lGray');
@@ -377,14 +405,67 @@ upload.addEventListener('click', () => realUpload.click());
 function submit2(frm) { 
     frm.action='/myPage/modifySellerFilePro'; 
     frm.submit(); 
-    return true; 
-  } 
+    return true;
+	
+} 
 
 $("#sellerSpecialty").val("sellerSpecialty");
 
 $("#sellerSpecialty").val("${seller.sellerSpecialty}").prop("selected", true);
 
+/* 유효성 검사 */
 
+function modifySellerPro() {
+
+	var nname = $("#sellerNickName").val();
+	var nncheck = RegExp(/^[a-z|A-Z|가-힣|0-9]{2,12}$/);
+	var sp = $("#sellerSpecialty").val();
+	var bname = $("#sellerBankName").val();
+	var anum = $("#sellerAccountNum").val();
+	var numcheck = RegExp(/^[0-9]{10,30}$/);
+	var aname = $("#sellerAccountName").val();
+	var check = RegExp(/^[가-힣]+$/);
+	
+	if(nname == "") {
+	 alert("닉네임을 입력해주세요.");
+	 $("#sellerNickName").focus();
+	 return false;
+	 }
+	if(!nncheck.test(nname)) {
+	 alert("닉네임형식에 맞게 입력해주세요.");
+	 $("#sellerNickName").val("");
+	 $("#sellerNickName").focus();
+	 return false;
+	 }
+	if(sp == "") {
+	 alert("전문분야를 선택해 주세요.");
+	 $("#sellerSpecialty").focus();
+	 return false;
+	 }
+	if(!check.test(bname)) {
+	 alert("은행명을 제대로 입력해주세요.");
+	 $("#sellerBankName").val("");
+	 $("#sellerBankName").focus();
+	 return false;
+	 }
+	if(!numcheck.test(anum)) {
+	 alert("계좌번호를 제대로 입력해주세요.");
+	 $("#sellerAccountNum").val("");
+	 $("#sellerAccountNum").focus();
+	 return false;
+	 }
+	if(!check.test(aname)) {
+	 alert("예금주를 제대로 입력해주세요.");
+	 $("#sellerAccountName").val("");
+	 $("#sellerAccountName").focus();
+	 return false;
+	 }
+	else {
+	 alert("전문가 정보가 변경 되었습니다.");
+	 return true;
+	 }
+	
+}
 
 </script>
 </html>
