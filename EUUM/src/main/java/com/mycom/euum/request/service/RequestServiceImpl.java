@@ -14,7 +14,7 @@ import lombok.Setter;
 @Service
 public class RequestServiceImpl implements RequestService {
 
-	
+
 
 	@Setter(onMethod_ = @Autowired)
 	private RequestMapper requestMapper;
@@ -41,6 +41,18 @@ public class RequestServiceImpl implements RequestService {
 	public RequestBean requestDetail(int requestNum) {
 		// TODO Auto-generated method stub
 		return requestMapper.requestDetail(requestNum);
+	}
+	
+	@Override
+	public RequestBean requestModifyForm(int requestNum) {
+		// TODO Auto-generated method stub
+		return requestMapper.requestModify(requestNum);
+	}
+
+	@Override
+	public int requestModifyPro(RequestBean requestBean) {
+		// TODO Auto-generated method stub
+		return requestMapper.requestModifyPro(requestBean);
 	}
 	
 	@Override

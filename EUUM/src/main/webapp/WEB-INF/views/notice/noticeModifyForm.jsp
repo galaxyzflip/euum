@@ -99,10 +99,10 @@ function deletee(){
 		<input type="hidden" id="amount" value='<c:out value="${cri.amount }"/>'>
 	</form>
 		
-		<div align="center">
-			<button type="button" onclick="modify()">수정</button>
-			<button type="button" onclick="deletee()">삭제</button>
-		</div>	
+	<div align="center">
+		<button type="button" onclick="modify()">수정</button>
+		<button type="button" onclick="deletee()">삭제</button>
+	</div>	
 	
 
 

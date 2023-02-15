@@ -81,4 +81,25 @@ public class RequestController {
 		
 		return "request/requestDetail";
 	}
+	
+	@GetMapping("/request/requestModifyForm")
+	public String requestModifyForm(@RequestParam("requestNum") int requestNum, Model model) {
+		
+		model.addAttribute("requestModify", requestService.requestModifyForm(requestNum));
+		
+		log.info("리뷰 수정 입니다======================================================");
+		log.info(requestService.requestModifyForm(requestNum));
+		return "request/requestModify";
+	}
+	
+	@PostMapping("/request/requestModifyPro")
+	public String requestModifyPro(@RequestParam("requestNum") int requestNum, RequestBean requestBean) {
+		
+		requestService.requestModifyPro(requestBean);
+		
+		log.info("리뷰 수정 처리 입니다======================================================");
+		log.info(requestService.requestModifyPro(requestBean));
+		
+		return "redirect:/request/requestList";
+	}
 }
