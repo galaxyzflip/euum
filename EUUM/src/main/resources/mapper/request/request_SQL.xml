@@ -3,16 +3,174 @@
    PUBLIC "-//mybatis.org//DTD Mapper 3.0/EN"
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
    
-<mapper namespace="com.mycom.euum.review.mapper.ReviewMapper">
+<mapper namespace="com.mycom.euum.request.mapper.RequestMapper">
 
 	<insert id="requestInsert">	
 		<![CDATA[
 			insert into REQUEST_TBL(REQUEST_NUM, REQUEST_CATEGORY, REQUEST_USE, REQUEST_MONEY,
-									MEMBER_NUM, REQUEST_WRITER, REQUEST_CONTENT, REQUEST_TITLE)
+									MEMBER_NUM, REQUEST_WRITER, REQUEST_CONTENT, REQUEST_TITLE, REQUEST_FINISH, REQUEST_DEAD)
 			values(REQUEST_NUM_SEQ.NEXTVAL, #{requestCategory}, #{requestUse}, #{requestMoney}, #{memberNum},
-					#{requestWriter}, #{requestContent}, #{requestTitle})
+					#{requestWriter}, #{requestContent}, #{requestTitle}, #{requestFinish}, #{requestDead})
 		]]>
-		
 	</insert>
+	
+	<select id="requestList" resultType="com.mycom.euum.request.bean.RequestBean">
+		<![CDATA[
+		select REQUEST_NUM, REQUEST_STATUS, REQUEST_CATEGORY, REQUEST_USE, REQUEST_TITLE, 
+			   REQUEST_WRITER, REQUEST_DELETE, REQUEST_FINISH, REQUEST_DEAD 
+		from (select rownum rn, REQUEST_NUM, REQUEST_STATUS, REQUEST_CATEGORY, REQUEST_USE, REQUEST_TITLE, 
+			  		 REQUEST_WRITER, REQUEST_DELETE, REQUEST_FINISH, REQUEST_DEAD
+		      FROM REQUEST_TBL
+		      WHERE
+		]]>	 
+		<include refid="rqcriteria"></include>
+		<![CDATA[
+					rownum <=#{rqpageNum} * #{rqamount} AND REQUEST_DELETE = 'N')
+		where rn>(#{rqpageNum}-1) * #{rqamount} ORDER BY REQUEST_NUM DESC
+		]]>	
+	</select>
+	
+	<select id="requestCategoryChange" resultType="com.mycom.euum.request.bean.RequestBean">
+		<![CDATA[
+		select REQUEST_NUM, REQUEST_STATUS, REQUEST_CATEGORY, REQUEST_USE, REQUEST_TITLE, 
+			   REQUEST_WRITER, REQUEST_DELETE, REQUEST_FINISH, REQUEST_DEAD 
+		from (select rownum rn, REQUEST_NUM, REQUEST_STATUS, REQUEST_CATEGORY, REQUEST_USE, REQUEST_TITLE, 
+			  		 REQUEST_WRITER, REQUEST_DELETE, REQUEST_FINISH, REQUEST_DEAD
+		      FROM REQUEST_TBL
+		      WHERE
+		]]>	 
+		<include refid="rqcriteria"></include>
+		<![CDATA[
+					rownum <=#{rqpageNum} * #{rqamount} AND REQUEST_DELETE = 'N' AND REQUEST_CATEGORY=#{requestCategory})
+		where rn>(#{rqpageNum}-1) * #{rqamount} ORDER BY REQUEST_NUM DESC
+		]]>	
+	</select>
+	
+	<select id="requestDetail" resultType="com.mycom.euum.request.bean.RequestBean">
+		select REQUEST_NUM, REQUEST_CATEGORY, REQUEST_USE, REQUEST_MONEY, MEMBER_NUM,
+				REQUEST_CONTENT, REQUEST_STATUS, REQUEST_TITLE, REQUEST_WRITER,
+				REQUEST_FINISH, REQUEST_DEAD, REQUEST_DELETE
+		from REQUEST_TBL
+		where REQUEST_NUM = #{requestNum} AND REQUEST_DELETE='N'
+	</select>
+	
+	
+	<select id="requestModify" resultType="com.mycom.euum.request.bean.RequestBean">
+	
+	</select>
+	
+	<update id="requestModifyPro">
+	
+	</update>
+	
+	<update id="requestDelete">
+	
+	</update>
+	
+	<select id="getTotalCount" resultType="int">
+		select count(*) from REQUEST_TBL 
+		where REQUEST_NUM>0 AND REQUEST_DELETE ='N'	
+	</select>
+	
+	<sql id="rqcriteria">
+		<trim prefix="(" suffix=") AND " prefixOverrides="OR">
+			<foreach item='type' collection="typeArr">
+				<trim prefix="OR">
+					<choose>
+						<when test="type == 'T'.toString()">
+							REQUEST_TITLE like '%'||#{rqkeyword}||'%'
+						</when>
+						<when test="type == 'C'.toString()">
+							REQUEST_CONTENT like '%'||#{rqkeyword}||'%'
+						</when>
+						<when test="type == 'W'.toString()">
+							REQUEST_WRITER like '%'||#{rqkeyword}||'%'
+						</when>
+					</choose>
+				</trim>
+			</foreach>
+		</trim>
+	</sql>
+	
+	
+	<!-- 검색//카테고리 새로 시작 -->
+	
+	<select id="selectRequestList"
+		resultType="com.mycom.euum.request.bean.RequestBean">
+		
+   	<![CDATA[
+   		select * 
+		from(select rownum rn, GOODS_NUM , GOODS_NAME, GOODS_USE,
+		            GOODS_SELLER_NICKNAME, GOODS_PRICE
+			 from GOODS_TBL  
+			 where GOODS_STATUS = '승인완료'
+		]]>
 
+	
+		<if test="keyword != null and keyword !=''">
+			and ${type} like '%' || #{keyword} || '%'
+		</if>
+
+		<if test="sortCom == ''  or sortCom == null">
+			order by goods_num DESC
+		</if>
+		<if test="sortCom == 1">
+			order by goods_num DESC
+		</if>
+		<if test="sortCom == 2">
+			and GOODS_USE = '상업용'  order by goods_num desc
+		</if>
+		<if test="sortCom == 3">
+			and GOODS_USE = '비상업용'  order by goods_num desc
+		</if>
+		<if test="sortCom == 4">
+			and GOODS_USE = '상업용+비상업용'   order by goods_num desc
+	</if>
+	<![CDATA[  	 
+		   	 
+		   	 )
+	 
+		where rn>(#{pageNum}-1) * #{amount} and rn<=(#{pageNum} * #{amount})
+		
+	 ]]>	
+	 
+
+	 
+		<![CDATA[  	
+		
+		
+		
+    ]]>
+	</select>
+
+	<!-- 페이징에 필요 -->
+	<select id="getTotalCount1" resultType="int">
+		select count(1)
+		from(select rownum rn, GOODS_NUM , GOODS_NAME, GOODS_USE,
+		            GOODS_SELLER_NICKNAME, GOODS_PRICE
+			 from GOODS_TBL  
+			 where GOODS_STATUS = '승인완료'
+	
+
+	
+		<if test="type != null and type !=''">
+			and ${type} like '%' || #{keyword} || '%'
+		</if>
+
+	
+		<if test="sortCom == 2">
+			and GOODS_USE = '상업용'
+		</if>
+		<if test="sortCom == 3">
+			and GOODS_USE = '비상업용' 
+		</if>
+		<if test="sortCom == 4">
+			and GOODS_USE = '상업용+비상업용'
+	</if>
+	)
+
+	</select>
+	
+	
+	
 </mapper>

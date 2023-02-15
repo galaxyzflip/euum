@@ -1,4 +1,3 @@
-
 /**
  * 작성일 : 2023-01-13
  * 용도 : 상품 추가옵션 정보 Bean
@@ -28,4 +27,3 @@ public class GoodsOptionBean {
 //	private List<String> goodsOptContent;
 //	private int goodsOptContentNum;
 }
-

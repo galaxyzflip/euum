@@ -1,4 +1,3 @@
-
 /**
  * 작성일 : 2023-01-13
  * 용도 : 상품 정보 Bean
@@ -29,9 +28,12 @@ public class GoodsBean {
 	String goodsModifyCount;
 	Date goodsDate;
 	String goodsPeriod;
-	String goodsImageDate;
 	String goodsImage1;
 	String goodsImage2;
 	String goodsImage3;
+	String goodsImageDate1;
+	String goodsImageDate2;
+	String goodsImageDate3;
+	
+	
 }
-

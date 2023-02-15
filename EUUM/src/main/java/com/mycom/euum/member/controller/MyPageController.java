@@ -1,11 +1,6 @@
 package com.mycom.euum.member.controller;
 
-
-
-
-
-
-
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,11 +10,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.mycom.euum.commons.FileUtils;
 import com.mycom.euum.image.bean.ImageBean;
 import com.mycom.euum.image.service.ImageService;
+import com.mycom.euum.member.bean.CartBean;
 import com.mycom.euum.member.bean.MemberBean;
 import com.mycom.euum.member.bean.SellerBean;
 import com.mycom.euum.member.service.MyPageService;
@@ -32,10 +29,44 @@ import lombok.extern.log4j.Log4j;
 @AllArgsConstructor
 public class MyPageController {
 	
-	MyPageService myPageService;
+
+	private MyPageService myPageService;
 	ImageService imageService;
 	private FileUtils fileUtils;
 
+	// 찜목록
+	@GetMapping("/myPage/sellerList")
+	public String getCartList(HttpServletRequest request,Model model)throws Exception {
+		log.info("==== 찜목록 ====");
+		
+		HttpSession session = request.getSession();
+		log.info("==== session ====");
+		MemberBean memberBean = (MemberBean)session.getAttribute("loginUser");
+		log.info("cartBean : " + memberBean);
+		int memberNum = memberBean.getMemberNum();
+		log.info("memberNum: " + memberNum);
+		
+		log.info("==== 리스트 ====");
+		List<CartBean> myCart = myPageService.getCartList(memberNum);
+		log.info("리스트 : " + myCart);
+		model.addAttribute("myCartList", myCart);
+		
+		return "myPage/sellerList";
+	}
+	
+	
+	@GetMapping(value = "/myPage/delSellerList")
+	public String deleteCart(HttpServletRequest request,@RequestParam("goodsNum") String goodsNum) {
+		HttpSession session = request.getSession();
+		MemberBean memberBean = (MemberBean)session.getAttribute("loginUser");
+		int memberNum = memberBean.getMemberNum();
+		
+		log.info("memberNum ================== " + memberNum);
+		log.info("굿즈넘 ================== " + goodsNum);
+		myPageService.deleteCart(memberNum,Integer.parseInt(goodsNum));
+		return "redirect:/myPage/sellerList";
+	}
+	
 	// 회원정보 상세보기 겸 수정 창
 	@GetMapping("/myPage/modifyForm")
 	public String memberDetail(Model model, HttpServletRequest request) {
@@ -170,8 +201,14 @@ public class MyPageController {
 		log.info("uploadFile: " + uploadFile);
 		log.info("uploadFile: " + uploadFile.length);
 		
+
+		List<String> profile = new ArrayList<String>();
+			
+		/* profile = fileUtils.fileUpload(uploadFile); */
+
 		log.info("---------------------------------");
 		List<ImageBean> imageBeanList = fileUtils.sellerFileUpload(uploadFile);
+
 		
 		int selectKeySellerNum = (Integer)sellerBean.getSellerNum();
 		

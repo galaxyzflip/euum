@@ -11,19 +11,7 @@
 </head>
 
 <script type="text/javascript">
-function show_id(num){
-	if(num=='1'){
-		$("#guide1").show(); 
-		$("#guide2").hide(); 
-		$('#tab1').attr('class','tab_on');
-		$('#tab2').attr('class','tab');
-	} else {
-		$("#guide1").hide(); 
-		$("#guide2").show(); 
-		$('#tab1').attr('class','tab');
-		$('#tab2').attr('class','tab_on');
-	}
-} */
+
 
 /* var iMenuLayers = 6; // 총레이어개수
 function OnDisplayToggle(szObjName)
@@ -49,33 +37,73 @@ function OnDisplayToggle(szObjName)
 			if(menuId) menuId.style.backgroundColor = '#c65926';
 		}
 	}
-} */
+}  */
 
-/* function loading(){
+ function loading(){
 	document.getElementById('list_loading').style.display='block';
 	setTimeout(function(){
 			document.getElementById('list_loading').style.display='none';
 	},2000);
 
-} */
+} 
 
-function writer_chk(level){
-	if(level >= 3){
+  //작품등록시,memberClass로 전문가회원인지 일반회원인지 구분하기 위함 
+/* function writer_chk(level){
+	if(level == "S"){
 		location.href="";
 	}else{
 		alert('작가회원만 작품등록이 가능합니다. \n일반회원은 회원정보에서 작가회원으로 변경하실 수 있습니다');
 		return false;
 	}
-}
+} */
+
+
+//정렬
+/* document.getElementById("sortCom").onchange = function() {
+	this.form.submit();
+} */
+
+
+
+
+
+	// 페이징 + 정렬 																																					
+	$(document).ready(function(e){
+		
+		var actionForm = $("#actionForm");
+		actionForm.find("input[name='pageNum']").val('1');
+		
+		let sortCom = '${pagaMaker.cri.sortCom}';
+		
+	
+		$('#sortCom').on('change', function(){
+			let sortCom = $(this).find('option:selected').val();
+			console.log(sortCom);
+			$('input[name="sortCom"]').val(sortCom);
+			console.log($('input[name="sortCom"]').val());
+			$('#actionForm').submit();
+		})
+		
+		$(".paginate_button a").on("click", function(e) {
+
+			e.preventDefault();
+
+			console.log('click');
+
+			actionForm.find("input[name='pageNum']").val($(this).attr("href"));
+			actionForm.submit();
+		});
+		
+	})
+
+
+
 </script>
 
 <body>
-	<br>
-	<br>
-	<br>
+	<br><br><br><br><br>
 	<div class="container">
 		<div class="sub_menu_back">
-			<!-- <div class="siteWidth left_ul"> -->
 			<ul class="head_title">
 				<span>작품 리스트</span>
 				<span class="head_title_s">커미션은 상업적인 용도로 사용할 수 없습니다</span>
@@ -101,9 +129,6 @@ function writer_chk(level){
 				<a href="#" onclick="loading();">
 					<li class="">웹툰 · 만화</li>
 				</a>
-				<a href="#" onclick="loading();">
-					<li class="">글 · 기타</li>
-				</a>
 			</ul>
 		</div>
 		<br> <br> <br> <br>
@@ -112,8 +137,7 @@ function writer_chk(level){
 		<div class="subContent">
 			<!-- MAIN CENTER START -->
 			<div class="cate_banner_title">
-				<ul>프리미엄 작가
-				</ul>
+				<ul>프리미엄 작가</ul>
 			</div>
 
 			<div id="cate_banner" class="clear">
@@ -121,120 +145,104 @@ function writer_chk(level){
 					<%-- 		<img src="${pageContext.request.contextPath}/resources/assets/img/image/zz1.jpeg/${goodsImage1}" alt="" style='width: 260px; height: 220px'> --%>
 				</a>
 				<a href="/goods/goodsDetail?goods_num=${goodsNum}">
-					<img src="${pageContext.request.contextPath}/resources/assets/img/image/zz2.jpeg/${goodsImage2}" alt="" style='width: 260px; height: 220px'>
+					<img src="${pageContext.request.contextPath}/resources/assets/img/zz1.jpeg/${goodsImage1}" alt="" style='width: 260px; height: 220px'>
 				</a>
 				<a href="/goods/goodsDetail?goods_num=${goodsNum}">
-					<img src="${pageContext.request.contextPath}/resources/assets/img/image/zz3.jpeg/${goodsImage3}" alt="" style='width: 260px; height: 220px'>
+					<img src="${pageContext.request.contextPath}/resources/assets/img/zz2.jpeg/${goodsImage2}" alt="" style='width: 260px; height: 220px'>
 				</a>
 				<a href="/goods/goodsDetail?goods_num=${goodsNum}">
-					<img src="${pageContext.request.contextPath}/resources/assets/img/image/zz3.jpeg/${goodsImage3}" alt="" style='width: 260px; height: 220px'>
+					<img src="${pageContext.request.contextPath}/resources/assets/img/zz3.jpeg/${goodsImage3}" alt="" style='width: 260px; height: 220px'>
 				</a>
 			</div>
+			
+			
+			
 		</div>
 	</div>
 
-	<div class="clear" style="height: 55px;">&nbsp;</div>
+	<div class="clear 5px;">&nbsp;</div>
 
-	<div id="listFocus" class="clear" style="height: 6px;">&nbsp;</div>
-	<div id="list_top" class="cf">
-		<!--  @SEARCH BOX START -->
-		<ul class="left" style="padding-top: 10px; width: 930px;">
-			<form name="searchForm" method="get" action="/goods/goodsSearch">
-				<!-- <input type="hidden" name="channel" value="list">
-			<input type="hidden" name="cate" value="">
-			<input type="hidden" name="order" value="">
-			<input type="hidden" name="limit" value="">
-			<input type="hidden" name="field" value=""> -->
-		</ul>
 		<br> <br> <br>
 
 		<div class="container">
 			<div class="row gy-5">
 				<div class="col">
 					<div style="float: left; font-size: 14.5px;">
-						<div id="search_Box">
-							<form method="get" action="/goods/goodsSearch"> 
-								<select name="searchOption">
-									<option value="goodsName">상품 이름</option>
-									<option value="goodsWriter">작가 이름</option>
+						<div id="searchBox">
+						<form id='actionForm' action="/goods/goodsList" method='get'>
+				<input type='hidden' name='pageNum' value='${pageMaker.cri.pageNum}'>
+				<input type='hidden' name='amount' value='${pageMaker.cri.amount}'>
+				<input type="hidden" name="sortCom" value="${pageMaker.cri.sortCom }">
+			    <%-- <input type='hidden' name='type' value='<c:out value="${ pageMaker.cri.type }"/>'> --%>
+				<%-- <input type='hidden' name='keyword' value='<c:out value="${ pageMaker.cri.keyword }"/>'>  --%>
+			<!-- </form> -->
+							<!-- this.form.submit()<form method="get" action="/goods/goodsSearch">  -->
+								<select name="type" value="${pageMaker.cri.type }">
+									<option value="goods_Name">상품 이름</option>
+									<option value="GOODS_SELLER_NICKNAME">작가 이름</option>
 								</select>
 								<span>
-									<input type="text" name="searchKeyword" id="searchKeyword" style="width: 200px; height: 30px; display: inline-block;">
+									<input type="text" name="keyword" id="searchKeyword" value='<c:out value="${ pageMaker.cri.keyword }"/>' style="width: 200px; height: 30px; display: inline-block;">
 								</span>
 								<span>
 									<button type="submit" style="height: 32px; width: 80px;">검색</button>
 								</span>
 							</form>
 						</div>
-						
-						
-						
-						
-						
-						
-						
-						<div>
-							<form action="/goods/goodsSearch2" method="get">
-								<select name="searchOption" onChange="">
-									<option value="">선택하세요</option>
-									<option value="1번">1번</option>
-									<option value="2번">2번</option>
-								</select>
-							</form>
-						</div>
 
 
 
-
-
-
-						<!-- @SEARCH BOX END-->
-
+						
+                        <!--    정 렬 옵 션   -->
 						<div class="goodsSort">
-							<form method="post" action="/goods/goodsSort" name="sortType">
-								<select id="sortType" name="sort-order" class="sort-order" onchange="sortOrder()">
-									<option value="1">최신순</option>
-									<option value="2">인기순</option>
-								</select>
-								<select id="sort-commers" name="sort-commers" class="sort-commers" onchange="sortCommers()">
-									<option value="">상업용 / 비상업용</option>
-									<option value="Y">상업용</option>
-									<option value="N">비상업용</option>
+							<form method="post" action="/goods/goodsSort" name="sortCom">
+	
+								<select id="sortCom" name="sortCom">
+								    <option value="" >선택해주세요</option>
+									<option value="1" ${pageMaker.cri.sortCom eq "1" ? 'selected' : ''}>최신순</option>
+								    <option value="2" ${pageMaker.cri.sortCom eq "2" ? 'selected' : ''}>상업용</option>
+									<option value="3" ${pageMaker.cri.sortCom eq "3" ? 'selected' : ''}>비상업용</option>
+									<option value="4" ${pageMaker.cri.sortCom eq "4" ? 'selected' : ''}>상업용+비상업용</option>
 								</select>
 							</form>
 						</div>
-						<div class="lgBtn" onclick="location.href='index.php?channel=today'">최근 본 작가</div>
+						
 					</div>
-					<!-- </ul> -->
-					<!-- <ul class="right"> -->
+				
+				
 					<div style="float: right; font-size: 14.5px;">
-						<div class="sBtn1" style="height: 42px; line-height: 42px;" onclick="writer_chk('1')">작품 등록 / 수정</div>
-						<!-- </ul> -->
-					</div>
+					    <div class="sBtn1" style="height: 42px; line-height: 42px;" onclick="location.href='<c:url value='/myPage/myGoods'/>';">작품 등록 / 수정</div>
+				    </div>
 				</div>
 			</div>
 			<br> <br> <br> <br>
 
 
-
+           
 			<div class="container">
 				<c:choose>
 					<c:when test="${fn:length(goodsList) > 0}">
-						<c:forEach items="${goodsList}" var="row">
+						<c:forEach items="${goodsList}" var="row" >
 							<div style="padding-bottom: 15px;">
+							<form id='goodsList' action='/goods/goodsList' method='get'> ${row.goodsNum}
+                                         <a href="/goods/goodsDetail?goodsNum=${row.goodsNum}">
 								<table style="border: solid 1px">
+								  
 									<tr>
-										<td>
-											<img class="thumb" src="${pageContext.request.contextPath}/resources/img/${row.goodsImageDate}s_${row.goodsImage1}">
-											<img class="thumb" src="/resources/img/${row.goodsImageDate}s_${row.goodsImage2}">
-											<img class="thumb" src="/resources/img/${row.goodsImageDate}s_${row.goodsImage3}">
+										<td>    
+											<img class="thumb" src="${pageContext.request.contextPath}/resources/assets/img/zz1.jpeg/${row.goodsImageDate1}s_${row.goodsImage1}"> 
+											<img class="thumb" src="${pageContext.request.contextPath}/resources/assets/img/zz2.jpeg/${row.goodsImageDate2}s_${row.goodsImage2}"> 
+											<img class="thumb" src="${pageContext.request.contextPath}/resources/assets/img/zz3.jpeg/${row.goodsImageDate3}s_${row.goodsImage3}">
 										</td>
 										<td class="myg_info">
-											<li>${row.goodsName}/ ${row.goodsUse}</li>
-											<li>${row.goodsSellerNickname}/ ${row.goodsPrice}</li>
+											<li>${row.goodsName} / ${row.goodsUse}</li>
+											<li>${row.goodsSellerNickname} / ${row.goodsPrice}</li>
 										</td>
-									</tr>
+									 </tr>
 								</table>
+								       </a>
+						     </form>
+								
 							</div>
 						</c:forEach>
 					</c:when>
@@ -243,7 +251,31 @@ function writer_chk(level){
 					</c:otherwise>
 				</c:choose>
 			</div>
+			
+			
+			<!--     페 이 징    -->
+			<div class="container" >
+				<ul class="pagination">
+				
+					<c:if test="${pageMaker.prev}">
+							<li class="paginate_button previous">
+							<a href="${pageMaker.startPage -1}">Previous</a></li>
+							
+					</c:if>
 
+						<c:forEach var="num" begin="${pageMaker.startPage}" end="${pageMaker.endPage}">
+							<li class="paginate_button  ${pageMaker.cri.pageNum == num ? "active":""}">
+								<a href="${num }">${num }</a>&nbsp;&nbsp;
+							</li>
+						</c:forEach>
+
+
+					 <c:if test="${pageMaker.next}">
+					      <li class="paginate_button next">
+						  <a href="${pageMaker.endPage +1 }">Next</a></li>
+					</c:if>
+				</ul>
+			</div>
 
 		</div>
 </body>

@@ -2,6 +2,8 @@ package com.mycom.euum.member.service;
 
 import java.util.List;
 
+
+import com.mycom.euum.member.bean.CartBean;
 import com.mycom.euum.image.bean.ImageBean;
 import com.mycom.euum.member.bean.MemberBean;
 import com.mycom.euum.member.bean.SellerBean;
@@ -28,6 +30,10 @@ public interface MyPageService {
 	public void insertSeller(SellerBean bean);
 	
 	public int updateMemberClass(MemberBean bean);
+	
+	public List<CartBean> getCartList(int memberNum);
+	
+	public int deleteCart(int memberNum, int goodsNum);
 	
 	// 회원 주문 관련
 	

@@ -85,7 +85,7 @@ public class OrderController {
 	}
 	
 	//회원용 내 주문 보기
-	@GetMapping("order/myOrderList")
+	@GetMapping("myPage/orderList")
 	public String myOrderList(Model model, HttpSession session) {
 		
 		MemberBean member = (MemberBean)session.getAttribute("loginUser");
@@ -136,17 +136,6 @@ public class OrderController {
 
 		model.addAttribute("orderList", orderList);
 		return "sellerOrder/sellerOrderList";
-	}
-	
-	
-
-	//admin용 주문리스트 불러오는 메소드
-	@GetMapping("admin/order/orderList")
-	public String adminOrderList(Model model) {
-		
-		List<OrderBean> orderList = orderService.selectAdminOrderList();
-		model.addAttribute("orderList", orderList);
-		return "admin/order/orderList";
 	}
 	
 	
