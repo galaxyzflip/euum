@@ -30,7 +30,7 @@ public class OrderBean {
 	private String orderPeriod;
 	private String orderImage;
 	private String orderCancleReason;
-	private String review_num;
+	private String reviewNum;
 	
 	private Date orderExpirationDate;
 	private String sellerNickname;

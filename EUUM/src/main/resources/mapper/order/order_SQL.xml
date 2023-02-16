@@ -308,7 +308,7 @@
         INNER JOIN GOODS_TBL G 
         ON O.GOODS_NUM=G.GOODS_NUM
         
-        left outer join review_tbl r
+        left outer join (select * from review_tbl where REVIEW_DELETE ='N') r
 		on r.order_num = o.order_key_num
         
         inner join (select order_num, sum(order_opt_price*order_opt_count) as "ORDER_PRICE" from order_opt_tbl group by order_num) p
@@ -374,8 +374,8 @@
         INNER JOIN GOODS_TBL G 
         ON O.GOODS_NUM=G.GOODS_NUM
         
-        left outer join review_tbl r
-on r.order_num = o.order_key_num
+        left outer join (select * from review_tbl where REVIEW_DELETE ='N') r
+		on r.order_num = o.order_key_num
         
         inner join (select order_num, sum(order_opt_price*order_opt_count) as "ORDER_PRICE" from order_opt_tbl group by order_num) p
         on o.order_num=p.order_num
@@ -440,8 +440,8 @@ on r.order_num = o.order_key_num
         INNER JOIN GOODS_TBL G 
         ON O.GOODS_NUM=G.GOODS_NUM
         
-        left outer join review_tbl r
-on r.order_num = o.order_key_num
+        left outer join (select * from review_tbl where REVIEW_DELETE ='N') r
+		on r.order_num = o.order_key_num
         
         inner join (select order_num, sum(order_opt_price*order_opt_count) as "ORDER_PRICE" from order_opt_tbl group by order_num) p
         on o.order_num=p.order_num
@@ -631,6 +631,12 @@ on r.order_num = o.order_key_num
 		<if test="sellerNum != null and sellerNum != ''">
 			and seller_num = #{sellerNum}
 		</if>
+		
+		<if test="goodsNum != null and goodsNum != ''">
+			and g.goods_num = #{goodsNum}
+		</if>
+		
+		
 	
 		<if test="keyword != null and keyword != '' ">
 			<trim prefix="AND (" suffix=")" prefixOverrides="OR | AND" >
@@ -645,6 +651,9 @@ on r.order_num = o.order_key_num
 							</when>
 							<when test="type == 'G'.toString()">
 								GOODS_NAME like '%'||#{keyword}||'%'
+							</when>
+							<when test="type == 'N'.toString()">
+								G.GOODS_NUM like '%'||#{keyword}||'%'
 							</when>
 						</choose>
 					</trim>

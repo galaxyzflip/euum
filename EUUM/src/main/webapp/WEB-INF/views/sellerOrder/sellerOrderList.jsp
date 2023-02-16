@@ -47,6 +47,11 @@ img {
 	margin:auto;
 }
 
+.search-box{
+	width: 1000px;
+	margin:auto;
+}
+
 .order-list-table thead td {
 	border-bottom: 1px solid #dadada;
 	background-color: #f2f2f2;
@@ -130,7 +135,7 @@ tbody .order-name {
 
 <div class="container">
 
-<div id="searchBox">
+<div id="searchBox" class='search-box'>
 		<form id='actionForm' action="/seller/orderList" method='get'>
 		
 			<input type="hidden" name="sortType" value="${pageMaker.cri.sortType }">
@@ -499,6 +504,10 @@ $(document).ready(function() {
 		actionForm.submit();
 	})
 	
+	$('input[name="orderStatus"]').on('click', function(){
+			$('input[name="pageNum"]').val('1');
+			actionForm.submit();
+	})
 	
 	$('#resetSearch').on('click', function(){
 		self.location.href="/seller/orderList";
@@ -560,6 +569,9 @@ $(document).ready(function() {
 		  checkboxes.forEach((checkbox) => {
 		    checkbox.checked = selectAll.checked;
 		  })
+		  
+		  $('input[name="pageNum"]').val('1');
+			actionForm.submit();
 		}	
 
 	

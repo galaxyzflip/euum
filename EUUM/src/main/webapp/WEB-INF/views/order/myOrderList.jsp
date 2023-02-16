@@ -47,6 +47,11 @@ img {
 	margin:auto;
 }
 
+.search-box{
+	width: 1000px;
+	margin:auto;
+}
+
 .order-list-table thead td {
 	border-bottom: 1px solid #dadada;
 	background-color: #f2f2f2;
@@ -133,20 +138,20 @@ tbody .order-name {
 
 <div class="container">
 
-<div id="searchBox">
+<div id="searchBox" class='search-box'>
 		<form id='actionForm' action="/myPage/orderList" method='get'>
 		
 			<input type="hidden" name="sortType" value="${pageMaker.cri.sortType }">
 			<input type="hidden" name="sortValue" value="${pageMaker.cri.sortValue }">
-			
 			<input type='hidden' name='pageNum' value='${pageMaker.cri.pageNum}'>
-			<%-- <input type="hidden" name="orderStatus" value="${pageMaker.cri.orderStatus }"> --%>
+			<input type="hidden" name="goodsNum" value="${pageMaker.cri.goodsNum }">
 			
 			<select name="type">
-				<option value="SMG" ${pageMaker.cri.type == 'SMG' ? 'selected' : '' }>전체</option>
+				<option value="SMGN" ${pageMaker.cri.type == 'SMGN' ? 'selected' : '' }>전체</option>
 				<option value="S" ${pageMaker.cri.type == 'S' ? 'selected' : '' }>작가 닉네임</option>
 				<option value="M" ${pageMaker.cri.type == 'M' ? 'selected' : '' }>고객명</option>
 				<option value="G" ${pageMaker.cri.type == 'G' ? 'selected' : '' }>상품명</option>
+				<option value="N" ${pageMaker.cri.type == 'N' ? 'selected' : '' }>상품번호</option>
 			</select>
 			
 			<span> <input type="text" name="keyword" id="searchKeyword"
@@ -336,11 +341,11 @@ tbody .order-name {
 									
 									<li class="go-review">
 										<c:if test="${order.orderStatus eq 6 }">
-											<c:if test="${!empty order.review_num}">
-												<button onclick="modifyReview('${order.orderKeyNum}','${order.orderNum }','${order.goodsNum }','order${status.index }')">리뷰수정</button>		
+											<c:if test="${ order.reviewNum ne null}">
+												<button onclick="modifyReview('${order.reviewNum}')">리뷰수정</button>		
 											</c:if>	
 											
-											<c:if test="${empty order.review_num}">
+											<c:if test="${order.reviewNum eq null}">
 												<button onclick="postReview('${order.orderKeyNum}','${order.orderNum }','${order.goodsNum }','order${status.index }')">리뷰작성</button>		
 											</c:if>	
 										</c:if>	
@@ -476,9 +481,13 @@ tbody .order-name {
 			actionForm.submit();
 		});
 		
-		
 		$('#search').on('click', function(e){
 			e.preventDefault();
+			$('input[name="pageNum"]').val('1');
+			actionForm.submit();
+		})
+		
+		$('input[name="orderStatus"]').on('click', function(){
 			$('input[name="pageNum"]').val('1');
 			actionForm.submit();
 		})
@@ -542,6 +551,11 @@ tbody .order-name {
 
 	});
 	
+	function modifyReview(reviewNum){
+		let url = "/review/reviewModifyForm?reviewNum="+reviewNum;
+		self.location.href=url;
+	}
+	
 	
 	function sort(sortType, sortValue){
 		$('input[name="sortType"]').val(sortType);
@@ -557,7 +571,10 @@ tbody .order-name {
 		  checkboxes.forEach((checkbox) => {
 		    checkbox.checked = selectAll.checked;
 		  })
-		}
+		  
+		  $('input[name="pageNum"]').val('1');
+			actionForm.submit();
+	}
 	
 	
 	function updateStatus(orderNum, orderStatus, orderForm){

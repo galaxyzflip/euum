@@ -11,6 +11,7 @@ public class OrderCriteria extends Criteria{
 	private String sortType;
 	private String sortValue;
 	private int sellerNum;
+	private int goodsNum;
 	
 	public OrderCriteria() {
 		super();

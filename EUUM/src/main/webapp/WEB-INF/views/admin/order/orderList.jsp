@@ -431,6 +431,11 @@ ul li {
 			actionForm.submit();
 		})
 		
+		$('input[name="orderStatus"]').on('click', function(){
+			$('input[name="pageNum"]').val('1');
+			actionForm.submit();
+		})
+		
 		
 		$('#resetSearch').on('click', function(){
 			self.location.href="/admin/orderList";
@@ -479,6 +484,9 @@ ul li {
 		  checkboxes.forEach((checkbox) => {
 		    checkbox.checked = selectAll.checked;
 		  })
+		  
+		  $('input[name="pageNum"]').val('1');
+			actionForm.submit();
 		}
 	
 	
