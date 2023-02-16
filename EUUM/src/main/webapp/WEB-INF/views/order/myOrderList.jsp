@@ -244,13 +244,15 @@ tbody .order-name {
 									
 									<li class="go-review">
 										<c:if test="${order.orderStatus eq 6 }">
-											<button onclick="postReview('${order.orderKeyNum}','${order.orderNum }','${order.goodsNum }','order${status.index }')">리뷰작성</button>		
+											<button onclick="postReview('${order.orderKeyNum}','${order.orderNum }','${order.goodsNum }','order${status.index }')">리뷰작성</button>
+											<button onclick="reviewModify()">리뷰수정</button>	
 										</c:if>	
 									</li>
 									
 									<c:if test="${order.fileYn eq 'Y' }">
 										<li class='file-yn'><button class="view-file" onclick="fileList(${order.orderKeyNum}, 'order${status.index }' ,'${order.orderNum }', '${order.orderStatus }')">파일보기</button></li><br>
 									</c:if>
+									
 									
 									<li class="file-list">
 										
@@ -328,7 +330,7 @@ tbody .order-name {
 			return false;
 		}		
 		
-		let url = "/review/insertForm?orderKeyNum="+orderKeyNum+"?goodsNum="+goodsNum;
+		let url = "/review/insertForm?orderKeyNum="+orderKeyNum+"&goodsNum="+goodsNum;
 		self.location.href = url;
 	}
 
@@ -597,6 +599,12 @@ tbody .order-name {
 		
 		modal.modal('hide');
 	})
+	
+	function reviewModify() {
+		let url = "/review/reviewModifyForm"
+			
+		 self.location.href = url; 
+	}
 	
 </script>
 

@@ -87,6 +87,11 @@ function deletee(){
 								
 				<td>내용</td>
 				<td><textarea name="noticeContent">${modify.noticeContent }</textarea>
+				
+				<!--  이미지 리스트 -->
+	             <c:forEach items="${image}" var="row">
+	            <td> <img src="/resources/img/${row.imageUploadPath}${row.imageFileName}" width=350; height=350;>   </td>     
+	             </c:forEach>	
 				</td>
 			</form>	
 			</tr>

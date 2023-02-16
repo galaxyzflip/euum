@@ -38,9 +38,13 @@ public class NoticeServiceImpl implements NoticeService{
 	}
 
 	@Override
-	public void noticeInsert(NoticeBean noticeBean) {
-		// TODO Auto-generated method stub
+	public int noticeInsert(NoticeBean noticeBean) {
+		
 		noticeMapper.noticeInsert(noticeBean);
+		
+		int noticeKey = noticeBean.getNoticeNum();
+		
+		return noticeKey;
 	}
 
 	@Override

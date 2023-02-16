@@ -46,6 +46,12 @@
 <body>
 <br/><br/><br/><br/><br/><br/><br/><br/>
 <div class="container">
+
+    <h2>이용 후기</h2>
+     <form action="/myPage/orderList">
+    <button type="submit" class="btn btn-default" >후기 작성</button>   
+    </form>
+ 
 	<table>
 		<thead>
 				<tr>
@@ -60,6 +66,7 @@
 		
 		<c:if test="${fn:length(reviewList) != 0}">
 			<c:forEach items="${reviewList}" var="reviewList">
+			  
 				<tr>
 					<td><c:out value="${reviewList.reviewNum }"/></td>
 					
@@ -81,6 +88,9 @@
 						<ul class="menu">
 						<a><c:out value="${reviewList.reviewTitle }"/></a>
 				            <ul class="hide">
+				              <c:forEach var="image" items="${reviewList.imageBean}">
+							    <img src="/resources/img/${image.imageUploadPath}${image.imageFileName}" width=200; height=200;>
+							  </c:forEach> 
 				                <c:out value="${reviewList.reviewContent }"/>
 				               	
 				            </ul>
