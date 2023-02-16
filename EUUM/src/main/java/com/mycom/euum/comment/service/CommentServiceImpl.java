@@ -15,20 +15,6 @@ public class CommentServiceImpl implements CommentService{
     
 	private CommentMapper commentMapper;
 	
-	@Override
-	public void goodsCommentInsert(CommentBean commentBean) {
-		
-		commentMapper.goodsCommentInsert(commentBean);
-	}
-
-	@Override
-	public List<CommentBean> selectGqnaComment(int goodsQNANum) {
-	
-		return commentMapper.selectGqnaComment(goodsQNANum);
-	}
-
-
-	
 	
 
 }

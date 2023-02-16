@@ -60,6 +60,12 @@ public class RequestServiceImpl implements RequestService {
 		// TODO Auto-generated method stub
 		return requestMapper.requestCategoryChange(rqcri);
 	}
+
+	@Override
+	public int requestDelete(RequestBean requestBean) {
+		// TODO Auto-generated method stub
+		return requestMapper.requestDelete(requestBean);
+	}
 	
 
 }

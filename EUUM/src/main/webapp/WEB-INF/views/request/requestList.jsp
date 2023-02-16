@@ -54,9 +54,7 @@ $(document).ready(function(){
 	
 
 	var actionForm = $("#actionForm");
-		actionForm.find("input[name='rqpageNum']").val('1');
-
-		/* let requestCategory = '${rqpagaMaker.rqcri.requestCategory}'; */
+		/* actionForm.find("input[name='rqpageNum']").val('1'); */
 
 		$('#category').on('change', function() {
 					let requestCategory = $(this).find('option:selected').val();

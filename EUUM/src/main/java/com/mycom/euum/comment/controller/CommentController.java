@@ -14,12 +14,6 @@ public class CommentController {
 	
 	private CommentService commentService;
 	
-	@PostMapping("/comment/goodsQNAInsert")
-	public String goodsCommentInsert(CommentBean commentBean) {
-		
-		 commentService.goodsCommentInsert(commentBean);
-		 
-		 return "redirect:/goodsQNA/List";
-	}
+
 
 }

@@ -115,6 +115,9 @@
 	</update>
 	
 	<update id="requestDelete">
+		UPDATE REQUEST_TBL
+		SET REQUEST_DELETE ='Y'
+		WHERE REQUEST_NUM=#{requestNum} AND MEMBER_NUM=#{memberNum}
 	
 	</update>
 	

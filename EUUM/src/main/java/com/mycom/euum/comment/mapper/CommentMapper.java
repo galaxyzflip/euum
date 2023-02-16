@@ -10,11 +10,9 @@ import com.mycom.euum.page.Criteria;
 
 public interface CommentMapper {
 	
-	public void goodsCommentInsert(CommentBean commentBean);
-	
-	public List<CommentBean> selectGqnaComment(int goodsQNANum);
-	
 	public int commentInsert(CommentBean commentBean);
+	
+	public List<CommentBean> commentList(int goodsQNANum);
 	
 	public CommentBean commentRead(int commentNum);
 	
@@ -22,5 +20,5 @@ public interface CommentMapper {
 	
 	public int commentModify(CommentBean commentBean);
 	
-	public List<CommentBean>commentListPaging(@Param("cri") Criteria cri, @Param("commentNum") int CommentNum);
+	
 }

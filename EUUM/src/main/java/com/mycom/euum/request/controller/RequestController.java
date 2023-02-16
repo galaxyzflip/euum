@@ -102,4 +102,15 @@ public class RequestController {
 		
 		return "redirect:/request/requestList";
 	}
+	
+	@PostMapping("/request/requestDelete")
+	public String requestDelete(@RequestParam("requestNum") int requestNum, RequestBean requestBean) {
+		
+		requestService.requestDelete(requestBean);
+		log.info("리뷰 삭제 처리 입니다======================================================");
+		log.info(requestService.requestDelete(requestBean));
+		
+		
+		return "redirect:/request/requestList";
+	}
 }

@@ -5,12 +5,12 @@
    
 <mapper namespace="com.mycom.euum.comment.mapper.CommentMapper">
      
-     <insert id="goodsCommentInsert" parameterType="com.mycom.euum.comment.bean.CommentBean">
+     <insert id="commentInsert" parameterType="com.mycom.euum.comment.bean.CommentBean">
         <![CDATA[ 
 	     INSERT INTO COMMENT_TBL(COMMENT_NUM, MEMBER_NUM, COMMENT_WRITER,
-	            COMMENT_CONTENT, COMMENT_CATEGORY, COMMENT_ORIGINALNUM)
-	              VALUES(COMMENT_NUM_SEQ.NEXTVAL, #{memberNum}, #{commentWriter},
-	                 #{commentContent}, #{commentCategory}, #{commentOriginalNum})
+	            				 COMMENT_CONTENT, COMMENT_ORIGINALNUM)
+	     VALUES(COMMENT_NUM_SEQ.NEXTVAL, #{memberNum}, #{commentWriter},
+	            #{commentContent}, #{commentOriginalNum})
          ]]>	
      </insert> 
      
@@ -22,12 +22,12 @@
 		 ]]>		   
 	  </select>
      
-     <insert id="commentInsert" parameterType="com.mycom.euum.comment.bean.CommentBean">
+     <!-- <insert id="commentInsert" parameterType="com.mycom.euum.comment.bean.CommentBean">
         <![CDATA[ 
 	     INSERT INTO COMMENT_TBL(COMMENT_NUM, MEMBER_NUM, COMMENT_WRITER, COMMENT_CONTENT, COMMENT_CATEGORY, COMMENT_ORIGINALNUM)
          VALUES(COMMENT_NUM_SEQ.NEXTVAL, #{memberNum}, #{commentWriter}, #{commentContent}, #{commentCategory}, #{commentOriginalNum})
          ]]>	
-     </insert> 
+     </insert>  -->
      
      <select id="commentRead" resultType="com.mycom.euum.comment.bean.CommentBean">
      	 <![CDATA[ 

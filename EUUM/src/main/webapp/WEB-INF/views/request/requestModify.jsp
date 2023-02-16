@@ -10,7 +10,6 @@
 <script>
 $(document).ready(function(){
 	
-	
 	$("#changeCategory").change(function(){
 		$("#category").val($(this).val());
 	alert($(this).val())
@@ -46,12 +45,12 @@ function modify(){
 
 function deletee(){
 	
-	var requestModify=$("#requestModify").serialize();
-		alert(requestModify);
+	var requestDelete=$("#requestModify").serialize();
+		alert(requestDelete);
 		$.ajax({
 			type : "POST",
 			url : "<c:url value='/request/requestDelete'/>",
-			data : requestModify,
+			data : requestDelete,
 			async: false,
 			success : function(data){
 				
@@ -68,7 +67,7 @@ function list(){
 	var operForm=$("#operForm").serialize();
 		alert(operForm);
 		$.ajax({
-			type : "get",
+			type : "GET",
 			url : "<c:url value='/request/requestList'/>",
 			data : operForm,
 			async: false,
@@ -110,7 +109,7 @@ function list(){
 				</td>
 				
 				<td><label for="category">용도 선택</label>
-				<input type="hidden" id="use"/>
+				<input type="hidden" id="use" />
 					<select id="changeCategory2" name="requestUse">
 						<option value="">선택하세요</option>
 						<option value="방송용">방송용</option>
@@ -151,7 +150,7 @@ function list(){
 		</table>
 	</form>
 		
-	<form id="operForm" action="/request/requestModifyForm" method="get">
+	<form id="operForm">
 		<input type="hidden" id="requestNum" value='<c:out value="${requestModify.requestNum }"/>'>
 		<input type="hidden" id="rqpageNum" value='<c:out value="${rqcri.rqpageNum }"/>'>
 		<input type="hidden" id="rqamount" value='<c:out value="${rqcri.rqamount }"/>'>

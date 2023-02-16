@@ -20,5 +20,7 @@ public interface RequestService {
 	public RequestBean requestModifyForm(int requestNum);
 	
 	public int requestModifyPro(RequestBean requestBean);
+	
+	public int requestDelete(RequestBean requestBean);
 
 }

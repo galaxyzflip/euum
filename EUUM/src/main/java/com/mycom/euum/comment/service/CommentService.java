@@ -6,8 +6,6 @@ import com.mycom.euum.comment.bean.CommentBean;
 
 public interface CommentService {
 	
-	public void goodsCommentInsert(CommentBean commentBean);
 	
-	public List<CommentBean> selectGqnaComment(int goodsQNANum);
 
 }
