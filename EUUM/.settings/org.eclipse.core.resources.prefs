@@ -1,3 +1,5 @@
 eclipse.preferences.version=1
 encoding//src/main/java/com/mycom/euum/qna/controller/QNAController.java=UTF-8
 encoding//src/main/java/com/mycom/euum/qna/mapper/QNAMapper.java=euc-kr
+encoding//src/main/webapp/WEB-INF/tiles/main_tiles.xml=UTF-8
+encoding/<project>=UTF-8

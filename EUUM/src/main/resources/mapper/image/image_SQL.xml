@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mycom.euum.image.mapper.ImageMapper">
+
+	<!-- 선민: 이미지 등록 (insertImage) -->
+	<insert id="insertImage" parameterType="com.mycom.euum.image.bean.ImageBean">
+		insert into IMAGE_TBL
+		(
+			IMAGE_NUM,
+			IMAGE_UUID,
+			IMAGE_UPLOAD_PATH,
+			IMAGE_FILE_NAME,
+			IMAGE_FILE_TYPE,
+			IMAGE_USE,
+			IMAGE_USE_NUM,
+			IMAGE_SEQUENCE
+		)
+		values
+		(
+			IMAGE_NUM_SEQ.nextval,
+			#{imageUUID},
+			#{imageUploadPath},
+			#{imageFileName},
+			#{imageFileType},
+			#{imageUse},
+			#{imageUseNum},
+			#{imageSequence}
+		)
+	</insert>
+	
+	<!-- 선민: 이미지 수정 사전작업 - 수정하는 sequence에 해당하는 기존 DB 데이터가 있는지 확인 -->
+	<select id="selectExistingSequence" parameterType="com.mycom.euum.goods.bean.GoodsBean" resultType="int">
+		select count(*) from IMAGE_TBL
+		where 
+			IMAGE_USE = #{imageUse}
+		and 
+			IMAGE_USE_NUM = #{imageUseNum}
+		and 
+			IMAGE_SEQUENCE = #{imageSequence}
+	</select>	
+	
+	<!-- 선민: 이미지 수정 (updateImage) -->
+	<update id="updateImage" parameterType="com.mycom.euum.image.bean.ImageBean">
+		update IMAGE_TBL
+		set
+			IMAGE_UUID = #{imageUUID},
+			IMAGE_UPLOAD_PATH = #{imageUploadPath},
+			IMAGE_FILE_NAME = #{imageFileName}
+		where
+			IMAGE_USE = #{imageUse}
+		and
+			IMAGE_USE_NUM = #{imageUseNum}
+		and
+			IMAGE_SEQUENCE = #{imageSequence}
+	</update>
+	
+	<select id="selectImageList" resultType="com.mycom.euum.image.bean.ImageBean">
+	
+		SELECT * 
+		FROM IMAGE_TBL 
+		WHERE IMAGE_USE=#{imageUse}
+		AND IMAGE_USE_NUM=#{imageUseNum}
+	
+	</select>
+  
+    <delete id="deleteImage">
+		delete from IMAGE_TBL
+		where IMAGE_USE = #{imageUse} and IMAGE_USE_NUM = #{imageUseNum}
+	</delete>
+	
+	<insert id="insertSellerImage" parameterType="com.mycom.euum.image.bean.ImageBean">
+		insert into IMAGE_TBL
+		(
+			IMAGE_NUM,
+			IMAGE_FILE_NAME,
+			IMAGE_FILE_TYPE,
+			IMAGE_USE,
+			IMAGE_USE_NUM
+		)
+		values
+		(
+			IMAGE_NUM_SEQ.nextval,
+			'image.png',
+			'i',
+			'seller',
+			#{imageUseNum}
+		)
+	</insert>
+	
+	<select id="getSellerImage" resultType="com.mycom.euum.image.bean.ImageBean">
+		select *
+		from IMAGE_TBL
+		where image_use_num = #{imageUseNum}
+	</select>
+	
+  <!-- 의종: 고객문의 이미지 가져오기-->
+  <select id="selectQNAImage" resultType="com.mycom.euum.image.bean.ImageBean">		
+     <![CDATA[
+		SELECT * FROM IMAGE_TBL
+		  WHERE IMAGE_USE = 'qna'
+			AND IMAGE_USE_NUM = #{qnaNum}
+	 ]]>		   
+  </select>
+  
+   <!-- 의종: 상품문의 이미지 가져오기-->
+    <select id="selectGoodsQNAImage" resultType="com.mycom.euum.image.bean.ImageBean">		
+     <![CDATA[
+		SELECT * FROM IMAGE_TBL
+		  WHERE IMAGE_USE = 'goodsQNA'
+			AND IMAGE_USE_NUM = #{goodsQNANum}
+	 ]]>		   
+  </select>
+
+
+</mapper>

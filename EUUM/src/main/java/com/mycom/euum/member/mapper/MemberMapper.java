@@ -53,12 +53,14 @@ public interface MemberMapper {
 	
 	
 	/**전문가 정보 불러오기*/
-	public SellerBean getSeller(String sellerNum);
+	public SellerBean getSeller(int sellerNum);
 	
 	
 	/**전문가 정보 수정*/
 	public int updateSeller(SellerBean bean);
 	
+	/**전문가 프로필 수정*/
+	public int updateSellerFile(SellerBean bean);
 	
 	/**전문가 프로필 가져오기... 수정 필요함*/
 	public MemberBean getSellerInfo(int memberNum);

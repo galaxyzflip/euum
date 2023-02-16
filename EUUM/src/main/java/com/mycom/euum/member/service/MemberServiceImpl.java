@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 
 import com.mycom.euum.member.bean.MemberBean;
+import com.mycom.euum.member.bean.SellerBean;
 import com.mycom.euum.member.mapper.MemberMapper;
 
 import lombok.AllArgsConstructor;
@@ -70,6 +71,13 @@ public class MemberServiceImpl implements MemberService {
 	public int selectByMobile(String mobile) {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+
+	@Override
+	public SellerBean getSeller(int sellerNum) {
+		// TODO Auto-generated method stub
+		return memberMapper.getSeller(sellerNum);
 	}
 
 }

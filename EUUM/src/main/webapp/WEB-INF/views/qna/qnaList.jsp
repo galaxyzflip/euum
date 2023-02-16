@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <!DOCTYPE html>
@@ -32,34 +32,39 @@
   
   <thead>
     <tr>
-      <th scope="col">��ȣ</th>
-      <th scope="col">����</th>
-      <th scope="col">�̸�</th>
-      <th scope="col">��ȸ��</th>
-      <th scope="col">�����</th>
+      <th scope="col">번호</th>
+      <th scope="col">제목</th>
+      <th scope="col">이름</th>
+      <th scope="col">조회수</th>
+      <th scope="col">등록일</th>
     </tr>
   </thead>
   
 
   <tbody>
-    <c:forEach items="${list}" var="var">
-    
+    <c:forEach items="${list}" var="var" varStatus="vs">
+
     <tr>   
-      <th scope="row">${var.qnaNum }</th> <!-- ��ȣ -->
-      <td><a class='move' href='/qna/Detail?qnaNum=<c:out value="${var.qnaNum}"/>'>
-    
+      <th scope="row">${var.qnaNum }</th> <!-- 번호 -->
+      <td><a class='move' onclick="move(${vs.index}); return false;" href='/qna/Detail?qnaNum=<c:out value="${var.qnaNum}"/>'>
+      <input type="hidden" id="qnaDelete" name="qnaDelete" value="${var.qnaDelete}"/>
+
 	<c:choose> 
-		<c:when test="${var.qnaOrdered > 0}" > 
-		    RE:<c:out value="${var.qnaTitle }"/>
+	    <c:when test="${var.qnaDelete eq 'Y'}" > 
+		    삭제된 게시글입니다
+		</c:when>
+		<c:when test="${var.qnaOrdered > 0 and var.qnaDelete eq 'N'}" > 
+		   ↪RE:<c:out value="${var.qnaTitle }"/>
 		</c:when>
 		<c:otherwise> 
 			<c:out value="${var.qnaTitle }"/>
 		</c:otherwise> 
 	</c:choose>  
+    
       </a></td>
       
       <td><c:out value="${var.qnaWriter }"/></td>
-      <td>0</td>
+      <td>${var.qnaHitcount}</td>
       <td><fmt:formatDate value="${var.qnaRegdate }" pattern="yyyy-MM-dd" /></td>
     </tr>
  
@@ -74,70 +79,63 @@
 
 <div id="qnaFoot">
 
-<div class='pull-right' align="center">
-	<ul class="pagination">
-	
-		<c:if test="${pageMaker.prev}">
-			<li class="paginate_button previous"><a href="${pageMaker.startPage -1}">Previous</a></li>
-		</c:if>
+  	<div class='row'>
+		<div class="col-lg-12">
 
-			<c:forEach var="num" begin="${pageMaker.startPage}"
-				end="${pageMaker.endPage}">
-				<li class="paginate_button  ${pageMaker.cri.pageNum == num ? "active":""} ">
-					<a href="${num}">${num}</a>
-				</li>
-			</c:forEach>
+			<form id='searchForm' action="/qna/List" method='get'>
+				<select name='type'>
+					<option value=""
+						<c:out value="${pageMaker.cri.type == null?'selected':''}"/>>--</option>
+					<option value="T"
+						<c:out value="${pageMaker.cri.type eq 'T'?'selected':''}"/>>제목</option>
+					<option value="C"
+						<c:out value="${pageMaker.cri.type eq 'C'?'selected':''}"/>>내용</option>
+					<option value="W"
+						<c:out value="${pageMaker.cri.type eq 'W'?'selected':''}"/>>작성자</option>
+				</select> 
+				<input type='text' name='keyword'value='<c:out value="${pageMaker.cri.keyword}"/>' /> 
+				<input type='hidden' name='pageNum' value='<c:out value="${pageMaker.cri.pageNum}"/>' /> 
+				<input type='hidden' name='amount' value='<c:out value="${pageMaker.cri.amount}"/>' />
+				<button class='btn btn-default'>Search</button>
+			</form>
+		</div>
+	</div>
 
-			<c:if test="${pageMaker.next}">
-				<li class="paginate_button next"><a
-					href="${pageMaker.endPage +1 }">Next</a></li>
-			</c:if>
-	</ul>
+<div class='pull-right'>
+  <ul class="pagination">
+ 
+  <c:if test="${pageMaker.prev}">
+     <li class="page-item">
+     <a class="page-link" href="${pageMaker.startPage -1}" tabindex="-1">Previous</a>
+     </li>
+  </c:if> 
+    
+    <c:forEach var="num" begin="${pageMaker.startPage}" end="${pageMaker.endPage}">
+      <li class="page-item ${pageMaker.cri.pageNum == num ? " active":""} ">
+      <a class="page-link" href="${num}">${num}</a></li>     
+    </c:forEach>
+    
+   <c:if test="${pageMaker.next}">
+     <li class="page-item">
+     <a class="page-link" href="${pageMaker.endPage +1}" tabindex="-1">Next</a>
+     </li>
+   </c:if>
+    
+  </ul>
 </div>	
+
+
+<form id="actionForm" action="/qna/List" method='get'>
+	<input type='hidden' name='pageNum' value='${pageMaker.cri.pageNum}'>
+	<input type='hidden' name='amount' value='${pageMaker.cri.amount}'>
+	<input type='hidden' name='type' value='<c:out value="${ pageMaker.cri.type }"/>'> 
+	<input type='hidden' name='keyword' value='<c:out value="${ pageMaker.cri.keyword }"/>'>
+</form>
 	
 </div>
 
-<!-- <nav aria-label="...">
-  <ul class="pagination pagination-sm">
-    <li class="page-item active" aria-current="page">
-      <span class="page-link">1</span>
-    </li>
-    <li class="page-item"><a class="page-link" href="#">2</a></li>
-    <li class="page-item"><a class="page-link" href="#">3</a></li>
-  </ul>
-</nav> -->
+<button class="btn btn-primary" type="submit" id="write" onclick="location.href='/qna/insertForm';">글쓰기</button>
 
-<%-- <div class='pull-right'>
-	<ul class="pagination">
-	
-		<c:if test="${pageMaker.prev}">
-			<li class="paginate_button previous"><a href="${pageMaker.startPage -1}">Previous</a></li>
-		</c:if>
-
-			<c:forEach var="num" begin="${pageMaker.startPage}"
-				end="${pageMaker.endPage}">
-				<li class="paginate_button  ${pageMaker.cri.pageNum == num ? "active":""} ">
-					<a href="${num}">${num}</a>
-				</li>
-			</c:forEach>
-
-			<c:if test="${pageMaker.next}">
-				<li class="paginate_button next"><a
-					href="${pageMaker.endPage +1 }">Next</a></li>
-			</c:if>
-	</ul>
-</div> --%>
-
-
-
-
-
-<form id='actionForm' action="/qna/List" method='get'>
-	<input type='hidden' name='pageNum' value='${pageMaker.cri.pageNum}'>
-	<input type='hidden' name='amount' value='${pageMaker.cri.amount}'>
-</form>
-
-<button class="btn btn-primary" type="submit" id="write" onclick="location.href='/qna/insertForm';">�۾���</button>
 
 </div>
  
@@ -146,32 +144,62 @@
 </body>
 
 <script type="text/javascript">
-/* $(".move").on("click",function(e) {
-	e.preventDefault();
-	actionForm
-			.append("<input type='hidden' name='qnaNum' value='"
-					+ $(this).attr(
-							"href")
-					+ "'>");
-	actionForm.attr("action",
-			"/qna/Detail");
-	actionForm.submit();
+   /* $(".move").on("click",function(e) {  
+	 e.preventDefault();
+	 
+	 alert("d");
+	 
+})   */
+ 
+function move(index) {
+    var i = index;
+	var a = document.getElementsByName("qnaDelete")[i].value; 
 
-}); */
+  if(a == 'Y'){
+		
+	alert("삭제된 게시글입니다.")
+	} else{
+		form.submit();
+	}  
+
+} 
+
 $(document).ready(function(){
 	var actionForm = $("#actionForm");
 
-	$(".paginate_button a").on("click", function(e) {
+	$(".page-link").on("click", function(e) {
 
-				e.preventDefault();
+		e.preventDefault();
+              
+		var targetPage = $(this).attr("href");
+        
+	    console.log(targetPage);
+	    
+	    actionForm.find("input[name='pageNum']").val(targetPage);  
+	    actionForm.submit();
+	});
+	
+	var searchForm = $("#searchForm");
 
-				console.log('click');
+	$("#searchForm button").on("click",function(e) {
+		
 
-				actionForm.find("input[name='pageNum']")
-						.val($(this).attr("href"));
-				actionForm.submit();
+		if (!searchForm.find("option:selected").val()) {
+			alert("검색종류를 선택하세요");
+			return false;
+			}
+
+			if (!searchForm.find("input[name='keyword']").val()) {
+			alert("키워드를 입력하세요");
+			return false;
+			}
+
+			searchForm.find("input[name='pageNum']").val("1");
+			e.preventDefault();
+			searchForm.submit();
+
 			});
 
-});										
+})										
 </script>
 </html>

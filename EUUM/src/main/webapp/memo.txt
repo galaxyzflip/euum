@@ -1,15 +1,15 @@
-1. DB 설계도 점검...
+1. 없어진 메소드 있어서 추가
 
-이름 규칙...	
-	option - opt
-	goods_seller_nickname - seller_nickname
+@Override
+	public void insertImage(ImageBean imageBean) throws Exception {
+		imageMapper.insertImage(imageBean);
+	}
 	
-	GOODS_OPTION_CONTENT_NUM_SEQ - goods_opt_content_num
-	
-	goods_use 크기 키우기
-	
-2. 바뀐 테이블 테이블 생성 DDL 수정해주세요
+2. loginPro 메소드 수정 
 
-3. request.getRealPath
-
-notice/notice - notice/noticelist
+@PostMapping("/member/loginPro")
+	public String loginPro(MemberBean bean, SellerBean sellerBean, HttpServletRequest request,
+			RedirectAttributes rttr)
+			
+			
+3. 리뷰 연결

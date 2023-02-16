@@ -11,7 +11,7 @@ public interface QNAService {
 	
 	public List<QNABean> qnaList(Criteria cri);
 	
-	public void qnaInsert(QNABean qnaBean,HttpServletRequest request);
+	public int qnaInsert(QNABean qnaBean,HttpServletRequest request);
     
 	public QNABean qnaDetail(int qnaNum);
 	
@@ -30,4 +30,6 @@ public interface QNAService {
 	public void qnaModifyPro(QNABean qnaBean);
 	
 	public int getQNATotalCount(Criteria cri);
+	
+	public int updateQNAcnt(int qnaNum);
 }

@@ -20,7 +20,7 @@ public class GoodsBean {
 	String goodsContent;
 	int goodsPrice;
 	String goodsSellerNickname;
-	int goodsMemberNum;
+	int memberNum;
 	String goodsFormat;
 	String goodsResolution;
 	String goodsSize;
@@ -28,8 +28,12 @@ public class GoodsBean {
 	String goodsModifyCount;
 	Date goodsDate;
 	String goodsPeriod;
-	String goodsImageDate;
 	String goodsImage1;
 	String goodsImage2;
 	String goodsImage3;
+	String goodsImageDate1;
+	String goodsImageDate2;
+	String goodsImageDate3;
+	
+	
 }

@@ -7,6 +7,7 @@ import lombok.Data;
 @Data
 public class CommentBean {
 	
+
 	private int commentNum; 
 	private int memberNum;
 	private String commentWriter;
@@ -17,6 +18,7 @@ public class CommentBean {
 	private int commentOriginalNum;
 	private int commentNickname;
 	private int commentCategory;
+
 	
 
 }

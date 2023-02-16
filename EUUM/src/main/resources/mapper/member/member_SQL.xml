@@ -94,15 +94,18 @@
 	<!-- member_class 변경 쿼리... 전문가 전환 -->
 	<update id="updateMemberClass">
 		update member_tbl 
-		set member_class=#{memberClass}
+		set member_class='S'
 		where member_num=#{memberNum}
 	</update>
 	
 	<!-- 전문가 전환시 레코드 삽입 -->
 	<insert id="insertSeller">
+	<selectKey keyProperty="sellerNum" order="BEFORE" resultType="int">
+	select seller_num_seq.nextval from dual
+	</selectKey>
 		insert into 
-		seller_tbl(seller_num, member_num)
-		values(seller_num_seq.nextval, #{memberNum})
+		seller_tbl(seller_num, member_num, seller_buisness_yn, seller_image)
+		values(#{sellerNum}, #{memberNum}, 'Y', 'image.png')
 	</insert>
 	
 	<!-- 셀러정보 가져오기... -->
@@ -114,7 +117,7 @@
 	
 	
 	
-	<!-- 전문가 정보 수정 -->
+	<!-- 전문가 정보 수정 (프로필 이미지 제외) -->
 	<update id="updateSeller">
 		update seller_tbl
 		
@@ -127,12 +130,19 @@
 		seller_nickname=#{sellerNickName}, 
 		seller_contact1=#{sellerContact1}, 
 		seller_contact2=#{sellerContact2}, 
-		seller_buisness_yn=#{sellerBuisnessYn}, 
+		seller_buisness_yn=#{sellerBuisnessYn}
+		
+		where seller_num=#{sellerNum}
+	</update>
+	<!-- 전문가 프로필 정보 수정 -->
+	<update id="updateSellerFile">
+		update seller_tbl
+		
+		set
 		seller_image=#{sellerImage}
 		
-		where member_num=#{memberNum}
+		where seller_num=#{sellerNum}
 	</update>
-	
 	
 <!--  -->
 
@@ -173,8 +183,7 @@
 		update seller_tbl 
 		set seller_bank_name='', seller_account_num='', seller_account_name='',
 		seller_nickname='', seller_contact1='', seller_contact2='', seller_image=''
-		where member_num=#{memberNum}
+		where seller_num=#{sellerNum}
 	</update>
-	
 	
 </mapper>

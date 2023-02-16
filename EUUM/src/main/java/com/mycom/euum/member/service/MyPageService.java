@@ -1,16 +1,23 @@
 package com.mycom.euum.member.service;
 
+import java.util.List;
+
+
+import com.mycom.euum.member.bean.CartBean;
+import com.mycom.euum.image.bean.ImageBean;
 import com.mycom.euum.member.bean.MemberBean;
 import com.mycom.euum.member.bean.SellerBean;
 
 public interface MyPageService {
 
 	// 회원 정보 관련
-	public MemberBean getMember(MemberBean bean);
+	public MemberBean getMember(int memberNum);
 	
 	public int updateMember(MemberBean bean);
 	
 	public int updateSeller(SellerBean bean);
+	
+	public int updateSellerFile(SellerBean bean, List<ImageBean> imageBeanList);
 	
 	public int updatePassword(MemberBean bean);
 	
@@ -18,11 +25,15 @@ public interface MyPageService {
 	
 	public int secessionSeller(String sellerNum);
 	
-	public SellerBean getSeller(String sellerNum);
+	public SellerBean getSeller(int sellerNum);
 	
 	public void insertSeller(SellerBean bean);
 	
 	public int updateMemberClass(MemberBean bean);
+	
+	public List<CartBean> getCartList(int memberNum);
+	
+	public int deleteCart(int memberNum, int goodsNum);
 	
 	// 회원 주문 관련
 	

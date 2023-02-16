@@ -1,31 +1,38 @@
 package com.mycom.euum.member.service;
 
+
+import java.util.List;
 import org.springframework.stereotype.Service;
 
+
+import com.mycom.euum.member.bean.CartBean;
+import com.mycom.euum.image.bean.ImageBean;
 import com.mycom.euum.member.bean.MemberBean;
 import com.mycom.euum.member.bean.SellerBean;
+import com.mycom.euum.member.mapper.CartMapper;
 import com.mycom.euum.member.mapper.MemberMapper;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j;
 
-
+@Log4j
 @Service
 @AllArgsConstructor
 public class MyPageServiceImpl implements MyPageService {
-	
-	private MemberMapper memberMapper;
 
+	private MemberMapper memberMapper;
+	private CartMapper cartMapper;
 
 	// 회원 정보 상세보기
 	@Override
-	public MemberBean getMember(MemberBean bean) {
-		
-		return memberMapper.getMember(bean.getMemberNum());
+	public MemberBean getMember(int memberNum) {
+				
+		return memberMapper.getMember(memberNum);
 	}
 
 	// 전문가 정보 상세보기
 	@Override
-	public SellerBean getSeller(String sellerNum) {
+	public SellerBean getSeller(int sellerNum) {
 
 		return memberMapper.getSeller(sellerNum);
 	}
@@ -42,6 +49,13 @@ public class MyPageServiceImpl implements MyPageService {
 	public int updateSeller(SellerBean sellerBean) {
 		
 		return memberMapper.updateSeller(sellerBean);
+	}
+	
+	// 전문가 프로필 수정
+	@Override
+	public int updateSellerFile(SellerBean bean, List<ImageBean> imageBeanList) {
+		
+		return memberMapper.updateSellerFile(bean);
 	}
 	
 	// 비밀번호 변경
@@ -77,5 +91,20 @@ public class MyPageServiceImpl implements MyPageService {
 	
 		return memberMapper.updateMemberClass(bean);
 	}
+
+	@Override
+	public List<CartBean> getCartList(int memberNum) {
+		
+		return cartMapper.getCartList(memberNum);
+	}
+
+	@Override
+	public int deleteCart(int memberNum, int goodsNum) {
+		return cartMapper.deleteCart(memberNum, goodsNum);
+	}
+	
+	
+	
+	
 	
 }
