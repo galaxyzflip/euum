@@ -10,13 +10,36 @@
 	margin-bottom: 100px;
 }
 
+.active>.page-link, .page-link.active {
+    z-index: 3;
+    color: var(--bs-pagination-active-color);
+    background-color: #fb8500;
+    border-color: #fb8500;
+}
+
+.text-orange{
+	color : #fb8500;
+}
+
+.bold{
+	font-weight: bold;
+}
+
+.page-link{
+	color : #fb8500;
+}
+
+.pagination{
+	--bs-pagination-hover-color: #fb8500
+}
+
 img {
 	width: 100px;
 	height: 100px;
 }
 
 .order-list-table {
-	border: 1px solid black;
+	border: 1px solid #dadada;
 	width: 1000px;
 	border-left: none;
 	border-right: none;
@@ -25,8 +48,8 @@ img {
 }
 
 .order-list-table thead td {
-	border-bottom: 1px solid black;
-	background-color: #eeeeee;
+	border-bottom: 1px solid #dadada;
+	background-color: #f2f2f2;
 	font-size: 10pt;
 	text-align: center;
 }
@@ -36,7 +59,7 @@ img {
 }
 
 .order-list-table tbody td {
-	border-bottom: 1px solid black;
+	border-bottom: 1px solid #dadada;
 }
 
 .order-list-table td {
@@ -52,7 +75,7 @@ tbody .order-name {
 }
 
 .order-detail {
-	background-color: #eeeeee;
+	
 }
 
 .order-detail {
@@ -100,6 +123,11 @@ tbody .order-name {
 	background: orange;
 }
 
+.price-td{
+	font-weight: bold;
+	font-size:18px;
+}
+
 </style>
 
 
@@ -115,6 +143,7 @@ tbody .order-name {
 			<%-- <input type="hidden" name="orderStatus" value="${pageMaker.cri.orderStatus }"> --%>
 			
 			<select name="type">
+				<option value="SMG" ${pageMaker.cri.type == 'SMG' ? 'selected' : '' }>전체</option>
 				<option value="S" ${pageMaker.cri.type == 'S' ? 'selected' : '' }>작가 닉네임</option>
 				<option value="M" ${pageMaker.cri.type == 'M' ? 'selected' : '' }>고객명</option>
 				<option value="G" ${pageMaker.cri.type == 'G' ? 'selected' : '' }>상품명</option>
@@ -144,6 +173,7 @@ tbody .order-name {
 				<label><input type="checkbox" name="orderStatus" value="7"  ${fn:contains(pageMaker.cri.orderStatus, '7') ? 'checked' : ''} />취소(환불대기중)</label>
 				<label><input type="checkbox" name="orderStatus" value="8"  ${fn:contains(pageMaker.cri.orderStatus, '8') ? 'checked' : ''} />취소(환불완료)</label>
 				<label><input type="checkbox" name="orderStatus" value="9"  ${fn:contains(pageMaker.cri.orderStatus, '9') ? 'checked' : ''} />취소(입금전 취소)</label>
+				<label><input type="checkbox" name="orderStatus" value="10"  ${fn:contains(pageMaker.cri.orderStatus, '10') ? 'checked' : ''} />취소(전문가)</label>
 			</fieldset>
 			 
 			<span>
@@ -169,6 +199,17 @@ tbody .order-name {
 		</thead>
 
 		<tbody>
+		
+		<c:if test="${empty orderList }">
+			<tr height="100px">
+				<td colspan="7">
+			주문이 없습니다
+				</td>
+			</tr>
+			
+		</c:if>
+		
+		<c:if test="${!empty orderList }">
 			<c:forEach items="${orderList }" var="order" varStatus='status'>
 			
 				
@@ -191,7 +232,7 @@ tbody .order-name {
 					<td>${order.sellerNickname }</td>
 					<td class="order-name"><br> ${order.goodsName }<br>
 						${fn:replace(order.orderName,'`','<br>')}</td>
-					<td>${order.orderPrice } 원</td>
+					<td class="price-td">${order.orderPrice } 원</td>
 					<td class="order-status"><c:if test="${order.orderStatus eq 1 }">입금대기중</c:if> <c:if
 							test="${order.orderStatus eq 2 }">입금확인</c:if> <c:if
 							test="${order.orderStatus eq 3 }">작업중</c:if> <c:if
@@ -201,6 +242,7 @@ tbody .order-name {
 							test="${order.orderStatus eq 7 }">취소(환불대기중)</c:if> <c:if
 							test="${order.orderStatus eq 8 }">취소(환불완료)</c:if> <c:if
 							test="${order.orderStatus eq 9 }">취소(입금전 취소)</c:if>
+						<c:if test="${order.orderStatus eq 10 }">취소(전문가)</c:if>
 					</td>
 					<td><span class="que">자세히</span> <!-- <span class="arrow-top">↑</span>
 	                        <span class="arrow-bottom">↓</span> --></td>
@@ -212,12 +254,12 @@ tbody .order-name {
 						<div class="order-detail">
 							<div class="order-tap1">
 								<ul>
-									<li>입금은행 신한은행 : </li>
-									<li>110-223-996057</li>
+									<li class="text-orange bold">입금은행 신한은행 : </li>
+									<li class="text-orange">110-223-996057</li>
 								</ul>
 								<ul>
-									<li>예금주</li>
-									<li>(주)이음</li>
+									<li class="text-orange">예금주</li>
+									<li class="text-orange">(주)이음</li>
 								</ul>
 								<ul>
 									<li>입금자명</li>
@@ -238,12 +280,12 @@ tbody .order-name {
 									<li>${order.orderDate }</li>
 								</ul>
 								<ul>
-									<c:if test="${order.orderStatus le '6' }">
+									<c:if test="${order.orderStatus le 6 }">
 										<li>완료예정일</li>
 										<li>${order.orderExpirationDate}</li>
 									</c:if>
 									
-									<c:if test="${order.orderStatus gt '6' }">
+									<c:if test="${order.orderStatus gt 6}">
 										<li>주문취소일</li>
 										<li>${order.orderCancleDate}</li>
 									</c:if>
@@ -276,11 +318,11 @@ tbody .order-name {
 								
 								<ul>
 									<li class="status-info-list">
-										<c:if test="${order.orderStatus lt 3 }">
+										<c:if test="${order.orderStatus lt 3}">
 											<button class="order-tap3" id="cancle-order" onclick="cancleOrder('${order.orderNum}', '${order.orderStatus }', 'order${status.index }')">주문 취소</button><br>
 										</c:if>
 										
-										<c:if test="${order.orderStatus lt 4 }">
+										<c:if test="${order.orderStatus lt 4}">
 											<button class="order-tap3" id="add-order${status.index }"
 										onclick="openModal('${order.orderNum}', '${order.goodsNum }', '${order.orderEmail }', '${order.orderContact}', '${order.sellerNickname}', '${order.sellerNum }')">추가금액 결제</button>
 										</c:if>
@@ -294,11 +336,11 @@ tbody .order-name {
 									
 									<li class="go-review">
 										<c:if test="${order.orderStatus eq 6 }">
-											<c:if test="${order.reviewYn eq 'Y' }">
-												<button onclick="viewReview('${order.orderKeyNum}','${order.orderNum }','${order.goodsNum }','order${status.index }')">리뷰보기</button>		
+											<c:if test="${!empty order.review_num}">
+												<button onclick="modifyReview('${order.orderKeyNum}','${order.orderNum }','${order.goodsNum }','order${status.index }')">리뷰수정</button>		
 											</c:if>	
 											
-											<c:if test="${order.reviewYn eq 'N' }">
+											<c:if test="${empty order.review_num}">
 												<button onclick="postReview('${order.orderKeyNum}','${order.orderNum }','${order.goodsNum }','order${status.index }')">리뷰작성</button>		
 											</c:if>	
 										</c:if>	
@@ -311,9 +353,14 @@ tbody .order-name {
 									<li class="file-list">
 										
 									</li>		
-									
-									<li>요청사항 : ${order.orderRequest }</li>
 								</ul>
+								
+								<ul>
+										<li>요청사항 : ${order.orderRequest }</li>
+										<c:if test="${order.orderStatus eq 10 }">
+											<li>취소사유 : ${order.orderCancleReason }</li>
+										</c:if>
+									</ul>
 							</div>
 							
 							
@@ -321,9 +368,9 @@ tbody .order-name {
 					</td>
 				</tr>
 			</c:forEach>
-
+		</c:if>
 		</tbody>
-
+	
 	</table>
 </div>
 

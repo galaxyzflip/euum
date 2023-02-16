@@ -10,13 +10,36 @@
 	margin-bottom: 100px;
 }
 
+.active>.page-link, .page-link.active {
+    z-index: 3;
+    color: var(--bs-pagination-active-color);
+    background-color: #fb8500;
+    border-color: #fb8500;
+}
+
+.text-orange{
+	color : #fb8500;
+}
+
+.bold{
+	font-weight: bold;
+}
+
+.page-link{
+	color : #fb8500;
+}
+
+.pagination{
+	--bs-pagination-hover-color: #fb8500
+}
+
 img {
 	width: 100px;
 	height: 100px;
 }
 
 .order-list-table {
-	border: 1px solid black;
+	border: 1px solid #dadada;
 	width: 1000px;
 	border-left: none;
 	border-right: none;
@@ -25,8 +48,8 @@ img {
 }
 
 .order-list-table thead td {
-	border-bottom: 1px solid black;
-	background-color: #eeeeee;
+	border-bottom: 1px solid #dadada;
+	background-color: #f2f2f2;
 	font-size: 10pt;
 	text-align: center;
 }
@@ -36,7 +59,7 @@ img {
 }
 
 .order-list-table tbody td {
-	border-bottom: 1px solid black;
+	border-bottom: 1px solid #dadada;
 }
 
 .order-list-table td {
@@ -52,7 +75,6 @@ tbody .order-name {
 }
 
 .order-detail {
-	background-color: #eeeeee;
 }
 
 .order-detail {
@@ -118,6 +140,7 @@ tbody .order-name {
 			<%-- <input type="hidden" name="orderStatus" value="${pageMaker.cri.orderStatus }"> --%>
 			
 			<select name="type">
+				<option value="SMG" ${pageMaker.cri.type == 'SMG' ? 'selected' : '' }>전체</option>
 				<option value="S" ${pageMaker.cri.type == 'S' ? 'selected' : '' }>작가 닉네임</option>
 				<option value="M" ${pageMaker.cri.type == 'M' ? 'selected' : '' }>고객명</option>
 				<option value="G" ${pageMaker.cri.type == 'G' ? 'selected' : '' }>상품명</option>
@@ -147,6 +170,7 @@ tbody .order-name {
 				<label><input type="checkbox" name="orderStatus" value="7"  ${fn:contains(pageMaker.cri.orderStatus, '7') ? 'checked' : ''} />취소(환불대기중)</label>
 				<label><input type="checkbox" name="orderStatus" value="8"  ${fn:contains(pageMaker.cri.orderStatus, '8') ? 'checked' : ''} />취소(환불완료)</label>
 				<label><input type="checkbox" name="orderStatus" value="9"  ${fn:contains(pageMaker.cri.orderStatus, '9') ? 'checked' : ''} />취소(입금전 취소)</label>
+				<label><input type="checkbox" name="orderStatus" value="10"  ${fn:contains(pageMaker.cri.orderStatus, '10') ? 'checked' : ''} />취소(전문가)</label>
 			</fieldset>
 			 
 			<span>
@@ -172,6 +196,17 @@ tbody .order-name {
 		</thead>
 
 		<tbody>
+		
+		<c:if test="${empty orderList }">
+			<tr height="100px">
+				<td colspan="7">
+			주문이 없습니다
+				</td>
+			</tr>
+			
+		</c:if>
+		
+		<c:if test="${!empty orderList }">
 			<c:forEach items="${orderList }" var="order" varStatus='status'>
 
 				<tr id="order${status.index }">
@@ -196,7 +231,7 @@ tbody .order-name {
 							test="${order.orderStatus eq 7 }">취소(환불대기중)</c:if> <c:if
 							test="${order.orderStatus eq 8 }">취소(환불완료)</c:if> <c:if
 							test="${order.orderStatus eq 9 }">취소(입금전 취소)</c:if> 
-						<c:if test="${order.orderStatus eq 0 }">취소(전문가)</c:if></td>
+						<c:if test="${order.orderStatus eq 10 }">취소(전문가)</c:if></td>
 					<td><span class="que">자세히</span> <!-- <span class="arrow-top">↑</span>
 	                        <span class="arrow-bottom">↓</span> --></td>
 				</tr>
@@ -206,6 +241,15 @@ tbody .order-name {
 						<!-- <div style="display: block;"><b>작가 연락처</b> : 결제 후 공개됩니다.</div> -->
 						<div class="order-detail">
 							<div class="order-tap1">
+								<ul>
+									<li class="text-orange bold">입금은행 신한은행 : </li>
+									<li class="text-orange">110-223-996057</li>
+								</ul>
+								
+								<ul>
+									<li class="text-orange">예금주</li>
+									<li class="text-orange">(주)이음</li>
+								</ul>
 								<ul>
 									<li>주문자 이메일</li>
 									<li>${order.orderEmail }</li>
@@ -221,8 +265,15 @@ tbody .order-name {
 									<li>${order.orderDate }</li>
 								</ul>
 								<ul>
-									<li>완료예정일</li>
-									<li>${order.orderExpirationDate}</li>
+									<c:if test="${order.orderStatus le 6 }">
+										<li>완료예정일</li>
+										<li>${order.orderExpirationDate}</li>
+									</c:if>
+									
+									<c:if test="${order.orderStatus gt 6}">
+										<li>주문취소일</li>
+										<li>${order.orderCancleDate}</li>
+									</c:if>
 								</ul>
 								<ul>
 									<li>제출 파일 유형</li>
@@ -251,14 +302,14 @@ tbody .order-name {
 							<div>
 								<ul class="status-info-list">
 								
-									<c:if test=${order.orderStatus gt '6' }>
+									<c:if test="${order.orderStatus lt 6 }">
 										<li class="seller-cancle">
-											<button onClick="transferOrderStatus('${order.orderNum}','0','order${status.index }','${order.orderKeyNum }')">의뢰취소</button>
+											<button onClick="openCancleModal('${order.orderNum}','0','order${status.index }','${order.orderKeyNum }')">의뢰취소</button>
 										</li>
 									</c:if>
 								
 									<li class="trans-btn">
-										<c:if test="${order.orderStatus eq '2' }">
+										<c:if test="${order.orderStatus eq 2 }">
 											<button onclick="transferOrderStatus('${order.orderNum}', '3', 'order${status.index }', '${order.orderKeyNum }')">작업중 전환</button><br>
 										</c:if>
 									</li>
@@ -271,7 +322,7 @@ tbody .order-name {
 									
 									
 									<li class='file-upload'>
-										<c:if test="${order.orderStatus eq '3' }">
+										<c:if test="${order.orderStatus eq 3 }">
 											<c:if test="${order.fileYn eq 'N'}">
 												<button onclick="openModal('${order.orderKeyNum}', 'order${status.index}', '${order.orderNum }')">파일 업로드</button><br>
 											</c:if>
@@ -282,15 +333,20 @@ tbody .order-name {
 											
 									</li>	
 									
-									<li>요청사항 : ${order.orderRequest }</li>
 								</ul>
+									<ul class="sub-info">
+										<li>요청사항 : ${order.orderRequest }</li>
+										<c:if test="${order.orderStatus eq 10 }">
+											<li>취소사유 : ${order.orderCancleReason }</li>
+										</c:if>
+									</ul>
 							</div>
 							
 						</div>
 					</td>
 				</tr>
 			</c:forEach>
-
+		</c:if>
 		</tbody>
 
 	</table>
@@ -339,6 +395,43 @@ tbody .order-name {
 </div>
 <!-- /.modal -->
 
+
+<!-- Modal -->
+<div class="modal fade" id="cancleModal" tabindex="-1"
+	aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h1 class="modal-title fs-5" id="exampleModalLabel">주문취소</h1>
+				<button type="button" class="btn-close" data-bs-dismiss="modal"	aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<div id="option1">
+					<form action="" id="file-form" method="">
+						<div class="input-group">
+							<div>
+								<div><span>주문번호 : </span><span class="order-num"> </span></div>
+								<div><span>취소사유 : </span></div>
+								<div>
+									<textarea name="orderCancleReason" cols="40"></textarea>
+								</div>
+								
+								<input type="hidden" class="order-form">
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" id="cancle-order" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+				<button type="button" id="add-order" class="btn btn-primary"  onClick="cancleOrder()">주문취소</button>
+			</div>
+			
+		</div>
+	</div>
+</div>
+<!-- /.modal -->
+
 <!-- 페이징 작업할 부분 -->
 <div style="margin:auto; text-align:center; width:700px">
 	<div class="inner">
@@ -362,15 +455,12 @@ tbody .order-name {
 	</div>
 </div>
 
-<!-- <form id="actionForm" action="/order/transferOrderStatus" method="post">
-	<input type="hidden" name="orderNum" value="">
-	<input type="hidden" name="orderStatus" value="">
-</form>  -->
-
 
 <script>
 
 $(document).ready(function() {
+	
+	
 	
 	//파일 다운로드
 	$('.file-list').on('click', 'div', function(e){
@@ -423,6 +513,38 @@ $(document).ready(function() {
 	
 
 })
+	let uploadModal = $('#fileUploadModal');
+	let cancleModal = $('#cancleModal');
+	
+	function cancleOrder(){
+		let orderCancleReason = $(cancleModal).find('textarea').val();
+		let orderNum = $(cancleModal).find('.order-num').text();
+		let orderForm = $(cancleModal).find('.order-form').val();
+		
+		if(!orderCancleReason){
+			alert("취소사유를 입력해주세요");
+			return false;
+		}
+		
+		console.log('주문번호 : ' + orderNum + ", 취소사유 : " + orderCancleReason);
+		
+		updateStatus(orderNum, '10', orderForm, '0', orderCancleReason);
+		cancleModal.modal('hide');
+		
+		
+		
+	}
+	
+	
+	function openCancleModal(orderNum, orderStatus, orderForm, orderKeyNum){
+		
+		$(cancleModal).find(".order-num").text(orderNum);
+		$(cancleModal).find(".order-form").val(orderForm);
+		cancleModal.modal('show');
+		
+	}
+
+
 
 	function sort(sortType, sortValue){
 		$('input[name="sortType"]').val(sortType);
@@ -440,7 +562,7 @@ $(document).ready(function() {
 		  })
 		}	
 
-	let uploadModal = $('#fileUploadModal');
+	
 	
 	function viewFile(data, orderForm){
 		
@@ -555,10 +677,13 @@ $(document).ready(function() {
 		uploadModal.modal('show');
 
 	}
+	
+	
 
 	//진행중 상태 변경 함수
 	function transferOrderStatus(orderNum, orderStatus, orderForm, orderKeyNum){
-		if(!confirm("진행중 상태로 변경하시겠습니까?")){
+		
+		 if(!confirm("진행중 상태로 변경하시겠습니까?")){
 			return false;			
 		}
 		updateStatus(orderNum, orderStatus, orderForm, orderKeyNum);
@@ -573,13 +698,14 @@ $(document).ready(function() {
 		
 	} */
 	
-	function updateStatus(orderNum, orderStatus, orderForm, orderKeyNum){
+	function updateStatus(orderNum, orderStatus, orderForm, orderKeyNum, orderCancleReason){
 		 $.ajax({
 				url : "/order/transferOrderStatusAjax",
 				type : "post",
 				data : {
 					orderNum : orderNum,
-					orderStatus : orderStatus
+					orderStatus : orderStatus,
+					orderCancleReason : orderCancleReason
 				},
 				dataType : 'json',
 		        success: function (data) {
@@ -598,13 +724,26 @@ $(document).ready(function() {
 		let status = data.orderStatus;
 		let form = $('#'+orderForm);
 		let inner = '';
-		$(form).find('.order-status').text("작업중");
-		$(form).next().find('.trans-btn').remove();
-// 		$(form).next().find('.trans-btn').css('display', 'none');
 		
-		inner += '<button onclick="openModal(\''+orderKeyNum+'\', \''+orderForm+'\', \''+data.orderNum+'\')">파일 업로드</button><br>'
-		$(form).next().find('.file-yn').html(inner);
+		if(status == '10'){
+			
+			let inner = "<li>취소사유 : "+data.orderCancleReason+"</li>"
+			console.log(inner);
+			
+			$(form).next().find('.status-info-list').remove();
+			$(form).find('.order-status').text("취소(전문가)");	
+			$(form).next().find('.sub-info').append(inner);
+			
+			
+		}else{
 		
+			$(form).find('.order-status').text("작업중");
+			$(form).next().find('.trans-btn').remove();
+//	 		$(form).next().find('.trans-btn').css('display', 'none');
+			
+			inner += '<button onclick="openModal(\''+orderKeyNum+'\', \''+orderForm+'\', \''+data.orderNum+'\')">파일 업로드</button><br>'
+			$(form).next().find('.file-yn').html(inner);
+		}
 		
 		
 	}

@@ -11,7 +11,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.mycom.euum.goods.bean.GoodsBean;
 import com.mycom.euum.image.bean.ImageBean;
@@ -56,11 +58,11 @@ public class OrderController {
 
 		return "order/orderForm";
 	}
-
+	
 	
 	//orderForm.jsp 에서 주문처리시 사용하는 메소드
 	@PostMapping("/order/orderPro")
-	public String orderPro(OrderOptionBean optionList, OrderBean orderBean, HttpSession session, Model model) {
+	public String orderPro(OrderOptionBean optionList, OrderBean orderBean, HttpSession session, RedirectAttributes rttr) {
 
 		// memberNum을 세션에서 가져와서 주문처리시 사용
 		MemberBean member = (MemberBean) session.getAttribute("loginUser");
@@ -81,8 +83,15 @@ public class OrderController {
 
 		//주문결과 보여주기 위한 작업
 		OrderBean order = orderService.selectOrder(orderNum);
-		model.addAttribute("order", order);
+		rttr.addFlashAttribute("order", order);
 
+		return "redirect:/order/orderSuccess";
+	}
+	
+	@GetMapping("order/orderSuccess")
+	public String orderSuccess() {
+		
+		
 		return "order/orderSuccess";
 	}
 	

@@ -29,6 +29,8 @@ public class OrderBean {
 	private String orderModifyCount;
 	private String orderPeriod;
 	private String orderImage;
+	private String orderCancleReason;
+	private String review_num;
 	
 	private Date orderExpirationDate;
 	private String sellerNickname;

@@ -162,6 +162,11 @@
 			, ORDER_EXPIRATION_DATE = SYSDATE + ORDER_PERIOD
 		</if>
 		
+		<if test="orderStatus == 0">
+			, ORDER_CANCLE_REASON = #{orderCancleReason}
+			, ORDER_CANCLE_DATE = SYSDATE
+		</if>
+		
 		WHERE ORDER_NUM = #{orderNum}
 	</update>
 
@@ -193,6 +198,7 @@
 		UPDATE ORDER_TBL
 		SET ORDER_STATUS = #{orderStatus},
 		ORDER_CANCLE_DATE = SYSDATE
+		
 		WHERE ORDER_NUM = #{orderNum}
 	</update>
 
@@ -292,9 +298,11 @@
         ORDER_PRICE,
         ORDER_REQUEST,
         ORDER_CANCLE_DATE,
+        ORDER_CANCLE_REASON,
         nvl2(I.IMAGE_USE_NUM, 'Y', 'N') as FILE_YN,
         nvl2(image_file_name, gi.image_upload_path||'s_'||image_file_name, null) as image_name,
-        nvl2(review_num, 'Y', 'N') as reviewYn
+        nvl2(review_num, 'Y', 'N') as reviewYn,
+        review_num
         
 		FROM ORDER_TBL O 
         INNER JOIN GOODS_TBL G 
@@ -357,6 +365,7 @@
         ORDER_EXPIRATION_DATE,
         ORDER_PRICE,
         ORDER_CANCLE_DATE,
+        ORDER_CANCLE_REASON,
         nvl2(I.IMAGE_USE_NUM, 'Y', 'N') as FILE_YN,
         nvl2(image_file_name, gi.image_upload_path||'s_'||image_file_name, null) as image_name,
         nvl2(review_num, 'Y', 'N') as reviewYn
@@ -422,6 +431,7 @@ on r.order_num = o.order_key_num
         ORDER_EXPIRATION_DATE,
         ORDER_PRICE,
         ORDER_CANCLE_DATE,
+        ORDER_CANCLE_REASON,
         nvl2(I.IMAGE_USE_NUM, 'Y', 'N') as FILE_YN,
         nvl2(image_file_name, gi.image_upload_path||'s_'||image_file_name, null) as image_name,
         nvl2(review_num, 'Y', 'N') as reviewYn
@@ -615,7 +625,7 @@ on r.order_num = o.order_key_num
 		</if>
 		
 		<if test="memberNum != null and memberNum != ''">
-			and member_num = #{memberNum}
+			and m.member_num = #{memberNum}
 		</if>
 		
 		<if test="sellerNum != null and sellerNum != ''">
@@ -648,8 +658,16 @@ on r.order_num = o.order_key_num
 
 <sql id="sort">
 
-	<if test="sortValue != null and sortValue != ''">
-		order by ${sortType} ${sortValue}
+	<if test="sortType != 'order_status'">
+		<if test="sortValue != null and sortValue != ''">
+			order by ${sortType} ${sortValue}
+		</if>
+	</if>
+	
+	<if test="sortType == 'order_status'">
+		<if test="sortValue != null and sortValue != ''">
+			order by to_number(${sortType}) ${sortValue}
+		</if>
 	</if>
 	
 	<if test="sortValue == null or sortValue == ''">
