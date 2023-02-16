@@ -50,6 +50,8 @@
     <h2>이용 후기</h2>
      <form action="/myPage/orderList">
     <button type="submit" class="btn btn-default" >후기 작성</button>   
+    <input type="hidden" name="goodsNum" value="${goodsNum }"/>
+    <input type="hidden" name="orderStatus" value="6" />
     </form>
  
 	<table>
