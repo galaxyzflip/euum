@@ -7,16 +7,18 @@ import lombok.Data;
 @Data
 public class CommentBean {
 	
-	private int commentNum; //��۹�ȣ
-	private int memberNum;  //ȸ����ȣ
-	private String commentWriter; //����ۼ���
-	private String commentTitle; //��� ����
-	private String commentContent; //��� ����
-	private Date commentRegdate; //��� ��¥
-	private String commentDelete; //��� ��������
-	private int commentOriginalNum; //���� ��ȣ
-	private int commentNickname; //������ �г���
-	private int commentCategory; //��� ī�װ�
+
+	private int commentNum; 
+	private int memberNum;
+	private String commentWriter;
+	private String commentTitle;
+	private String commentContent;
+	private Date commentRegdate;
+	private String commentDelete;
+	private int commentOriginalNum;
+	private int commentNickname;
+	private int commentCategory;
+
 	
 
 }

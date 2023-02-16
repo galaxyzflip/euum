@@ -20,8 +20,7 @@ public interface RequestMapper {
 	public int requestModifyPro(RequestBean requestBean);
 	
 	public int requestDelete(RequestBean requestBean);
-	
-	
+		
 	public int getTotalCount(RqCriteria rqcri);
 
 }
