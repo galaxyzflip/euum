@@ -16,5 +16,11 @@ public interface RequestService {
 	public RequestBean requestDetail(int requestNum);
 	
 	public int getTotal(RqCriteria rqcri);
+	
+	public RequestBean requestModifyForm(int requestNum);
+	
+	public int requestModifyPro(RequestBean requestBean);
+	
+	public int requestDelete(RequestBean requestBean);
 
 }

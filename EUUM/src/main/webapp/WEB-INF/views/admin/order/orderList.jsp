@@ -11,13 +11,36 @@
 	margin-bottom: 100px;
 }
 
+.page-item.active .page-link {
+    z-index: 3;
+    color: var(--bs-pagination-active-color);
+    background-color: #fb8500;
+    border-color: #fb8500;
+}
+
+.text-orange{
+	color : #fb8500;
+}
+
+.bold{
+	font-weight: bold;
+}
+
+.page-link{
+	color : #fb8500;
+}
+
+.pagination{
+	--bs-pagination-hover-color: #fb8500
+}
+
 img {
 	width: 100px;
 	height: 100px;
 }
 
 .order-list-table {
-	border: 1px solid black;
+	border: 1px solid #dadada;
 	width: 1000px;
 	border-left: none;
 	border-right: none;
@@ -25,8 +48,8 @@ img {
 }
 
 .order-list-table thead td {
-	border-bottom: 1px solid black;
-	background-color: #eeeeee;
+	border-bottom: 1px solid #dadada;
+	background-color: #f2f2f2;
 	font-size: 10pt;
 	text-align: center;
 }
@@ -36,7 +59,7 @@ img {
 }
 
 .order-list-table tbody td {
-	border-bottom: 1px solid black;
+	border-bottom: 1px solid #dadada;
 }
 
 .order-list-table td {
@@ -52,7 +75,6 @@ tbody .order-name {
 }
 
 .order-detail {
-	background-color: #eeeeee;
 }
 
 .order-detail {
@@ -89,13 +111,17 @@ ul li {
 	<div id="searchBox">
 		<form id='actionForm' action="/admin/orderList" method='get'>
 		
+			<input type="hidden" name="sortType" value="${pageMaker.cri.sortType }">
+			<input type="hidden" name="sortValue" value="${pageMaker.cri.sortValue }">
+			
 			<input type='hidden' name='pageNum' value='${pageMaker.cri.pageNum}'>
 			<%-- <input type="hidden" name="orderStatus" value="${pageMaker.cri.orderStatus }"> --%>
 			
 			<select name="type">
-				<option value="S">작가 닉네임</option>
-				<option value="M">고객명</option>
-				<option value="G">상품명</option>
+				<option value="SMG" ${pageMaker.cri.type == 'SMG' ? 'selected' : '' }>전체</option>
+				<option value="S" ${pageMaker.cri.type == 'S' ? 'selected' : '' }>작가 닉네임</option>
+				<option value="M" ${pageMaker.cri.type == 'M' ? 'selected' : '' }>고객명</option>
+				<option value="G" ${pageMaker.cri.type == 'G' ? 'selected' : '' }>상품명</option>
 			</select>
 			
 			<span> <input type="text" name="keyword" id="searchKeyword"
@@ -122,6 +148,7 @@ ul li {
 				<label><input type="checkbox" name="orderStatus" value="7"  ${fn:contains(pageMaker.cri.orderStatus, '7') ? 'checked' : ''} />취소(환불대기중)</label>
 				<label><input type="checkbox" name="orderStatus" value="8"  ${fn:contains(pageMaker.cri.orderStatus, '8') ? 'checked' : ''} />취소(환불완료)</label>
 				<label><input type="checkbox" name="orderStatus" value="9"  ${fn:contains(pageMaker.cri.orderStatus, '9') ? 'checked' : ''} />취소(입금전 취소)</label>
+				<label><input type="checkbox" name="orderStatus" value="10"  ${fn:contains(pageMaker.cri.orderStatus, '10') ? 'checked' : ''} />취소(전문가)</label>
 			</fieldset>
 			 
 			<span>
@@ -136,17 +163,27 @@ ul li {
 	<table class="order-list-table">
 		<thead>
 			<tr>
-				<td width="12%">주문번호 </td>
+				<td width="12%" onclick="sort('order_num', '${pageMaker.cri.sortType == 'order_num' ? (pageMaker.cri.sortValue =='desc' ? 'asc' : 'desc') : 'desc'}' )">주문번호</td>
 				<td width="13%">이미지</td>
-				<td width="15%">작가명</td>
+				<td width="15%" onclick="sort('seller_nickname', '${pageMaker.cri.sortType == 'seller_nickname' ? (pageMaker.cri.sortValue =='desc' ? 'asc' : 'desc') : 'desc'}' )">작가명</td>
 				<td class="order-name" width="*">주문내용</td>
-				<td width="10%">결제금액</td>
-				<td width="10%">주문상태</td>
+				<td width="10%" onclick="sort('ORDER_PRICE', '${pageMaker.cri.sortType == 'ORDER_PRICE' ? (pageMaker.cri.sortValue =='desc' ? 'asc' : 'desc') : 'desc'}' )">결제금액</td>
+				<td width="10%" onclick="sort('order_status', '${pageMaker.cri.sortType == 'order_status' ? (pageMaker.cri.sortValue =='desc' ? 'asc' : 'desc') : 'desc'}' )">주문상태</td>
 				<td width="10%"></td>
 			</tr>
 		</thead>
 
 		<tbody>
+		<c:if test="${empty orderList }">
+			<tr height="100px">
+				<td colspan="7">
+			주문이 없습니다
+				</td>
+			</tr>
+			
+		</c:if>
+		
+		<c:if test="${!empty orderList }">
 			<c:forEach items="${orderList }" var="order" varStatus='status'>
 			
 				
@@ -173,6 +210,7 @@ ul li {
 							test="${order.orderStatus eq 7 }">취소(환불대기중)</c:if> <c:if
 							test="${order.orderStatus eq 8 }">취소(환불완료)</c:if> <c:if
 							test="${order.orderStatus eq 9 }">취소(입금전 취소)</c:if>
+							<c:if test="${order.orderStatus eq 10 }">취소(전문가)</c:if>
 					</td>
 					<td><span class="que">자세히</span> <!-- <span class="arrow-top">↑</span>
 	                        <span class="arrow-bottom">↓</span> --></td>
@@ -184,12 +222,12 @@ ul li {
 						<div class="order-detail">
 							<div class="order-tap1">
 								<ul>
-									<li>입금은행 신한은행 : </li>
-									<li>110-223-996057</li>
+									<li class="text-orange bold">입금은행 신한은행 : </li>
+									<li class="text-orange">110-223-996057</li>
 								</ul>
 								<ul>
-									<li>예금주</li>
-									<li>(주)이음</li>
+									<li class="text-orange">예금주</li>
+									<li class="text-orange">(주)이음</li>
 								</ul>
 								<ul>
 									<li>입금자명</li>
@@ -210,12 +248,12 @@ ul li {
 									<li>${order.orderDate }</li>
 								</ul>
 								<ul>
-									<c:if test="${order.orderStatus le '6' }">
+									<c:if test="${order.orderStatus le 6 }">
 										<li>완료예정일</li>
 										<li>${order.orderExpirationDate}</li>
 									</c:if>
 									
-									<c:if test="${order.orderStatus gt '6' }">
+									<c:if test="${order.orderStatus gt 6}">
 										<li>주문취소일</li>
 										<li>${order.orderCancleDate}</li>
 									</c:if>
@@ -267,9 +305,14 @@ ul li {
 									<li class="file-list">
 										
 									</li>		
-									
-									<li>요청사항 : ${order.orderRequest }</li>
 								</ul>
+								
+								<ul>
+										<li>요청사항 : ${order.orderRequest }</li>
+										<c:if test="${order.orderStatus eq 10 }">
+											<li>취소사유 : ${order.orderCancleReason }</li>
+										</c:if>
+									</ul>
 							</div>
 							
 							
@@ -277,7 +320,7 @@ ul li {
 					</td>
 				</tr>
 			</c:forEach>
-
+		</c:if>
 		</tbody>
 
 	</table>
@@ -388,15 +431,21 @@ ul li {
 			actionForm.submit();
 		})
 		
+		$('input[name="orderStatus"]').on('click', function(){
+			$('input[name="pageNum"]').val('1');
+			actionForm.submit();
+		})
+		
 		
 		$('#resetSearch').on('click', function(){
 			self.location.href="/admin/orderList";
 		})
 		
-		
-		function search(){
-			$(actionForm).submit();
-		
+		function sort(sortType, sortValue){
+			$('input[name="sortType"]').val(sortType);
+			$('input[name="sortValue"]').val(sortValue);
+			$('input[name="pageNum"]').val('1');
+			actionForm.submit();
 		}
 		
 		
@@ -421,6 +470,12 @@ ul li {
 
 	});	
 	
+	function sort(sortType, sortValue){
+		$('input[name="sortType"]').val(sortType);
+		$('input[name="sortValue"]').val(sortValue);
+		$('input[name="pageNum"]').val('1');
+		actionForm.submit();
+	}
 		
 		function selectAll(selectAll)  {
 		  const checkboxes 
@@ -429,6 +484,9 @@ ul li {
 		  checkboxes.forEach((checkbox) => {
 		    checkbox.checked = selectAll.checked;
 		  })
+		  
+		  $('input[name="pageNum"]').val('1');
+			actionForm.submit();
 		}
 	
 	

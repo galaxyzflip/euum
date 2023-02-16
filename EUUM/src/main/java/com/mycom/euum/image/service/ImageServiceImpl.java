@@ -141,4 +141,11 @@ public class ImageServiceImpl implements ImageService {
 		return imageMapper.selectNoticeImage(noticeNum);
 	}
 
+
+	@Override
+	public void insertImage(ImageBean imageBean) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

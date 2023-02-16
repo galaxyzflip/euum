@@ -54,8 +54,10 @@
 		<form id="operForm" action="/request/requestModifyForm" method="get">
 			<input type='hidden' name='rqpageNum' value='${rqcri.rqpageNum}'>
 			<input type='hidden' name='rqamount' value='${rqcri.rqamount}'>
-		<%-- 	<input type='hidden' name='rqtype' value='<c:out value="${ rqpageMaker.rqcri.rqtype }"/>'> 
-			<input type='hidden' name='rqkeyword' value='<c:out value="${ rqpageMaker.rqcri.rqkeyword }"/>'> --%>
+			<input type='hidden' name='rqtype' value='<c:out value="${ rqpageMaker.rqcri.rqtype }"/>'> 
+			<input type='hidden' name='rqkeyword' value='<c:out value="${ rqpageMaker.rqcri.rqkeyword }"/>'>
+			<input type='hidden' name='requestNum' value='${detail.requestNum}'>
+			<input type='hidden' name='memberNum' value='${detail.memberNum}'>
 		</form>
 		
 		<button data-oper='modify'>¼öÁ¤</button>

@@ -4,15 +4,22 @@
 <!DOCTYPE html>
 <html>
 <style>
-
-body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, form, fieldset, p, button {
-    margin: 0;
-	    padding: 0;
-	  
+.modifybody {
+    width: 1080px;
+    margin: 0 auto;
+    clear: both;
+    padding-top: 106px;
+    padding-bottom: 150px;
 }
 
-div {
-    display: block;
+#modify li div:nth-child(1) {
+    width: 136px;
+    line-height: 32px;
+}
+
+#modify li div {
+    float: left;
+    line-height: 2px;
 }
 
 .modifybody {
@@ -22,14 +29,8 @@ div {
         
 } 
 
-#modifyMember li div:nth-child(1) {
-    width: 136px;
-    line-height: 32px;
-}
-
-#modifyMember li div {
-    float: left;
-    line-height: 2;
+#modifyForm input[type="text"] {
+    width: 266px;
 }
 
 .s_title {
@@ -38,30 +39,37 @@ div {
     display: inline-block;
 }
 
-.1sp li div {
-	float: left;
+
+.lsp0 {
+    letter-spacing: 0;
 }
 
 .fsize12 {
     font-size: 12px;
-    float: left;
 }
 
-.accordion-button {
-   	float: left;
+.rBtn_lGray {
+    float: left;
     cursor: pointer;
     padding: 0 10px;
     height: 28px;
     text-align: center;
     line-height: 28px;
     border: 1px solid #dadada;
+    background: #d7d7d7;
     font-size: 13px;
     margin: 0 auto;
     border-radius: 3px;
 }
 
-.accordion-button collapsed {
-	float: left;
+.fa {
+    display: inline-block;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transform: translate(0, 0);
 }
 
 .blank {
@@ -71,6 +79,42 @@ div {
 
 .left_li li {
     float: left;
+}
+
+.left_ol ol {
+    float: left;
+}
+
+.lsp0 {
+    letter-spacing: 0;
+}
+
+.btn_auth {
+    width: 80px;
+    height: 32px;
+    line-height: 32px;
+    background: #eeeeee;
+    border: 1px solid #dadada;
+    border-left: 0;
+    text-align: center;
+    cursor: pointer;
+    font-size: 14px;
+    
+}
+
+.clear {
+    clear: both;
+    overflow: hidden;
+}	
+
+.cf:after {
+    content: "";
+    display: block;
+    clear: both;
+    visibility: hidden;
+    width: 0;
+    height: 0;
+    font-size: 0;
 }
 
 .btn1 {
@@ -85,6 +129,10 @@ div {
     float: right;
 }
 
+#orgFile {
+    display: none; 
+}
+
 </style>
 <head>
 
@@ -96,14 +144,14 @@ div {
 
 <!-- sellerInfo -->
 
-<form method="post" id="modifyForm" action="/myPage/modifyPro" enctype="multipart/form-data" onSubmit="return modifyPro();">
+<form role="form" method="post" id="modifyForm" action="/myPage/modifyPro" enctype="multipart/form-data" onSubmit="return modifyPro();">
 <input type="hidden" name="jmode" value="modify">
 <input type="hidden" name="ckBtn">
 <input type="hidden" name="receive" value="N">
 <input type="hidden" name="auth_check">
 <input type="hidden" name="memberNum" value="${memberDetail.memberNum}">
 
-<div class="modifyMember">
+<div class="modify">
 
 <div id="subtitle" style="margin-bottom: 62px">
 <p class="s_title">회원정보 수정</p>
@@ -116,59 +164,55 @@ div {
 
 <li class="1sp">
 <div>휴대전화 번호</div>
+<div class="left_ol cf">
+<div class="lsp0" style="line-height: 32px; margin-right: 20px">${memberDetail.memberMobile}</div>
+</div>
+</li>
+
+<div id="change_phone" class="cf">
 <div>
-<ul class="left_ol">
-<ol>${memberDetail.memberMobile}</ol>
-<ol class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
-전화번호 변경</ol>
-</ul>
+<div class="left_ol cf">
+<div class="fsize12 " style="margin-bottom: 10px">
+<i class="fa fa-exclamation-circle" style="margin:-3px 4px 0 0; font-size: 14px"></i>번호 인증 후에 저장 버튼을 누르셔야 변경됩니다.</div>
+<div><input type="text" name="memberMobile" id="memberMobile" placeholder="휴대전화 번호"></div>
+<div class="btn_auth">인증</div>
 </div>
-</li>
 
-<li class="1sp">
-<div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingOne">
-<dl class="fsize12 " style="margin-bottom: 10px"><i class="fa fa-exclamation-circle" style="margin:-3px 4px 0 0; font-size: 14px"></i>번호 인증 후에 저장 버튼을 누르셔야 변경됩니다.</dl>
-<ol><input class="form-control" type="text" name="memberMobile" placeholder="휴대전화 번호"></ol>
-<ol class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
-인증</ol>
-
-<li class="1sp">
-<ol id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
-<ol><input type="text" placeholder="인증번호 입력" class="form-control"></ol>
-<ol class="accordion-button collapsed" type="button">확인</ol>
-</ol>
-</li>
-
+<div id="atuhNum" style="margin-top: 10px;">
+<div class="left_ol">
+<div><input type="text" name="auth_num" id="auth_num" style="width:266px" placeholder="인증번호 입력"></div>
+<div class="btn_auth">확인</div>
 </div>
+</div>
+</div>
+
 <!-- 변경될 번호 입력 및 인증 번호 -->
 <div class="clear"></div>
-</li>
+</div>
 
 
-<li class="1sp">
+<li style="height: 56px">
 <div>이름</div>
-<div><input type="text" name="memberName" id="memberName" value="${memberDetail.memberName}" maxlength="8" class="form-control"></div>
+<div><input type="text" name="memberName" id="memberName" value="${memberDetail.memberName}" maxlength="8"></div>
 </li>
 
-<li class="1sp">
+<li>
 <div>우편번호</div>
-<div>
-<ol><input type="text" id="memberZipcode" name="memberZipcode" value="${memberDetail.memberZipcode}" class="form-control" readonly></ol>
-<ol type="button" onclick="kakaoPost()">검색</ol>
+<div><input type="text" id="memberZipcode" name="memberZipcode" value="${memberDetail.memberZipcode}" readonly>
+<div type="button" onclick="kakaoPost()">검색</div>
 </div>
 </li>
 
-<li class="1sp">
+<li>
 <div>주소</div>
-<div><input type="text" id="memberAddress" name="memberAddress" value="${memberDetail.memberAddress}" class="form-control" readonly></div>
+<div><input type="text" id="memberAddress" name="memberAddress" value="${memberDetail.memberAddress}" readonly></div>
 </li>
 
-<li class="1sp">
+<li>
 <div>상세주소</div>
-<div><input type="text" name="memberDetailAddress" value="${memberDetail.memberDetailAddress}" class="form-control"></div>
+<div><input type="text" name="memberDetailAddress" value="${memberDetail.memberDetailAddress}"></div>
 </li>
 
-</div>
 <!-- modifyMember -->
 
 <div class="blank" style="height:70px;"></div>
@@ -176,9 +220,12 @@ div {
 <li style="margin-right: 30px" type="button" onclick="location.href='/myPage/modifyPassForm';">비밀번호 변경</li>
 <li style="margin-right: 30px" type="button" onclick="location.href='/myPage/leaveForm';">회원탈퇴</li>
 <c:set var="memberClass" value="${memberDetail.memberClass}"></c:set>
-<c:if test="${memberDetail.memberClass != S}">
-<input  style="margin-right: 30px" type="button" onclick="transSeller()" value="전문가 회원전환">
+<c:if test="${memberDetail.memberClass != 'S'}">
+<input type="button" class="real-Button" id="orgFile" onclick="submit2()" value="전문가 회원전환">
+<li style="margin-right: 30px" class="Button" type="button" onclick="return submit2(this.form);">전문가 회원전환</li>
 </c:if>
+</div>
+
 </div>
 
 <input class="btn1 right"  type="submit" value="저 장">
@@ -198,13 +245,18 @@ function kakaoPost() {
 	}).open();
 }
 
-function transSeller() {
-	var form = document.getElementById("modifyForm");
+const realButton = document.querySelector('.real-Button');
+const Button = document.querySelector('.Button');
+
+function submit2(frm) {
+	
+	var frm = document.getElementById("modifyForm");
+	
 	if (confirm("전문가 회원으로 전환 하시겠습니까?") == true) {
-		form.action = "/myPage/transSeller";
-		form.target = "_self";
-		form.method = "post";
-		form.submit();
+		frm.action = '/myPage/transSeller';
+		frm.target = "_self";
+		frm.method = "post";
+		frm.submit();
 		alert("전문가 회원으로 전환 되셨습니다.");
 	} else {
 		return false;
@@ -212,15 +264,26 @@ function transSeller() {
 }
 
 function modifyPro() {
-	//var form = document.getElementById("modifyForm");
-	if (confirm("회원정보를 변경하시겠습니까?") == true) {
+	
+	var name = $("#memberName").val();
+	var ncheck = RegExp(/^[가-힣]+$/);
+	
+	if(name == ""){
+	 alert("이름을 입력해주세요.");
+	 $("#memberName").focus();
+	 return false;
+	} 
+	if(!ncheck.test(name)) {
+	 alert("이름형식에 맞게 입력해주세요.");
+	 $("#memberName").val("");
+	 $("#memberName").focus();
+	 return false;
+	}else {
 		alert("회원정보가 변경 되었습니다.");
 		return true;
-	} else {
-		return false;
-	} 
+	}
+	
 }
 		
-
 </script>
 </html>
