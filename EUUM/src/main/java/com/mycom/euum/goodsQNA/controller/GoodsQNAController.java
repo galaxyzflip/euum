@@ -85,16 +85,9 @@ public class GoodsQNAController {
 
 		return "redirect:/goods/goodsDetail?goodsNum=" + request.getParameter("goodsNum");
 	}
-
-	// 나의 상품문의 내역 이동하기
-	@GetMapping("/goodsQNA")
-	public String openInsert(Model model, HttpSession session) {
-
-		return "goodsQNA/myGoodsQNA";
-	}
 	
 	// 나의 상품문의 내역 가져오기
-	@GetMapping("/myPage/goodsQNA")
+	@GetMapping("myPage/goodsQNA")
 	public String myGQNA(Model model, HttpSession session, Criteria cri) {
         
 		// 세션 정보 가져오기
@@ -111,6 +104,8 @@ public class GoodsQNAController {
 		model.addAttribute("memberName", memberName);				
 		model.addAttribute("list" , goodsQNAService.myGoodsQNAList(memberNum, pageNum, amount));
 		model.addAttribute("pageMaker", new PageDTO(cri, total));
+		
+		log.info("나의 상품내역" + goodsQNAService.myGoodsQNAList(memberNum, pageNum, amount));
 		
 		return "goodsQNA/myGoodsQNA";
 	}

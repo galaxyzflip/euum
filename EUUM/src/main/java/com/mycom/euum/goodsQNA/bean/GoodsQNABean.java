@@ -1,6 +1,9 @@
 package com.mycom.euum.goodsQNA.bean;
 
 import java.util.Date;
+import java.util.List;
+
+import com.mycom.euum.image.bean.ImageBean;
 
 import lombok.Data;
 
@@ -17,5 +20,7 @@ public class GoodsQNABean {
 	private String goodsQNASecret;
 	private String goodsQNADelete;
 	private String goodsQNAComment;
+	private List<ImageBean> imageBean;
+	/* private ImageBean imageBean; */
 
 }

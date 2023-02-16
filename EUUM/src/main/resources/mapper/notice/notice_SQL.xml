@@ -82,14 +82,27 @@
 		]]>
 	</select>	
 	
-	<insert id="noticeInsert" >
+	<!-- <insert id="noticeInsert" >
 		<![CDATA[
 		insert into NOTICE_TBL (NOTICE_NUM, NOTICE_TITLE,
 					NOTICE_CONTENT, NOTICE_WRITER, NOTICE_CATEGORY)
 		values ( NOTICE_NUM_SEQ.NEXTVAL , #{noticeTitle}, #{noticeContent}, 
 				#{noticeWriter}, #{noticeCategory})
 		]]>
+	</insert> -->
+	
+	<insert id="noticeInsert" parameterType="com.mycom.euum.notice.bean.NoticeBean">
+	<selectKey keyProperty="noticeNum" keyColumn="noticeNum" order="BEFORE" resultType="int">
+			SELECT NOTICE_NUM_SEQ.NEXTVAL FROM DUAL
+	 </selectKey>
+		<![CDATA[
+		insert into NOTICE_TBL (NOTICE_NUM, NOTICE_TITLE,
+					NOTICE_CONTENT, NOTICE_WRITER, NOTICE_CATEGORY)
+		values ( #{noticeNum} , #{noticeTitle}, #{noticeContent}, 
+				#{noticeWriter}, #{noticeCategory})
+		]]>
 	</insert>
+	
 	
 	 <select id="noticeDetail" resultType="com.mycom.euum.notice.bean.NoticeBean">
 	 	<![CDATA[

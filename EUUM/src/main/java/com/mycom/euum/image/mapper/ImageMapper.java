@@ -38,5 +38,8 @@ public interface ImageMapper {
 
 	/** 의종: 상품문의 이미지 가져오기 */
 	public List<ImageBean> selectGoodsQNAImage(int goodsQNANum);
+	
+	/** 의종: 공지사항 이미지 가져오기 */
+	public List<ImageBean> selectNoticeImage(int noticeNum);
 
 }

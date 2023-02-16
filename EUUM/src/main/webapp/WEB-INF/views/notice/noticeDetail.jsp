@@ -57,6 +57,12 @@
 		<td>내용</td>
 		<td>
 			<c:out value="${detail.noticeContent }"/>
+			
+			<!--  이미지 리스트 -->
+             <c:forEach items="${image}" var="row">
+             <img src="/resources/img/${row.imageUploadPath}${row.imageFileName}" width=350; height=350;>        
+             </c:forEach>	
+		
 		</td><tr/>
 	</table>
 	</form>

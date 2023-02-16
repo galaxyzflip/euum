@@ -29,6 +29,9 @@ import com.mycom.euum.page.CriteriaForGoods;
 import com.mycom.euum.page.PageDTO;
 import com.mycom.euum.page.PageDTO2;
 import com.mycom.euum.page.PageForGoodsDTO;
+import com.mycom.euum.page.RCriteria;
+import com.mycom.euum.page.RPageDTO;
+import com.mycom.euum.review.service.ReviewService;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
@@ -44,6 +47,7 @@ public class GoodsController {
 	private GoodsService goodsService;
 	private ImageService imageService;
 	private GoodsQNAService goodsQNAService;
+	private ReviewService reviewService;
 	
 	private FileUtils fileUtils; // 123
 	
@@ -318,7 +322,7 @@ public class GoodsController {
 
 	/** 선민: 상품 상세보기 */
 	@GetMapping(value = "/goods/goodsDetail")
-	public String goodsDetail(Model model, String goodsNum, Criteria cri, GoodsQNABean goodsQNABean) throws Exception {
+	public String goodsDetail(Model model, String goodsNum, Criteria cri, GoodsQNABean goodsQNABean, RCriteria rcri) throws Exception {
 		log.info("===== 상품 상세보기 =====");
 		
 		// (1) 상품 정보 가져오기
@@ -340,32 +344,27 @@ public class GoodsController {
 		int optionCount = goodsService.selectGoodsOptionCount(goodsNum);
 		log.info("옵션의 개수: " + optionCount);
 		List<List<GoodsOptionBean>> optionList = goodsService.selectGoodsOptionContent(goodsNum, optionCount);
+				
+		/*================= 용주 작업중===============*/
 		
+		int rtotal=reviewService.getTotal(rcri);
+		model.addAttribute("rpageMaker", new RPageDTO(rcri, rtotal));					
+		model.addAttribute("reviewList", reviewService.reviewList(rcri));
+	
 		
+		log.info("sql상품 컨트롤러=======================" + reviewService.reviewList(rcri));
 		
 	/** 의종: goodsQNA 리스트 가져오기 및 페이징 */
 		int amount = cri.getAmount();
 		int pageNum = cri.getPageNum();
 		int total=goodsQNAService.getGoodsQNATotalCount(cri,goodsNum); 
 		
-		//goodsQNA 이미지가져오기
-		/*
-		 * int goodsQNANum = 1; 
-		 * model.addAttribute("qnaImage",
-		 * imageService.selectGoodsQNAImage(goodsQNANum));
-		 */
-
-		log.info("goods리스트 가져오는거===============" + goodsQNAService.goodsQNAList(goodsNum, pageNum, amount));
+		List<GoodsQNABean> list = goodsQNAService.goodsQNAList(goodsNum, pageNum, amount);	
 		
-		model.addAttribute("list" , goodsQNAService.goodsQNAList(goodsNum, pageNum, amount));
+		model.addAttribute("list" , list);
+		log.info("goodsqna가져오는거====================" + list);
 		model.addAttribute("pageMaker", new PageDTO(cri, total));
 		model.addAttribute("goodsNum" , goodsNum);
-		
-		
-		model.addAttribute("detail", goodsService.selectGoodsInfo(goodsNum));
-		model.addAttribute("optionList", optionList);
-		model.addAttribute("optionCount", optionCount);
-		
 		
 		model.addAttribute("detail", goodsBean);
 		model.addAttribute("optionList", optionList);

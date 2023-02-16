@@ -16,11 +16,11 @@
 
 
 <body>
-
+<br><br><br><br><br><br>
 <div class="container">
 
   <h2>답변 하기</h2>
-  <form action="/qna/rewritePro" method="post">
+  <form action="/qna/rewritePro" method="post" enctype="multipart/form-data">
     
     <div class="form-group" align="500px;">
      <label for="title">제목</label>  

@@ -12,8 +12,7 @@ public interface ReviewMapper {
 	
 //	public List<ReviewBean> reviewList(@Param("goodsNum") String goodsNum, @Param("pageNum") int pageNum, @Param("amount") int amount);
 	
-	public void reviewInsert(ReviewBean reviewBean);
-	
+	public int reviewInsert(ReviewBean reviewBean);
 
 	
 	public ReviewBean reviewModifyForm(int reviewNum);

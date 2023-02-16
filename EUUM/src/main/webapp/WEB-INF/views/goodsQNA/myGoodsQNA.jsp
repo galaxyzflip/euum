@@ -37,22 +37,27 @@
     </thead>
     <tbody>
      <c:forEach items="${list}" var="var" varStatus="vs">
+    
         <tr data-toggle="collapse" data-target=".demo1${vs.index }">
             <td>답변자이름</td>
             <td>${var.goodsQNATitle }</td>
             <td><fmt:formatDate value="${var.goodsQNARegdate}" pattern="yyyy-MM-dd" />
             
 <!-- modal button -->
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal${vs.index }" onclick="openModal('${var.goodsQNANum}','${var.goodsQNATitle }','${var.goodsQNAContent }')">수정/삭제</button>
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal${vs.index }" onclick="openModal('${var.goodsQNANum}','${var.goodsQNATitle }','${var.goodsQNAContent}')">수정/삭제</button>
             </td>
-            
+           <%--  ,'${image.imageFileName}','${image.imageUploadPath}' --%>
         </tr>
         <tr>
             <td class="hiddenRow">
                 <div class="collapse demo1${vs.index }">1</div>
             </td>
             <td class="hiddenRow">
-                <div class="collapse demo1${vs.index }">${var.goodsQNAContent }
+                <div class="collapse demo1${vs.index }">
+           <c:forEach var="image" items="${var.imageBean}">
+		    <img src="/resources/img/${image.imageUploadPath}${image.imageFileName}" width=200; height=200;>
+		   </c:forEach>
+                ${var.goodsQNAContent }
                 <p>${var.goodsQNAComment }</p>
                 </div>
             </td>
@@ -82,8 +87,13 @@
 	          <div class="mb-3">
 	            <label for="recipient-name" class="col-form-label">제목:</label>
 	            <input type="text" class="form-control" id="goodsQNATitle" name="goodsQNATitle" value="${var.goodsQNATitle }">
-				<input type="text" name="goodsQNANum" />	          
+				<input type="hidden" name="goodsQNANum" />	          
 	          </div>
+	          
+	          <div id="showImage">
+	          
+	          </div>
+	          
 	          <div class="mb-3">
 	            <label for="message-text" class="col-form-label">내용:</label>
 	            <textarea class="form-control" id="goodsQNAContent" name="goodsQNAContent"></textarea>
@@ -94,11 +104,16 @@
 	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
 	        <button type="button" class="btn btn-primary" id="delete" data-oper="delete">삭제</button>
 	        <button type="button" class="btn btn-primary" id="modify" data-oper="modify">저장</button>
+	        <button type="button" class="btn btn-primary" id="test" onclick="imageTest()">이미지테스트</button>
+	
+	    
 	      </div>
 	    </div>
 	  </div>
   </form>
+  
 </div> 
+
 
 <!-- 페이징 -->
 <div class='pull-right'>
@@ -129,7 +144,7 @@
 
 </div>
 
-
+<br><br><br><br><br><br>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script type="text/javascript">  
 $('.collapse').on('show.bs.collapse', function () {
@@ -180,6 +195,10 @@ function openModal(goodsQNANum,goodsQNATitle,goodsQNAContent){
 	$('input[name="goodsQNATitle"]').val(goodsQNATitle);
 	$('textarea[name="goodsQNAContent"]').text(goodsQNAContent);
 }
+
+function imageTest(){
+  
+}  
 
 
 </script>  

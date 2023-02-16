@@ -5,7 +5,7 @@
    
 <mapper namespace="com.mycom.euum.review.mapper.ReviewMapper">
 	
-	<select id="reviewList" resultType="com.mycom.euum.review.bean.ReviewBean">		
+<!-- 	<select id="reviewList" resultType="com.mycom.euum.review.bean.ReviewBean">	 -->	
     <!--  <![CDATA[
 		select R.REVIEW_NUM, R.REVIEW_WRITER, R.REVIEW_TITLE, R.REVIEW_REGDATE, G.GOODS_NUM, R.REVIEW_CONTENT
 		from REVIEW_TBL R inner join GOODS_TBL G on R.GOODS_NUM = G.GOODS_NUM
@@ -22,7 +22,7 @@
 		where rn>(#{pageNum}-1) * #{amount} ORDER BY  R.REVIEW_NUM ASC	
 	 ]]> -->
 	
-	 <![CDATA[
+	<!--  <![CDATA[
 	 	select REVIEW_NUM, MEMBER_NUM, REVIEW_WRITER, REVIEW_TITLE, REVIEW_REGDATE, REVIEW_STAR, 
         GOODS_NUM, REVIEW_CONTENT, REVIEW_DELETE
 		from (select rownum rn, R.REVIEW_NUM, R.REVIEW_TITLE, R.REVIEW_REGDATE, R.MEMBER_NUM, R.REVIEW_STAR,
@@ -30,17 +30,42 @@
 		                FROM REVIEW_TBL R inner join GOODS_TBL G on R.GOODS_NUM = G.GOODS_NUM
 		                WHERE rownum <=#{rpageNum} * #{ramount} AND G.GOODS_NUM =#{goodsNum} AND R.REVIEW_DELETE = 'N')
 		where rn>(#{rpageNum}-1) * #{ramount} ORDER BY REVIEW_NUM	DESC	
-	 ]]>
+	 ]]> -->
 	 	   
+  <!-- </select> -->
+  
+  <select id="reviewList" resultMap="review">
+   <![CDATA[
+	 	select REVIEW_NUM, MEMBER_NUM, REVIEW_WRITER, REVIEW_TITLE, REVIEW_REGDATE, REVIEW_STAR, 
+        GOODS_NUM, REVIEW_CONTENT, REVIEW_DELETE
+		from (select rownum rn, R.REVIEW_NUM, R.REVIEW_TITLE, R.REVIEW_REGDATE, R.MEMBER_NUM, R.REVIEW_STAR,
+		               R.REVIEW_WRITER, R.REVIEW_DELETE, R.REVIEW_CONTENT, G.GOODS_NUM
+		                FROM REVIEW_TBL R inner join GOODS_TBL G on R.GOODS_NUM = G.GOODS_NUM
+		                WHERE rownum <=#{rpageNum} * #{ramount} AND G.GOODS_NUM =#{goodsNum} AND R.REVIEW_DELETE = 'N')
+		where rn>(#{rpageNum}-1) * #{ramount} ORDER BY REVIEW_NUM DESC	
+	 ]]> 
   </select>
   
-  <insert id="reviewInsert">
+
+ <!--  <insert id="reviewInsert">
   	<![CDATA[
   		insert into REVIEW_TBL (REVIEW_NUM, MEMBER_NUM, REVIEW_WRITER, REVIEW_TITLE,
 					REVIEW_CONTENT, GOODS_NUM, ORDER_NUM, REVIEW_STAR)
 		values (REVIEW_NUM_SEQ.NEXTVAL , #{memberNum}, #{reviewWriter}, #{reviewTitle}, #{reviewContent}, #{goodsNum}, #{orderNum}, #{reviewStar})
 	]]>
+  </insert> -->
+  
+  <insert id="reviewInsert" parameterType="com.mycom.euum.review.bean.ReviewBean">
+  	<selectKey keyProperty="reviewNum" order="BEFORE" resultType="int">
+          SELECT REVIEW_NUM_SEQ.NEXTVAL FROM DUAL
+    </selectKey>
+  	<![CDATA[
+  		insert into REVIEW_TBL (REVIEW_NUM, MEMBER_NUM, REVIEW_WRITER, REVIEW_TITLE,
+					REVIEW_CONTENT, GOODS_NUM, ORDER_NUM, REVIEW_STAR)
+		values (#{reviewNum} , #{memberNum}, #{reviewWriter}, #{reviewTitle}, #{reviewContent}, #{goodsNum}, #{orderNum}, #{reviewStar})
+	]]>
   </insert>
+  
   
   <select id="reviewDetail" resultType="com.mycom.euum.review.bean.ReviewBean">
   	<![CDATA[
@@ -101,5 +126,36 @@
 		where rn>(#{pageNum}-1) * #{amount} ORDER BY REVIEW_NUM	ASC	       
 	 ]]>	   
   </select>
+  
+  <!--상품문의 이미지 가져오기-->
+    <select id="getSelectRimage" resultType="com.mycom.euum.image.bean.ImageBean" parameterType="int">
+	   <![CDATA[ 
+	   select * from image_tbl
+          where IMAGE_USE_NUM = #{reviewNum}
+          and IMAGE_USE = 'review'
+        ]]>	
+	</select> 
+  
+  <resultMap id="review" type="com.mycom.euum.review.bean.ReviewBean">
+	  <result property="reviewNum" column="REVIEW_NUM"/>
+	  <result property="memberNum" column="MEMBER_NUM"/>
+	  <result property="reviewWriter" column="REVIEW_WRITER"/>
+	  <result property="reviewTitle" column="REVIEW_TITLE"/>
+	  <result property="reviewContent" column="REVIEW_CONTENT"/>
+	  <result property="reviewRegdate" column="GOODS_QNA_REGDATE"/>
+	  <result property="reviewStar" column="REVIEW_STAR"/>
+	  <result property="reviewDelete" column="REVIEW_REGDATE"/>
+	  <result property="goodsNum" column="GOODS_NUM"/>
+	  <result property="orderNum" column="ORDER_NUM"/>
+	  <collection column="REVIEW_NUM" 
+                  property="imageBean" 
+                  javaType="java.util.List" 
+                  ofType="com.mycom.euum.image.bean.ImageBean" 
+                  select="getSelectRimage">
+      </collection>  
+	</resultMap>
+   
+  
+
 	 
 </mapper>

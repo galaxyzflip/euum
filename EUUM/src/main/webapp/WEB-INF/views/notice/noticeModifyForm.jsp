@@ -1,3 +1,4 @@
+
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
     pageEncoding="EUC-KR"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
@@ -67,26 +68,31 @@ function deletee(){
 			<tr>
 			<form id="frm">
 				<input type="hidden" name="noticeNum" value="${modify.noticeNum }">
-				<td>Á¦¸ñ</td>
+				<td>ì œëª©</td>
 				<td><input type="text" name="noticeTitle" value="${modify.noticeTitle }"/>
 				</td>
 				
-				<td><label for="category">Ä«Å×°í¸® ¼±ÅÃ</label>
+				<td><label for="category">ì¹´í…Œê³ ë¦¬ ì„ íƒ</label>
 					<input type="hidden" id="category"/>
 						<select id="changeCategory" name="noticeCategory">
-								<option value="1">°øÁö»çÇ×</option>
-								<option value="2">ÀÇ·ÚÀÎFAQ</option>
-								<option value="3">Àü¹®°¡FAQ</option>
+								<option value="1">ê³µì§€ì‚¬í•­</option>
+								<option value="2">ì˜ë¢°ì¸FAQ</option>
+								<option value="3">ì „ë¬¸ê°€FAQ</option>
 						</select>
 				</td>
 				</tr>
 				
-				<td>ÀÛ¼ºÀÚ</td>
+				<td>ìž‘ì„±ìž</td>
 				<td><input type="text" value="${modify.noticeWriter }" readonly="readonly"/>
 				</td></tr>
 								
-				<td>³»¿ë</td>
+				<td>ë‚´ìš©</td>
 				<td><textarea name="noticeContent">${modify.noticeContent }</textarea>
+				
+				<!--  ì´ë¯¸ì§€ ë¦¬ìŠ¤íŠ¸ -->
+	             <c:forEach items="${image}" var="row">
+	            <td> <img src="/resources/img/${row.imageUploadPath}${row.imageFileName}" width=350; height=350;>   </td>     
+	             </c:forEach>	
 				</td>
 			</form>	
 			</tr>
@@ -99,12 +105,13 @@ function deletee(){
 		<input type="hidden" id="amount" value='<c:out value="${cri.amount }"/>'>
 	</form>
 		
-	<div align="center">
-		<button type="button" onclick="modify()">¼öÁ¤</button>
-		<button type="button" onclick="deletee()">»èÁ¦</button>
-	</div>	
+		<div align="center">
+			<button type="button" onclick="modify()">ìˆ˜ì •</button>
+			<button type="button" onclick="deletee()">ì‚­ì œ</button>
+		</div>	
 	
 
 
 </body>
+
 </html>
