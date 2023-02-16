@@ -11,7 +11,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.mycom.euum.goods.bean.GoodsBean;
 import com.mycom.euum.image.bean.ImageBean;
@@ -20,6 +22,8 @@ import com.mycom.euum.member.bean.MemberBean;
 import com.mycom.euum.order.bean.OrderBean;
 import com.mycom.euum.order.bean.OrderOptionBean;
 import com.mycom.euum.order.service.OrderService;
+import com.mycom.euum.page.OrderCriteria;
+import com.mycom.euum.page.OrderPageDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
@@ -54,11 +58,11 @@ public class OrderController {
 
 		return "order/orderForm";
 	}
-
+	
 	
 	//orderForm.jsp 에서 주문처리시 사용하는 메소드
 	@PostMapping("/order/orderPro")
-	public String orderPro(OrderOptionBean optionList, OrderBean orderBean, HttpSession session, Model model) {
+	public String orderPro(OrderOptionBean optionList, OrderBean orderBean, HttpSession session, RedirectAttributes rttr) {
 
 		// memberNum을 세션에서 가져와서 주문처리시 사용
 		MemberBean member = (MemberBean) session.getAttribute("loginUser");
@@ -79,24 +83,34 @@ public class OrderController {
 
 		//주문결과 보여주기 위한 작업
 		OrderBean order = orderService.selectOrder(orderNum);
-		model.addAttribute("order", order);
+		rttr.addFlashAttribute("order", order);
 
+		return "redirect:/order/orderSuccess";
+	}
+	
+	@GetMapping("order/orderSuccess")
+	public String orderSuccess() {
+		
+		
 		return "order/orderSuccess";
 	}
 	
 	//회원용 내 주문 보기
 	@GetMapping("myPage/orderList")
-	public String myOrderList(Model model, HttpSession session) {
+	public String myOrderList(Model model, HttpSession session, OrderCriteria cri) {
 		
 		MemberBean member = (MemberBean)session.getAttribute("loginUser");
+		cri.setMemberNum(member.getMemberNum());
 		
-		List<OrderBean> orderList = orderService.selectOrderListByMember(member.getMemberNum());
-		
+		List<OrderBean> orderList = orderService.selectOrderListByMember(cri);
 		for(OrderBean order : orderList) {
 			log.info("오더리스트 : " + order);
 		}
 		
+		int totalCount = orderService.selectOrderCountByMember(cri);
 		model.addAttribute("orderList", orderList);
+		model.addAttribute("pageMaker", new OrderPageDTO(cri, totalCount));
+		
 		return "order/myOrderList";
 	}
 	
@@ -124,17 +138,21 @@ public class OrderController {
 	
 	// 셀러용 의뢰받은 주문 리스트
 	@GetMapping("seller/orderList")
-	public String sellerOrderList(Model model, HttpSession session) {
+	public String sellerOrderList(Model model, HttpSession session, OrderCriteria cri) {
 
 		MemberBean member = (MemberBean) session.getAttribute("loginUser");
-
-		List<OrderBean> orderList = orderService.selectOrderListBySeller(member.getMemberNum());
+		cri.setMemberNum(member.getMemberNum());
+		List<OrderBean> orderList = orderService.selectOrderListBySeller(cri);
 
 		for (OrderBean order : orderList) {
 			log.info("받은 오더리스트 : " + order);
 		}
-
+		
+		int totalCount = orderService.selectOrderCountBySeller(cri);
+		
+		model.addAttribute("pageMaker", new OrderPageDTO(cri, totalCount));
 		model.addAttribute("orderList", orderList);
+		
 		return "sellerOrder/sellerOrderList";
 	}
 	
