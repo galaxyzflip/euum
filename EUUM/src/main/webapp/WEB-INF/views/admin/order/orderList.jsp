@@ -104,11 +104,55 @@ ul li {
 	color: orange;
 	font-weight: bold;
 }
+
+.price-td{
+	font-weight: bold;
+	font-size:18px;
+}
+
+.tap{
+	width: 120;
+    height: 50;
+    display: inline-block;
+    text-align: center;
+    border:1px solid #f2f2f2;
+    padding:18px;
+    background-color: #ffffff;
+    float:left;
+    padding:15px;
+    cursor: pointer;
+}
+
+.search-tap{
+	background-color: #fb8500;	
+	color: white;
+}
+
+.tap-class{
+	width:1000px;
+	display:block;
+	height:50px;
+}
+
+.search-box{
+	display:none;
+	
+}
+
+hr{
+	width:1000px;
+	margin-left:auto;
+	margin-right:auto;
+}
 </style>
 
 <div class="container">
 
-	<div id="searchBox">
+	<div class="tap-class">
+		<div class="tap search-tap">검색하기</div>
+	</div>
+
+	<div id="searchBox" class='search-box'>
 		<form id='actionForm' action="/admin/orderList" method='get'>
 		
 			<input type="hidden" name="sortType" value="${pageMaker.cri.sortType }">
@@ -118,10 +162,12 @@ ul li {
 			<%-- <input type="hidden" name="orderStatus" value="${pageMaker.cri.orderStatus }"> --%>
 			
 			<select name="type">
-				<option value="SMG" ${pageMaker.cri.type == 'SMG' ? 'selected' : '' }>전체</option>
+				<option value="SMGNO" ${pageMaker.cri.type == 'SMGNO' ? 'selected' : '' }>전체</option>
 				<option value="S" ${pageMaker.cri.type == 'S' ? 'selected' : '' }>작가 닉네임</option>
 				<option value="M" ${pageMaker.cri.type == 'M' ? 'selected' : '' }>고객명</option>
 				<option value="G" ${pageMaker.cri.type == 'G' ? 'selected' : '' }>상품명</option>
+				<option value="N" ${pageMaker.cri.type == 'N' ? 'selected' : '' }>상품번호</option>
+				<option value="O" ${pageMaker.cri.type == 'O' ? 'selected' : '' }>주문번호</option>
 			</select>
 			
 			<span> <input type="text" name="keyword" id="searchKeyword"
@@ -200,7 +246,7 @@ ul li {
 					<td>${order.sellerNickname }</td>
 					<td class="order-name"><br> ${order.goodsName }<br>
 						${fn:replace(order.orderName,'`','<br>')}</td>
-					<td>${order.orderPrice } 원</td>
+					<td class="price-td">${order.orderPrice } 원</td>
 					<td class="order-status"><c:if test="${order.orderStatus eq 1 }">입금대기중</c:if> <c:if
 							test="${order.orderStatus eq 2 }">입금확인</c:if> <c:if
 							test="${order.orderStatus eq 3 }">작업중</c:if> <c:if
@@ -410,6 +456,17 @@ ul li {
 	
 	$(document).ready(function() {
 		
+		const orderStatus="${pageMaker.cri.orderStatus}";
+		let goodsNum="${pageMaker.cri.goodsNum}";
+		if(goodsNum == 0){
+			goodsNum = null;
+		}
+		const keyword="${pageMaker.cri.keyword}";
+		
+		if(orderStatus || goodsNum || keyword){
+			$('.search-box').css("display", "block");	
+		}
+		
 		var actionForm = $("#actionForm");
 		actionForm.find("input[name='pageNum']").val('1');
 		
@@ -466,6 +523,12 @@ ul li {
 			$(this).parent().parent().next(".anw").stop().slideToggle(0);
 			//$(this).toggleClass('on').siblings().removeClass('on');
 			$(this).parent().parent().next(".anw").siblings(".anw").slideUp(0); // 1개씩 펼치기
+		});
+		
+		$(".search-tap").click(function() {
+			$(".search-box").stop().slideToggle(300);
+			//$(this).toggleClass('on').siblings().removeClass('on');
+			$(".search-box").siblings(".search-box").slideUp(300); // 1개씩 펼치기
 		});
 
 	});	
