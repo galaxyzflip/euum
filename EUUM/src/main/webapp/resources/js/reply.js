@@ -87,7 +87,9 @@ var replyService = (function() {
 	}
 	
 	function get(commentNum, callback, error) {
-
+		
+//		var commentNum = param.commentNum;
+		
 		$.get("/comment/" + commentNum + ".json", function(result) {
 
 			if (callback) {
