@@ -10,7 +10,7 @@ public interface CommentService {
 	
 	public int commentInsert(CommentBean commentBean);
 	
-	public List<CommentBean> commentList(CCriteria ccri, int commentOriginalNum);
+	public List<CommentBean> commentList(CCriteria ccri, int requestNum);
 	
 	public CommentBean commentRead(int commentNum);
 	
