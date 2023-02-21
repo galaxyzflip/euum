@@ -102,9 +102,9 @@ html,body {
               
               
               <div class="panel-faq-answer">              
-   <c:forEach var="image" items="${var.imageBean}">
-    <img src="/resources/img/${image.imageUploadPath}${image.imageFileName}" width=200; height=200;>
-   </c:forEach>       
+           <c:forEach var="image" items="${var.imageBean}">
+		    <img src="/resources/img/${image.imageUploadPath}${image.imageFileName}" width=200; height=200;>
+		   </c:forEach>       
                 <p>${var.goodsQNAContent }</p>
             
                 <p>${var.goodsQNAComment }</p>

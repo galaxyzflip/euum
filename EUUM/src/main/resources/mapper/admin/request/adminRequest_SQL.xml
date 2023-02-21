@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+   PUBLIC "-//mybatis.org//DTD Mapper 3.0/EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+   
+<mapper namespace="com.mycom.euum.admin.request.mapper.AdminRequestMapper">
+
+    <!-- 의종: 관리자용 의뢰리스트 가져오기 -->
+	<select id="getAdminRList" resultType="com.mycom.euum.request.bean.RequestBean">
+		<![CDATA[
+		select * from request_tbl
+		order by request_num desc
+		]]>
+    </select>
+    
+    <!-- 의종: 의뢰승인 -->
+     <update id="updateRstatus" parameterType="com.mycom.euum.request.bean.RequestBean">
+        <![CDATA[       
+		update request_tbl
+			set REQUEST_STATUS = '접수중'
+			where REQUEST_NUM = #{requestNum}
+        ]]>	
+    </update> 
+    
+    <!-- 의종: 관리자용 의뢰 삭제 -->
+     <update id="deleteAdminRequest" parameterType="com.mycom.euum.request.bean.RequestBean">
+        <![CDATA[       
+		update request_tbl
+			set REQUEST_DELETE = 'Y'
+			where REQUEST_NUM = #{requestNum}
+        ]]>	
+    </update>  
+    
+    <!-- 의종: 의뢰삭제 취소 -->
+     <update id="cancelRdelete" parameterType="com.mycom.euum.request.bean.RequestBean">
+        <![CDATA[       
+		update request_tbl
+			set REQUEST_DELETE = 'N'
+			where REQUEST_NUM = #{requestNum}
+        ]]>	
+    </update>  
+
+</mapper>

@@ -10,7 +10,7 @@
 <div class="container-fluid">
 
 	<!-- Page Heading -->
-	<h1 class="h3 mb-2 text-gray-800">작품의뢰</h1>
+	<h1 class="h3 mb-2 text-gray-800">작품문의</h1>
 	<p class="mb-4">
 		DataTables is a third party plugin that is used to generate the demo
 		table below. For more information about DataTables, please visit the <a
@@ -25,65 +25,70 @@
 		</div>
 		<div class="card-body">
 			<div class="table-responsive">
-			
 				<table class="table table-bordered" id="dataTable" width="100%"
 					cellspacing="0">
 					<thead>
 						<tr>
 							<th>번호</th>
-							<th>카테고리</th>
+							<th>평점</th>
 							<th>제목</th>
 							<th>작성자</th>
-							<th>접수상태</th>
-							<th>완료기한</th>
+							<th>등록일</th>
 							<th>삭제여부</th>
 						</tr>
 					</thead>
 					<tfoot>
 						<tr>
 							<th>번호</th>
-							<th>카테고리</th>
+							<th>평점</th>
 							<th>제목</th>
 							<th>작성자</th>
-							<th>접수상태</th>
-							<th>완료기한</th>
+							<th>등록일</th>
 							<th>삭제여부</th>
 						</tr>
 					</tfoot>
 					
-	
 					<tbody>
-					<c:forEach items="${list}" var="var">		
-		
+					<c:forEach items="${list}" var="var">
 						<tr>
-							<td>${var.requestNum}</td>
-							<td>${var.requestCategory}</td>
+							<td>${var.reviewNum }</td>
 							<td>
-				<a href="#"><p onclick="openModal('${var.requestNum}','${var.requestStatus}'
-				,'${var.requestTitle}','${var.requestContent}')">${var.requestTitle}</p></a>
+						    <span style="color: #ffc81e"> 
+								<c:if test="${var.reviewStar eq 1}">
+									<c:out value="★☆☆☆☆" /></c:if>
+								 <c:if test="${var.reviewStar eq 2}">
+									<c:out value="★★☆☆☆" /></c:if>
+								 <c:if test="${var.reviewStar eq 3}">
+									<c:out value="★★★☆☆" /></c:if> 
+								<c:if test="${var.reviewStar eq 4}">
+									<c:out value="★★★★☆" /></c:if> 
+								<c:if test="${var.reviewStar eq 5}">
+									<c:out value="★★★★★" /></c:if>
+					         </span>
 							</td>
-							<td>${var.requestWriter}</td>
-							<td>${var.requestStatus}</td>
-			                <td><fmt:formatDate value="${var.requestFinish}" pattern="yyyy-MM-dd" /></td>   
-					
+							<td>
+				<a href="#"><p onclick="openModal('${var.reviewNum}','${var.reviewTitle}','${var.reviewContent}')">${var.reviewTitle }</p></a>
+							</td>
+							<td>${var.reviewWriter }</td>
+			                <td><fmt:formatDate value="${var.reviewRegdate }" pattern="yyyy-MM-dd" /></td>   
+						   
 						<c:choose>
-							<c:when test="${var.requestDelete eq 'N'}">
+							<c:when test="${var.reviewDelete eq 'N'}">
 							   <td>미삭제</td>
 							</c:when>	
 							<c:otherwise>
-							
-							  <td>
-							  <a href="#"><p onclick="cancel('${var.requestNum}')">삭제 취소</p></a>
-							  </td>
+							   <td>
+							   <a href="#"><p onclick="cancel('${var.reviewNum}')">삭제 취소</p></a>
+							   </td>
 							</c:otherwise>
 						</c:choose>  
-               
-						</tr>		
-					</c:forEach>		
-					</tbody>			
+						   
+						</tr>
+				
+						</c:forEach>	
+					</tbody>
+				
 				</table>
-	
-			
 			</div>
 		</div>
 	</div>
@@ -99,33 +104,28 @@
         <h1 class="modal-title fs-5" id="exampleModalLabel">상세보기</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-   
-   <form id="frm" method="post">
+    
+    <form id="frm" method="post">
       <div class="modal-body">
      
           <div class="mb-3">
             <label for="recipient-name" class="col-form-label">제목:</label>
-            <input type="text" class="form-control" id="recipient-name" name="requestTitle" readonly>
+            <input type="text" class="form-control" id="recipient-name" name="reviewTitle" readonly>
           </div>
           <div class="mb-3">
             <label for="message-text" class="col-form-label">내용:</label>
-            <textarea class="form-control" id="message-text" name="requestContent" readonly></textarea>
-          </div>      
+            <textarea class="form-control" id="message-text" name="reviewContent" readonly></textarea>
+          
+          </div>
       </div>
-      
-      <input type="hidden" name="requestStatus">
-      <input type="hidden" name="requestNum">
+      <input type="hidden" name="reviewNum">
       <div class="modal-footer">
-     
-	    <button type="button" class="btn btn-primary" data-oper="status" id="status"></button>  
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-        <button type="button" class="btn btn-primary" data-oper="delete" id="delete">삭제</button>
+        <button type="button" class="btn btn-primary" onclick="deleteReview()">삭제</button>
       </div>
     </form>
     
     </div>
-    
-
   </div>
 </div>
 
@@ -134,46 +134,29 @@
 <!-- Custom scripts for all pages-->
 <script src="/resources/sbadmin/js/sb-admin-2.min.js"></script>
 <script type="text/javascript"> 
-const sBtn = document.getElementById("status");
-
-function openModal(requestNum,requestStatus,requestTitle,requestContent){
-	
+function openModal(reviewNum,reviewTitle,reviewContent){
 	$('#exampleModal').modal('show');
-	$('input[name="requestNum"]').val(requestNum);
-    $('input[name="requestStatus"]').val(requestStatus);
-    $('input[name="requestTitle"]').val(requestTitle);
-    $('textarea[name="requestContent"]').text(requestContent);
 	
-    sBtn.innerHTML = `승인`;
+	$('input[name="reviewNum"]').val(reviewNum);
+    $('input[name="reviewTitle"]').val(reviewTitle);
+    $('textarea[name="reviewContent"]').text(reviewContent);
 
 }
 
-$(document).ready(function(){
-	 
-	   var frm = $("#frm");
-		
-	   $("#status, #delete").on("click", function(e){   
-		   
-			e.preventDefault();
-			
-			var oper = $(this).data("oper");
-			
-			 if(oper === 'status'){
-				 frm.attr("action", "/updateRstatus");		
-			} else if(oper === 'delete'){
-				frm.attr("action", "/deleteRequestAdmin");		
-			}
-			 frm.submit();
-		
-	   });
-	});	
-function cancel(requestNum) {
+function deleteReview() {
+	 var frm = $("#frm");
+	 frm.attr("action", "/deleteAdminReview");
 
- 	$.ajax({
-		url : "/cancelRequestDelete",
+	 frm.submit();
+	
+}
+function cancel(reviewNum) {
+	
+	$.ajax({
+		url : "/cancelReviewDelete",
 		type : "post",
 		data : {
-				requestNum: requestNum
+			    reviewNum: reviewNum
 			},
 		success : function(data){
 			location.reload();
@@ -183,9 +166,5 @@ function cancel(requestNum) {
 		} 
 		
 	})
-
 }
-
-
-</script>    
-
+</script>   

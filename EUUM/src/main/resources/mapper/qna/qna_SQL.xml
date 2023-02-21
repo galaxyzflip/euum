@@ -27,22 +27,75 @@
      </select>  -->
      
   <!-- 문의글 리스트 -->
-   <select id="qnaList" resultType="com.mycom.euum.qna.bean.QNABean">		
+ <!--   <select id="qnaList" resultType="com.mycom.euum.qna.bean.QNABean">		
+	  
+	  <include refid="pagingPre"></include> 
+	  
+	   <![CDATA[
+select * from (
+SELECT
+    ROWNUM rn,
+    qna_num,
+    qna_title,
+    qna_regdate,
+    qna_writer,
+    qna_ordered,
+    qna_delete,
+    qna_nid,
+    qna_hitcount
+FROM
+    qna_tbl
+ORDER BY
+    qna_nid DESC,
+    qna_ordered ASC)where
+	]]>	
+	<include refid="criteria"></include>
+     	   
+	
+	<include refid="pagingPost"></include> 
+     </select> 
+      -->
+      <!-- 문의글 리스트 -->
+<!--    <select id="qnaList" resultType="com.mycom.euum.qna.bean.QNABean">		
 	   <![CDATA[
 	select QNA_NUM, QNA_TITLE, QNA_REGDATE, QNA_WRITER, QNA_ORDERED, QNA_DELETE, QNA_NID, QNA_HITCOUNT
 	from (select rownum rn, QNA_NUM, QNA_TITLE, QNA_REGDATE,
 	      QNA_WRITER, QNA_ORDERED, QNA_DELETE, QNA_NID, QNA_HITCOUNT
 	        FROM QNA_TBL 
-	        WHERE
+	        WHERE 
 	]]>	
 	<include refid="criteria"></include>
      <![CDATA[
      	rownum <=#{pageNum} * #{amount})	
 		where rn>(#{pageNum}-1) * #{amount}
-		        ORDER BY QNA_NID DESC, QNA_ORDERED ASC
+		  ORDER BY QNA_NID DESC, QNA_ORDERED ASC
 	]]>		   
-     </select> 
-  
+     </select>  
+   -->
+   
+        <!-- 문의글 리스트 -->
+   <select id="qnaList" resultType="com.mycom.euum.qna.bean.QNABean">		
+	   <![CDATA[
+  select * from
+    (select rownum rnum, q.* 
+    from (
+        SELECT
+            qna_num, qna_title,  qna_regdate, qna_writer, 
+            qna_ordered, qna_delete, qna_nid,qna_hitcount
+        FROM  qna_tbl
+        where 1=1
+        ]]>	
+	<include refid="criteria"></include>
+     <![CDATA[	 
+	ORDER BY  qna_nid DESC, qna_ordered ASC) 
+    q ) qq
+where rnum between (#{pageNum}-1) * #{amount} and #{pageNum} * #{amount}	  
+	]]>		   
+     </select>  
+     
+   
+   
+   
   <!-- 문의글 등록 -->
   <insert id="qnaInsert" parameterType="com.mycom.euum.qna.bean.QNABean">		
      <selectKey keyProperty="qnaNum" keyColumn="qnaNum" order="BEFORE" resultType="int">
@@ -119,7 +172,7 @@
 	</update>
 	
 	<sql id="criteria">
-		<trim prefix="(" suffix=") AND " prefixOverrides="OR">
+		<trim prefix="AND (" suffix=") " prefixOverrides="OR">
 			<foreach item='type' collection="typeArr">
 				<trim prefix="OR">
 					<choose>
@@ -147,5 +200,26 @@
                         #{imageUse}, #{imageNum}, #{imageUseNum})  
         ]]>	
 	</insert> -->
+	
+	<!-- 	<sql id="pagingPre">
+      <![CDATA[
+         SELECT
+             AAA.*
+         FROM
+             (SELECT
+                 
+                 AA.*
+             FROM(
+       ]]>
+	</sql>
+
+	<sql id="pagingPost">
+      <![CDATA[
+            )AA
+          )AAA
+         WHERE
+             (#{pageNum} -1)*#{amount} <AAA.RNUM  AND AAA.RNUM <= #{pageNum} * #{amount}
+      ]]>
+	</sql> -->
 
 </mapper>
