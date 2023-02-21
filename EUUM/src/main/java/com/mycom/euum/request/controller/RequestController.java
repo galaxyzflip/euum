@@ -34,7 +34,7 @@ public class RequestController {
 		
 		requestService.requestInsert(requestBean);
 		
-		return "redirect:request/requestList";
+		return "redirect:/request/requestList";
 	}
 	
 	@GetMapping("/request/requestList")

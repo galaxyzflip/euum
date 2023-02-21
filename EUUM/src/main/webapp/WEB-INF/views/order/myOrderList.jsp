@@ -133,12 +133,62 @@ tbody .order-name {
 	font-size:18px;
 }
 
+.tap{
+	width: 120;
+    height: 50;
+    display: inline-block;
+    text-align: center;
+    border:1px solid #f2f2f2;
+    padding:18px;
+    background-color: #ffffff;
+    float:left;
+    padding:15px;
+    cursor: pointer;
+}
+
+.receipt-tap{
+	background-color: #f2f2f2;
+}
+
+.search-tap{
+	background-color: #fb8500;	
+	color: white;
+}
+
+.tap-class{
+	width:1000px;
+	margin:auto;
+	display:block;
+	height:50px;
+}
+
+.search-box{
+	display:none;
+	
+}
+
+hr{
+	width:1000px;
+	margin-left:auto;
+	margin-right:auto;
+}
+
 </style>
 
 
 <div class="container">
 
-<div id="searchBox" class='search-box'>
+	<div class="tap-class">
+		<div class="tap receipt-tap">접수건</div>
+		<c:if test="${loginSeller ne null }">
+			<div class="tap request-tap">의뢰건</div>
+		</c:if>
+		<div class="tap search-tap">검색하기</div>
+	</div>
+	
+	<div><hr></div>
+
+	<div id="searchBox" class='search-box'>
 		<form id='actionForm' action="/myPage/orderList" method='get'>
 		
 			<input type="hidden" name="sortType" value="${pageMaker.cri.sortType }">
@@ -147,11 +197,12 @@ tbody .order-name {
 			<input type="hidden" name="goodsNum" value="${pageMaker.cri.goodsNum }">
 			
 			<select name="type">
-				<option value="SMGN" ${pageMaker.cri.type == 'SMGN' ? 'selected' : '' }>전체</option>
+				<option value="SMGNO" ${pageMaker.cri.type == 'SMGNO' ? 'selected' : '' }>전체</option>
 				<option value="S" ${pageMaker.cri.type == 'S' ? 'selected' : '' }>작가 닉네임</option>
 				<option value="M" ${pageMaker.cri.type == 'M' ? 'selected' : '' }>고객명</option>
 				<option value="G" ${pageMaker.cri.type == 'G' ? 'selected' : '' }>상품명</option>
 				<option value="N" ${pageMaker.cri.type == 'N' ? 'selected' : '' }>상품번호</option>
+				<option value="O" ${pageMaker.cri.type == 'O' ? 'selected' : '' }>주문번호</option>
 			</select>
 			
 			<span> <input type="text" name="keyword" id="searchKeyword"
@@ -187,8 +238,9 @@ tbody .order-name {
 			</span>
 		</form>
 		
-		
 	</div>
+	
+	
 
 	<table class="order-list-table">
 		<thead>
@@ -473,6 +525,29 @@ tbody .order-name {
 		var actionForm = $("#actionForm");
 		actionForm.find("input[name='pageNum']").val('1');
 		
+		
+		const orderStatus="${pageMaker.cri.orderStatus}";
+		let goodsNum="${pageMaker.cri.goodsNum}";
+		if(goodsNum == 0){
+			goodsNum = null;
+		}
+		const keyword="${pageMaker.cri.keyword}";
+		
+		if(orderStatus || goodsNum || keyword){
+			$('.search-box').css("display", "block");	
+		}
+		
+		
+		
+		
+		$('.request-tap').on('click', function(){
+			self.location.href="/seller/orderList";
+		})
+		
+		$('.receipt-tap').on('click', function(){
+			self.location.href="/myPage/orderList";
+		})
+		
 		$('#amount').on('change', function(){
 			$(actionForm).submit();			
 		})
@@ -550,6 +625,12 @@ tbody .order-name {
 			$(this).parent().parent().next(".anw").stop().slideToggle(0);
 			//$(this).toggleClass('on').siblings().removeClass('on');
 			$(this).parent().parent().next(".anw").siblings(".anw").slideUp(0); // 1개씩 펼치기
+		});
+		
+		$(".search-tap").click(function() {
+			$(".search-box").stop().slideToggle(300);
+			//$(this).toggleClass('on').siblings().removeClass('on');
+			$(".search-box").siblings(".search-box").slideUp(300); // 1개씩 펼치기
 		});
 
 	});

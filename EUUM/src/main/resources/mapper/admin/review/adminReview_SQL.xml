@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+   PUBLIC "-//mybatis.org//DTD Mapper 3.0/EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+   
+<mapper namespace="com.mycom.euum.admin.review.mapper.AdminReviewMapper">
+
+    <!-- 의종: 관리자용 상품후기 가져오기 -->
+	<select id="getAdminReviewList" resultType="com.mycom.euum.review.bean.ReviewBean">
+		<![CDATA[
+		select * from review_tbl
+		order by review_num desc
+		]]>
+    </select>
+    
+     <!-- 의종: 관리자용 상품후기 삭제 -->
+     <update id="deleteAdminReview" parameterType="com.mycom.euum.review.bean.ReviewBean">
+        <![CDATA[       
+		update review_tbl
+			set REVIEW_DELETE = 'Y'
+			where REVIEW_NUM = #{reviewNum}
+        ]]>	
+    </update> 
+    
+    <!-- 의종: 상품후기 삭제 취소-->
+     <update id="cancelRdelete" parameterType="com.mycom.euum.review.bean.ReviewBean">
+        <![CDATA[       
+		update review_tbl
+			set REVIEW_DELETE = 'N'
+			where REVIEW_NUM = #{reviewNum}
+        ]]>	
+    </update> 
+
+</mapper>

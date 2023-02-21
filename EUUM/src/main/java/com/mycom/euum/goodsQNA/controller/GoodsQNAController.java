@@ -9,7 +9,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.mycom.euum.commons.FileUtils;
@@ -18,7 +17,6 @@ import com.mycom.euum.goodsQNA.service.GoodsQNAService;
 import com.mycom.euum.image.bean.ImageBean;
 import com.mycom.euum.image.service.ImageService;
 import com.mycom.euum.member.bean.MemberBean;
-import com.mycom.euum.member.bean.SellerBean;
 import com.mycom.euum.page.Criteria;
 import com.mycom.euum.page.PageDTO;
 
@@ -121,9 +119,17 @@ public class GoodsQNAController {
 	
 	//마이페이지 상품문의 수정
 	@PostMapping("/goodsQNA/Modify")
-	public String modifyGQNA(GoodsQNABean goodsQNABean) {
-
+	public String modifyGQNA(GoodsQNABean goodsQNABean, MultipartFile[] uploadFile)throws Exception{
+        
+	    int goodsQNANum = goodsQNABean.getGoodsQNANum();
 		goodsQNAService.modifyGQNA(goodsQNABean);
+		
+		 log.info("===== 상품 수정 처리 =====");
+		 List<ImageBean> imageBeanList = fileUtils.goodsQNAFileUpload(uploadFile);
+		 
+		 log.info("---------- (6) 이미지파일 정보 DB 저장 ----------");
+		 log.info("이미지 쿼리 동작하기 전 imageBeanList: " + imageBeanList);
+		 imageService.updateImage(imageBeanList, goodsQNANum);
         		
 		return "redirect:/myPage/goodsQNA";
 	}

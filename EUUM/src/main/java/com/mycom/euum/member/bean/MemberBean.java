@@ -11,6 +11,8 @@ import java.sql.Date;
 
 import lombok.Data;
 
+
+@Data
 public class MemberBean {
 
 	private int memberNum;
@@ -26,6 +28,8 @@ public class MemberBean {
 	private String memberDetailAddress;
 	private Date MemberRegDate;
 	private Date MemberModifyDate;
+	private String memberJoinApi;
+	private String memberJoinDi;
 
 	public int getMemberNum() {
 		return memberNum;

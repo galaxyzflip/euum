@@ -1,6 +1,5 @@
-
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <!DOCTYPE html>
@@ -27,7 +26,10 @@ function modify(){
 			async: false,
 			success : function(data){
 				
-				location.href="<c:url value='/notice/notice'/>"; 	        		
+  			location.href="<c:url value='/notice/notice'/>"; 	        		
+		},
+		error : function(error) {
+			alert("실패");
 		}
 			
 	});
@@ -58,45 +60,54 @@ function deletee(){
 </script>
 
 
-<meta charset="EUC-KR">
+<meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
 <body>
 <br/><br/><br/><br/><br/><br/><br/><br/>
 	<div>
+	<form id="frm" enctype="multipart/form-data">
 		<table align="center">
 			<tr>
-			<form id="frm">
+			
 				<input type="hidden" name="noticeNum" value="${modify.noticeNum }">
-				<td>제목</td>
-				<td><input type="text" name="noticeTitle" value="${modify.noticeTitle }"/>
-				</td>
-				
-				<td><label for="category">카테고리 선택</label>
+				<td>��紐�</td>
+				<td><input type="text" name="noticeTitle" value="${modify.noticeTitle }"/></td>
+				<tr>
+				<td><label for="category">移댄��怨�由� ����</label>
 					<input type="hidden" id="category"/>
 						<select id="changeCategory" name="noticeCategory">
-								<option value="1">공지사항</option>
-								<option value="2">의뢰인FAQ</option>
-								<option value="3">전문가FAQ</option>
+								<option value="1">怨듭��ы��</option>
+								<option value="2">��猶곗��FAQ</option>
+								<option value="3">��臾멸�FAQ</option>
 						</select>
 				</td>
 				</tr>
-				
-				<td>작성자</td>
+			<tr>
+				<td>���깆��</td>
 				<td><input type="text" value="${modify.noticeWriter }" readonly="readonly"/>
-				</td></tr>
-								
-				<td>내용</td>
-				<td><textarea name="noticeContent">${modify.noticeContent }</textarea>
-				
-				<!--  이미지 리스트 -->
-	             <c:forEach items="${image}" var="row">
-	            <td> <img src="/resources/img/${row.imageUploadPath}${row.imageFileName}" width=350; height=350;>   </td>     
-	             </c:forEach>	
 				</td>
-			</form>	
 			</tr>
+								
+				<td>�댁��</td>
+				<td><textarea name="noticeContent">${modify.noticeContent }</textarea></td>
+				
+				<!-- 이미지 리스트 -->
+	            <td> 
+	           <c:forEach items="${image}" var="row">
+	          <img src="/resources/img/${row.imageUploadPath}${row.imageFileName}" width=350; height=350;>     
+	          <input type="hidden" name="imageUploadPath" id="imageUploadPath" value="${row.imageUploadPath}">
+		      <input type="hidden" name="imageFileName" id="imageFileName" value="${row.imageFileName}">
+	          </c:forEach>	      
+	              <input type="file" name="uploadFile">
+	              <input type="file" name="uploadFile">
+	              <input type="file" name="uploadFile">
+				</td> 
+			
+		
+		</tr>
 		</table>
+			</form>	
 	</div>
 	
 	<form id="operForm" action="/notice/noticeModifyForm" method="get">

@@ -655,6 +655,9 @@
 							<when test="type == 'N'.toString()">
 								G.GOODS_NUM like '%'||#{keyword}||'%'
 							</when>
+							<when test="type == 'O'.toString()">
+								O.ORDER_NUM like '%'||#{keyword}||'%'
+							</when>
 						</choose>
 					</trim>
 				</foreach>

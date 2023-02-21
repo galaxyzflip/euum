@@ -13,6 +13,7 @@ public class OrderCriteria extends Criteria{
 	private int sellerNum;
 	private int goodsNum;
 	
+	
 	public OrderCriteria() {
 		super();
 	}
