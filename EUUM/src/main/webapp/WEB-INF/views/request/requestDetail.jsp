@@ -59,6 +59,7 @@
 		</tr>
 	</table>	
 	
+	
 	<div>
 		<form id="operForm" action="/request/requestModifyForm" method="get">
 			<input type='hidden' name='rqpageNum' value='${rqcri.rqpageNum}'>
@@ -68,8 +69,10 @@
 			<input type='hidden' name='requestNum' value='${detail.requestNum}'>
 			<input type='hidden' name='memberNum' value='${detail.memberNum}'>
 		</form>
-		
+	
+	<c:if test="${detail.memberNum eq loginUser.memberNum }">	
 		<button data-oper='modify'>수정</button>
+	</c:if>		
 		<button data-oper='list'>목록</button>
 	
 	</div>	
@@ -89,18 +92,19 @@
             <div class="modal-body">
               <div class="form-group">
                 <label>내용</label> 
-                <input class="form-control" name='commentContent' value='New Reply!!!!'>
+                <input class="form-control" name='commentContent'>
               </div>      
               <div class="form-group">
                 <label>작성자</label> 
-                <input class="form-control" name='commentWriter' value='replyer'>
+                <input class="form-control" name='commentWriter' value='${loginUser.memberEmail }' readonly>
               </div>
               <div class="form-group">
                 <label>등록일</label> 
-                <input class="form-control" name='commentRegdate' value='2018-01-01 13:13'>
+                <input class="form-control" name='commentRegdate'>
               </div>
               <div>
               	<input type="hidden" name="commentNum" value="1">
+              	<input type="hidden" name="memberNum" value="1">
               </div>
       
             </div>
@@ -129,13 +133,7 @@
 			<div class="panel-body">
 				<ul class="chat">
 					<li class="left clearfix" data-commentNum="61">
-						<div>
-							<div class="header">
-								<strong class="primary-font">용주</strong>
-								<small class="pull-right text-muted">2021-01-01 13:13</small>
-							</div>
-							<p>아자아자</p>
-						</div>
+						
 					</li>	
 				</ul>
 			</div>
@@ -169,10 +167,12 @@ $(document).ready(function(){
 	      }
 	       for (var i = 0, len = list.length || 0; i < len; i++) {
 	    	  
-	           str +="<li class='left clearfix' data-commentnum='"+list[i].commentNum+"'>";
+	           str +="<li class='left clearfix' data-commentnum='"+list[i].commentNum+"' data-commentwriter='"+list[i].commentWriter+"'>";
 	           str +="  <div><div class='header'><strong class='primary-font'>"+list[i].commentWriter+"</strong>"; 
 	           str +="    <small class='pull-right text-muted'>"+replyService.displayTime(list[i].commentRegdate)+"</small></div>";
 	           str +="    <p>"+list[i].commentContent+"</p></div></li>";
+	           
+	           
 	         }
 
 
@@ -199,7 +199,7 @@ $(document).ready(function(){
 	    
 	    $("#addCommentBtn").on("click", function(e){
 	      
-	      modal.find("input").val("");
+	      /* modal.find("input").val(""); */
 	      modalInputReplyDate.closest("div").hide();
 	      modal.find("button[id !='modalCloseBtn']").hide();
 	      
@@ -234,12 +234,22 @@ $(document).ready(function(){
 	    
 	  //댓글 조회 클릭 이벤트 처리 
 	    $(".chat").on("click", "li", function(e){
-	      
+	     
+	    	var writer=$(this).data("commentwriter");
+	    	/* alert(writer); */
+	    	var swriter='${loginUser.memberEmail}';
+	    	/* alert(swriter); */
+	    	
+		    if(writer != swriter){
+		    	alert("작성자만 수정 할 수 있습니다.");
+		    	return false;
+		    }
+	    	
 	    $(modal).find("input[name='commentNum']").val($(this).data("commentnum"));
 	    	
 	      var commentNum = $(this).data("commentnum");
 	      
-	      alert(commentNum);
+	      /* alert(commentNum); */
 	      
 	      replyService.get(commentNum, function(reply){
 	      

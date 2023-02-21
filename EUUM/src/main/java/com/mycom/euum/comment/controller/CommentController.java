@@ -2,7 +2,6 @@ package com.mycom.euum.comment.controller;
 
 import java.util.List;
 
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -56,6 +55,8 @@ public class CommentController {
 		log.info("리스트 보여주세요=================");
 		CCriteria ccri = new CCriteria(page, 10);
 		log.info(ccri);
+		
+		log.info("ddddddddddddddddddddd"+commentService.commentList(ccri, requestNum));
 		
 		return new ResponseEntity<>(commentService.commentList(ccri, requestNum), HttpStatus.OK);
 	}

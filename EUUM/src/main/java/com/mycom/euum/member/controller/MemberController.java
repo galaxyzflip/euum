@@ -61,11 +61,11 @@ public class MemberController {
 				session.setAttribute("loginUser", loginUser);
 				session.setAttribute("loginSeller", loginSeller); // "seller" -> "loginSeller"
 				session.setMaxInactiveInterval(60 * 30);
-				log.info("일반회원, loginUser 세션 정보 : " + loginUser.toString());
+//				log.info("일반회원, loginUser 세션 정보 : " + loginUser.toString());
 				return "redirect:/main";
 			}
 			session.setMaxInactiveInterval(60 * 30);
-			log.info("셀러회원, loginUser 세션 정보 : " + loginUser.toString() + ", loginSeller 세션 정보 : " + loginSeller.toString());
+//			log.info("셀러회원, loginUser 세션 정보 : " + loginUser.toString() + ", loginSeller 세션 정보 : " + loginSeller.toString());
 			return "redirect:/main";
 		} else {
 
