@@ -49,6 +49,7 @@ public class GoodsServiceImpl implements GoodsService {
 	}
 
 
+
 	/** 선민: 나의 상품 리스트 가져오기 - 승인완료 상품 (List) */
 	@Override
 //	public Map<String, List<GoodsBean>> selectMyGoodsList(int memberNum, int pageNum, int amount) throws Exception {

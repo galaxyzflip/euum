@@ -1,6 +1,9 @@
 package com.mycom.euum.review.bean;
 
 import java.util.Date;
+import java.util.List;
+
+import com.mycom.euum.image.bean.ImageBean;
 
 import lombok.Data;
 
@@ -17,5 +20,6 @@ public class ReviewBean {
 	private String reviewDelete;
 	private int goodsNum;
 	private int orderNum;
+	private List<ImageBean> imageBean;
 
 }

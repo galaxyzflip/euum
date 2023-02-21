@@ -1,5 +1,8 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+
 <!DOCTYPE html>
 <html>
 <style>
@@ -40,44 +43,48 @@
 	}
 </style>
 <head>
-<meta charset="EUC-KR">
 <title>Insert title here</title>
 </head>
 <body>
 <br/><br/><br/><br/><br/>
 <div align="center">
-	<form id="myform" action="/review/insertPro" method="post">
-		<input type="hidden" name="memberNum" value="1">
-		<input type="hidden" name="goodsNum" value="1">
-		<input type="hidden" name="orderNum" value="1">
+  
+	<form id="myform" action="/review/insertPro" method="post" enctype="multipart/form-data">
+		<input type="file" name="uploadFile"/>
+		<input type="file" name="uploadFile"/>
+		<input type="file" name="uploadFile"/>
 		
-		<input type="hidden" name="reviewWriter" value="╓╥╓╣╓╥аж">
+		<input type="hidden" name="memberNum" value="${memberNum}">
+		<input type="hidden" name="goodsNum" value="${goodsNum}">
+		<input type="hidden" name="orderNum" value="${orderKeyNum}">	
+		<input type="hidden" name="reviewWriter" value="${memberName}">
 		
 		
 		<fieldset>
-		<span class="text-bold">╨╟а║ю╩ ╪╠ецгьаж╪╪©Д</span>
+		<span class="text-bold">КЁ└Л═░Л²└ Л└═М┐²М∙╢Лё╪Л└╦Л ■</span>
 		<input type="radio" name="reviewStar" value="5" id="rate1">
-		<label for="rate1">║з</label>
+		<label for="rate1">Б≤┘</label>
 		<input type="radio" name="reviewStar" value="4" id="rate2">
-		<label for="rate2">║з</label>
+		<label for="rate2">Б≤┘</label>
 		<input type="radio" name="reviewStar" value="3" id="rate3">
-		<label for="rate3">║з</label>
+		<label for="rate3">Б≤┘</label>
 		<input type="radio" name="reviewStar" value="2" id="rate4">
-		<label for="rate4">║з</label>
+		<label for="rate4">Б≤┘</label>
 		<input type="radio" name="reviewStar" value="1" id="rate5">
-		<label for="rate5">║з</label>
+		<label for="rate5">Б≤┘</label>
 		</fieldset>
+		
 		
 		
 		<div>
 			<textarea class="col-auto form-control" type="text" name="reviewTitle"
-					  placeholder="а╕╦Яю╩ ют╥б гь аж╪╪©Д."></textarea>
+					  placeholder="Л═°К╙╘Л²└ Л·┘К═╔ М∙╢ Лё╪Л└╦Л ■."></textarea>
 			<textarea class="col-auto form-control" type="text" name="reviewContent"
-					  placeholder="хд╠Б╦╕ ют╥б гь аж╪╪©Д."></textarea>
+					  placeholder="М⌡└Й╦╟К╔╪ Л·┘К═╔ М∙╢ Лё╪Л└╦Л ■."></textarea>
 		</div>
 		<div align="center">
-			<button class="reset" type="reset"><span>╢ы╫цюш╪╨</span></button>
-			<button class="done" type="submit"><span>юш╪╨го╠Б</span></button>
+			<button class="reset" type="reset"><span>К▀╓Л▀°Л·▒Л└╠</span></button>
+			<button class="done" type="submit"><span>Л·▒Л└╠М∙≤Й╦╟</span></button>
 		</div>
 	</form>
 	
