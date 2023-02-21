@@ -15,7 +15,7 @@ public class CommentBean {
 	private String commentContent;
 	private Date commentRegdate;
 	private String commentDelete;
-	private int commentOriginalNum;
+	private int requestNum;
 	private int commentNickname;
 	private int commentCategory;
 

@@ -190,10 +190,11 @@ $(document).ready(function(){
 		</ul>
 	</div>	
 	
+	<c:if test="${loginUser != null }">
 	<a href="/request/requestInsertForm">
 		<button type="submit" value="글쓰기">글쓰기</button>
 	</a>
-	
+	</c:if>
 </div>
 
 </body>

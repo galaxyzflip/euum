@@ -23,9 +23,9 @@ public class CommentServiceImpl implements CommentService{
 	}
 
 	@Override
-	public List<CommentBean> commentList(CCriteria ccri, int commentOriginalNum) {
+	public List<CommentBean> commentList(CCriteria ccri, int requestNum) {
 		// TODO Auto-generated method stub
-		return commentMapper.commentList(ccri, commentOriginalNum);
+		return commentMapper.commentList(ccri, requestNum);
 	}
 
 	@Override
