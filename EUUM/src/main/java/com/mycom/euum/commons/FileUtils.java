@@ -217,8 +217,11 @@ public class FileUtils {
 	public List<ImageBean> noticeFileUpload(MultipartFile[] uploadFile) throws Exception {
 		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
 				.getRequest();
+		System.out.println("aaa");
 		List<ImageBean> imageBeanList = new ArrayList<ImageBean>();
+		System.out.println("bbb");
 		imageBeanList = fileUpload(uploadFile, request, "notice");
+		System.out.println("ccc");
 
 		return imageBeanList;
 	}
