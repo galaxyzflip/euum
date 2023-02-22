@@ -173,6 +173,10 @@ hr{
 	margin-right:auto;
 }
 
+.order-list-table thead td{
+	cursor : pointer;
+}
+
 </style>
 
 
@@ -878,11 +882,6 @@ hr{
 		modal.modal('hide');
 	})
 	
-	function reviewModify() {
-		let url = "/review/reviewModifyForm"
-			
-		 self.location.href = url; 
-	}
 	
 </script>
 

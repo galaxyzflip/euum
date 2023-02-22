@@ -37,14 +37,13 @@ public class OrderController {
 	private ImageService imageService;
 
 	
-	//goodsDetail.jsp 에서 주문시 처리하는 메소드...
+	//goodsDetail.jsp 에서 주문시 처리하는 메소드... 주문폼 띄워주는 메소드
 	@PostMapping("/order/orderForm")
 	public String orderStart(OrderOptionBean optionList, Model model) {
 
 		List<OrderOptionBean> list = optionList.getOptionList();
 
 		// 로그찍기용
-		
 		for (OrderOptionBean bean : list) {
 			log.info("옵션리스트 정보 : " + bean.toString());
 		}
@@ -88,6 +87,7 @@ public class OrderController {
 		return "redirect:/order/orderSuccess";
 	}
 	
+	//주문완료 화면... 상품명, 옵션명, 금액 추력해줌
 	@GetMapping("order/orderSuccess")
 	public String orderSuccess() {
 		
@@ -124,8 +124,8 @@ public class OrderController {
 	@PostMapping(value="order/addOrder", produces=MediaType.APPLICATION_JSON_VALUE)
 	public OrderBean addOrder(OrderBean orderBean, HttpSession session) {
 		
-		MemberBean memberBean = (MemberBean)session.getAttribute("loginUser");
-		orderBean.setMemberNum(memberBean.getMemberNum());
+		MemberBean loginUser = (MemberBean)session.getAttribute("loginUser");
+		orderBean.setMemberNum(loginUser.getMemberNum());
 		
 		log.info("추가주문 빈 확인 : " + orderBean);
 		
@@ -140,8 +140,8 @@ public class OrderController {
 	@GetMapping("seller/orderList")
 	public String sellerOrderList(Model model, HttpSession session, OrderCriteria cri) {
 
-		MemberBean member = (MemberBean) session.getAttribute("loginUser");
-		cri.setMemberNum(member.getMemberNum());
+		MemberBean loginUser = (MemberBean) session.getAttribute("loginUser");
+		cri.setSellerNum(loginUser.getMemberNum());
 		List<OrderBean> orderList = orderService.selectOrderListBySeller(cri);
 
 		for (OrderBean order : orderList) {
@@ -185,6 +185,7 @@ public class OrderController {
 		return "redirect:/seller/orderList";
 	}
 	
+	//ajax 로 주문상태 변경하는 메소드...
 	@ResponseBody
 	@PostMapping(value = "order/transferOrderStatusAjax", produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<OrderBean> updateOrderStatus(OrderBean orderBean) throws Exception {
@@ -198,6 +199,7 @@ public class OrderController {
 
 	}
 	
+	//ajax 로 파일 업로드... 판매자가 작업 완료되었을때 파일업로드 처리함
 	@ResponseBody
 	@PostMapping(value="order/fileUpload")
 	public String fileUpload(OrderBean orderBean) throws Exception {
