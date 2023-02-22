@@ -32,7 +32,10 @@ $(document).ready(function(){
 		$("#notice").submit();
 	});
 
+	
+	
  });
+
 
 </script>
 
@@ -72,7 +75,9 @@ $(document).ready(function(){
 			</td></tr>
 
 			<tr>
-				<td><textarea placeholder="입력하세요" name="noticeContent" id="noticeContent"></textarea></td>
+				<td>
+					<textarea placeholder="입력하세요" name="noticeContent" id="noticeContent"></textarea>
+				</td>
 			</tr>
 		</table>
 

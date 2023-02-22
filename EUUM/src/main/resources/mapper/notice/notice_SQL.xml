@@ -18,7 +18,7 @@
 		NOTICE_WRITER, NOTICE_HITCOUNT, NOTICE_DELETE, NOTICE_CATEGORY
 		from (select rownum rn, NOTICE_NUM, NOTICE_TITLE, NOTICE_REGDATE,
 		                NOTICE_WRITER, NOTICE_HITCOUNT, NOTICE_DELETE, NOTICE_CATEGORY
-		                FROM NOTICE_TBL
+		                FROM (select * from NOTICE_TBL ORDER BY NOTICE_NUM DESC)
 		                WHERE 
      ]]>	
      <include refid="criteria"></include>
