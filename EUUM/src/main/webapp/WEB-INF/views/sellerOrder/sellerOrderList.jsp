@@ -10,13 +10,36 @@
 	margin-bottom: 100px;
 }
 
+.active>.page-link, .page-link.active {
+    z-index: 3;
+    color: var(--bs-pagination-active-color);
+    background-color: #fb8500;
+    border-color: #fb8500;
+}
+
+.text-orange{
+	color : #fb8500;
+}
+
+.bold{
+	font-weight: bold;
+}
+
+.page-link{
+	color : #fb8500;
+}
+
+.pagination{
+	--bs-pagination-hover-color: #fb8500
+}
+
 img {
 	width: 100px;
 	height: 100px;
 }
 
 .order-list-table {
-	border: 1px solid black;
+	border: 1px solid #dadada;
 	width: 1000px;
 	border-left: none;
 	border-right: none;
@@ -24,9 +47,15 @@ img {
 	margin:auto;
 }
 
+.search-box{
+	width: 1000px;
+	margin:auto;
+}
+
+
 .order-list-table thead td {
-	border-bottom: 1px solid black;
-	background-color: #eeeeee;
+	border-bottom: 1px solid #dadada;
+	background-color: #f2f2f2;
 	font-size: 10pt;
 	text-align: center;
 }
@@ -36,7 +65,7 @@ img {
 }
 
 .order-list-table tbody td {
-	border-bottom: 1px solid black;
+	border-bottom: 1px solid #dadada;
 }
 
 .order-list-table td {
@@ -52,7 +81,6 @@ tbody .order-name {
 }
 
 .order-detail {
-	background-color: #eeeeee;
 }
 
 .order-detail {
@@ -64,11 +92,11 @@ tbody .order-name {
 	width: 300px;
 }
 
-ul {
+.order-list-table ul {
 	text-align: center;
 }
 
-ul li {
+.order-list-table ul li {
 	display: inline-block;
 	padding: 0px;
 }
@@ -100,37 +128,166 @@ ul li {
 	background: orange;
 }
 
+.price-td{
+	font-weight: bold;
+	font-size:18px;
+}
+
 .input-group > .form-control{
 	width:100%;
+}
+
+.tap{
+	width: 120;
+    height: 50;
+    display: inline-block;
+    text-align: center;
+    border:1px solid #f2f2f2;
+    padding:18px;
+    background-color: #ffffff;
+    float:left;
+    padding:15px;
+    cursor: pointer;
+}
+
+.request-tap{
+	background-color: #f2f2f2;
+}
+
+
+.search-tap{
+	background-color: #fb8500;	
+	color: white;
+}
+
+
+.tap-class{
+	width:1000px;
+	margin:auto;
+	display:block;
+	height:50px;
+}
+
+.search-box{
+	display:none;
+	
+}
+
+hr{
+	width:1000px;
+	margin-left:auto;
+	margin-right:auto;
 }
 </style>
 
 
 <div class="container">
 
+
+	<div class="tap-class">
+		<div class="tap receipt-tap">접수건</div>
+		<div class="tap request-tap">의뢰건</div>
+		<div class="tap search-tap">검색하기</div>
+	</div>
+	
+	<div><hr></div>
+	
+	
+
+<div id="searchBox" class='search-box'>
+		<form id='actionForm' action="/seller/orderList" method='get'>
+		
+			<input type="hidden" name="sortType" value="${pageMaker.cri.sortType }">
+			<input type="hidden" name="sortValue" value="${pageMaker.cri.sortValue }">
+			
+			<input type='hidden' name='pageNum' value='${pageMaker.cri.pageNum}'>
+			<%-- <input type="hidden" name="orderStatus" value="${pageMaker.cri.orderStatus }"> --%>
+			
+			<select name="type">
+				<option value="SMGNO" ${pageMaker.cri.type == 'SMGNO' ? 'selected' : '' }>전체</option>
+				<option value="S" ${pageMaker.cri.type == 'S' ? 'selected' : '' }>작가 닉네임</option>
+				<option value="M" ${pageMaker.cri.type == 'M' ? 'selected' : '' }>고객명</option>
+				<option value="G" ${pageMaker.cri.type == 'G' ? 'selected' : '' }>상품명</option>
+				<option value="N" ${pageMaker.cri.type == 'N' ? 'selected' : '' }>상품번호</option>
+				<option value="O" ${pageMaker.cri.type == 'O' ? 'selected' : '' }>주문번호</option>
+			</select>
+			
+			<span> <input type="text" name="keyword" id="searchKeyword"
+				value='<c:out value="${pageMaker.cri.keyword }"/>' style="width: 200px; height: 30px; display: inline-block;">
+			</span>
+			
+			<select name="amount" id="amount">
+				<option value="5" ${pageMaker.cri.amount eq '5' ? 'selected' : '' }>5줄씩</option>
+				<option value="10" ${pageMaker.cri.amount eq '10' ? 'selected' : '' }>10줄씩</option>
+				<option value="25" ${pageMaker.cri.amount eq '25' ? 'selected' : '' }>25줄씩</option>
+				<option value="50" ${pageMaker.cri.amount eq '50' ? 'selected' : '' }>50줄씩</option>
+				<option value="100" ${pageMaker.cri.amount eq '100' ? 'selected' : '' }>100줄씩</option>
+			</select> 
+			
+			<fieldset>
+				<label><input type="checkbox" name="" value="" onclick='selectAll(this)'/>전체선택</label>
+				<br>
+				<label><input type="checkbox" name="orderStatus" value="1"  ${fn:contains(pageMaker.cri.orderStatus, '1') ? 'checked' : ''} />입금대기중</label>
+				<label><input type="checkbox" name="orderStatus" value="2"  ${fn:contains(pageMaker.cri.orderStatus, '2') ? 'checked' : ''} />입금완료</label>
+				<label><input type="checkbox" name="orderStatus" value="3"  ${fn:contains(pageMaker.cri.orderStatus, '3') ? 'checked' : ''} />작업중</label>
+				<label><input type="checkbox" name="orderStatus" value="4"  ${fn:contains(pageMaker.cri.orderStatus, '4') ? 'checked' : ''} />작업완료</label>
+				<label><input type="checkbox" name="orderStatus" value="5"  ${fn:contains(pageMaker.cri.orderStatus, '5') ? 'checked' : ''} />고객확인중</label>
+				<label><input type="checkbox" name="orderStatus" value="6"  ${fn:contains(pageMaker.cri.orderStatus, '6') ? 'checked' : ''} />완료</label>
+				<label><input type="checkbox" name="orderStatus" value="7"  ${fn:contains(pageMaker.cri.orderStatus, '7') ? 'checked' : ''} />취소(환불대기중)</label>
+				<label><input type="checkbox" name="orderStatus" value="8"  ${fn:contains(pageMaker.cri.orderStatus, '8') ? 'checked' : ''} />취소(환불완료)</label>
+				<label><input type="checkbox" name="orderStatus" value="9"  ${fn:contains(pageMaker.cri.orderStatus, '9') ? 'checked' : ''} />취소(입금전 취소)</label>
+				<label><input type="checkbox" name="orderStatus" value="10"  ${fn:contains(pageMaker.cri.orderStatus, '10') ? 'checked' : ''} />취소(전문가)</label>
+			</fieldset>
+			 
+			<span>
+				<button type="button" id="search" style="height: 32px; width: 80px;">검색</button>
+				<button type="button" id="resetSearch" style="height: 32px; width: 80px;">전체보기</button>
+			</span>
+		</form>
+		
+		
+	</div>
+
 	<table class="order-list-table">
 		<thead>
 			<tr>
-				<td width="12%">주문번호 </td>
+				<td width="12%" onclick="sort('order_num', '${pageMaker.cri.sortType == 'order_num' ? (pageMaker.cri.sortValue =='desc' ? 'asc' : 'desc') : 'desc'}' )">주문번호</td>
 				<td width="13%">이미지</td>
-				<td width="15%">작가명</td>
+				<td width="15%" onclick="sort('seller_nickname', '${pageMaker.cri.sortType == 'seller_nickname' ? (pageMaker.cri.sortValue =='desc' ? 'asc' : 'desc') : 'desc'}' )">작가명</td>
 				<td class="order-name" width="*">주문내용</td>
-				<td width="10%">결제금액</td>
-				<td width="10%">주문상태</td>
+				<td width="10%" onclick="sort('ORDER_PRICE', '${pageMaker.cri.sortType == 'ORDER_PRICE' ? (pageMaker.cri.sortValue =='desc' ? 'asc' : 'desc') : 'desc'}' )">결제금액</td>
+				<td width="10%" onclick="sort('order_status', '${pageMaker.cri.sortType == 'order_status' ? (pageMaker.cri.sortValue =='desc' ? 'asc' : 'desc') : 'desc'}' )">주문상태</td>
 				<td width="10%"></td>
 			</tr>
 		</thead>
 
 		<tbody>
+		
+		<c:if test="${empty orderList }">
+			<tr height="100px">
+				<td colspan="7">
+			주문이 없습니다
+				</td>
+			</tr>
+			
+		</c:if>
+		
+		<c:if test="${!empty orderList }">
 			<c:forEach items="${orderList }" var="order" varStatus='status'>
 
 				<tr id="order${status.index }">
 					<td>${order.orderNum }</td>
-					<td><img src="/resources/assets/img/about-2.jpg"></img></td>
+					<td>
+					<c:if test="${!empty order.imageName }">
+						<a href="/goods/goodsDetail?goodsNum=${order.goodsNum }">
+							<img src="${pageContext.request.contextPath}/resources/img/${order.imageName}"></img>
+						</a>
+					</c:if>
+					</td>
 					<td>${order.sellerNickname }</td>
 					<td class="order-name"><br> ${order.goodsName }<br>
 						${fn:replace(order.orderName,'`','<br>')}</td>
-					<td>${order.orderPrice } 원</td>
+					<td class="price-td">${order.orderPrice } 원</td>
 					<td class="order-status"><c:if test="${order.orderStatus eq 1 }">입금대기중</c:if> <c:if
 							test="${order.orderStatus eq 2 }">입금확인</c:if> <c:if
 							test="${order.orderStatus eq 3 }">작업중</c:if> <c:if
@@ -139,7 +296,8 @@ ul li {
 							test="${order.orderStatus eq 6 }">완료</c:if> <c:if
 							test="${order.orderStatus eq 7 }">취소(환불대기중)</c:if> <c:if
 							test="${order.orderStatus eq 8 }">취소(환불완료)</c:if> <c:if
-							test="${order.orderStatus eq 9 }">취소(입금전 취소)</c:if></td>
+							test="${order.orderStatus eq 9 }">취소(입금전 취소)</c:if> 
+						<c:if test="${order.orderStatus eq 10 }">취소(전문가)</c:if></td>
 					<td><span class="que">자세히</span> <!-- <span class="arrow-top">↑</span>
 	                        <span class="arrow-bottom">↓</span> --></td>
 				</tr>
@@ -149,6 +307,15 @@ ul li {
 						<!-- <div style="display: block;"><b>작가 연락처</b> : 결제 후 공개됩니다.</div> -->
 						<div class="order-detail">
 							<div class="order-tap1">
+								<ul>
+									<li class="text-orange bold">입금은행 신한은행 : </li>
+									<li class="text-orange">110-223-996057</li>
+								</ul>
+								
+								<ul>
+									<li class="text-orange">예금주</li>
+									<li class="text-orange">(주)이음</li>
+								</ul>
 								<ul>
 									<li>주문자 이메일</li>
 									<li>${order.orderEmail }</li>
@@ -164,8 +331,15 @@ ul li {
 									<li>${order.orderDate }</li>
 								</ul>
 								<ul>
-									<li>완료예정일</li>
-									<li>${order.orderExpirationDate}</li>
+									<c:if test="${order.orderStatus le 6 }">
+										<li>완료예정일</li>
+										<li>${order.orderExpirationDate}</li>
+									</c:if>
+									
+									<c:if test="${order.orderStatus gt 6}">
+										<li>주문취소일</li>
+										<li>${order.orderCancleDate}</li>
+									</c:if>
 								</ul>
 								<ul>
 									<li>제출 파일 유형</li>
@@ -193,8 +367,15 @@ ul li {
 							
 							<div>
 								<ul class="status-info-list">
+								
+									<c:if test="${order.orderStatus lt 6 }">
+										<li class="seller-cancle">
+											<button onClick="openCancleModal('${order.orderNum}','0','order${status.index }','${order.orderKeyNum }')">의뢰취소</button>
+										</li>
+									</c:if>
+								
 									<li class="trans-btn">
-										<c:if test="${order.orderStatus eq '2' }">
+										<c:if test="${order.orderStatus eq 2 }">
 											<button onclick="transferOrderStatus('${order.orderNum}', '3', 'order${status.index }', '${order.orderKeyNum }')">작업중 전환</button><br>
 										</c:if>
 									</li>
@@ -207,7 +388,7 @@ ul li {
 									
 									
 									<li class='file-upload'>
-										<c:if test="${order.orderStatus eq '3' }">
+										<c:if test="${order.orderStatus eq 3 }">
 											<c:if test="${order.fileYn eq 'N'}">
 												<button onclick="openModal('${order.orderKeyNum}', 'order${status.index}', '${order.orderNum }')">파일 업로드</button><br>
 											</c:if>
@@ -218,15 +399,20 @@ ul li {
 											
 									</li>	
 									
-									<li>요청사항 : ${order.orderRequest }</li>
 								</ul>
+									<ul class="sub-info">
+										<li>요청사항 : ${order.orderRequest }</li>
+										<c:if test="${order.orderStatus eq 10 }">
+											<li>취소사유 : ${order.orderCancleReason }</li>
+										</c:if>
+									</ul>
 							</div>
 							
 						</div>
 					</td>
 				</tr>
 			</c:forEach>
-
+		</c:if>
 		</tbody>
 
 	</table>
@@ -275,15 +461,90 @@ ul li {
 </div>
 <!-- /.modal -->
 
-<form id="actionForm" action="/order/transferOrderStatus" method="post">
-	<input type="hidden" name="orderNum" value="">
-	<input type="hidden" name="orderStatus" value="">
-</form> 
+
+<!-- Modal -->
+<div class="modal fade" id="cancleModal" tabindex="-1"
+	aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h1 class="modal-title fs-5" id="exampleModalLabel">주문취소</h1>
+				<button type="button" class="btn-close" data-bs-dismiss="modal"	aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<div id="option1">
+					<form action="" id="file-form" method="">
+						<div class="input-group">
+							<div>
+								<div><span>주문번호 : </span><span class="order-num"> </span></div>
+								<div><span>취소사유 : </span></div>
+								<div>
+									<textarea name="orderCancleReason" cols="40"></textarea>
+								</div>
+								
+								<input type="hidden" class="order-form">
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" id="cancle-order" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+				<button type="button" id="add-order" class="btn btn-primary"  onClick="cancleOrder()">주문취소</button>
+			</div>
+			
+		</div>
+	</div>
+</div>
+<!-- /.modal -->
+
+<!-- 페이징 작업할 부분 -->
+<div style="margin:auto; text-align:center; width:700px">
+	<div class="inner">
+			<ul class="pagination" style="text-align: center; justify-content: center;">
+			
+				<c:if test="${pageMaker.prev }">
+					<li class="paginate_button previous"><a class="page-link" href="${pageMaker.startPage - 1 }"
+						tabindex="-1" aria-disabled="true">Previous</a></li>
+				</c:if>		
+						
+					<c:forEach var="num" begin="${pageMaker.startPage }" end ="${pageMaker.endPage }">
+						<li class="page-item paginate_button ${pageMaker.cri.pageNum == num ? 'active' : '' }">
+							<a class="page-link" href="${num }">${num }</a>
+						</li>
+					</c:forEach>
+					
+				<c:if test="${pageMaker.next }">
+					<li class="paginate_button next"><a class="page-link" href="${pageMaker.endPage + 1 }">Next</a></li>
+				</c:if>	
+			</ul>
+	</div>
+</div>
 
 
 <script>
 
 $(document).ready(function() {
+	
+	const orderStatus="${pageMaker.cri.orderStatus}";
+	let goodsNum="${pageMaker.cri.goodsNum}";
+	if(goodsNum == 0){
+		goodsNum = null;
+	}
+	const keyword="${pageMaker.cri.keyword}";
+	
+	if(orderStatus || goodsNum || keyword){
+		$('.search-box').css("display", "block");	
+	}
+	
+	
+	$('.request-tap').on('click', function(){
+		self.location.href="/seller/orderList";
+	})
+	
+	$('.receipt-tap').on('click', function(){
+		self.location.href="/myPage/orderList";
+	})
 	
 	//파일 다운로드
 	$('.file-list').on('click', 'div', function(e){
@@ -300,12 +561,105 @@ $(document).ready(function() {
 		//$(this).toggleClass('on').siblings().removeClass('on');
 		$(this).parent().parent().next(".anw").siblings(".anw").slideUp(0); // 1개씩 펼치기
 	});
-
-})
+	
+	$(".search-tap").click(function() {
+		$(".search-box").stop().slideToggle(300);
+		$(".search-box").siblings(".search-box").slideUp(300); // 1개씩 펼치기
+	});
 
 	
+	var actionForm = $("#actionForm");
+	actionForm.find("input[name='pageNum']").val('1');
+	
+	$('#amount').on('change', function(){
+		$(actionForm).submit();			
+	})
+	
+	$(".paginate_button a").on("click", function(e) {
 
+		e.preventDefault();
+		actionForm.find("input[name='pageNum']").val($(this).attr("href"));
+		actionForm.submit();
+	});
+	
+	
+	$('#search').on('click', function(e){
+		e.preventDefault();
+		$('input[name="pageNum"]').val('1');
+		actionForm.submit();
+	})
+	
+	$('input[name="orderStatus"]').on('click', function(){
+			$('input[name="pageNum"]').val('1');
+			actionForm.submit();
+	})
+	
+	$('#resetSearch').on('click', function(){
+		self.location.href="/seller/orderList";
+	})
+	
+	function sort(sortType, sortValue){
+		$('input[name="sortType"]').val(sortType);
+		$('input[name="sortValue"]').val(sortValue);
+		$('input[name="pageNum"]').val('1');
+		actionForm.submit();
+	}
+	
+
+})
 	let uploadModal = $('#fileUploadModal');
+	let cancleModal = $('#cancleModal');
+	
+	function cancleOrder(){
+		let orderCancleReason = $(cancleModal).find('textarea').val();
+		let orderNum = $(cancleModal).find('.order-num').text();
+		let orderForm = $(cancleModal).find('.order-form').val();
+		
+		if(!orderCancleReason){
+			alert("취소사유를 입력해주세요");
+			return false;
+		}
+		
+		console.log('주문번호 : ' + orderNum + ", 취소사유 : " + orderCancleReason);
+		
+		updateStatus(orderNum, '10', orderForm, '0', orderCancleReason);
+		cancleModal.modal('hide');
+		
+		
+		
+	}
+	
+	
+	function openCancleModal(orderNum, orderStatus, orderForm, orderKeyNum){
+		
+		$(cancleModal).find(".order-num").text(orderNum);
+		$(cancleModal).find(".order-form").val(orderForm);
+		cancleModal.modal('show');
+		
+	}
+
+
+
+	function sort(sortType, sortValue){
+		$('input[name="sortType"]').val(sortType);
+		$('input[name="sortValue"]').val(sortValue);
+		$('input[name="pageNum"]').val('1');
+		actionForm.submit();
+	}
+		
+		function selectAll(selectAll)  {
+		  const checkboxes 
+		       = document.getElementsByName('orderStatus');
+		  
+		  checkboxes.forEach((checkbox) => {
+		    checkbox.checked = selectAll.checked;
+		  })
+		  
+		  $('input[name="pageNum"]').val('1');
+			actionForm.submit();
+		}	
+
+	
 	
 	function viewFile(data, orderForm){
 		
@@ -420,10 +774,13 @@ $(document).ready(function() {
 		uploadModal.modal('show');
 
 	}
+	
+	
 
 	//진행중 상태 변경 함수
 	function transferOrderStatus(orderNum, orderStatus, orderForm, orderKeyNum){
-		if(!confirm("진행중 상태로 변경하시겠습니까?")){
+		
+		 if(!confirm("진행중 상태로 변경하시겠습니까?")){
 			return false;			
 		}
 		updateStatus(orderNum, orderStatus, orderForm, orderKeyNum);
@@ -438,13 +795,14 @@ $(document).ready(function() {
 		
 	} */
 	
-	function updateStatus(orderNum, orderStatus, orderForm, orderKeyNum){
+	function updateStatus(orderNum, orderStatus, orderForm, orderKeyNum, orderCancleReason){
 		 $.ajax({
 				url : "/order/transferOrderStatusAjax",
 				type : "post",
 				data : {
 					orderNum : orderNum,
-					orderStatus : orderStatus
+					orderStatus : orderStatus,
+					orderCancleReason : orderCancleReason
 				},
 				dataType : 'json',
 		        success: function (data) {
@@ -463,13 +821,26 @@ $(document).ready(function() {
 		let status = data.orderStatus;
 		let form = $('#'+orderForm);
 		let inner = '';
-		$(form).find('.order-status').text("작업중");
-		$(form).next().find('.trans-btn').remove();
-// 		$(form).next().find('.trans-btn').css('display', 'none');
 		
-		inner += '<button onclick="openModal(\''+orderKeyNum+'\', \''+orderForm+'\', \''+data.orderNum+'\')">파일 업로드</button><br>'
-		$(form).next().find('.file-yn').html(inner);
+		if(status == '10'){
+			
+			let inner = "<li>취소사유 : "+data.orderCancleReason+"</li>"
+			console.log(inner);
+			
+			$(form).next().find('.status-info-list').remove();
+			$(form).find('.order-status').text("취소(전문가)");	
+			$(form).next().find('.sub-info').append(inner);
+			
+			
+		}else{
 		
+			$(form).find('.order-status').text("작업중");
+			$(form).next().find('.trans-btn').remove();
+//	 		$(form).next().find('.trans-btn').css('display', 'none');
+			
+			inner += '<button onclick="openModal(\''+orderKeyNum+'\', \''+orderForm+'\', \''+data.orderNum+'\')">파일 업로드</button><br>'
+			$(form).next().find('.file-yn').html(inner);
+		}
 		
 		
 	}

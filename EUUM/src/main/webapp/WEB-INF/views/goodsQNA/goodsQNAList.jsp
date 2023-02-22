@@ -58,38 +58,55 @@ html,body {
 <div class="container">
    
     <br><br><br><br><br><br>
+    
     <h2>문의 및 답변</h2>
     <form action="/goodsQNA/InsertForm" method="get">
     <button type="submit" class="btn btn-default" >문의하기</button>   
     <input type="hidden" name="goodsNum" value="${goodsNum}"/>
     </form>
      
-    <table class="table table-bordered table-striped table-dark table-hover">
+    <table class="table table-bordered table-striped table-white table-hover">
      
       <thead class="thead-light text-center">
         <tr>
-          <th>번호</th>
+          <th>번호</th> 
           <th>답변 상태</th>
           <th>문의 내용</th>
           <th>작성자</th>
-          <th>작성일</th>
-         
+          <th>작성일</th>     
         </tr>
       </thead>
       <c:forEach items="${list}" var="var" varStatus="vs">
-        
+       
+      
       <input type="hidden" id="goodsNum" name="goodsNum" value="${var.goodsNum}"/> 
    
       <tbody class="text-center">
         <tr>
+        
           <td>${var.goodsQNANum}</td>
+          
+          <c:choose>
+          <c:when test="${var.goodsQNAComment == null}">
           <td>답변 중 </td>
-         
+         </c:when>
+         <c:otherwise>
+         <td>답변 완료</td>
+         </c:otherwise>
+          </c:choose>
+          
           <td class="text-left" width="50%">
             <div class="panel-faq-container">
-              <p class="panel-faq-title">${var.goodsQNATitle }</p>
+              <p class="panel-faq-title">${var.goodsQNATitle }
+              </p>
+              
+              
               <div class="panel-faq-answer">              
+           <c:forEach var="image" items="${var.imageBean}">
+		    <img src="/resources/img/${image.imageUploadPath}${image.imageFileName}" width=200; height=200;>
+		   </c:forEach>       
                 <p>${var.goodsQNAContent }</p>
+            
                 <p>${var.goodsQNAComment }</p>
                 
                 
@@ -148,6 +165,7 @@ html,body {
     </table>
   </div>
 
+<!-- 페이징 -->
 <div id="goodsQNAPaging">
 
 <div class='pull-right'>
@@ -230,27 +248,6 @@ $(document).ready(function(){
 	    actionForm.find("input[name='pageNum']").val(targetPage);  
 	    actionForm.submit();
 	});
-	
-	var searchForm = $("#searchForm");
-
-	$("#searchForm button").on("click",function(e) {
-		
-
-		if (!searchForm.find("option:selected").val()) {
-			alert("검색종류를 선택하세요");
-			return false;
-			}
-
-			if (!searchForm.find("input[name='keyword']").val()) {
-			alert("키워드를 입력하세요");
-			return false;
-			}
-
-			searchForm.find("input[name='pageNum']").val("1");
-			e.preventDefault();
-			searchForm.submit();
-
-			});
 
 })						
 </script>

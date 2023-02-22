@@ -19,7 +19,7 @@
 											<img class="thumb" src="/resources/img/no_image.png">
 										</c:when>
 										<c:otherwise>
-											<img class="thumb" src="/resources/img/${row.goodsImageDate}s_${row.goodsImage1}">
+											<img class="thumb" src="/resources/img/${row.goodsImageDate1}s_${row.goodsImage1}">
 										</c:otherwise>
 									</c:choose>
 									<c:choose>
@@ -27,7 +27,7 @@
 											<img class="thumb" src="/resources/img/no_image.png">
 										</c:when>
 										<c:otherwise>
-											<img class="thumb" src="/resources/img/${row.goodsImageDate}s_${row.goodsImage2}">
+											<img class="thumb" src="/resources/img/${row.goodsImageDate2}s_${row.goodsImage2}">
 										</c:otherwise>
 									</c:choose>
 									<c:choose>
@@ -35,7 +35,7 @@
 											<img class="thumb" src="/resources/img/no_image.png">
 										</c:when>
 										<c:otherwise>
-											<img class="thumb" src="/resources/img/${row.goodsImageDate}s_${row.goodsImage3}">
+											<img class="thumb" src="/resources/img/${row.goodsImageDate3}s_${row.goodsImage3}">
 										</c:otherwise>
 									</c:choose>
 								</td>
@@ -75,7 +75,7 @@
 											<img class="thumb" src="/resources/img/no_image.png">
 										</c:when>
 										<c:otherwise>
-											<img class="thumb" src="/resources/img/${row.goodsImageDate}s_${row.goodsImage1}">
+											<img class="thumb" src="/resources/img/${row.goodsImageDate1}s_${row.goodsImage1}">
 										</c:otherwise>
 									</c:choose>
 									<c:choose>
@@ -83,7 +83,7 @@
 											<img class="thumb" src="/resources/img/no_image.png">
 										</c:when>
 										<c:otherwise>
-											<img class="thumb" src="/resources/img/${row.goodsImageDate}s_${row.goodsImage2}">
+											<img class="thumb" src="/resources/img/${row.goodsImageDate2}s_${row.goodsImage2}">
 										</c:otherwise>
 									</c:choose>
 									<c:choose>
@@ -91,7 +91,7 @@
 											<img class="thumb" src="/resources/img/no_image.png">
 										</c:when>
 										<c:otherwise>
-											<img class="thumb" src="/resources/img/${row.goodsImageDate}s_${row.goodsImage3}">
+											<img class="thumb" src="/resources/img/${row.goodsImageDate3}s_${row.goodsImage3}">
 										</c:otherwise>
 									</c:choose>
 								</td>
@@ -131,7 +131,7 @@
 											<img class="thumb" src="/resources/img/no_image.png">
 										</c:when>
 										<c:otherwise>
-											<img class="thumb" src="/resources/img/${row.goodsImageDate}s_${row.goodsImage1}">
+											<img class="thumb" src="/resources/img/${row.goodsImageDate1}s_${row.goodsImage1}">
 										</c:otherwise>
 									</c:choose>
 									<c:choose>
@@ -139,7 +139,7 @@
 											<img class="thumb" src="/resources/img/no_image.png">
 										</c:when>
 										<c:otherwise>
-											<img class="thumb" src="/resources/img/${row.goodsImageDate}s_${row.goodsImage2}">
+											<img class="thumb" src="/resources/img/${row.goodsImageDate2}s_${row.goodsImage2}">
 										</c:otherwise>
 									</c:choose>
 									<c:choose>
@@ -147,7 +147,7 @@
 											<img class="thumb" src="/resources/img/no_image.png">
 										</c:when>
 										<c:otherwise>
-											<img class="thumb" src="/resources/img/${row.goodsImageDate}s_${row.goodsImage3}">
+											<img class="thumb" src="/resources/img/${row.goodsImageDate3}s_${row.goodsImage3}">
 										</c:otherwise>
 									</c:choose>
 								</td>
@@ -170,4 +170,5 @@
 			</c:otherwise>
 		</c:choose>
 	</div>
+
 </div>

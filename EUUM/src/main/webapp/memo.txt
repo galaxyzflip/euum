@@ -1,17 +1,15 @@
-1. 메인 하단 개인정보 처리방침 달아주세요~
+1. 없어진 메소드 있어서 추가
 
-2. DB 테스트계정 연결시 master에 merge 되지 않게 해주세요
-
-3. master에 merge는 1 명만
-
-4. 작업 된것 / 안된것 체크
-
-5. 커밋메시지 
-	1 번째 줄 : 제목
-	3 번째 줄 이하 : 내용
+@Override
+	public void insertImage(ImageBean imageBean) throws Exception {
+		imageMapper.insertImage(imageBean);
+	}
 	
-6. 커밋&푸시 > 마스터에 머지 > 마스터에 있는것 pull > 작업
-    커밋&푸시 > 마스터에 머지 > 마스터에서 브런치 생성 후 clone a repository >작업 
-    마스터에 바로 커밋&푸시 하지 않기~
-    
-7. 기존 프로젝트 백업 > 브랜치 pull > 복구 > 커밋&푸시
+2. loginPro 메소드 수정 
+
+@PostMapping("/member/loginPro")
+	public String loginPro(MemberBean bean, SellerBean sellerBean, HttpServletRequest request,
+			RedirectAttributes rttr)
+			
+			
+3. 리뷰 연결

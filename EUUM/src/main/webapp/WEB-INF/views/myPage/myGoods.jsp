@@ -1,9 +1,9 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<script src="webjars/jquery/3.5.1/dist/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 
 <style>
 li {
@@ -158,77 +158,63 @@ li {
 		
 		
 	</div>
-	
-
-
-
-
-	
-	<br>	
-	<br>	
-	<br>	
-	<br>	
-	<br>	
-	<br>	
-	<br>	
-	<br>	
-	<br>	
-	<br>	
-	<br>	
+  
+  
+<div style="margin: 100px">
+	<div>
+		<h2>내 작품 관리</h2>
+	</div><br/>
 	<div>
 		<!-- <a href="/goods/goodsRegisterGuide">작품 등록</a> -->
-		<button type="button"
-			onclick="location.href='/goods/goodsRegisterGuide'">작품 등록</button>
-	</div>
-	<br />
+		<button type="button" onclick="location.href='/goods/goodsRegisterGuide'">작품 등록</button>
+	</div><br/>
 
 	<div class="myGoods">
-		<div class="myGoodsList" style="padding-bottom: 20px">
+		<div class="myGoodsList" style="padding-bottom:20px">
 			<li>[내 상품]</li>
 			<c:choose>
 				<c:when test="${fn:length(myGoodsMap.myGoodsList) > 0}">
-					<c:forEach items="${myGoodsMap.myGoodsList}" var="row"
-						varStatus="status">
+					<c:forEach items="${myGoodsMap.myGoodsList}" var="row" varStatus="status">
 						<div style="padding-bottom: 15px">
-							<table style="border: solid 1px">
+							<table style="border: solid 1px">   
 								<tr id="tr_${row.goodsNum}">
 									<td class="myg_category">${row.goodsCategory}</td>
+									<td class="myg_sts">${row.goodsStatus}</td>
 									<%-- <td class="myg_category">${row.goodsNum}</td> --%>
-									<td><c:choose>
+									<td>
+										<c:choose>
 											<c:when test="${row.goodsImage1 eq null}">
 												<img class="thumb" src="/resources/img/no_image.png">
 											</c:when>
 											<c:otherwise>
-												<img class="thumb"
-													src="/resources/img/${row.goodsImageDate1}s_${row.goodsImage1}">
+												<img class="thumb" src="/resources/img/${row.goodsImageDate1}s_${row.goodsImage1}">
 											</c:otherwise>
-										</c:choose> <c:choose>
+										</c:choose>
+										<c:choose>
 											<c:when test="${row.goodsImage2 eq null}">
 												<img class="thumb" src="/resources/img/no_image.png">
 											</c:when>
 											<c:otherwise>
-												<img class="thumb"
-													src="/resources/img/${row.goodsImageDate2}s_${row.goodsImage2}">
+												<img class="thumb" src="/resources/img/${row.goodsImageDate2}s_${row.goodsImage2}">
 											</c:otherwise>
-										</c:choose> <c:choose>
+										</c:choose>
+										<c:choose>
 											<c:when test="${row.goodsImage3 == null}">
 												<img class="thumb" src="/resources/img/no_image.png">
 											</c:when>
 											<c:otherwise>
-												<img class="thumb"
-													src="/resources/img/${row.goodsImageDate3}s_${row.goodsImage3}">
+												<img class="thumb" src="/resources/img/${row.goodsImageDate3}s_${row.goodsImage3}">
 											</c:otherwise>
-										</c:choose></td>
-									<td class="myg_info">
-										<li>${row.goodsName}/ ${row.goodsUse}</li>
-										<li>${row.goodsSellerNickname}/ ${row.goodsPrice}</li>
+										</c:choose>
 									</td>
-									<td class="myg_button"><input type="hidden"
-										id="goodsNum_${status.index}" value="${row.goodsNum}" />
-										<button type="button"
-											onclick="modifyMyGoods('${row.goodsStatus}', ${status.index});">수정</button>
-										<button type="button"
-											onclick="deleteMyGoods('${row.goodsStatus}', ${status.index});">삭제</button>
+									<td class="myg_info">
+										<li>${row.goodsName} / ${row.goodsUse}</li>
+										<li>${row.goodsSellerNickname} / ${row.goodsPrice}</li>
+									</td>
+									<td class="myg_button">
+										<input type="hidden" id="goodsNum_${status.index}" value="${row.goodsNum}"/>
+										<button type="button" onclick="modifyMyGoods('${row.goodsStatus}', ${status.index});">수정</button>
+										<button type="button" onclick="deleteMyGoods('${row.goodsStatus}', ${status.index});">삭제</button>
 									</td>
 								</tr>
 							</table>
@@ -239,54 +225,73 @@ li {
 					판매중인 내 상품이 없습니다.
 				</c:otherwise>
 			</c:choose>
+			<div id="goodsPaging1">
+				<div class='pull-right'>
+					<ul class="pagination">
+	
+						<c:if test="${pagingMap.pageMakerGoods.prev1}">
+							<li class="page-item"><a class="page-link page1" href="${pagingMap.pageMakerGoods.startPage1 -1}" tabindex="-1">Previous</a></li>
+						</c:if>
+	
+							<c:forEach var="num" begin="${pagingMap.pageMakerGoods.startPage1}" end="${pagingMap.pageMakerGoods.endPage1}">
+								<li class="page-item ${pagingMap.pageMakerGoods.cri.pageNum1 == num ? "active":""} ">
+									<a class="page-link page1" href="${num}">${num}</a>
+								</li>
+							</c:forEach>
+	
+						<c:if test="${pagingMap.pageMakerGoods.next1}">
+							<li class="page-item"><a class="page-link page1" href="${pagingMap.pageMakerGoods.endPage1 +1}" tabindex="-1">Next</a></li>
+						</c:if>
+	
+					</ul>
+				</div>
+			</div>
 		</div>
-
-		<div class="myUnapprovedGoodsList" style="padding-bottom: 20px">
+	
+		<div class="myUnapprovedGoodsList" style="padding-bottom:20px">
 			<li>[승인대기 중인 상품]</li>
 			<c:choose>
 				<c:when test="${fn:length(myGoodsMap.myUnapprovedGoodsList) > 0}">
-					<c:forEach items="${myGoodsMap.myUnapprovedGoodsList}" var="row"
-						varStatus="status">
+					<c:forEach items="${myGoodsMap.myUnapprovedGoodsList}" var="row" varStatus="status">
 						<div style="padding-bottom: 15px">
 							<table style="border: solid 1px">
 								<tr id="tr_unapproved_${row.goodsNum}">
 									<td class="myg_category">${row.goodsCategory}</td>
 									<%-- <td class="myg_category">${row.goodsNum}</td> --%>
-									<td><c:choose>
+									<td>
+										<c:choose>
 											<c:when test="${row.goodsImage1 eq null}">
 												<img class="thumb" src="/resources/img/no_image.png">
 											</c:when>
 											<c:otherwise>
-												<img class="thumb"
-													src="/resources/img/${row.goodsImageDate1}s_${row.goodsImage1}">
+												<img class="thumb" src="/resources/img/${row.goodsImageDate1}s_${row.goodsImage1}">
 											</c:otherwise>
-										</c:choose> <c:choose>
+										</c:choose>
+										<c:choose>
 											<c:when test="${row.goodsImage2 eq null}">
 												<img class="thumb" src="/resources/img/no_image.png">
 											</c:when>
 											<c:otherwise>
-												<img class="thumb"
-													src="/resources/img/${row.goodsImageDate2}s_${row.goodsImage2}">
+												<img class="thumb" src="/resources/img/${row.goodsImageDate2}s_${row.goodsImage2}">
 											</c:otherwise>
-										</c:choose> <c:choose>
+										</c:choose>
+										<c:choose>
 											<c:when test="${row.goodsImage3 == null}">
 												<img class="thumb" src="/resources/img/no_image.png">
 											</c:when>
 											<c:otherwise>
-												<img class="thumb"
-													src="/resources/img/${row.goodsImageDate3}s_${row.goodsImage3}">
+												<img class="thumb" src="/resources/img/${row.goodsImageDate3}s_${row.goodsImage3}">
 											</c:otherwise>
-										</c:choose></td>
-									<td class="myg_info">
-										<li>${row.goodsName}/ ${row.goodsUse}</li>
-										<li>${row.goodsSellerNickname}/ ${row.goodsPrice}</li>
+										</c:choose>
 									</td>
-									<td class="myg_button"><input type="hidden"
-										id="goodsNum_${status.index}" value="${row.goodsNum}" />
-										<button type="button"
-											onclick="modifyMyGoods('${row.goodsStatus}', ${status.index});">수정</button>
-										<button type="button"
-											onclick="deleteMyGoods('${row.goodsStatus}', ${status.index});">삭제</button>
+									<td class="myg_info">
+										<li>${row.goodsName} / ${row.goodsUse}</li>
+										<li>${row.goodsSellerNickname} / ${row.goodsPrice}</li>
+									</td>
+									<td class="myg_button">
+										<input type="hidden" id="goodsNum_${status.index}" value="${row.goodsNum}"/>
+										<button type="button" onclick="modifyMyGoods('${row.goodsStatus}', ${status.index});">수정</button>
+										<button type="button" onclick="deleteMyGoods('${row.goodsStatus}', ${status.index});">삭제</button>
 									</td>
 								</tr>
 							</table>
@@ -297,55 +302,73 @@ li {
 					<span>승인 대기중인 상품이 없습니다.</span>
 				</c:otherwise>
 			</c:choose>
+			<div id="goodsPaging2">
+				<div class='pull-right'>
+					<ul class="pagination">
+	
+						<c:if test="${pagingMap.pageMakerUnapprovedGoods.prev2}">
+							<li class="page-item"><a class="page-link page2" href="${pagingMap.pageMakerUnapprovedGoods.startPage2 -1}" tabindex="-1">Previous</a></li>
+						</c:if>
+	
+							<c:forEach var="num" begin="${pagingMap.pageMakerUnapprovedGoods.startPage2}" end="${pagingMap.pageMakerUnapprovedGoods.endPage2}">
+								<li class="page-item ${pagingMap.pageMakerUnapprovedGoods.cri.pageNum2 == num ? "active":""} ">
+									<a class="page-link page2" href="${num}">${num}</a>
+								</li>
+							</c:forEach>
+	
+						<c:if test="${pagingMap.pageMakerUnapprovedGoods.next2}">
+							<li class="page-item"><a class="page-link page2" href="${pagingMap.pageMakerUnapprovedGoods.endPage2 +1}" tabindex="-1">Next</a></li>
+						</c:if>
+	
+					</ul>
+				</div>
+			</div>
 		</div>
-
-		<div class="myTempGoodsList" style="padding-bottom: 20px">
-			<li>[임시 저장된 상품]</li>
+	
+		<div class="myTempGoodsList" style="padding-bottom:20px">
+			<li>[임시 저장된 상품]</li>	
 			<c:choose>
 				<c:when test="${fn:length(myGoodsMap.myTempGoodsList) > 0}">
-					<c:forEach items="${myGoodsMap.myTempGoodsList}" var="row"
-						varStatus="status">
+					<c:forEach items="${myGoodsMap.myTempGoodsList}" var="row" varStatus="status">
 						<div style="padding-bottom: 15px">
 							<table style="border: solid 1px">
 								<tr id="tr_temp_${row.goodsNum}">
 									<td class="myg_category">${row.goodsCategory}</td>
 									<%-- <td class="myg_category">${row.goodsNum}</td> --%>
-									<td><c:choose>
+									<td>
+										<c:choose>
 											<c:when test="${row.goodsImage1 eq null}">
 												<img class="thumb" src="/resources/img/no_image.png">
 											</c:when>
 											<c:otherwise>
-												<img class="thumb"
-													src="/resources/img/${row.goodsImageDate1}s_${row.goodsImage1}">
+												<img class="thumb" src="/resources/img/${row.goodsImageDate1}s_${row.goodsImage1}">
 											</c:otherwise>
-										</c:choose> <c:choose>
+										</c:choose>
+										<c:choose>
 											<c:when test="${row.goodsImage2 eq null}">
 												<img class="thumb" src="/resources/img/no_image.png">
 											</c:when>
 											<c:otherwise>
-												<img class="thumb"
-													src="/resources/img/${row.goodsImageDate2}s_${row.goodsImage2}">
+												<img class="thumb" src="/resources/img/${row.goodsImageDate2}s_${row.goodsImage2}">
 											</c:otherwise>
-										</c:choose> <c:choose>
+										</c:choose>
+										<c:choose>
 											<c:when test="${row.goodsImage3 == null}">
 												<img class="thumb" src="/resources/img/no_image.png">
 											</c:when>
 											<c:otherwise>
-												<img class="thumb"
-													src="/resources/img/${row.goodsImageDate3}s_${row.goodsImage3}">
+												<img class="thumb" src="/resources/img/${row.goodsImageDate3}s_${row.goodsImage3}">
 											</c:otherwise>
-										</c:choose></td>
-									<td class="myg_info">
-										<li>${row.goodsName}/ ${row.goodsUse}</li>
-										<li>${row.goodsSellerNickname}/ ${row.goodsPrice}</li>
+										</c:choose>
 									</td>
-									<td class="myg_button"><input type="hidden"
-										id="goodsNum_${status.index}" name="goodsNum"
-										value="${row.goodsNum}" />
-										<button type="button"
-											onclick="modifyMyGoods('${row.goodsStatus}', ${status.index});">수정</button>
-										<button type="button"
-											onclick="deleteMyGoods('${row.goodsStatus}', ${status.index});">삭제</button>
+									<td class="myg_info">
+										<li>${row.goodsName} / ${row.goodsUse}</li>
+										<li>${row.goodsSellerNickname} / ${row.goodsPrice}</li>
+									</td>
+									<td class="myg_button">
+										<input type="hidden" id="goodsNum_${status.index}" name="goodsNum" value="${row.goodsNum}"/>
+										<button type="button" onclick="modifyMyGoods('${row.goodsStatus}', ${status.index});">수정</button>
+										<button type="button" onclick="deleteMyGoods('${row.goodsStatus}', ${status.index});">삭제</button>
 									</td>
 								</tr>
 							</table>
@@ -356,16 +379,117 @@ li {
 					<span>임시 저장된 상품이 없습니다.</span>
 				</c:otherwise>
 			</c:choose>
-			<form id="modifyForm"></form>
+			<div id="goodsPaging1">
+				<div class='pull-right'>
+					<ul class="pagination">
+	
+						<c:if test="${pagingMap.pageMakerTempGoods.prev3}">
+							<li class="page-item"><a class="page-link page3" href="${pagingMap.pageMakerTempGoods.startPage3 -1}" tabindex="-1">Previous</a></li>
+						</c:if>
+							
+							<c:forEach var="num" begin="${pagingMap.pageMakerTempGoods.startPage3}" end="${pagingMap.pageMakerTempGoods.endPage3}">
+								<li class="page-item ${pagingMap.pageMakerTempGoods.cri.pageNum3 == num ? "active":""} ">
+									<a class="page-link page3" href="${num}">${num}</a>
+								</li>
+							</c:forEach>
+						
+						<c:if test="${pagingMap.pageMakerTempGoods.next3}">
+							<li class="page-item"><a class="page-link page3" href="${pagingMap.pageMakerTempGoods.endPage3 +1}" tabindex="-1">Next</a></li>
+						</c:if>
+	
+					</ul>
+				</div>
+			</div>
 		</div>
+		
+		<!-- 선민: 수정을 위한 폼 -->
+		<form id="modifyForm"></form>
+		
+		<!-- 선민: 페이징을 위한 폼 -->
+<!-- 		<form id="actionForm" action="/myPage/myGoods" method='get'> -->
+		<form id="actionForm" action="/myPage/myGoods" method='post'>
+			<input type='hidden' name='pageNum1' value='${pagingMap.pageMakerGoods.cri.pageNum1}'>
+			<input type='hidden' name='amount1' value='${pagingMap.pageMakerGoods.cri.amount1}'>
+			<input type='hidden' name='pageNum2' value='${pagingMap.pageMakerUnapprovedGoods.cri.pageNum2}'>
+			<input type='hidden' name='amount2' value='${pagingMap.pageMakerUnapprovedGoods.cri.amount2}'>
+			<input type='hidden' name='pageNum3' value='${pagingMap.pageMakerTempGoods.cri.pageNum3}'>
+			<input type='hidden' name='amount3' value='${pagingMap.pageMakerTempGoods.cri.amount3}'>
+		</form>
+<!-- 		<form id="actionForm2" name="actionForm2"> -->
+<%-- 			<input type='hidden' name='pageNum1' value='${pagingMap.pageMakerGoods.cri.pageNum1}'> --%>
+<%-- 			<input type='hidden' name='amount1' value='${pagingMap.pageMakerGoods.cri.amount1}'> --%>
+<%-- 			<input type='hidden' name='pageNum2' value='${pagingMap.pageMakerUnapprovedGoods.cri.pageNum2}'> --%>
+<%-- 			<input type='hidden' name='amount2' value='${pagingMap.pageMakerUnapprovedGoods.cri.amount2}'> --%>
+<%-- 			<input type='hidden' name='pageNum3' value='${pagingMap.pageMakerTempGoods.cri.pageNum3}'> --%>
+<%-- 			<input type='hidden' name='amount3' value='${pagingMap.pageMakerTempGoods.cri.amount3}'> --%>
+<!-- 		</form> -->
+		
 	</div>
-	<br />
-
-	<div>맵: ${myGoodsMap}</div>
-	<br />
+	<br/>
+	
+<%-- 	<div>맵: ${myGoodsMap}</div><br/> --%>
+	<div>맵: ${pagingMap}</div><br/>
+	
+	<div>
+<%-- 		<li>승인완료 pageNum: ${pagingMap.pageMakerGoods.cri.pageNum1}</li> --%>
+<%-- 		<li>승인완료 amount: ${pagingMap.pageMakerGoods.cri.amount1}</li> --%>
+		<li>승인완료 startPage: ${pagingMap.pageMakerGoods.startPage1}</li>
+		<li>승인완료 endPage: ${pagingMap.pageMakerGoods.endPage1}</li>
+		<li>--------------------------------</li>
+		<li>승인대기 startPage: ${pagingMap.pageMakerUnapprovedGoods.startPage2}</li>
+		<li>승인대기 endPage: ${pagingMap.pageMakerUnapprovedGoods.endPage2}</li>
+		<li>--------------------------------</li>
+		<li>임시저장 startPage: ${pagingMap.pageMakerTempGoods.startPage3}</li>
+		<li>임시저장 endPage: ${pagingMap.pageMakerTempGoods.endPage3}</li>
+	</div><br/>
 </div>
 
+
 <script>
+// 상품페이징
+$(document).ready(function(){
+	var actionForm = $("#actionForm");
+
+	$(".page1").on("click", function(e) {
+		e.preventDefault();
+		var targetPage = $(this).attr("href");
+	    actionForm.find("input[name='pageNum1']").val(targetPage);
+	    actionForm.submit();
+	});
+	
+	$(".page2").on("click", function(e) {
+		e.preventDefault();
+		var targetPage = $(this).attr("href");
+	    actionForm.find("input[name='pageNum2']").val(targetPage);
+	    actionForm.submit();
+
+// 		var queryString = $("form[id=actionForm]").serialize();
+		
+// 		$.ajax({
+// 			url: '/myPage/myGoods',
+// 			processData: false,
+// 			contentType: false,
+// 			data: queryString,  
+// 			type: 'POST',
+			
+// 			error: function(error){
+// 				alert("실패");
+// 			},
+// 			success: function(result) { 
+// 			    alert("성공");
+// 			}	
+// 		}); // $.ajax
+	});
+	
+	$(".page3").on("click", function(e) {
+		e.preventDefault();
+		var targetPage = $(this).attr("href");
+	    actionForm.find("input[name='pageNum3']").val(targetPage);
+	    actionForm.submit();
+	});
+})		
+
+
 function modifyMyGoods(status, index) {
     let formData = new FormData(); // 가상의 <form>태그 객체를 생성
     let goodsNum;
@@ -405,6 +529,8 @@ function modifyMyGoods(status, index) {
 function deleteMyGoods(status, index) {
     let formData = new FormData(); // 가상의 <form>태그 객체를 생성
     let goodsNum;
+    
+    alert(status);
     
     if(!confirm("정말 삭제하시겠습니까?")) { return false; }
     else {}
@@ -476,5 +602,29 @@ function deleteMyGoods(status, index) {
 }
 </script>
 
+<style>
+li {
+	list-style: none;
+}
+.thumb {
+	width: 160px;
+	height:120px; 
+}
+.small {
+	width: 100px;
+	height:75px; 
+}
+.myg_category {
+	width: 100px;
+}
+.myg_info {
+	padding-left: 20px;
+	width: 400px;
+}
+.myg_button {
+	padding-left: 20px;
+	width: 160px;
+}
+</style>
 
 

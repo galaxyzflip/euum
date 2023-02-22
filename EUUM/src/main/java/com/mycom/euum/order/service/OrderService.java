@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.mycom.euum.goods.bean.GoodsBean;
 import com.mycom.euum.order.bean.OrderBean;
 import com.mycom.euum.order.bean.OrderOptionBean;
+import com.mycom.euum.page.OrderCriteria;
 
 public interface OrderService {
 
@@ -16,11 +17,14 @@ public interface OrderService {
 	
 	public OrderBean selectOrder(String orderNum);
 	
-	public List<OrderBean> selectOrderListByMember(int memberNum);
+	public List<OrderBean> selectOrderListByMember(OrderCriteria cri);
 	
-	public List<OrderBean> selectOrderListBySeller(int sellerNum);
+	public List<OrderBean> selectOrderListBySeller(OrderCriteria cri);
 	
-	public List<OrderBean> selectAdminOrderList();
+	public int selectOrderCountByMember(OrderCriteria cri);
+	
+	public int selectOrderCountBySeller(OrderCriteria cri);
+	
 	
 	public OrderBean addOrder(OrderBean orderBean);
 	

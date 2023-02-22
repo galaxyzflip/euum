@@ -33,7 +33,7 @@ public class FileUtils {
 		log.info("===== 첨부파일 업로드 =====");
 
 		List<ImageBean> imageBeanList = new ArrayList<ImageBean>();
-		
+
 		// (1) 경로 및 폴더 생성
 		String uploadFolderPath = request.getRealPath("") + "resources/img";
 		log.info("---------- (1) 경로 및 폴더 생성 ----------");
@@ -55,6 +55,7 @@ public class FileUtils {
 				ImageBean imageBean = new ImageBean();
 				imageBean.setImageFileName("");
 				imageBean.setImageUploadPath(fileDate);
+				imageBean.setImageUse(fileUse);
 				imageBeanList.add(imageBean);
 				continue;
 			}
@@ -79,11 +80,13 @@ public class FileUtils {
 			imageBean.setImageUploadPath(fileDate);
 			imageBean.setImageUUID(uuid.toString());
 			imageBean.setImageUse(fileUse);
+			imageBean.setNewImage(true);
 			log.info("---------- (2-2) 이미지 테이블에 저장할 데이터 세팅 ----------");
 			log.info("imageFileName: " + fileName);
 			log.info("imageUploadPath: " + fileDate);
 			log.info("imageUUID " + uuid.toString());
 			log.info("imageUse: " + fileUse);
+			log.info("isNew(): " + imageBean.isNew());
 			// imageBean.setImageUseNum(); -> 각 기능마다 각자의 Controller에서 글번호 삽입
 			// ex) 상품 등록 시 첨부한 이미지파일인 경우 GoodsController에서
 			// imageBean.setImageUseNum(goodsNum);
@@ -99,7 +102,7 @@ public class FileUtils {
 					Thumbnailator.createThumbnail(multipartFile.getInputStream(), thumbnail, 160, 160);
 					thumbnail.close();
 					imageBean.setImageFileType("i"); // 파일타입을 i로 지정
-				}else {
+				} else {
 					imageBean.setImageFileType("f"); // 최창선 : 이미지 아닐 경우 f로 저장, 없으면 디비저장 에러
 				}
 			} catch (Exception e) {
@@ -155,12 +158,11 @@ public class FileUtils {
 	// 상품
 	public List<ImageBean> goodsFileUpload(MultipartFile[] uploadFile) throws Exception {
 
-		
-		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
-		
+		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
+				.getRequest();
 
 		List<ImageBean> imageBeanList = new ArrayList<ImageBean>();
-		
+
 		imageBeanList = fileUpload(uploadFile, request, "goods");
 
 		return imageBeanList;
@@ -176,87 +178,102 @@ public class FileUtils {
 		return imageBeanList;
 	}
 
-	
 	// 전문가
 	public List<ImageBean> sellerFileUpload(MultipartFile[] uploadFile) throws Exception {
-		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
-		List<ImageBean> imageBeanList = new ArrayList<ImageBean>();
-		imageBeanList = fileUpload(uploadFile, request, "seller");
-		
-		return imageBeanList;
-	}
-	
-	// 마이페이지
-	public List<ImageBean> myPageFileUpload(MultipartFile[] uploadFile) throws Exception {
-		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
-		List<ImageBean> imageBeanList = new ArrayList<ImageBean>();
-		imageBeanList = fileUpload(uploadFile, request, "myPage");
-		
-		return imageBeanList;
-	}
-	
-
-	// 리뷰
-	public List<ImageBean> reviewFileUpload(MultipartFile[] uploadFile) throws Exception {
 		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
 				.getRequest();
 		List<ImageBean> imageBeanList = new ArrayList<ImageBean>();
-		imageBeanList = fileUpload(uploadFile, request, "review");
+		imageBeanList = fileUpload(uploadFile, request, "seller");
 
 		return imageBeanList;
 	}
 
-	// 주문
-	public List<ImageBean> orderFileUpload(MultipartFile[] uploadFile) throws Exception {
-		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+	// 마이페이지
+	public List<ImageBean> myPageFileUpload(MultipartFile[] uploadFile) throws Exception {
+		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
+				.getRequest();
 		List<ImageBean> imageBeanList = new ArrayList<ImageBean>();
-		imageBeanList = fileUpload(uploadFile, request, "order");
+		imageBeanList = fileUpload(uploadFile, request, "myPage");
 
 		return imageBeanList;
 	}
 	
+	// 리뷰
+		public List<ImageBean> reviewFileUpload(MultipartFile[] uploadFile) throws Exception {
+			System.out.println("d1");
+			HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
+					.getRequest();
+			System.out.println("c1");
+			List<ImageBean> imageBeanList = new ArrayList<ImageBean>();
+			System.out.println("c2");
+			imageBeanList = fileUpload(uploadFile, request, "review");
+			System.out.println("c3");
+
+			return imageBeanList;
+		}
+
+
 	// 공지사항
 	public List<ImageBean> noticeFileUpload(MultipartFile[] uploadFile) throws Exception {
-		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
+				.getRequest();
+		System.out.println("aaa");
 		List<ImageBean> imageBeanList = new ArrayList<ImageBean>();
+		System.out.println("bbb");
 		imageBeanList = fileUpload(uploadFile, request, "notice");
-		
+		System.out.println("ccc");
+
+		return imageBeanList;
+	}
+
+	// QnA
+	public List<ImageBean> qnaFileUpload(MultipartFile[] uploadFile) throws Exception {
+		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
+				.getRequest();
+		List<ImageBean> imageBeanList = new ArrayList<ImageBean>();
+		imageBeanList = fileUpload(uploadFile, request, "qna");
+
 		return imageBeanList;
 	}
 	
 	// QnA
-	public List<ImageBean> qnaFileUpload(MultipartFile[] uploadFile) throws Exception {
-		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
-		List<ImageBean> imageBeanList = new ArrayList<ImageBean>();
-		imageBeanList = fileUpload(uploadFile, request, "qna");
-		
-		return imageBeanList;
-	}
-	
-	// 상품 QnA
-	public List<ImageBean> gQnaFileUpload(MultipartFile[] uploadFile) throws Exception {
-		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
-		List<ImageBean> imageBeanList = new ArrayList<ImageBean>();
-		imageBeanList = fileUpload(uploadFile, request, "gQna");
-		
-		return imageBeanList;
-	}
-	
-	// request
-	public List<ImageBean> requestFileUpload(MultipartFile[] uploadFile) throws Exception {
-		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
-		List<ImageBean> imageBeanList = new ArrayList<ImageBean>();
-		imageBeanList = fileUpload(uploadFile, request, "request");
-		
-		return imageBeanList;
-	}
-	
-	// 주문
 	public List<ImageBean> orderFileUpload(MultipartFile[] uploadFile) throws Exception {
-		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
+				.getRequest();
 		List<ImageBean> imageBeanList = new ArrayList<ImageBean>();
 		imageBeanList = fileUpload(uploadFile, request, "order");
+
+		return imageBeanList;
+	}
+
+
+	public List<ImageBean> goodsQNAFileUpload(MultipartFile[] uploadFile) throws Exception {
+		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+		List<ImageBean> imageBeanList = new ArrayList<ImageBean>();
+		imageBeanList = fileUpload(uploadFile, request, "goodsQNA");
 		
+
+		return imageBeanList;
+	}
+
+	// request
+	public List<ImageBean> requestFileUpload(MultipartFile[] uploadFile) throws Exception {
+		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
+				.getRequest();
+		List<ImageBean> imageBeanList = new ArrayList<ImageBean>();
+		imageBeanList = fileUpload(uploadFile, request, "request");
+
+		return imageBeanList;
+	}
+	
+
+	// request
+	public List<ImageBean> orderFileUpload1(MultipartFile[] uploadFile) throws Exception {
+		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
+				.getRequest();
+		List<ImageBean> imageBeanList = new ArrayList<ImageBean>();
+		imageBeanList = fileUpload(uploadFile, request, "order");
+
 		return imageBeanList;
 	}
 

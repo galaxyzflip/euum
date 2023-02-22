@@ -29,12 +29,16 @@ public class OrderBean {
 	private String orderModifyCount;
 	private String orderPeriod;
 	private String orderImage;
+	private String orderCancleReason;
+	private String reviewNum;
 	
 	private Date orderExpirationDate;
 	private String sellerNickname;
 	private String goodsName;
 	private int orderPrice;
 	private String fileYn;
+	private String imageName;
+	private String reviewYn;
 	
 	
 	

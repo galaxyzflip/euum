@@ -254,6 +254,7 @@ a {
 	<div class="join_content">
 		<div class="join_form">
 			<form id="join_form" method="GET" action="/member/joinForm2">
+			
 				<input type="hidden" id="token_sjoin" name="token_sjoin"
 					value="TBxmbPpAfnoF43F1"> <input type="hidden"
 					id="langSelect" name="langSelect" value="ko_KR">
@@ -993,6 +994,12 @@ a {
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/JavaScript">
+
+let naverResultInfo = '${sessionScope.naverResultInfo}';
+let kakaoResultInfo = '${sessionScope.kakaoResultInfo}';
+
+console.log("네아로 정보 : " + naverResultInfo);
+
     $(document).ready(function() {
 
         $("#chk_all").prop("checked",false);
@@ -1025,10 +1032,22 @@ a {
         })
 
         $("#btnAgree").click(function(event) {
+        	
+        	event.preventDefault();
+        	if(naverResultInfo != null && naverResultInfo != ''){
+        		$("#join_form").attr('action', '/member/joinPro');
+        		$("#join_form").attr('method', 'post');
+        		
+        	}else if(kakaoResultInfo != null && kakaoResultInfo != ''){
+        		$("#join_form").attr('action', '/member/joinFormForKakao');
+        		$("#join_form").attr('method', 'post');
+        		
+        	}
+        	
             submitAgree();
             return false;
         })
-
+        
     });
 
 

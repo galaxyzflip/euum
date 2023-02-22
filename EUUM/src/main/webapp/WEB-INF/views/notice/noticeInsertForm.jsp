@@ -7,13 +7,8 @@
 $(document).ready(function(){
 	$("#changeCategory").change(function(){
 		$("#category").val($(this).val());
-
-	});
-	
-	
-	
+	});	
  });
-
 
 </script>
 
@@ -23,7 +18,7 @@ $(document).ready(function(){
 <body>
 	<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
 
-	<form action="/notice/noticeInsertPro" method="post">
+	<form action="/notice/noticeInsertPro" method="post" enctype="multipart/form-data">
 		<table style="margin-left: auto; margin-right: auto;">
 			<tr>
 				<td>제목 <input type="text" name="noticeTitle">
@@ -46,8 +41,11 @@ $(document).ready(function(){
 				</td>
 			</tr>
 			
-
-			
+			<tr><td>
+            <input type="file" name="uploadFile">
+		    <input type="file" name="uploadFile">
+		    <input type="file" name="uploadFile">  
+			</td></tr>
 
 			<tr>
 				<td><textarea placeholder="입력하세요" name="noticeContent"></textarea></td>

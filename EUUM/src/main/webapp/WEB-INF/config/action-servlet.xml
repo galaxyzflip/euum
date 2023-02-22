@@ -24,6 +24,8 @@
 
 	<mvc:annotation-driven>
 	</mvc:annotation-driven>
+	
+		<bean id="naverLoginBO" class="com.mycom.euum.naver.NaverLoginBO"/>
 
 	<!-- <mvc:annotation-driven>
 		<mvc:argument-resolvers>
@@ -87,33 +89,12 @@
 	
 	
 	<!-- 인터셉터 적용 -->
-	<!-- <mvc:interceptors>
+	<mvc:interceptors>
 		<mvc:interceptor>
-			<mvc:mapping path="/loginForm.pulu"></mvc:mapping>
-			<bean id="loginIntreceptor"
-				class="pulu.com.interceptor.LoginInterceptor"></bean>
+			<mvc:mapping path="/myPage/orderList"></mvc:mapping>
+			<bean id="loginInterceptor" class="com.mycom.euum.commons.interceptor.LoginInterceptor"/>
 		</mvc:interceptor>
-		<mvc:interceptor>
-			<mvc:mapping path="/admin**.pulu"></mvc:mapping>
-			<bean id="AdminIntreceptor"
-				class="pulu.com.interceptor.AdminInterceptor"></bean>
-		</mvc:interceptor>
-		<mvc:interceptor>
-			<mvc:mapping path="/my**.pulu"></mvc:mapping>
-			<bean id="MyPageIntreceptor"
-				class="pulu.com.interceptor.MyPageInterceptor"></bean>
-		</mvc:interceptor>
-		<mvc:interceptor>
-			<mvc:mapping path="/basket**.pulu"></mvc:mapping>
-			<bean id="BasketIntreceptor"
-				class="pulu.com.interceptor.BasketInterceptor"></bean>
-		</mvc:interceptor>
-		<mvc:interceptor>
-			<mvc:mapping path="/order**.pulu"></mvc:mapping>
-			<bean id="OrderInterceptor" 
-				class="pulu.com.interceptor.OrderInterceptor"></bean>
-		</mvc:interceptor>
-	</mvc:interceptors> -->
+	</mvc:interceptors>
 
 
 </beans>

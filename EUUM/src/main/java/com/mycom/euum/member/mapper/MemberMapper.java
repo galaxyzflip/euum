@@ -78,6 +78,7 @@ public interface MemberMapper {
 	public int secessionSeller(String sellerNum);
 	
 	
+	public MemberBean selectAPIJoinInfo(MemberBean memberBean);
 	
 	// 메인
 	

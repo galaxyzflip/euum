@@ -4,8 +4,7 @@
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
    
 <mapper namespace="com.mycom.euum.qna.mapper.QNAMapper">
-  
-   <!-- 문의글 리스트 -->
+ <!-- 문의글 리스트 -->
  <!-- <select id="qnaList" resultType="com.mycom.euum.qna.bean.QNABean">		
      <![CDATA[
 		SELECT QNA_NUM, QNA_TITLE, QNA_REGDATE, QNA_WRITER, QNA_ORDERED
@@ -14,19 +13,89 @@
 	 ]]>		   
   </select> -->
   
+ <!-- 문의글 리스트 -->
+ <!-- <select id="qnaList" resultType="com.mycom.euum.qna.bean.QNABean">		
+	   <![CDATA[
+	select QNA_NUM, QNA_TITLE, QNA_REGDATE, QNA_WRITER, QNA_ORDERED, QNA_DELETE, QNA_NID
+	from (select rownum rn, QNA_NUM, QNA_TITLE, QNA_REGDATE,
+	      QNA_WRITER, QNA_ORDERED, QNA_DELETE, QNA_NID
+	         FROM QNA_TBL
+	         WHERE rownum <=(#{pageNum}) * #{amount} AND QNA_DELETE ='N')
+	where rn>(#{pageNum}-1) * #{amount} AND QNA_DELETE = 'N'
+	      ORDER BY QNA_NID DESC, QNA_ORDERED ASC
+	]]>		   
+     </select>  -->
+     
   <!-- 문의글 리스트 -->
-  <select id="qnaList" resultType="com.mycom.euum.qna.bean.QNABean">		
+ <!--   <select id="qnaList" resultType="com.mycom.euum.qna.bean.QNABean">		
+	  
+	  <include refid="pagingPre"></include> 
+	  
+	   <![CDATA[
+select * from (
+SELECT
+    ROWNUM rn,
+    qna_num,
+    qna_title,
+    qna_regdate,
+    qna_writer,
+    qna_ordered,
+    qna_delete,
+    qna_nid,
+    qna_hitcount
+FROM
+    qna_tbl
+ORDER BY
+    qna_nid DESC,
+    qna_ordered ASC)where
+	]]>	
+	<include refid="criteria"></include>
+     	   
+	
+	<include refid="pagingPost"></include> 
+     </select> 
+      -->
+      <!-- 문의글 리스트 -->
+<!--    <select id="qnaList" resultType="com.mycom.euum.qna.bean.QNABean">		
+	   <![CDATA[
+	select QNA_NUM, QNA_TITLE, QNA_REGDATE, QNA_WRITER, QNA_ORDERED, QNA_DELETE, QNA_NID, QNA_HITCOUNT
+	from (select rownum rn, QNA_NUM, QNA_TITLE, QNA_REGDATE,
+	      QNA_WRITER, QNA_ORDERED, QNA_DELETE, QNA_NID, QNA_HITCOUNT
+	        FROM QNA_TBL 
+	        WHERE 
+	]]>	
+	<include refid="criteria"></include>
      <![CDATA[
-		select QNA_NUM, QNA_TITLE, QNA_REGDATE, QNA_WRITER, QNA_ORDERED, QNA_DELETE, QNA_NID
-		from (select rownum rn, QNA_NUM, QNA_TITLE, QNA_REGDATE,
-        QNA_WRITER, QNA_ORDERED, QNA_DELETE, QNA_NID
-           FROM QNA_TBL
-           WHERE rownum <=#{pageNum} * #{amount})
-		where rn>(#{pageNum}-1) * #{amount} AND QNA_DELETE = 'N'
-        ORDER BY QNA_NID DESC, QNA_ORDERED ASC
-	 ]]>		   
-  </select>
-  
+     	rownum <=#{pageNum} * #{amount})	
+		where rn>(#{pageNum}-1) * #{amount}
+		  ORDER BY QNA_NID DESC, QNA_ORDERED ASC
+	]]>		   
+     </select>  
+   -->
+   
+        <!-- 문의글 리스트 -->
+   <select id="qnaList" resultType="com.mycom.euum.qna.bean.QNABean">		
+	   <![CDATA[
+  select * from
+    (select rownum rnum, q.* 
+    from (
+        SELECT
+            qna_num, qna_title,  qna_regdate, qna_writer, 
+            qna_ordered, qna_delete, qna_nid,qna_hitcount
+        FROM  qna_tbl
+        where 1=1
+        ]]>	
+	<include refid="criteria"></include>
+     <![CDATA[	 
+	ORDER BY  qna_nid DESC, qna_ordered ASC) 
+    q ) qq
+where rnum between (#{pageNum}-1) * #{amount} and #{pageNum} * #{amount}	  
+	]]>		   
+     </select>  
+     
+   
+   
+   
   <!-- 문의글 등록 -->
   <insert id="qnaInsert" parameterType="com.mycom.euum.qna.bean.QNABean">		
      <selectKey keyProperty="qnaNum" keyColumn="qnaNum" order="BEFORE" resultType="int">
@@ -46,8 +115,8 @@
 	 ]]>		   
   </select>
   
-    <!-- 부모 글 정보 가져오기 -->
-      <select id="selectInfo" resultType="com.mycom.euum.qna.bean.QNABean">		
+   <!-- 부모 글 정보 가져오기-->
+  <select id="selectInfo" resultType="com.mycom.euum.qna.bean.QNABean">		
      <![CDATA[
 		SELECT QNA_NID, QNA_ORDERED, QNA_LAYER
           FROM QNA_TBL
@@ -55,14 +124,14 @@
 	 ]]>		   
   </select>
       
-    <!-- 답변글 순서 증가 -->
+   <!-- 답변글 순서 증가 -->
 	<update id="updateOrder" parameterType="map">
 	   <![CDATA[
 	    update QNA_TBL set QNA_ORDERED = QNA_ORDERED+1 where QNA_NID=#{qnaNid} and QNA_ORDERED > #{qnaOrdered}
 	   ]]>	
 	</update>
 	
-	<!--답변 글쓰기-->
+	<!-- 답변 글쓰기-->
 	<insert id="rewrite" parameterType="com.mycom.euum.qna.bean.QNABean">
         <![CDATA[       
 		INSERT INTO QNA_TBL(QNA_NUM, MEMBER_NUM, QNA_WRITER, QNA_TITLE, QNA_CONTENT, QNA_NID, QNA_ORDERED, QNA_LAYER)
@@ -70,7 +139,7 @@
         ]]>	
 	</insert>
 	
-	<!--문의글 삭제 처리 -->
+    <!-- 문의글 삭제처리 -->
 	<update id="qnaDelete" parameterType="com.mycom.euum.qna.bean.QNABean">
 	    <![CDATA[       
 		   UPDATE QNA_TBL
@@ -79,7 +148,7 @@
         ]]>	
 	</update>
 	
-	<!-- 문의글 수정 처리 -->
+	<!-- 문의글 수정처리 -->
 	<update id="qnaModifyPro" parameterType="com.mycom.euum.qna.bean.QNABean">
 	    <![CDATA[       
 		   UPDATE QNA_TBL
@@ -94,5 +163,63 @@
 		select count(*) from QNA_TBL where QNA_NUM>0
 		]]>	
 	</select>
+	
+	<!-- 문의글 조회수 증가 -->
+	<update id="updateQNAcnt">
+	   <![CDATA[ 
+		UPDATE QNA_TBL SET QNA_HITCOUNT = QNA_HITCOUNT + 1 WHERE QNA_NUM= #{qnaNum}
+		]]>	
+	</update>
+	
+	<sql id="criteria">
+		<trim prefix="AND (" suffix=") " prefixOverrides="OR">
+			<foreach item='type' collection="typeArr">
+				<trim prefix="OR">
+					<choose>
+						<when test="type == 'T'.toString()">
+							QNA_TITLE like '%'||#{keyword}||'%'
+						</when>
+						<when test="type == 'C'.toString()">
+							QNA_CONTENT like '%'||#{keyword}||'%'
+						</when>
+						<when test="type == 'W'.toString()">
+							QNA_WRITER like '%'||#{keyword}||'%'
+						</when>
+					</choose>
+				</trim>
+			</foreach>
+		</trim>
+	</sql>
+	
+	<!-- qna 이미지 업로드 -->
+	<!-- <insert id="insertQNAImage" parameterType="">
+        <![CDATA[       
+	          INSERT INTO IMAGE_TBL(IMAGE_UUID, IMAGE_UPLOAD_PATH, IMAGE_FILE_NAME,
+	                    IMAGE_FILE_TYPE, IMAGE_USE, IMAGE_NUM, IMAGE_USE_NUM) 
+          VALUES(#{imageUUID}, #{imageUploadPath}, #{imageFileName}, #{imageFileType},
+                        #{imageUse}, #{imageNum}, #{imageUseNum})  
+        ]]>	
+	</insert> -->
+	
+	<!-- 	<sql id="pagingPre">
+      <![CDATA[
+         SELECT
+             AAA.*
+         FROM
+             (SELECT
+                 
+                 AA.*
+             FROM(
+       ]]>
+	</sql>
+
+	<sql id="pagingPost">
+      <![CDATA[
+            )AA
+          )AAA
+         WHERE
+             (#{pageNum} -1)*#{amount} <AAA.RNUM  AND AAA.RNUM <= #{pageNum} * #{amount}
+      ]]>
+	</sql> -->
 
 </mapper>

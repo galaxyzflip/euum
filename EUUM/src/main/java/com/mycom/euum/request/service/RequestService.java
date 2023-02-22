@@ -9,6 +9,18 @@ public interface RequestService {
 	
 	public void requestInsert(RequestBean requestBean);
 	
-	public List<RequestBean> reviewList(RqCriteria rqcri);
+	public List<RequestBean> requestList(RqCriteria rqcri);
+	
+	public List<RequestBean> requestCategoryChange(RqCriteria rqcri);
+	
+	public RequestBean requestDetail(int requestNum);
+	
+	public int getTotal(RqCriteria rqcri);
+	
+	public RequestBean requestModifyForm(int requestNum);
+	
+	public int requestModifyPro(RequestBean requestBean);
+	
+	public int requestDelete(RequestBean requestBean);
 
 }

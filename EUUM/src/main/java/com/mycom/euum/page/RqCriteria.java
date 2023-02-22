@@ -12,11 +12,14 @@ public class RqCriteria {
 	private int rqpageNum;
 	private int rqamount;
 	
-	private String type;
-	private String keyword;
+	private String rqtype;
+	private String rqkeyword;
+	
+	private String requestCategory;
+	private String requestUse;
 	
 	public RqCriteria() {
-		this(1,20);
+		this(1,15);
 	}
 	
 	public RqCriteria(int rqpageNum, int rqamount) {
@@ -25,6 +28,6 @@ public class RqCriteria {
 	}
 	
 	public String[] getTypeArr() {
-		return type ==null? new String[] {} : type.split("");
+		return rqtype ==null? new String[] {} : rqtype.split("");
 	}
 }

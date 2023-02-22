@@ -1,87 +1,97 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+
+
+<style>
+div {
+	margin: 0;
+	padding: 0;
+}
+
+.container {
+	margin-top: 150px;
+	margin-bottom: 100px;
+}
+
+.account-box {
+	/* flex-direction: row; */
+	width:300px;
+	margin:auto;
+}
+
+.find-id-form, .find-pw-form {
+	border: 1px solid black;
+	margin: 10px;
+	padding: 10px;
+	display: flex;
+	margin:auto;
+}
+
+.input-form input {
+	display: block;
+}
+
+.account-box>div {
+	width: 300px;
+	margin: auto;
+	display: flex;
+}
+
+.mb-3 {
+	margin-bottom: 0px !important;
+	border-radius: 0;
+}
+
+.nav-link {
+	margin: 0px;
+}
+
+.target-box {
+	width: 300px;
+	color: white;
+	/* border:1px solid black; */
+	padding-top: 0px;
+	padding-bottom: 0px;
+	margin: auto;
+	border: 1px black solid;
+	border-bottom: none;
+}
+
+#pills-tab {
+	margin: auto;
+}
+
+.nav-pills .nav-link {
+	border-radius: 0
+}
+
+.id-tab {
+	width: 149px;
+}
+
+.pw-tab {
+	width: 149px;;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+	color: #fb8500;
+	background-color: #f2f2f2;
+}
+
+.nav-link {
+    color: black;
+}
+
+.nav {
+    --bs-nav-link-hover-color: #fb8500;
+}
+
+
+</style>
+
+<script>
 	
- 
- <style>
-        div {
-            margin: 0;
-            padding: 0;
-
-        }
-
-        .container {
-            margin-top: 150px;
-            margin-bottom: 100px;
-
-        }
-
-        .account-box {
-            flex-direction: row;
-
-        }
-
-        .find-id-form,
-        .find-pw-form {
-            border: 1px solid black;
-            margin: 10px;
-            padding: 10px;
-            display: flex;
-
-        }
-
-        .input-form input {
-            display: block;
-        }
-
-        .account-box>div {
-            width: 300px;
-            margin: auto;
-            display: flex;
-
-        }
-
-        .mb-3 {
-            margin-bottom: 0px !important;
-            border-radius: 0;
-        }
-
-        .nav-link {
-            margin: 0px;
-
-
-        }
-
-        .target-box {
-            width: 300px;
-            color: white;
-            /* border:1px solid black; */
-            padding-top: 0px;
-            padding-bottom: 0px;
-            margin: auto;
-            border: 1px black solid;
-            border-bottom:none;
-        }
-
-        #pills-tab {
-            margin: auto;
-        }
-
-        .nav-pills .nav-link {
-            border-radius: 0
-        }
-
-        .id-tab{
-            width:149px;
-        }
-
-        .pw-tab{
-            width: 149px;;
-        }
-        </style>
-    
-    <script>
-    
-    </script>
+</script>
     
     
     	
@@ -116,7 +126,7 @@
                                     <label>휴대폰번호</label>
                                     <input type="text" name="memberMobile" id="find-id-mobile">
                                 </div>
-                                <button type="submit" class="btn btn-danger" id='find-id-btn'>아이디 찾기</button>
+                                <button type="submit" class="btn btn-success" id='find-id-btn'>아이디 찾기</button>
                             </form>
 
                         </div>
@@ -147,7 +157,7 @@
                                     <input type="text" name="memberMobile" id="find-pw-mobile">
                                 </div>
 
-                                <button type="submit" class="btn btn-danger" id='find-pw-btn'>비밀번호 찾기</button>
+                                <button type="submit" class="btn btn-success" id='find-pw-btn'>비밀번호 찾기</button>
                             </form>
 
 

@@ -11,7 +11,7 @@ public interface QNAMapper {
 	
 	public List<QNABean> qnaList(Criteria cri);
 	
-	public void qnaInsert(QNABean qnaBean);
+	public int qnaInsert(QNABean qnaBean);
 	
 	public QNABean qnaDetail(int qnaNum);
 	
@@ -29,7 +29,10 @@ public interface QNAMapper {
 	
 	public void qnaModifyPro(QNABean qnaBean);
 	
+	/* 총 게시글수 가져오기 */
 	public int getQNATotalCount(Criteria cri);
+	
+    public int updateQNAcnt(int qnaNum);
 	
 
 }

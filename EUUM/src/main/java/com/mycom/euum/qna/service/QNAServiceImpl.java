@@ -27,11 +27,15 @@ public class QNAServiceImpl implements QNAService{
 	}
 
 	@Override
-	public void qnaInsert(QNABean qnaBean, HttpServletRequest request) {
-	
+	public int qnaInsert(QNABean qnaBean, HttpServletRequest request) {
+	    
 		log.info("qnaBean service==============" + qnaBean);
+	    
+	    qnaMapper.qnaInsert(qnaBean); 
 		
-		qnaMapper.qnaInsert(qnaBean);
+		int qnaSelectKey = qnaBean.getQnaNum();
+		
+		return qnaSelectKey;
 	}
 
 	@Override
@@ -40,7 +44,7 @@ public class QNAServiceImpl implements QNAService{
 		return qnaMapper.qnaDetail(qnaNum);
 	}
     
-	/* 문의글 삭제처리*/
+	/* 문의글 삭제처리 */
 	@Override
 	public void qnaDelete(QNABean qnaBean) {
 		
@@ -64,7 +68,7 @@ public class QNAServiceImpl implements QNAService{
 		return qnaMapper.updateOrder(qnaNid, qnaOrdered);
 	}
     
-	/* 부모글 정보 가져오기 */
+	//부모글 정보 가져오기
 	@Override
 	public QNABean selectInfo(int qnaNum) {
 		
@@ -81,6 +85,12 @@ public class QNAServiceImpl implements QNAService{
 	public int getQNATotalCount(Criteria cri) {
 	
 		return qnaMapper.getQNATotalCount(cri);
+	}
+
+	@Override
+	public int updateQNAcnt(int qnaNum) {
+		
+		return qnaMapper.updateQNAcnt(qnaNum);
 	}
 
 	

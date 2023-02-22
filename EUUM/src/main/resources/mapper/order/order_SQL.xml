@@ -162,6 +162,11 @@
 			, ORDER_EXPIRATION_DATE = SYSDATE + ORDER_PERIOD
 		</if>
 		
+		<if test="orderStatus == 0">
+			, ORDER_CANCLE_REASON = #{orderCancleReason}
+			, ORDER_CANCLE_DATE = SYSDATE
+		</if>
+		
 		WHERE ORDER_NUM = #{orderNum}
 	</update>
 
@@ -193,6 +198,7 @@
 		UPDATE ORDER_TBL
 		SET ORDER_STATUS = #{orderStatus},
 		ORDER_CANCLE_DATE = SYSDATE
+		
 		WHERE ORDER_NUM = #{orderNum}
 	</update>
 
@@ -225,6 +231,7 @@
 	
 	
 	<!-- order 1개와 order-option n개를 가져올 수 있는 resultMap -->
+	<!-- 현재 resultMap 안쓰고있음... -->
 	<resultMap type="com.mycom.euum.order.bean.OrderBean" id="orderMap">
 		<result property="orderKeyNum" column="order_Key_Num"/>
 		<result property="orderNum" column="order_Num"/>
@@ -264,19 +271,22 @@
 
 	<!-- 회원의 주문 내역 리스트 -->
 	<select id="selectOrderListByMember" resultType="com.mycom.euum.order.bean.OrderBean">
+	<include refid="pagingPre"></include> 
 		<![CDATA[
-		SELECT  O.ORDER_NUM,
+	SELECT  
+		ROWNUM RNUM,
+		O.ORDER_NUM,
         G.GOODS_NAME,
 		ORDER_KEY_NUM,
 		SELLER_NICKNAME,
+		M.MEMBER_NAME,
 		G.GOODS_NUM,
-		G.MEMBER_NUM,
+    	G.MEMBER_NUM,
 		O.SELLER_NUM,
 		ORDER_STATUS,
 		ORDER_CONTACT,
 		ORDER_EMAIL,
 		ORDER_DATE,
-		ORDER_REQUEST,
 		ORDER_PAY_TYPE,
 		ORDER_NAME,
 		ORDER_FORMAT,
@@ -289,29 +299,54 @@
         ORDER_PRICE,
         ORDER_REQUEST,
         ORDER_CANCLE_DATE,
-        nvl2(I.IMAGE_USE_NUM, 'Y', 'N') as FILE_YN
-     
-		FROM ORDER_TBL O INNER JOIN GOODS_TBL G 
+        ORDER_CANCLE_REASON,
+        nvl2(I.IMAGE_USE_NUM, 'Y', 'N') as FILE_YN,
+        nvl2(image_file_name, gi.image_upload_path||image_file_name, null) as image_name,
+        nvl2(review_num, 'Y', 'N') as reviewYn,
+        review_num
+        
+		FROM ORDER_TBL O 
+        INNER JOIN GOODS_TBL G 
         ON O.GOODS_NUM=G.GOODS_NUM
+        
+        left outer join (select * from review_tbl where REVIEW_DELETE ='N') r
+		on r.order_num = o.order_key_num
+        
         inner join (select order_num, sum(order_opt_price*order_opt_count) as "ORDER_PRICE" from order_opt_tbl group by order_num) p
         on o.order_num=p.order_num
+        
+        inner join member_tbl m
+        on m.member_num = o.member_num
+        
         left outer join (select image_use_num from image_tbl where image_use='order' group by image_use_num ) i
         on i.image_use_num=o.order_key_num
-		WHERE O.MEMBER_NUM = #{memberNum}
-		order by order_date desc
+        
+        left outer join  (select * from(select rownum,gi.* from image_tbl gi where image_use='goods' order by image_use_num asc) where rowNum <=1 )gi
+        on  gi.image_use_num=g.goods_num
+		
 		]]>
 		
+		<include refid="criteriaForStatus"></include>
+		<include refid="sort"></include>
+		<include refid="pagingPost"></include> 
+		
 	</select>
+		
 	
 	<!-- 셀러의 주문 내역 리스트 -->
 	<select id="selectOrderListBySeller" resultType="com.mycom.euum.order.bean.OrderBean">
+		<include refid="pagingPre"></include> 
+	
 		<![CDATA[
-		SELECT  O.ORDER_NUM,
+		SELECT  
+		ROWNUM RNUM,
+		O.ORDER_NUM,
         G.GOODS_NAME,
 		ORDER_KEY_NUM,
 		SELLER_NICKNAME,
+		M.MEMBER_NAME,
 		G.GOODS_NUM,
-		G.MEMBER_NUM,
+    	G.MEMBER_NUM,
 		O.SELLER_NUM,
 		ORDER_STATUS,
 		ORDER_CONTACT,
@@ -328,68 +363,57 @@
 		ORDER_IMAGE,
         ORDER_EXPIRATION_DATE,
         ORDER_PRICE,
-        ORDER_REQUEST,
         ORDER_CANCLE_DATE,
-        nvl2(I.IMAGE_USE_NUM, 'Y', 'N') as FILE_YN
-     
-		FROM ORDER_TBL O INNER JOIN GOODS_TBL G 
+        ORDER_CANCLE_REASON,
+        nvl2(I.IMAGE_USE_NUM, 'Y', 'N') as FILE_YN,
+        nvl2(image_file_name, gi.image_upload_path||image_file_name, null) as image_name,
+        nvl2(review_num, 'Y', 'N') as reviewYn
+        
+		FROM ORDER_TBL O 
+        INNER JOIN GOODS_TBL G 
         ON O.GOODS_NUM=G.GOODS_NUM
+        
+        left outer join (select * from review_tbl where REVIEW_DELETE ='N') r
+		on r.order_num = o.order_key_num
+        
         inner join (select order_num, sum(order_opt_price*order_opt_count) as "ORDER_PRICE" from order_opt_tbl group by order_num) p
         on o.order_num=p.order_num
+        
+        inner join member_tbl m
+        on m.member_num = o.member_num
+        
         left outer join (select image_use_num from image_tbl where image_use='order' group by image_use_num ) i
         on i.image_use_num=o.order_key_num
-		WHERE O.SELLER_NUM = #{sellerNum}
-		order by order_date desc
+        
+        left outer join  (select * from(select rownum,gi.* from image_tbl gi where image_use='goods' order by image_use_num asc) where rowNum <=1 )gi
+        on  gi.image_use_num=g.goods_num
+        
+		
+		
 		]]>
+		
+		<include refid="criteriaForStatus"></include>
+		<include refid="sort"></include>
+		<include refid="pagingPost"></include> 
+		
 	</select>
 
-
-
-	<!-- 접수 내역 리스트 -->
-	<select id="selectSellerList"
-		resultType="com.mycom.euum.order.bean.OrderBean">
-		SELECT order_key_num,
-		order_num,
-		goods_num,
-		member_num,
-		seller_num,
-		order_status,
-		order_contact,
-		order_email,
-		order_date,
-		order_request,
-		order_pay_type,
-		order_name,
-		order_format,
-		order_resolution,
-		order_size,
-		order_modify_count,
-		order_period,
-		order_image,
-		order_opt_num,
-		goods_num,
-		goods_option_content_num,
-		order_opt_price,
-		order_opt_count,
-		order_opt_date,
-		order_opt_status,
-		order_opt_request,
-		order_opt_pay_type,
-		order_option_name
-		FROM ORDER_TBL, ORDER_OPT_TBL
-		WHERE SELLER_NUM = #{sellerNum}
-	</select>
 
 	<!-- 어드민 주문 관리 내역 -->
-	<select id="selectAdminOrderList"
-		resultType="com.mycom.euum.order.bean.OrderBean">
-		SELECT 
+	<select id="selectAdminOrderList" resultType="com.mycom.euum.order.bean.OrderBean">
+		
+		<include refid="pagingPre"></include> 
+		<![CDATA[
+		SELECT  
+		ROWNUM RNUM,		
+		O.ORDER_NUM,
         G.GOODS_NAME,
-		ORDER_KEY_NUM,
-		o.ORDER_NUM,
+        M.MEMBER_NAME,
 		SELLER_NICKNAME,
+		ORDER_KEY_NUM,
 		G.GOODS_NUM,
-		MEMBER_NUM,
+    	G.MEMBER_NUM,
+		O.SELLER_NUM,
 		ORDER_STATUS,
 		ORDER_CONTACT,
 		ORDER_EMAIL,
@@ -403,13 +427,122 @@
 		ORDER_MODIFY_COUNT,
 		ORDER_PERIOD,
 		ORDER_IMAGE,
-        ORDER_DATE+ORDER_PERIOD as "ORDER_EXPIRATION_DATE",
-        ORDER_PRICE
+        ORDER_EXPIRATION_DATE,
+        ORDER_PRICE,
+        ORDER_CANCLE_DATE,
+        ORDER_CANCLE_REASON,
+        nvl2(I.IMAGE_USE_NUM, 'Y', 'N') as FILE_YN,
+        nvl2(image_file_name, gi.image_upload_path||image_file_name, null) as image_name,
+        nvl2(review_num, 'Y', 'N') as reviewYn
         
-		FROM ORDER_TBL O INNER JOIN GOODS_TBL G 
+		FROM ORDER_TBL O 
+        INNER JOIN GOODS_TBL G 
         ON O.GOODS_NUM=G.GOODS_NUM
-        inner join (select order_num, sum(order_opt_price) as "ORDER_PRICE" from order_opt_tbl group by order_num) p
+        
+        left outer join (select * from review_tbl where REVIEW_DELETE ='N') r
+		on r.order_num = o.order_key_num
+        
+        inner join (select order_num, sum(order_opt_price*order_opt_count) as "ORDER_PRICE" from order_opt_tbl group by order_num) p
         on o.order_num=p.order_num
+        
+        inner join member_tbl m
+        on m.member_num = o.member_num
+        
+        left outer join (select image_use_num from image_tbl where image_use='order' group by image_use_num ) i
+        on i.image_use_num=o.order_key_num
+        
+        left outer join  (select * from(select rownum,gi.* from image_tbl gi where image_use='goods' order by image_use_num asc) where rowNum <=1 )gi
+        on  gi.image_use_num=g.goods_num
+		]]>
+
+		<include refid="criteriaForStatus"></include>
+		<include refid="sort"></include>
+			
+		
+		
+		<include refid="pagingPost"></include> 
+	</select>
+	
+	<select id="selectAdminOrderCount"
+		resultType="int">
+		
+		<![CDATA[
+		SELECT COUNT(1)
+        
+		FROM ORDER_TBL O 
+        INNER JOIN GOODS_TBL G 
+        ON O.GOODS_NUM=G.GOODS_NUM
+        
+        inner join (select order_num, sum(order_opt_price*order_opt_count) as "ORDER_PRICE" from order_opt_tbl group by order_num) p
+        on o.order_num=p.order_num
+        
+        inner join member_tbl m
+        on m.member_num = o.member_num
+        
+        left outer join (select image_use_num from image_tbl where image_use='order' group by image_use_num ) i
+        on i.image_use_num=o.order_key_num
+        
+        left outer join  (select * from(select rownum,gi.* from image_tbl gi where image_use='goods' order by image_use_num asc) where rowNum <=1 )gi
+        on  gi.image_use_num=g.goods_num
+		]]>
+
+		<include refid="criteriaForStatus"></include>
+			
+	</select>
+	
+	<select id="selectMemberOrderCount"
+		resultType="int">
+		
+		<![CDATA[
+		SELECT COUNT(1)
+        
+		FROM ORDER_TBL O 
+        INNER JOIN GOODS_TBL G 
+        ON O.GOODS_NUM=G.GOODS_NUM
+        
+        inner join (select order_num, sum(order_opt_price*order_opt_count) as "ORDER_PRICE" from order_opt_tbl group by order_num) p
+        on o.order_num=p.order_num
+        
+        inner join member_tbl m
+        on m.member_num = o.member_num
+        
+        left outer join (select image_use_num from image_tbl where image_use='order' group by image_use_num ) i
+        on i.image_use_num=o.order_key_num
+        
+        left outer join  (select * from(select rownum,gi.* from image_tbl gi where image_use='goods' order by image_use_num asc) where rowNum <=1 )gi
+        on  gi.image_use_num=g.goods_num
+		]]>
+
+		<include refid="criteriaForStatus"></include>
+			
+	</select>
+	
+	<select id="selectSellerOrderCount"
+		resultType="int">
+		
+		<![CDATA[
+		SELECT COUNT(1)
+        
+		FROM ORDER_TBL O 
+        INNER JOIN GOODS_TBL G 
+        ON O.GOODS_NUM=G.GOODS_NUM
+        
+        inner join (select order_num, sum(order_opt_price*order_opt_count) as "ORDER_PRICE" from order_opt_tbl group by order_num) p
+        on o.order_num=p.order_num
+        
+        inner join member_tbl m
+        on m.member_num = o.member_num
+        
+        left outer join (select image_use_num from image_tbl where image_use='order' group by image_use_num ) i
+        on i.image_use_num=o.order_key_num
+        
+        left outer join  (select * from(select rownum,gi.* from image_tbl gi where image_use='goods' order by image_use_num asc) where rowNum <=1 )gi
+        on  gi.image_use_num=g.goods_num
+        
+		]]>
+
+		<include refid="criteriaForStatus"></include>
+			
 	</select>
 
 
@@ -418,7 +551,7 @@
 
 	<!-- ORDER_NUM 조건으로 레코드 1개 가져오기 -->
 	<!-- <select id="selectOrder" resultType="com.mycom.euum.order.bean.OrderBean"> -->
-	<select id="selectOrder" resultMap="orderMap">
+	<!-- <select id="selectOrder" resultMap="orderMap">
 		SELECT
 		order_key_num,
 		o.order_num,
@@ -455,8 +588,110 @@
 		
 		where o.order_num = p.order_num
 		and o.ORDER_NUM = #{orderNum}
-	</select>
+	</select> -->
 
+	<!-- 페이지용 sql 검색, 정렬까지 모두 끝난 쿼리 위 아래에 덮어서 사용 -->
+	<sql id="pagingPre">
+      <![CDATA[
+         SELECT
+             AAA.*
+         FROM
+             (SELECT
+                 
+                 ROWNUM RRNUM, AA.*
+             FROM(
+       ]]>
+	</sql>
+
+	<sql id="pagingPost">
+      <![CDATA[
+            )AA
+          )AAA
+         WHERE
+             (#{pageNum} -1)*#{amount} <AAA.RRNUM  AND AAA.RRNUM <= #{pageNum} * #{amount}
+      ]]>
+	</sql>
+   
+<sql id="criteriaForStatus">
+
+	<!-- orderStatus를 list 로 담아서 사용... orderStatus 내 값들을 or 로 연결하여 사용 -->
+	<trim prefix="where" prefixOverrides="AND | OR">
+		<if test="orderStatus != null and orderStatus.size != 0">
+		order_status in
+			<foreach item='orderStatus' collection="orderStatus" open="(" close=")" separator=",">
+				 #{orderStatus}
+			</foreach>
+		</if>
+		
+		<!-- 구매자 리스트 조회시 memberNum을 조건으로 조회 -->
+		<if test="memberNum != null and memberNum != ''">
+			and m.member_num = #{memberNum}
+		</if>
+		
+		
+		<!-- 판매자 리스트 조회시 sellerNum을 조건으로 조회 -->
+		<if test="sellerNum != null and sellerNum != ''">
+			and seller_num = #{sellerNum}
+		</if>
+		
+		<if test="goodsNum != null and goodsNum != ''">
+			and g.goods_num = #{goodsNum}
+		</if>
+		
+		
+	
+	<!-- 검색어가 있을경우 검색대상, 검색어 조합으로 조건절 추가 -->
+		<if test="keyword != null and keyword != '' ">
+			<trim prefix="AND (" suffix=")" prefixOverrides="OR | AND" >
+				<foreach item='type' collection="typeArr">
+					<trim prefix="OR">
+						<choose>
+							<when test="type == 'S'.toString()">
+								SELLER_NICKNAME like '%'||#{keyword}||'%'
+							</when>
+							<when test="type == 'M'.toString()">
+								M.MEMBER_NAME like '%'||#{keyword}||'%'
+							</when>
+							<when test="type == 'G'.toString()">
+								GOODS_NAME like '%'||#{keyword}||'%'
+							</when>
+							<when test="type == 'N'.toString()">
+								G.GOODS_NUM like '%'||#{keyword}||'%'
+							</when>
+							<when test="type == 'O'.toString()">
+								O.ORDER_NUM like '%'||#{keyword}||'%'
+							</when>
+						</choose>
+					</trim>
+				</foreach>
+			</trim>
+		</if>
+	
+	</trim>
+	
+</sql>
+
+
+<!-- 정렬용 sql... 정렬대상, 정렬방식을 필요 -->
+<sql id="sort">
+
+	<if test="sortType != 'order_status'">
+		<if test="sortValue != null and sortValue != ''">
+			order by ${sortType} ${sortValue}
+		</if>
+	</if>
+	
+	<if test="sortType == 'order_status'">
+		<if test="sortValue != null and sortValue != ''">
+			order by to_number(${sortType}) ${sortValue}
+		</if>
+	</if>
+	
+	<if test="sortValue == null or sortValue == ''">
+		order by order_key_num desc
+	</if>
+
+</sql>
 
 
 </mapper>
