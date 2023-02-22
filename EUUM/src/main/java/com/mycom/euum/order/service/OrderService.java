@@ -28,4 +28,20 @@ public interface OrderService {
 	
 	public void uploadFile(MultipartFile[] multipart, int orderKeyNum)  throws Exception;
 	
+	public String selectSellerOrder1(int sellerNum);
+	
+	public String selectSellerOrder2(int sellerNum);
+	
+	public String selectSellerOrder3(int sellerNum);
+	
+	public String selectSellerOrder4(int sellerNum);
+	
+	public String selectSellerOrder11(int sellerNum);
+	
+	public String selectSellerOrder22(int sellerNum);
+	
+	public String selectSellerOrder33(int sellerNum);
+	
+	public String selectSellerOrder44(int sellerNum);
+	
 }

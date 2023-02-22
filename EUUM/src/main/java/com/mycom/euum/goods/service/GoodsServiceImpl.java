@@ -35,12 +35,12 @@ public class GoodsServiceImpl implements GoodsService {
 
 	/* ---------------------------- 상품 리스트 ---------------------------- */
 
-	/** 은정: 상품 리스트 가져오기 (List)*/
+	/** 은정: 상품 리스트 가져오기 (List) */
 	@Override
 	public List<GoodsBean> selectGoodsList(Criteria2 cri) {
 		return goodsMapper.selectGoodsList(cri);
 	}
-	
+
 	/** 은정: 상품 리스트 페이징 */
 	@Override
 	public int getTotal(Criteria2 cri) {
@@ -48,27 +48,25 @@ public class GoodsServiceImpl implements GoodsService {
 		return goodsMapper.getTotalCount(cri);
 	}
 
-
-
 	/** 선민: 나의 상품 리스트 가져오기 - 승인완료 상품 (List) */
 	@Override
 //	public Map<String, List<GoodsBean>> selectMyGoodsList(int memberNum, int pageNum, int amount) throws Exception {
-		public Map<String, List<GoodsBean>> selectMyGoodsList(int memberNum, CriteriaForGoods cri) throws Exception {
+	public Map<String, List<GoodsBean>> selectMyGoodsList(int memberNum, CriteriaForGoods cri) throws Exception {
 		int pageNum1 = cri.getPageNum1();
 		int amount1 = cri.getAmount1();
 		int pageNum2 = cri.getPageNum2();
 		int amount2 = cri.getAmount2();
 		int pageNum3 = cri.getPageNum3();
 		int amount3 = cri.getAmount3();
-		
+
 		List<GoodsBean> myGoodsList = new ArrayList<GoodsBean>();
 		List<GoodsBean> myUnapprovedGoodsList = new ArrayList<GoodsBean>();
 		List<GoodsBean> myTempList = new ArrayList<GoodsBean>();
 
-		myGoodsList = goodsMapper.selectMyGoodsList(memberNum, pageNum1, amount1); 
+		myGoodsList = goodsMapper.selectMyGoodsList(memberNum, pageNum1, amount1);
 		myUnapprovedGoodsList = goodsMapper.selectMyUnapprovedGoodsList(memberNum, pageNum2, amount2);
-		myTempList = goodsMapper.selectMyTempGoodsList(memberNum, pageNum3, amount3); 
-		
+		myTempList = goodsMapper.selectMyTempGoodsList(memberNum, pageNum3, amount3);
+
 		Map<String, List<GoodsBean>> myGoodsMap = new HashMap<String, List<GoodsBean>>();
 		myGoodsMap.put("myGoodsList", myGoodsList);
 		myGoodsMap.put("myUnapprovedGoodsList", myUnapprovedGoodsList);
@@ -76,36 +74,35 @@ public class GoodsServiceImpl implements GoodsService {
 
 		return myGoodsMap;
 	}
-	
+
 	/** 선민: 나의 상품 리스트 - 페이징 처리 */
 	@Override
 //	public Map<String, PageDTO> createMyGoodsPaging(int memberNum, int pageNum, int amount) throws Exception {
-		public Map<String, PageForGoodsDTO> createMyGoodsPaging(int memberNum, CriteriaForGoods cri) throws Exception {
-		
+	public Map<String, PageForGoodsDTO> createMyGoodsPaging(int memberNum, CriteriaForGoods cri) throws Exception {
+
 		int totalGoodsCount = goodsMapper.getGoodsTotalCount(memberNum, "승인완료");
-		int totalUnapprovedGoodsCount = goodsMapper.getGoodsTotalCount(memberNum, "승인대기"); 
-		int totalTempGoodsCount = goodsMapper.getGoodsTotalCount(memberNum, "임시저장"); 
+		int totalUnapprovedGoodsCount = goodsMapper.getGoodsTotalCount(memberNum, "승인대기");
+		int totalTempGoodsCount = goodsMapper.getGoodsTotalCount(memberNum, "임시저장");
 		log.info("totalGoodsCount: " + totalGoodsCount);
 		log.info("totalUnapprovedGoodsCount: " + totalUnapprovedGoodsCount);
 		log.info("totalTempGoodsCount: " + totalTempGoodsCount);
-		
+
 		// 아마 같은 cri가 들어가서 병찬님이 말한 문제 생길 것..
-		PageForGoodsDTO pageGoods = new PageForGoodsDTO(cri, totalGoodsCount, "Goods"); 
+		PageForGoodsDTO pageGoods = new PageForGoodsDTO(cri, totalGoodsCount, "Goods");
 		PageForGoodsDTO pageUnapprovedGoods = new PageForGoodsDTO(cri, totalUnapprovedGoodsCount, "UnapprovedGoods");
 		PageForGoodsDTO pageTempGoods = new PageForGoodsDTO(cri, totalTempGoodsCount, "TempGoods");
 //		PageDTO pageGoods = new PageDTO(cri, 100);
 //		PageDTO pageUnapprovedGoods = new PageDTO(cri, 100);
 //		PageDTO pageTempGoods = new PageDTO(cri, 100);
-		
+
 		Map<String, PageForGoodsDTO> pagingMap = new HashMap<String, PageForGoodsDTO>();
 		pagingMap.put("pageMakerGoods", pageGoods);
 		pagingMap.put("pageMakerUnapprovedGoods", pageUnapprovedGoods);
 		pagingMap.put("pageMakerTempGoods", pageTempGoods);
 		log.info("pagingMap :" + pagingMap);
-		
+
 		return pagingMap;
 	}
-	
 
 //	/** 선민: 나의 상품 리스트 가져오기 - 승인대기 상품 (List) */
 //	@Override
@@ -124,24 +121,25 @@ public class GoodsServiceImpl implements GoodsService {
 //	public int getGoodsTotalCount(int goodsNum, String goodsStatus) throws Exception {
 //		return goodsMapper.getGoodsTotalCount(goodsNum, goodsStatus);
 //	}
-	
+
 	/* ---------------------------- 상품 등록 ---------------------------- */
 
 	/** 선민: 상품 등록 - 새로운 상품 데이터를 DB에 삽입하기 */
 	@Override
 	public int insertGoods(SellerBean sellerBean, GoodsBean goodsBean, List<ImageBean> imageBeanList) throws Exception {
 		int goodsNum = 0;
-		
+
 		log.info("imageBeanList: " + imageBeanList);
 		for (int i = 0; i < imageBeanList.size(); i++) {
 			log.info(i + "번째 imageBean의 파일 이름: " + imageBeanList.get(i).getImageFileName());
 			log.info(i + "번째 imageBean의 년/월/일: " + imageBeanList.get(i).getImageUploadPath());
 			log.info(i + "번째 imageBean: " + imageBeanList.get(0).getImageUploadPath() + imageBeanList.get(0).getImageFileName());
 		}
-		
+
 		goodsBean.setGoodsImageDate1(""); // 1~3번째 파일이 모두 다 비어있을 경우 null값 방지를 위한 공백문자열
 		goodsBean.setGoodsImageDate2(""); // 1~3번째 파일이 모두 다 비어있을 경우 null값 방지를 위한 공백문자열
 		goodsBean.setGoodsImageDate3(""); // 1~3번째 파일이 모두 다 비어있을 경우 null값 방지를 위한 공백문자열
+		
 		for (int i = 0; i < imageBeanList.size(); i++) {
 			switch (i) {
 			case 0:
@@ -164,19 +162,20 @@ public class GoodsServiceImpl implements GoodsService {
 
 		goodsBean.setMemberNum(sellerBean.getMemberNum());
 		goodsBean.setGoodsSellerNickname(sellerBean.getSellerNickName());
-		
+
 		goodsMapper.insertGoods(goodsBean);
 		log.info("GoodsBean: " + goodsBean);
-		
+
 		goodsNum = goodsBean.getGoodsNum(); // 새 글 등록 시 생성된 시퀀스를 selectKey로 가져온 값을 goodsNum으로 사용
 		log.info("selectKey로 뽑아온 goodsNum: " + goodsNum);
-		
+
 		return goodsNum;
 	}
 
 	/** 선민: 상품 추가옵션 등록 - 등록될 상품의 추가옵션 데이터를 DB에 삽입하기 */
 	@Override
-	public void insertGoodsOption(int selectKeyGoodsNum, String[] goodsOptNameArr, String[] goodsOptContentArr, int[] goodsOptPriceArr) throws Exception {
+	public void insertGoodsOption(int selectKeyGoodsNum, String[] goodsOptNameArr, String[] goodsOptContentArr,
+			int[] goodsOptPriceArr) throws Exception {
 		log.info("상품 추가옵션의 총 개수: " + goodsOptNameArr.length);
 
 		int goodsOptNameNum = 0;
@@ -203,14 +202,15 @@ public class GoodsServiceImpl implements GoodsService {
 
 	/** 선민: 상품 임시저장 - 상품 등록 폼의 내용을 임시 저장 */
 	@Override
-	public int insertTempGoods(SellerBean sellerBean, GoodsBean goodsBean, List<ImageBean> imageBeanList) throws Exception {
+	public int insertTempGoods(SellerBean sellerBean, GoodsBean goodsBean, List<ImageBean> imageBeanList)
+			throws Exception {
 		int goodsNum = 0;
-		
+
 		log.info("imageBeanList: " + imageBeanList);
 		for (int i = 0; i < imageBeanList.size(); i++) {
 			log.info(i + "번째 imageBean의 파일 이름: " + imageBeanList.get(i).getImageFileName());
 		}
-		
+
 		goodsBean.setGoodsImageDate1(""); // 1~3번째 파일이 모두 다 비어있을 경우 null값 방지를 위한 공백문자열
 		goodsBean.setGoodsImageDate2(""); // 1~3번째 파일이 모두 다 비어있을 경우 null값 방지를 위한 공백문자열
 		goodsBean.setGoodsImageDate3(""); // 1~3번째 파일이 모두 다 비어있을 경우 null값 방지를 위한 공백문자열
@@ -234,9 +234,10 @@ public class GoodsServiceImpl implements GoodsService {
 		goodsBean.setMemberNum(sellerBean.getMemberNum());
 		goodsBean.setGoodsSellerNickname(sellerBean.getSellerNickName());
 
+		log.info("1");
 		goodsMapper.insertTempGoods(goodsBean);
 		log.info("GoodsBean: " + goodsBean);
-		
+
 		goodsNum = goodsBean.getGoodsNum(); // 새 글 등록 시 생성된 시퀀스를 selectKey로 가져온 값을 goodsNum으로 사용
 		log.info("selectKey로 뽑아온 goodsNum: " + goodsNum);
 
@@ -244,32 +245,31 @@ public class GoodsServiceImpl implements GoodsService {
 	}
 
 	/* ---------------------------- 상품 수정 ---------------------------- */
-	
-	/** 선민: 상품 수정 - 수정페이지에 기존 추가옵션 불러오기 */ 
+
+	/** 선민: 상품 수정 - 수정페이지에 기존 추가옵션 불러오기 */
 	@Override
 	public List<GoodsOptionBean> selectModifyGoodsOption(String goodsNum) throws Exception {
 		return goodsMapper.selectModifyGoodsOption(goodsNum);
 	}
-	
+
 	/** 선민: 상품 수정 - DB에 수정한 데이터 업데이트 */
 	@Override
 	public int updateGoods(SellerBean sellerBean, GoodsBean goodsBean, List<ImageBean> imageBeanList) throws Exception {
-		int goodsNum = 0;
 		int sequence = 1;
-		
+
 		// 단지 로그 찍는 부분
 		log.info("imageBeanList: " + imageBeanList);
 		for (int i = 0; i < imageBeanList.size(); i++) {
 			log.info(i + "번째 imageBean의 파일 이름: " + imageBeanList.get(i).getImageFileName());
 		}
-		
+
 		goodsBean.setMemberNum(sellerBean.getMemberNum());
 		goodsBean.setGoodsSellerNickname(sellerBean.getSellerNickName());
 		goodsBean.setGoodsImageDate1(""); // 1~3번째 파일이 모두 다 비어있을 경우 null값 방지를 위한 공백문자열
 		goodsBean.setGoodsImageDate2(""); // 1~3번째 파일이 모두 다 비어있을 경우 null값 방지를 위한 공백문자열
 		goodsBean.setGoodsImageDate3(""); // 1~3번째 파일이 모두 다 비어있을 경우 null값 방지를 위한 공백문자열
-		
-		for (ImageBean imageBean :imageBeanList) {
+
+		for (ImageBean imageBean : imageBeanList) {
 			if (!imageBean.isNew()) {
 				sequence++;
 				continue;
@@ -294,21 +294,63 @@ public class GoodsServiceImpl implements GoodsService {
 		}
 		goodsMapper.updateGoods(goodsBean);
 
-		goodsNum = goodsBean.getGoodsNum(); // 기존 임시저장 상품의 goodsNum을 그대로 사용
+		int goodsNum = goodsBean.getGoodsNum(); // 기존 임시저장 상품의 goodsNum을 그대로 사용
 		log.info("수정하는 상품의 기존 goodsNum을 그대로 사용: " + goodsNum);
-		
+
 		return goodsNum;
 	}
-	
+
 	/** 선민: 임시상품 등록 - 기존 임시저장된 상품 데이터를 정식 상품으로 DB 업데이트하기 */
 	@Override
 	public void updateGoodsTempToRegular(GoodsBean goodsBean) throws Exception {
 		int goodsNum = goodsBean.getGoodsNum(); // 기존 임시저장 상품의 goodsNum을 그대로 사용
 		goodsMapper.deleteGoodsOption(goodsNum);
-//		imageMapper.deleteImage("goods", Integer.toString(goodsNum));
 	}
-	
-	
+
+	/** 선민: 상품 임시저장에서 다시 임시저장 */
+	@Override
+	public int updateTempGoods(SellerBean sellerBean, GoodsBean goodsBean, List<ImageBean> imageBeanList)
+			throws Exception {
+		int sequence = 1;
+
+		goodsBean.setMemberNum(sellerBean.getMemberNum());
+		goodsBean.setGoodsSellerNickname(sellerBean.getSellerNickName());
+		goodsBean.setGoodsImageDate1(""); // 1~3번째 파일이 모두 다 비어있을 경우 null값 방지를 위한 공백문자열
+		goodsBean.setGoodsImageDate2(""); // 1~3번째 파일이 모두 다 비어있을 경우 null값 방지를 위한 공백문자열
+		goodsBean.setGoodsImageDate3(""); // 1~3번째 파일이 모두 다 비어있을 경우 null값 방지를 위한 공백문자열
+
+		for (ImageBean imageBean : imageBeanList) {
+			if (!imageBean.isNew()) {
+				sequence++;
+				continue;
+			}
+			switch (sequence) {
+			case 1:
+				goodsBean.setGoodsImage1(imageBean.getImageFileName()); // 1번째 이미지파일 저장명
+				goodsBean.setGoodsImageDate1(imageBean.getImageUploadPath()); // 파일이 저장될 폴더 경로구조 (년/월/일)
+				break;
+			case 2:
+				goodsBean.setGoodsImage2(imageBean.getImageFileName()); // 2번째 이미지파일 저장명
+				goodsBean.setGoodsImageDate2(imageBean.getImageUploadPath());
+				break;
+			case 3:
+				goodsBean.setGoodsImage3(imageBean.getImageFileName()); // 3번째 이미지파일 저장명
+				goodsBean.setGoodsImageDate3(imageBean.getImageUploadPath());
+				break;
+			}
+			goodsMapper.updateGoodsImage(goodsBean, sequence);
+			log.info("GOODS_IMAGE" + sequence + " 컬럼의 DB 값 수정완료");
+			sequence++;
+		}
+		log.info("임시저장의 임시저장 goodsBean: " + goodsBean);
+		goodsMapper.updateTempGoods(goodsBean);
+
+		int goodsNum = goodsBean.getGoodsNum(); // 기존 임시저장 상품의 goodsNum을 그대로 사용
+		log.info("수정하는 상품의 기존 goodsNum을 그대로 사용: " + goodsNum);
+
+		return goodsNum;
+	}
+
 	/* ---------------------------- 상품 삭제 ---------------------------- */
 
 	/** 선민: 상품 삭제 - DB에서 데이터 삭제 */
@@ -316,7 +358,7 @@ public class GoodsServiceImpl implements GoodsService {
 	public void deleteGoods(int goodsNum) throws Exception {
 		goodsMapper.deleteGoods(goodsNum);
 	}
-	
+
 	/** 선민: 상품 추가옵션 삭제 - 이미 등록된 상품의 추가옵션 데이터를 DB에서 삭제하기 */
 	@Override
 	public void deleteGoodsOption(int goodsNum) throws Exception {
@@ -348,9 +390,10 @@ public class GoodsServiceImpl implements GoodsService {
 	@Override
 	public List<List<GoodsOptionBean>> selectGoodsOptionContent(String goodsNum, int optionCount) throws Exception {
 		List<List<GoodsOptionBean>> optionList = new ArrayList<List<GoodsOptionBean>>();
-		
+
 		for (int goodsOptNameNum = 1; goodsOptNameNum <= optionCount; goodsOptNameNum++) {
-			List<GoodsOptionBean> list = goodsMapper.selectGoodsOptionContent(goodsNum, Integer.toString(goodsOptNameNum));
+			List<GoodsOptionBean> list = goodsMapper.selectGoodsOptionContent(goodsNum,
+					Integer.toString(goodsOptNameNum));
 			log.info(goodsOptNameNum + "번째 옵션의 선택항목: " + list);
 			optionList.add(list);
 		}
@@ -366,6 +409,19 @@ public class GoodsServiceImpl implements GoodsService {
 
 		imageBeanList = fileUtils.fileUpload(uploadFile, request, "goods");
 		return imageBeanList;
+	}
+
+	/** 선민: 관리자 상품조회 리스트 */
+	@Override
+	public List<GoodsBean> selectAdminGoodsList() throws Exception {
+		List<GoodsBean> list = goodsMapper.selectAdminGoodsList();
+		return list;
+	}
+
+	/** 선민: 관리자 상품 상태변경 */
+	@Override
+	public void updateAdminGoodsStatus(String goodsNum, String goodsStatus) throws Exception {
+		goodsMapper.updateAdminGoodsStatus(goodsNum, goodsStatus);
 	}
 
 }

@@ -76,7 +76,8 @@
 			IMAGE_FILE_NAME,
 			IMAGE_FILE_TYPE,
 			IMAGE_USE,
-			IMAGE_USE_NUM
+			IMAGE_USE_NUM,
+			IMAGE_SEQUENCE
 		)
 		values
 		(
@@ -84,7 +85,8 @@
 			'image.png',
 			'i',
 			'seller',
-			#{imageUseNum}
+			#{imageUseNum},
+			 1
 		)
 	</insert>
 	

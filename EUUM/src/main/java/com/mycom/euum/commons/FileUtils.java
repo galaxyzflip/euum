@@ -229,15 +229,7 @@ public class FileUtils {
 		return imageBeanList;
 	}
 	
-	// QnA
-	public List<ImageBean> orderFileUpload(MultipartFile[] uploadFile) throws Exception {
-		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
-				.getRequest();
-		List<ImageBean> imageBeanList = new ArrayList<ImageBean>();
-		imageBeanList = fileUpload(uploadFile, request, "order");
 
-		return imageBeanList;
-	}
 
 
 	public List<ImageBean> goodsQNAFileUpload(MultipartFile[] uploadFile) throws Exception {

@@ -553,4 +553,84 @@
 </sql>
 
 
+<select id="selectSellerOrder1" resultType="com.mycom.euum.order.bean.OrderBean">
+<![CDATA[
+select count (order_status)
+
+from order_tbl o, order_opt_tbl op
+
+where seller_num = #{sellerNum} and o.order_status = 2
+]]>
+</select>
+
+<select id="selectSellerOrder2" resultType="com.mycom.euum.order.bean.OrderBean">
+<![CDATA[
+select count (order_status)
+
+from order_tbl o, order_opt_tbl op
+
+where seller_num = #{sellerNum} and o.order_status = 3
+]]>
+</select>
+
+<select id="selectSellerOrder3" resultType="com.mycom.euum.order.bean.OrderBean">
+<![CDATA[
+select count (order_status)
+
+from order_tbl o, order_opt_tbl op
+
+where seller_num = #{sellerNum} and o.order_status = 1
+]]>
+</select>
+
+<select id="selectSellerOrder4" resultType="com.mycom.euum.order.bean.OrderBean">
+<![CDATA[
+select count (order_status)
+
+from order_tbl o, order_opt_tbl op
+
+where seller_num = #{sellerNum} and o.order_status = 6
+]]>
+</select>
+
+<select id="selectSellerOrder11" resultType="com.mycom.euum.order.bean.OrderBean">
+<![CDATA[
+select sum(order_opt_price)
+
+from order_tbl o, order_opt_tbl op
+
+where seller_num = #{sellerNum} and o.order_status = 2
+]]>
+</select>
+
+<select id="selectSellerOrder22" resultType="com.mycom.euum.order.bean.OrderBean">
+<![CDATA[
+select sum(order_opt_price)
+
+from order_tbl o, order_opt_tbl op
+
+where seller_num = #{sellerNum} and o.order_status = 3
+]]>
+</select>
+
+<select id="selectSellerOrder33" resultType="com.mycom.euum.order.bean.OrderBean">
+<![CDATA[
+select sum(order_opt_price)
+
+from order_tbl o, order_opt_tbl op
+
+where seller_num = #{sellerNum} and o.order_status = 1
+]]>
+</select>
+
+<select id="selectSellerOrder44" resultType="com.mycom.euum.order.bean.OrderBean">
+<![CDATA[
+select sum(order_opt_price)
+
+from order_tbl o, order_opt_tbl op
+
+where seller_num = #{sellerNum} and o.order_status = 6
+]]>
+</select>
+
 </mapper>

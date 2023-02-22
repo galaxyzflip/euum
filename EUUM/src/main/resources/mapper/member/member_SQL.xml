@@ -76,7 +76,7 @@
 	<!-- 회원공통 정보 수정 쿼리 -->
 	<update id="updateMember">
 		update member_tbl
-		set member_name=#{memberName}, 
+		set member_name=#{memberName},
 		member_zipcode=#{memberZipcode},
 		member_address=#{memberAddress}, 
 		member_detail_address=#{memberDetailAddress}, 
@@ -161,11 +161,14 @@
 	<!-- getMemberList (2) 멤버 리스트만 가져오고 필요할때만 ajax 조회 후 seller_tbl 불러오기...
 		select * from member_tbl where member_grade != '0'
 		select * from seller_tbl where member_num = #{memberNum} -->
-	<select id="getMemberList" resultType="com.mycom.euum.member.bean.SellerBean">
-		select * 
+	<!-- select * 
 		from member_tbl b left outer join seller_tbl s
 		on b.member_num = s.member_num
-		and member_grade != '0'
+		and member_grade != '0' -->
+	<select id="getMemberList" resultType="com.mycom.euum.member.bean.MemberBean">
+		select * 
+		from member_tbl 
+		where member_grade != '0'
 	</select>
 	
 	

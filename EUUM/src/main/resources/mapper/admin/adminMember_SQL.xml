@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+   PUBLIC "-//mybatis.org//DTD Mapper 3.0/EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mycom.euum.admin.member.mapper.AdminMemberMapper">
+
+	<select id="getMemberList" resultType="com.mycom.euum.member.bean.MemberBean">
+		select * 
+		from member_tbl 
+		where member_grade != '0'
+	</select>
+	
+	
+	<!-- 회원탈퇴... 개인정보 삭제하고 member_grade 0으로 수정 -->
+	<update id="secessionMember">
+		update member_tbl 
+		set member_name='', member_email='', member_password='', member_mobile='',
+		member_grade='0', member_point='', member_zipcode='', member_address='', member_detail_address='', 
+		member_modify_date=sysdate
+		where member_num=#{memberNum}
+	</update>
+	
+	<!-- 회원탈퇴시 전문가 정보 있으면 같이 처리 -->
+	<update id="secessionSeller">
+		update seller_tbl 
+		set seller_bank_name='', seller_account_num='', seller_account_name='',
+		seller_nickname='', seller_contact1='', seller_contact2='', seller_image=''
+		where seller_num=#{sellerNum}
+	</update>
+	
+</mapper>
+	

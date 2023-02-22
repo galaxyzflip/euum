@@ -24,8 +24,8 @@ public class MemberBean {
 	private String memberZipcode;
 	private String memberAddress;
 	private String memberDetailAddress;
-	private Date MemberRegDate;
-	private Date MemberModifyDate;
+	private Date memberRegDate;
+	private Date memberModifyDate;
 
 	public int getMemberNum() {
 		return memberNum;
@@ -94,15 +94,15 @@ public class MemberBean {
 		this.memberDetailAddress = memberDetailAddress;
 	}
 	public Date getMemberRegDate() {
-		return MemberRegDate;
+		return memberRegDate;
 	}
 	public void setMemberRegDate(Date memberRegDate) {
-		MemberRegDate = memberRegDate;
+		this.memberRegDate = memberRegDate;
 	}
 	public Date getMemberModifyDate() {
-		return MemberModifyDate;
+		return memberModifyDate;
 	}
 	public void setMemberModifyDate(Date memberModifyDate) {
-		MemberModifyDate = memberModifyDate;
+		this.memberModifyDate = memberModifyDate;
 	}
 }

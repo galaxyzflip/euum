@@ -8,12 +8,12 @@
 	<div class="topDiv">
 		<div class="topUse">${detail.goodsUse}</div>
 		<div class="topCategory">${detail.goodsCategory} / 작품번호: ${detail.goodsNum}</div>
-		<div class="topSubject"><b>${detail.goodsName}</b></div>
+		<div class="topSubject"><h2><b>${detail.goodsName}</b></h2></div>
 	</div>
 	<div class="middleDiv">
 		<div class="middleLeftDiv">
 			<div>
-				<img src="${pageContext.request.contextPath}/resources/img/${detail.goodsImageDate1}   ${detail.goodsImage1}" style="width: 625px;" />
+				<img src="${pageContext.request.contextPath}/resources/img/${detail.goodsImageDate1}${detail.goodsImage1}" style="width: 625px;" />
 			</div>
 			<div>
 				<img src="${pageContext.request.contextPath}/resources/img/${detail.goodsImageDate2}${detail.goodsImage2}" style="width: 625px;" />
@@ -122,7 +122,7 @@
 
 
 <div id="goodsQNAList">
-	 <jsp:include page="/WEB-INF/views/goodsQNA/goodsQNAList.jsp"></jsp:include>
+	   <jsp:include	page="/WEB-INF/views/goodsQNA/goodsQNAList.jsp"></jsp:include>
 </div>
 
 <script>

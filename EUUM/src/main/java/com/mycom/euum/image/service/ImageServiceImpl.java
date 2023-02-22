@@ -135,10 +135,5 @@ public class ImageServiceImpl implements ImageService {
 	}
 
 
-	@Override
-	public void insertImage(ImageBean imageBean) throws Exception {
-		// TODO Auto-generated method stub
-		
-	}
 
 }

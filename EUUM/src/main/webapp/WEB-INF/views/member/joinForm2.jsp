@@ -394,10 +394,6 @@
 			return false;
 		});
 
-		$("#authNo").blur(function() {
-			authFlag = false;
-			checkAuthNo();
-		});
 
 		$("#address").blur(function() {
 			checkAdress();
@@ -624,7 +620,7 @@
 			setFocusToInputObject(oInput);
 			return false;
 		}
-		authFlag = true;   // 인증안할시 활성화
+	//	authFlag = true;   // 인증안할시 활성화
 		hideMsg(oMsg);
 		return true;
 	}
@@ -634,6 +630,8 @@
 		var phoneNo = $("#phoneNo").val();
 		var oMsg = $("#phoneNoMsg");
 		var email = $("#email").val();
+		var oCode = $("#authNoCode");
+	
 
 		phoneNo = phoneNo.replace(/ /gi, "").replace(/-/gi, "");
 		$("#phoneNo").val(phoneNo);
@@ -647,26 +645,60 @@
 		$
 				.ajax({
 					type : "GET",
-					url : "/member/joinAuth?mobno=" + phoneNo,
+					url : "/member/joinAuthAjax?mobno=" + phoneNo,
 					success : function(data) {
-						var result = data;
-						if (result == "S") {
-							showSuccessMsg(
-									oMsg,
-									"인증번호를 발송했습니다.(유효시간 30분)<br>인증번호가 오지 않으면 입력하신 정보가 정확한지 확인하여 주세요.<br>이미 가입된 번호이거나, 가상전화번호는 인증번호를 받을 수 없습니다.");
-							$("#authNo").attr("disabled", false);
-							var oBox = $("#authNoBox");
-							var oCode = $("#authNoCode");
-							showAuthDefaultBox(oBox, oCode);
-						} else {
-							showErrorMsg(oMsg, "전화번호를 다시 확인해주세요.");
-						}
-					}
-				});
+						console.log(data);
+						const checkNum = data;
+						showSuccessMsg(
+								oMsg,
+								"인증번호를 발송했습니다.(유효시간 30분)<br>인증번호가 오지 않으면 입력하신 정보가 정확한지 확인하여 주세요.<br>이미 가입된 번호이거나, 가상전화번호는 인증번호를 받을 수 없습니다.");
+						$("#authNo").attr("disabled", false);
+						
+			            //인증하기 이벤트
+						$("#authNo").blur(function(){
+							var authNo = $("#authNo").val();	
+							if(checkNum == authNo){
+								showSuccessMsg(oMsg, "인증이 성공했습니다.");
+								showAuthSuccessBox(oBox, oCode, "일치");
+								$("#phoneNoMsg").hide();
+								authFlag = true;
+								return true;
+							}else {
+								showErrorMsg(oMsg, "인증번호를 다시 확인해주세요.");
+								showAuthErrorBox(oBox, oCode, "불일치");
+								setFocusToInputObject(oInput);
+								authFlag = false;
+							}
+						});
+
 		return false;
 	}
+				});
+	}
+	
+	
+	/* .ajax({
+		type : "GET",
+		url : "/member/joinAuthAjax?mobno=" + phoneNo,
+		success : function(data) {
+			var result = data;
+			if (result == "S") {
+				showSuccessMsg(
+						oMsg,
+						"인증번호를 발송했습니다.(유효시간 30분)<br>인증번호가 오지 않으면 입력하신 정보가 정확한지 확인하여 주세요.<br>이미 가입된 번호이거나, 가상전화번호는 인증번호를 받을 수 없습니다.");
+				$("#authNo").attr("disabled", false);
+				var oBox = $("#authNoBox");
+				var oCode = $("#authNoCode");
+				showAuthDefaultBox(oBox, oCode);
+			} else {
+				showErrorMsg(oMsg, "전화번호를 다시 확인해주세요.");
+			}
+		}
+	}); */
+	
+	
 
-	// 인증 넘버 체크
+/* 	// 인증 넘버 체크
 	function checkAuthNo() {
 		var authNo = $("#authNo").val();
 		var oMsg = $("#authNoMsg");
@@ -681,10 +713,7 @@
 		}
 
 		if (authFlag) {
-			showSuccessMsg(oMsg, "인증이 성공했습니다.");
-			showAuthSuccessBox(oBox, oCode, "일치");
-			$("#phoneNoMsg").hide();
-			return true;
+			
 		} else {
 			checkAuthnoByAjax();
 		}
@@ -715,14 +744,12 @@
 					showAuthErrorBox(oBox, oCode, "불일치");
 					setFocusToInputObject(oInput);
 				} else {
-					showErrorMsg(oMsg, "인증번호를 다시 확인해주세요.");
-					showAuthErrorBox(oBox, oCode, "불일치");
-					setFocusToInputObject(oInput);
+					
 				}
 			}
 		});
 		return true;
-	}
+	} */
 
 	// 주소 검사
 	function checkAdress() {
