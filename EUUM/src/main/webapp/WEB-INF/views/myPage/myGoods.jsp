@@ -158,8 +158,7 @@ li {
 		
 		
 	</div>
-  
-  
+
 <div style="margin: 100px">
 	<div>
 		<h2>내 작품 관리</h2>
@@ -443,7 +442,7 @@ li {
 		<li>임시저장 endPage: ${pagingMap.pageMakerTempGoods.endPage3}</li>
 	</div><br/>
 </div>
-
+  </div></div></div>
 
 <script>
 // 상품페이징
@@ -602,7 +601,7 @@ function deleteMyGoods(status, index) {
 }
 </script>
 
-<style>
+<!-- <style>
 li {
 	list-style: none;
 }
@@ -625,6 +624,6 @@ li {
 	padding-left: 20px;
 	width: 160px;
 }
-</style>
+</style> -->
 
 

@@ -1,10 +1,8 @@
 package com.mycom.euum.member.controller;
 
 
-import java.util.List;
-
 import java.io.IOException;
-
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -19,31 +17,25 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-
+import com.github.scribejava.core.model.OAuth2AccessToken;
 import com.mycom.euum.goods.bean.GoodsBean;
 import com.mycom.euum.goods.service.GoodsService;
 import com.mycom.euum.member.bean.MemberBean;
 import com.mycom.euum.member.bean.SellerBean;
 import com.mycom.euum.member.mapper.MemberMapper;
-import com.github.scribejava.core.model.OAuth2AccessToken;
-import com.mycom.euum.member.bean.MemberBean;
-import com.mycom.euum.member.bean.SellerBean;
 import com.mycom.euum.member.service.KakaoService;
 import com.mycom.euum.member.service.MemberService;
 import com.mycom.euum.naver.NaverLoginBO;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
-import net.nurigo.sdk.NurigoApp;
 
 @Controller
 @Log4j
@@ -266,6 +258,8 @@ public class MemberController {
 		model.addAttribute("goodsCount", goodsCount);
 		model.addAttribute("orderCount", orderCount);
 		model.addAttribute("sellerCount", sellerCount);
+		
+		return "main/main";
 	}
 	
 

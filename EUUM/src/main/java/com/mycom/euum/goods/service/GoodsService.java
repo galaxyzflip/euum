@@ -5,36 +5,23 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-
-import org.apache.ibatis.annotations.Param;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.mycom.euum.commons.FileUtils;
 import com.mycom.euum.goods.bean.GoodsBean;
 import com.mycom.euum.goods.bean.GoodsOptionBean;
 import com.mycom.euum.image.bean.ImageBean;
-import com.mycom.euum.image.service.ImageServiceImpl;
-import com.mycom.euum.member.bean.CartBean;
 import com.mycom.euum.member.bean.SellerBean;
-import com.mycom.euum.page.Criteria;
+import com.mycom.euum.page.Criteria2;
 import com.mycom.euum.page.CriteriaForGoods;
-import com.mycom.euum.page.PageDTO;
 import com.mycom.euum.page.PageForGoodsDTO;
 
 public interface GoodsService {
 	
 	/* ---------------------------- 상품 리스트 ---------------------------- */
 	
-
-	/** 선민: 상품 리스트 가져오기 (List) */
-	public List<GoodsBean> selectGoodsList() throws Exception;
-	
 	public List<GoodsBean> profileGoodsList(int memberNum) throws Exception;
 	
-	public List<GoodsBean> selectCartGoodsList(int memberNum) throws Exception;
-	
-	/** 은정: 상품 리스트 검색결과 가져오기 (List) */
-	public List<GoodsBean> selectGoodsSearchList(String searchKeyword, String searchOption) throws Exception;
+	public List<GoodsBean> selectCartGoodsList(Criteria2 cri) throws Exception;
 	
 
 	/** 은정: 상품 리스트 가져오기 (List) */

@@ -3,8 +3,58 @@
 
 <mapper namespace="com.mycom.euum.goods.mapper.GoodsMapper">
 
+<!-- 은정: 상품 리스트 가져오기 (selectGoodsList) -->
+	<!-- 02/01(수) 페이징추가 (ORDER BY 를 사용하면 순번이 뒤섞이므로 정렬된 서브쿼리 결과에 ROWNUM 을 매겨야 
+		한다.) --><!-- <select id="selectGoodsList" resultType="com.mycom.euum.goods.bean.GoodsBean"> 
+		<![CDATA[ select * from(select rownum rn, GOODS_NUM , GOODS_NAME, GOODS_USE, 
+		GOODS_SELLER_NICKNAME, GOODS_PRICE from GOODS_TBL where rownum <=#{pageNum}*#{amount} 
+		AND GOODS_STATUS = '승인완료' order by GOODS_NUM DESC) where rn>(#{pageNum}-1) 
+		* #{amount} order by GOODS_NUM DESC ]]> </select> -->
+	<select id="selectGoodsList"
+		resultType="com.mycom.euum.goods.bean.GoodsBean">
+		
+   	<![CDATA[
+   		select * 
+		from(select rownum rn, GOODS_NUM , GOODS_NAME, GOODS_USE,
+		            GOODS_SELLER_NICKNAME, GOODS_PRICE
+			 from GOODS_TBL  
+			 where GOODS_STATUS = '승인완료'
+		]]>
+
+
+		<if test="keyword != null and keyword !=''">
+			and ${type} like '%' || #{keyword} || '%'
+		</if>
+
+		<if test="sortCom == ''  or sortCom == null">
+			order by goods_num DESC
+		</if>
+		<if test="sortCom == 1">
+			order by goods_num DESC
+		</if>
+		<if test="sortCom == 2">
+			and GOODS_USE = '상업용' order by goods_num desc
+		</if>
+		<if test="sortCom == 3">
+			and GOODS_USE = '비상업용' order by goods_num desc
+		</if>
+		<if test="sortCom == 4">
+			and GOODS_USE = '상업용+비상업용' order by goods_num desc
+		</if>
+	<![CDATA[  	 
+		   	 
+		   	 )
+	 
+		where rn>(#{pageNum}-1) * #{amount} and rn<=(#{pageNum} * #{amount})
+		
+	 ]]>
+
+	</select>
+
 	<select id="selectCartGoodsList" resultType="com.mycom.euum.goods.bean.GoodsBean">
-		select a.goods_num as goods_Cart, b.goods_num,
+		 	<![CDATA[
+   		select * 
+		from(select rownum rn, a.goods_num as goods_Cart, b.goods_num,
 GOODS_CATEGORY,
 GOODS_STATUS,
 GOODS_NAME,
@@ -31,7 +81,35 @@ from goods_tbl b left join
                             where member_num = #{memberNum}) a
 on a.goods_num = b.goods_num 
 where GOODS_STATUS = '승인완료'
-order by GOODS_NUM DESC
+		]]>
+
+
+		<if test="keyword != null and keyword !=''">
+			and ${type} like '%' || #{keyword} || '%'
+		</if>
+
+		<if test="sortCom == ''  or sortCom == null">
+			order by goods_num DESC
+		</if>
+		<if test="sortCom == 1">
+			order by goods_num DESC
+		</if>
+		<if test="sortCom == 2">
+			and GOODS_USE = '상업용' order by goods_num desc
+		</if>
+		<if test="sortCom == 3">
+			and GOODS_USE = '비상업용' order by goods_num desc
+		</if>
+		<if test="sortCom == 4">
+			and GOODS_USE = '상업용+비상업용' order by goods_num desc
+		</if>
+	<![CDATA[  	 
+		   	 
+		   	 )
+	 
+		where rn>(#{pageNum}-1) * #{amount} and rn<=(#{pageNum} * #{amount})
+		
+	 ]]>
 	</select>
 
 
@@ -453,53 +531,7 @@ order by GOODS_NUM DESC
 
 	</update>
 
-	<!-- 은정: 상품 리스트 가져오기 (selectGoodsList) -->
-	<!-- 02/01(수) 페이징추가 (ORDER BY 를 사용하면 순번이 뒤섞이므로 정렬된 서브쿼리 결과에 ROWNUM 을 매겨야 
-		한다.) --><!-- <select id="selectGoodsList" resultType="com.mycom.euum.goods.bean.GoodsBean"> 
-		<![CDATA[ select * from(select rownum rn, GOODS_NUM , GOODS_NAME, GOODS_USE, 
-		GOODS_SELLER_NICKNAME, GOODS_PRICE from GOODS_TBL where rownum <=#{pageNum}*#{amount} 
-		AND GOODS_STATUS = '승인완료' order by GOODS_NUM DESC) where rn>(#{pageNum}-1) 
-		* #{amount} order by GOODS_NUM DESC ]]> </select> -->
-	<select id="selectGoodsList"
-		resultType="com.mycom.euum.goods.bean.GoodsBean">
-		
-   	<![CDATA[
-   		select * 
-		from(select rownum rn, GOODS_NUM , GOODS_NAME, GOODS_USE,
-		            GOODS_SELLER_NICKNAME, GOODS_PRICE
-			 from GOODS_TBL  
-			 where GOODS_STATUS = '승인완료'
-		]]>
-
-
-		<if test="keyword != null and keyword !=''">
-			and ${type} like '%' || #{keyword} || '%'
-		</if>
-
-		<if test="sortCom == ''  or sortCom == null">
-			order by goods_num DESC
-		</if>
-		<if test="sortCom == 1">
-			order by goods_num DESC
-		</if>
-		<if test="sortCom == 2">
-			and GOODS_USE = '상업용' order by goods_num desc
-		</if>
-		<if test="sortCom == 3">
-			and GOODS_USE = '비상업용' order by goods_num desc
-		</if>
-		<if test="sortCom == 4">
-			and GOODS_USE = '상업용+비상업용' order by goods_num desc
-		</if>
-	<![CDATA[  	 
-		   	 
-		   	 )
-	 
-		where rn>(#{pageNum}-1) * #{amount} and rn<=(#{pageNum} * #{amount})
-		
-	 ]]>
-
-	</select>
+	
 
 	<!-- 페이징에 필요 -->
 	<select id="getTotalCount" resultType="int">
