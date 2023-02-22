@@ -111,7 +111,7 @@ public class OrderController {
 		model.addAttribute("orderList", orderList);
 		model.addAttribute("pageMaker", new OrderPageDTO(cri, totalCount));
 		
-		return "order/myOrderList";
+		return "myPage/myOrderList";
 	}
 	
 	
@@ -153,7 +153,7 @@ public class OrderController {
 		model.addAttribute("pageMaker", new OrderPageDTO(cri, totalCount));
 		model.addAttribute("orderList", orderList);
 		
-		return "sellerOrder/sellerOrderList";
+		return "myPage/sellerOrderList";
 	}
 	
 	

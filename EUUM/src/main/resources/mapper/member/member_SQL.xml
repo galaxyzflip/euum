@@ -11,6 +11,37 @@
 
 <mapper namespace="com.mycom.euum.member.mapper.MemberMapper">
 
+<!-- 메인용 쿼리 -->
+	
+	
+	
+	<select id="memberCount" resultType="int"> 
+		select count(member_num)
+		from member_tbl
+		where member_grade != 0
+		and member_class = 'M'
+	</select>
+	
+	<select id="goodsCount" resultType="int"> 
+		select count(goods_num)
+		from goods_tbl
+		where GOODS_STATUS = '승인완료'
+	</select>
+	
+	<select id="orderCount" resultType="int"> 
+		select count(order_num)
+		from order_tbl
+		where ORDER_STATUS not in (1,7,8,9,0)
+	</select>
+	
+	<select id="sellerCount" resultType="int"> 
+		select count(member_num)
+		from member_tbl
+		where member_grade != 0
+		and member_class = 'S'
+	</select>
+	
+
 	<select id="selectAPIJoinInfo" resultType="com.mycom.euum.member.bean.MemberBean">
 		SELECT * 
 		FROM MEMBER_TBL
@@ -41,35 +72,6 @@
 		order by GOODS_NUM DESC
 		]]>
 	</select>
-	
-	<select id="memberCount" resultType="int"> 
-		select count(member_num)
-		from member_tbl
-		where member_grade != 0
-		and member_class = 'M'
-	</select>
-	
-	<select id="goodsCount" resultType="int"> 
-		select count(goods_num)
-		from goods_tbl
-		where GOODS_STATUS = '승인완료'
-	</select>
-	
-	<select id="orderCount" resultType="int"> 
-		select count(order_num)
-		from order_tbl
-		where ORDER_STATUS not in (1,7,8,9,0)
-	</select>
-	
-	<select id="sellerCount" resultType="int"> 
-		select count(member_num)
-		from member_tbl
-		where member_grade != 0
-		and member_class = 'S'
-	</select>
-	
-	
-	
 	
 	
 	<!-- 로그인 확인 쿼리... -->

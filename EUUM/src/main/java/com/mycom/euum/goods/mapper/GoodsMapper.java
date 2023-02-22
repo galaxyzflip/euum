@@ -1,6 +1,7 @@
 package com.mycom.euum.goods.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
@@ -13,7 +14,11 @@ public interface GoodsMapper {
 
 //	@Autowired
 //	private SqlSessionTemplate sqlSession;
-
+	
+	public List<GoodsBean> profileGoodsList(@Param("memberNum")int memberNum) throws Exception;
+	public List<GoodsBean> selectCartGoodsList(Criteria2 cri) throws Exception;
+	/** 찜목록 체크 */
+	public List<Map<String, Object>> memberCart(int memberNum) throws Exception;
 	/* ---------------------------- 상품 리스트 ---------------------------- */
 
 

@@ -13,7 +13,7 @@
 <script type="text/javascript">
 function checkCart(goodsNum){
 	
-	var memberNum = ${loginUser.memberNum};
+	var memberNum = '${loginUser.memberNum}';
 	$.ajax({
 			type : "GET",
 			url : "/myPage/ajaxCartCheck?memberNum=" + memberNum+"&goodsNum="+goodsNum,
@@ -25,6 +25,8 @@ function checkCart(goodsNum){
 				}
 			}
 		});
+	
+	return false;
 } 
 
 function onImg(goodsNum){
@@ -255,18 +257,22 @@ function OnDisplayToggle(szObjName)
 						<c:forEach items="${goodsList}" var="row" >
 							<div style="padding-bottom: 15px;">
 							<form id='goodsList' action='/goods/goodsList' method='get'> ${row.goodsNum}
-                                         <a href="/goods/goodsDetail?goodsNum=${row.goodsNum}">
+                                        
 								<table style="border: solid 1px">
 								  
 									<tr>
 										<td>    
+										 <a href="/goods/goodsDetail?goodsNum=${row.goodsNum}">
 											<img class="thumb" src="${pageContext.request.contextPath}/resources/assets/img/zz1.jpeg/${row.goodsImageDate1}s_${row.goodsImage1}"> 
 											<img class="thumb" src="${pageContext.request.contextPath}/resources/assets/img/zz2.jpeg/${row.goodsImageDate2}s_${row.goodsImage2}"> 
 											<img class="thumb" src="${pageContext.request.contextPath}/resources/assets/img/zz3.jpeg/${row.goodsImageDate3}s_${row.goodsImage3}">
 										</td>
+										</a>
 										<td class="myg_info">
+										<a href="/goods/goodsDetail?goodsNum=${row.goodsNum}">
 											<li>${row.goodsName} / ${row.goodsUse}</li>
 											<li>${row.goodsSellerNickname} / ${row.goodsPrice}</li>
+											</a>
                       <li><a id="heart${row.goodsNum}" onclick="checkCart(${row.goodsNum});">
 													<c:choose>
 														<c:when test="${row.goodsCart==0}">
@@ -282,7 +288,7 @@ function OnDisplayToggle(szObjName)
 										</td>
 									 </tr>
 								</table>
-								       </a>
+								       
 						     </form>
 								
 							</div>
@@ -324,6 +330,11 @@ function OnDisplayToggle(szObjName)
 </html>
 
 <style>
+
+.hearticon{
+	width:20px;
+	height:20px;
+}
 li {
 	list-style: none;
 }

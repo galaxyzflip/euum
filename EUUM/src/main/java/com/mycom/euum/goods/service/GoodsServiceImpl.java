@@ -38,11 +38,6 @@ public class GoodsServiceImpl implements GoodsService {
 	/* ---------------------------- 상품 리스트 ---------------------------- */
 
 
-	/** 선민: 상품 리스트 가져오기 (List) */
-	@Override
-	public List<GoodsBean> selectGoodsList() throws Exception {
-		return goodsMapper.selectGoodsList();
-	}
 	
 	@Override
 	public List<GoodsBean> profileGoodsList(int memberNum) throws Exception {
@@ -50,8 +45,8 @@ public class GoodsServiceImpl implements GoodsService {
 	}
 
 	@Override
-	public List<GoodsBean> selectCartGoodsList(int memberNum) throws Exception {
-		return goodsMapper.selectCartGoodsList(memberNum);
+	public List<GoodsBean> selectCartGoodsList(Criteria2 cri) throws Exception {
+		return goodsMapper.selectCartGoodsList(cri);
 	}
 
 
@@ -394,6 +389,10 @@ public class GoodsServiceImpl implements GoodsService {
 	public List<Map<String, Object>> memberCart(int memberNum) throws Exception {
 		return goodsMapper.memberCart(memberNum);
 	}
+
+	
+
+	
 	
 }
 
