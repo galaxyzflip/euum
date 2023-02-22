@@ -13,13 +13,13 @@
 	<div class="middleDiv">
 		<div class="middleLeftDiv">
 			<div>
-				<img src="${pageContext.request.contextPath}/resources/img/${detail.goodsImageDate}   ${detail.goodsImage1}" style="width: 625px;" />
+				<img src="${pageContext.request.contextPath}/resources/img/${detail.goodsImageDate1}${detail.goodsImage1}" style="width: 625px;" />
 			</div>
 			<div>
-				<img src="${pageContext.request.contextPath}/resources/img/${detail.goodsImageDate}${detail.goodsImage2}" style="width: 625px;" />
+				<img src="${pageContext.request.contextPath}/resources/img/${detail.goodsImageDate2}${detail.goodsImage2}" style="width: 625px;" />
 			</div>
 			<div>
-				<img src="${pageContext.request.contextPath}/resources/img/${detail.goodsImageDate}${detail.goodsImage3}" style="width: 625px;" />
+				<img src="${pageContext.request.contextPath}/resources/img/${detail.goodsImageDate3}${detail.goodsImage3}" style="width: 625px;" />
 			</div>
 		</div>
 		<div class="middleRightDiv">
@@ -63,7 +63,7 @@
 							<c:forEach items="${optionList}" var="selectList" varStatus="status">
 								<ul id="option_info${status.index }">
 									<span class="option-name">${selectList[0].goodsOptName}</span>
-									<select id="select_option" class="select_option" onChange="setTotalInfo(${status.index });">
+									<select id="select_option" class="select_option" onChange="setTotalInfo(${status.index});">
 										<option value="0">선택하세요</option>
 										<c:forEach items="${selectList}" var="row" varStatus="status">
 											<option value="${row.goodsOptContent} ${row.goodsOptPrice}">
@@ -118,6 +118,10 @@
 	<input type="hidden" name="" value="${detail.goodsSellerNickname }"/> 
 	
 </form>
+
+<div id="goodsQNAList">
+	   <jsp:include	page="/WEB-INF/views/goodsQNA/goodsQNAList.jsp"></jsp:include>
+</div>
 
 <script>
 
@@ -194,6 +198,7 @@ function insertSelectedOption(optionName, optionContent, optionPrice){
 		setTotalPrice();
 	}
 	
+	
 }
 
  
@@ -224,9 +229,9 @@ function setTotalInfo(index) {
 	}
 
 	//선택된 옵션정보 로그 찍어보기
-console.log(optionName);
-console.log(optionContent);
-console.log(optionPrice);
+	//console.log(optionName);
+	//console.log(optionContent);
+	//console.log(optionPrice);
 	
 	insertSelectedOption(optionName, optionContent, optionPrice);
 	

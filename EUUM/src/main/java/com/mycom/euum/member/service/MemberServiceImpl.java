@@ -17,27 +17,28 @@ import lombok.extern.log4j.Log4j;
 @Log4j
 @AllArgsConstructor
 public class MemberServiceImpl implements MemberService {
-	
+
 	private MemberMapper memberMapper;
 
 	@Override
 	public MemberBean loginService(MemberBean bean) {
-		
+
 		return memberMapper.checkLogin(bean);
 	}
-	
-	
+
+
+	@Override
 	public Map<String, Object> findId(MemberBean bean) {
 		MemberBean result = memberMapper.findAccount(bean);
 		Map<String, Object> resultMap = new HashMap<>();
-		
+
 		if(result == null) {
 			resultMap.put("status", -1);
 		}else {
 			resultMap.put("status", 0);
 			resultMap.put("result", result);
 		}
-		
+
 		return resultMap;
 	}
 
@@ -47,19 +48,19 @@ public class MemberServiceImpl implements MemberService {
 
 		if(bean.getMemberPassword().equals(memberPassword_check)) {
 			return memberMapper.updatePassword(bean);
-			
+
 		}else {
 			return -1;
 		}
-		
+
 	}
-	
+
 	@Override
 	public void insertMember(MemberBean memberBean) {
 		System.out.println(memberBean);
 		memberMapper.insertMember(memberBean);
 	}
-	
+
 
 
 	@Override

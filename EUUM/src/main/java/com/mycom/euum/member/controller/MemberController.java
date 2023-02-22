@@ -1,5 +1,6 @@
 package com.mycom.euum.member.controller;
 
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -11,52 +12,62 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.mycom.euum.goods.bean.GoodsBean;
+import com.mycom.euum.goods.service.GoodsService;
 import com.mycom.euum.member.bean.MemberBean;
 import com.mycom.euum.member.bean.SellerBean;
+import com.mycom.euum.member.mapper.MemberMapper;
 import com.mycom.euum.member.service.MemberService;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
+import net.nurigo.sdk.NurigoApp;
 
 @Controller
 @Log4j
 @AllArgsConstructor
 public class MemberController {
-
+	private GoodsService goodsService;
 	private MemberService memberService;
+	private MemberMapper memberMapper;
 
-	// 테스트용... 임시 사용
-	@GetMapping("/main")
-	public String test(HttpServletRequest request) {
+	@GetMapping("/")
+	public String main(Model model) {
 
+		List<SellerBean> seller = memberMapper.mainSellerList(); // 수정
+		List<GoodsBean> goods = memberMapper.mainGoodsList();
+		int memberCount = memberMapper.memberCount();
+		int goodsCount = memberMapper.goodsCount();
+		int orderCount = memberMapper.orderCount();
+		int sellerCount = memberMapper.sellerCount();
 
-		/*
-		 * //로그인 귀찮아서 임시로 만든것... 세션 저장해줌 HttpSession session = request.getSession();
-		 * MemberBean loginUser = new MemberBean(); loginUser.setMemberNum(1);
-		 * loginUser.setMemberName("최창선");
-		 * loginUser.setMemberEmail("sonsun33@naver.com");
-		 * loginUser.setMemberMobile("01041746137"); session.setAttribute("loginUser",
-		 * loginUser);
-		 * 
-		 */
+		log.info("==============seller : " + seller);
+		log.info("==============goods : " + goods);
+		log.info("==============memberc : " + memberCount);
+		log.info("==============goodsc : " + goodsCount);
+		log.info("==============orderc : " + orderCount);
+		log.info("==============sellerc : " + sellerCount);
 
-		/*
-		 * // 로그인 귀찮아서 임시로 만든것... 세션 저장해줌 HttpSession session = request.getSession();
-		 * MemberBean loginUser = new MemberBean(); loginUser.setMemberNum(1);
-		 * loginUser.setMemberName("최창선");
-		 * loginUser.setMemberEmail("sonsun33@naver.com");
-		 * loginUser.setMemberMobile("01041746137"); session.setAttribute("loginUser",
-		 * loginUser);
-		 */
+		model.addAttribute("seller", seller);
+		model.addAttribute("goods", goods);
+		model.addAttribute("memberCount", memberCount);
+		model.addAttribute("goodsCount", goodsCount);
+		model.addAttribute("orderCount", orderCount);
+		model.addAttribute("sellerCount", sellerCount);
 
 		return "main/main";
 
 	}
+
+	@GetMapping("/main")
+	public String main2() {
+		return "redirect:/";
+	}
+
 	//
 	// 로그인 폼 로드
 	@GetMapping("/member/loginForm")
@@ -65,39 +76,30 @@ public class MemberController {
 		return "member/loginForm";
 	}
 
-	//로그인 처리
+	// 로그인 처리
 	@PostMapping("/member/loginPro")
 	public String loginPro(MemberBean bean, SellerBean sellerBean, HttpServletRequest request,
 			RedirectAttributes rttr) {
 		HttpSession session = request.getSession();
 
-
-
-		MemberBean loginUser = memberService.loginService(bean); 
+		MemberBean loginUser = memberService.loginService(bean);
 		SellerBean loginSeller = memberService.getSeller(loginUser.getMemberNum()); // 수정 필요할듯..? -> bean
 		log.info("loginUser: " + loginUser + "/ loginSeller: " + loginSeller);
-		
-		
-		if(loginUser != null && loginSeller == null) { // ^ -> &&
 
+		if (loginUser != null && loginSeller == null) { // ^ -> &&
 
 			session.setAttribute("loginUser", loginUser);
 			session.setMaxInactiveInterval(60 * 30);
 			log.info("*** 멤버만");
 			return "redirect:/main";
 
-
-			
-		}else if(loginUser != null && loginSeller != null) { // ^ -> &&
-
+		} else if (loginUser != null && loginSeller != null) { // ^ -> &&
 
 			session.setAttribute("loginUser", loginUser);
 			session.setAttribute("loginSeller", loginSeller); // "seller" -> "loginSeller"
 			session.setMaxInactiveInterval(60 * 30);
 
-
 			log.info("*** 멤버 + 셀러");
-			
 
 			return "redirect:/main";
 		} else {
@@ -200,7 +202,6 @@ public class MemberController {
 		return "./member/joinForm1";
 	}
 
-
 	@GetMapping("/member/joinForm2")
 	public String joinForm2() {
 		return "./member/joinForm2";
@@ -255,16 +256,17 @@ public class MemberController {
 
 	}
 
-	/*
-	 * @ResponseBody
-	 * 
-	 * @GetMapping(value = "/member/joinAuth") public String
-	 * authCheck(@RequestParam("email") String email,@RequestParam("pw") String pw)
-	 * {
-	 * 
-	 * 
-	 * 
-	 * }
-	 */
+	@GetMapping(value = "/member/sellerProfile")
+	public String sellerProfile(@RequestParam("memberNum") String memberNum, Model model) throws Exception {
+		if(memberNum!=null) {
+		SellerBean sellerProfile = memberService.getSeller(Integer.parseInt(memberNum));
+		model.addAttribute("seller", sellerProfile);
+
+		List<GoodsBean> goodsList =
+		goodsService.profileGoodsList(Integer.parseInt(memberNum));
+		model.addAttribute("goodsList",goodsList);
+		}
+		return "member/sellerProfile";
+	}
 
 }
