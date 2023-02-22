@@ -11,7 +11,37 @@
 </head>
 
 <script type="text/javascript">
+function checkCart(goodsNum){
+	
+	var memberNum = ${loginUser.memberNum};
+	$.ajax({
+			type : "GET",
+			url : "/myPage/ajaxCartCheck?memberNum=" + memberNum+"&goodsNum="+goodsNum,
+			success : function(data) {
+				if (data == "Y") {
+					onImg(goodsNum);
+				} else {
+					offImg(goodsNum);
+				}
+			}
+		});
+} 
 
+function onImg(goodsNum){
+	var ddd = "#wish"+goodsNum;
+	
+	console.log(ddd);
+	console.log("#heart"+goodsNum); 
+	$("#wish"+goodsNum).attr("src", "/resources/img/icon/heart_icon.png");
+}
+
+function offImg(goodsNum){
+	var ddd = "#heart"+goodsNum;
+	
+	console.log(ddd);
+	console.log("#heart"+goodsNum); 
+	$("#wish"+goodsNum).attr("src", "/resources/img/icon/empty_heart_icon.png");
+}
 
 /* var iMenuLayers = 6; // 총레이어개수
 function OnDisplayToggle(szObjName)
@@ -237,6 +267,18 @@ function OnDisplayToggle(szObjName)
 										<td class="myg_info">
 											<li>${row.goodsName} / ${row.goodsUse}</li>
 											<li>${row.goodsSellerNickname} / ${row.goodsPrice}</li>
+                      <li><a id="heart${row.goodsNum}" onclick="checkCart(${row.goodsNum});">
+													<c:choose>
+														<c:when test="${row.goodsCart==0}">
+															<img id="wish${row.goodsNum}" class="hearticon"
+																src="/resources/img/icon/empty_heart_icon.png" />
+														</c:when>
+														<c:otherwise>
+															<img id="wish${row.goodsNum}" class="hearticon"
+																src="/resources/img/icon/heart_icon.png" />
+														</c:otherwise>
+													</c:choose>
+											</a></li>
 										</td>
 									 </tr>
 								</table>
@@ -300,4 +342,5 @@ li {
 	padding-left: 20px;
 	width: 400px;
 }
+
 </style>

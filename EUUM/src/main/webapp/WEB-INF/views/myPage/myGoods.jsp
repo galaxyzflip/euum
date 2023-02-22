@@ -4,6 +4,162 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
+
+<style>
+li {
+	list-style: none;
+}
+
+.boardBox{
+	width:200px;
+	height:270px;
+}
+
+.goodsalink{
+	cursor:pointer;
+	    vertical-align: top;
+}
+
+.goodsalink:hover .goodsoverlay, .goodsalink:hover .goodsBoxText{
+	opacity: 1;
+	font-weight:900;
+}
+
+.goodsoverlay{
+    width: 100%;
+    height: 100%;
+    background: #8e8e8e;
+    z-index: 4;
+    opacity: 0;
+    transition: opacity .2s linear;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
+.goodsoverlayList{
+	width: 100%;
+    height: 100%;
+    background: #8e8e8e;
+    z-index: 4;
+    opacity: 0;
+    transition: opacity .2s linear;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
+
+.imgbox{
+	vertical-align: top;
+	position: relative;
+	width: 196px;
+	height: 200px;
+	overflow: hidden;
+}
+
+.imginner {
+      position: absolute;
+      top: 0; 
+      right: 0;
+      height: 300px;
+}
+
+.hidebtn{
+	background:# ;
+	opacity: 0;
+}
+
+.goodsBoxBtn{
+	position: absolute;
+}
+
+
+.inBotText{
+	font-size:13px;
+	text-align:left;
+	padding: 0 10px 0 10px ;
+}
+
+.inBotIcon{
+	position: absolute;
+    text-align: left;
+    padding: 0 10px 5px 10px;
+    left: 0;
+    width: 100%;
+    bottom: 0;
+}
+
+
+.statusIconbox{
+	text-align: center;
+    display: inline-block;
+    border: #fb8500 solid 1px;
+    border-radius: 5px;
+    font-size: 10px;
+    vertical-align: bottom;
+    color: #fb8500;
+    margin-top: 5px;
+    padding: 0 4px 0 4px;
+}
+
+</style>
+
+<div>
+	
+	
+	
+	
+	
+	
+	
+	
+	<div style="display:block;">
+	<div>
+	<div class="boardCon">
+		
+		<a class="goodsalink" onclick="location.href='/goods/goodsRegisterGuide'" style="display:inline-block; margin-right:20px;">
+			<div class="boardBox" style="color:#555;">
+				<div class="innerBox" style="border: #616161 2px dashed; height:100%;width: 100%;text-align: center; position: relative; ">
+					<div class="goodsoverlay"></div>
+					<div class="goodsBoxText" style="position: absolute; bottom: 47%; left: 42px; font-size: 13px; z-index:5;">
+						<span style="color:#fb8500;">+</span> 새로운 상품 등록
+					</div>
+				</div>
+			</div>
+		</a>
+
+		<c:choose>
+				<c:when test="${fn:length(myGoodsMap.myGoodsList) > 0}">
+					<c:forEach items="${myGoodsMap.myGoodsList}" var="row">
+		
+		<a class="goodsalink alinklist" style="display:inline-block; margin-right:20px;">
+			<div class="boardBox" style="color:#555;">
+				<div class="innerBox" style="border: #CCCCCC 2px solid; height:100%;width: 100%;text-align: center; position: relative; ">
+					<div class="goodsoverlayList"></div>
+					<div class="goodsBoxBtn" style="font-size: 13px; z-index:5;">
+					<button class="hidebtn" onclick="modifyMyGoods('${row.goodsStatus}', ${status.index});">수정</button> 
+					</div>
+					<div class="imgbox"><img src="${row.goodsImage1}" class="imginner"  ></div>
+					<div class="inBotText"><span style="text-align:right;">${row.goodsName}</span></div>
+					<div class="inBotIcon">
+						<div class="statusIconbox">승인완료</div>
+						<span style="float:right;">${row.goodsPrice}</span>
+					</div>
+				</div>
+			</div>
+		</a>
+		</c:forEach>
+		</c:when>
+		</c:choose>
+		
+		
+		
+		
+		
+	</div>
+  
+  
 <div style="margin: 100px">
 	<div>
 		<h2>내 작품 관리</h2>
@@ -470,4 +626,5 @@ li {
 	width: 160px;
 }
 </style>
+
 

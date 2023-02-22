@@ -5,25 +5,44 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+
+import org.apache.ibatis.annotations.Param;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.mycom.euum.commons.FileUtils;
 import com.mycom.euum.goods.bean.GoodsBean;
 import com.mycom.euum.goods.bean.GoodsOptionBean;
 import com.mycom.euum.image.bean.ImageBean;
+import com.mycom.euum.image.service.ImageServiceImpl;
+import com.mycom.euum.member.bean.CartBean;
 import com.mycom.euum.member.bean.SellerBean;
-import com.mycom.euum.page.Criteria2;
+import com.mycom.euum.page.Criteria;
 import com.mycom.euum.page.CriteriaForGoods;
+import com.mycom.euum.page.PageDTO;
 import com.mycom.euum.page.PageForGoodsDTO;
 
 public interface GoodsService {
 	
 	/* ---------------------------- 상품 리스트 ---------------------------- */
 	
+
+	/** 선민: 상품 리스트 가져오기 (List) */
+	public List<GoodsBean> selectGoodsList() throws Exception;
+	
+	public List<GoodsBean> profileGoodsList(int memberNum) throws Exception;
+	
+	public List<GoodsBean> selectCartGoodsList(int memberNum) throws Exception;
+	
+	/** 은정: 상품 리스트 검색결과 가져오기 (List) */
+	public List<GoodsBean> selectGoodsSearchList(String searchKeyword, String searchOption) throws Exception;
+	
+
 	/** 은정: 상품 리스트 가져오기 (List) */
 	public List<GoodsBean> selectGoodsList(Criteria2 cri) ;
 	
 	/** 은정: 상품 리스트 페이징 */
 	public int getTotal(Criteria2 cri);
+
 	/** 선민: 나의 상품 리스트 가져오기 - 승인완료 상품 (List) */
 //	public Map<String, List<GoodsBean>> selectMyGoodsList(int memberNum, int pageNum, int amount) throws Exception;
 	public Map<String, List<GoodsBean>> selectMyGoodsList(int memberNum, CriteriaForGoods cri) throws Exception;
@@ -90,6 +109,11 @@ public interface GoodsService {
 	/** 선민: 상품 등록 시 이미지 업로드 */
 	public List<ImageBean> goodsFileUpload(MultipartFile[] uploadFile, HttpServletRequest request) throws Exception;
 
+
+	public List<Map<String, Object>> memberCart(int memberNum) throws Exception;
 	
+
+	
+
 }
 

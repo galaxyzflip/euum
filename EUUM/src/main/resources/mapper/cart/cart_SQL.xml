@@ -11,11 +11,19 @@
 
 <mapper namespace="com.mycom.euum.member.mapper.CartMapper">
 	
+
+	
+	<select id="checkCart" resultType="int">
+		select count(cart_num)
+		from cart_tbl
+		where member_num = #{memberNum} 
+		and goods_num = #{goodsNum} 
+	</select>
 	
 	<!-- 찜 추가하기 -->
-	<insert id="addCard">
-		insert cart_tbl (cart_num, goods_num, member_num)
-		values(cart_num_seq.nextval, #{goodsNum}, #{memberNum})
+	<insert id="addCart">
+		insert into cart_tbl (cart_num, goods_num, member_num,CART_REGDATE)
+		values(cart_num_seq.nextval, #{goodsNum}, #{memberNum},sysdate)
 	</insert>
 	
 	
@@ -24,11 +32,9 @@
 	select SELLER_SPECIALTY,SELLER_DESCRIPTION,SELLER_IMAGE,SELLER_NICKNAME,GOODS_NUM,GOODS_CATEGORY,GOODS_NAME,GOODS_PRICE,GOODS_IMAGE1,GOODS_IMAGE2,GOODS_IMAGE3
 	from seller_tbl inner join goods_tbl
 	on goods_tbl.member_num = seller_tbl.member_num 
-	where goods_tbl.member_num in(select member_num 
-	from goods_tbl
-	where goods_num in(select goods_num
+	where goods_tbl.goods_num in(select goods_num
 	from cart_tbl
-	where member_num = #{memberNum}))
+	where member_num = #{memberNum})
 	</select>
 
 

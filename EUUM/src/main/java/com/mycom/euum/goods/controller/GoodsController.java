@@ -63,7 +63,21 @@ public class GoodsController {
 /** 은정: 상품 리스트 - 전체 상품 리스트(02/01 페이징추가) */
 	@GetMapping(value="/goods/goodsList")
 	public String selectGoodsList(Model model, Criteria2 cri) throws Exception {
-		log.info("===== 상품 리스트 =====");
+		
+    HttpSession session = request.getSession();
+		MemberBean loginUser = (MemberBean)session.getAttribute("loginUser");
+		log.info("=======================loginUser : "+loginUser);
+		
+		// 로그인이 되어 있을 시
+		if(loginUser!=null) {
+			List<GoodsBean> goodsList = goodsService.selectCartGoodsList(loginUser.getMemberNum());
+			model.addAttribute("goodsList", goodsList);
+			return "goods/goodsList";
+		}
+    
+    
+    
+    log.info("===== 상품 리스트 =====");
 		
 		System.out.println("cri 내용 : " +cri.toString());
 		System.out.println("cri 내용 : " +cri.toString());
@@ -388,5 +402,6 @@ public class GoodsController {
 		SellerBean sellerBean = (SellerBean)session.getAttribute("loginSeller"); // 세션 정보 저장 (이식성을 고려하여 웹 의존성이 있는 로직은 Controller에 작성)
 		return sellerBean;
 	}
+
 
 }

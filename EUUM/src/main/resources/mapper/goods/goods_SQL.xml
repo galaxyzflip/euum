@@ -2,6 +2,45 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.mycom.euum.goods.mapper.GoodsMapper">
+
+	<select id="selectCartGoodsList" resultType="com.mycom.euum.goods.bean.GoodsBean">
+		select a.goods_num as goods_Cart, b.goods_num,
+GOODS_CATEGORY,
+GOODS_STATUS,
+GOODS_NAME,
+GOODS_CONTENT,
+GOODS_PRICE,
+GOODS_SELLER_NICKNAME,
+GOODS_FORMAT,
+GOODS_RESOLUTION,
+GOODS_SIZE,
+GOODS_USE,
+GOODS_MODIFY_COUNT,
+GOODS_DATE,
+GOODS_PERIOD,
+GOODS_IMAGE1,
+GOODS_IMAGE2,
+GOODS_IMAGE3,
+GOODS_IMAGE_DATE1,
+GOODS_IMAGE_DATE3,
+GOODS_IMAGE_DATE2
+
+from goods_tbl b left join 
+                            (select goods_num
+                            from cart_tbl
+                            where member_num = #{memberNum}) a
+on a.goods_num = b.goods_num 
+where GOODS_STATUS = '승인완료'
+order by GOODS_NUM DESC
+	</select>
+
+
+
+	<select id="memberCart" resultType="map"> 
+	select goods_num
+	from cart_tbl
+	where member_num = #{memberNum}
+	</select>
  
 	<!-- 선민: 상품 등록 (insertGoods) -->
 	<insert id="insertGoods"
@@ -587,5 +626,6 @@
 		from GOODS_TBL
 		order by GOODS_NUM DESC
 	</select>
+
 
 </mapper>

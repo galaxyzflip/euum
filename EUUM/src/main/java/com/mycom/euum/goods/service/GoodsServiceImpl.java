@@ -16,6 +16,7 @@ import com.mycom.euum.goods.bean.GoodsOptionBean;
 import com.mycom.euum.goods.mapper.GoodsMapper;
 import com.mycom.euum.image.bean.ImageBean;
 import com.mycom.euum.image.mapper.ImageMapper;
+import com.mycom.euum.member.bean.CartBean;
 import com.mycom.euum.member.bean.SellerBean;
 import com.mycom.euum.page.Criteria2;
 import com.mycom.euum.page.CriteriaForGoods;
@@ -29,11 +30,30 @@ import lombok.extern.log4j.Log4j;
 @AllArgsConstructor
 public class GoodsServiceImpl implements GoodsService {
 
+
 	private GoodsMapper goodsMapper;
 	private ImageMapper imageMapper;
 	private FileUtils fileUtils;
 
 	/* ---------------------------- 상품 리스트 ---------------------------- */
+
+
+	/** 선민: 상품 리스트 가져오기 (List) */
+	@Override
+	public List<GoodsBean> selectGoodsList() throws Exception {
+		return goodsMapper.selectGoodsList();
+	}
+	
+	@Override
+	public List<GoodsBean> profileGoodsList(int memberNum) throws Exception {
+		return goodsMapper.profileGoodsList(memberNum);
+	}
+
+	@Override
+	public List<GoodsBean> selectCartGoodsList(int memberNum) throws Exception {
+		return goodsMapper.selectCartGoodsList(memberNum);
+	}
+
 
 	/** 은정: 상품 리스트 가져오기 (List)*/
 	@Override
@@ -47,6 +67,7 @@ public class GoodsServiceImpl implements GoodsService {
 		// TODO Auto-generated method stub
 		return goodsMapper.getTotalCount(cri);
 	}
+
 
 
 
@@ -368,4 +389,11 @@ public class GoodsServiceImpl implements GoodsService {
 		return imageBeanList;
 	}
 
+
+	@Override
+	public List<Map<String, Object>> memberCart(int memberNum) throws Exception {
+		return goodsMapper.memberCart(memberNum);
+	}
+	
 }
+

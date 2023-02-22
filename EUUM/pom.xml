@@ -332,6 +332,15 @@
 			<scope>test</scope>
 		</dependency>
 
+		
+		
+		<!-- 휴대폰 인증 api -->
+		<dependency>
+		    <groupId>net.nurigo</groupId>
+		    <artifactId>sdk</artifactId>
+		    <version>4.2.7</version>
+		</dependency>
+		
 
 		<!-- jQuery -->
 		<dependency>
