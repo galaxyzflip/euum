@@ -34,13 +34,13 @@
 	display: flex;
 	flex-direction: row;
 	align-items: center;
-	width: 500px;
+	width: 300px;
 	height: 120px;
 	margin: auto;
 }
 
 .main-form {
-	border: solid 1px black;
+	border: solid 1px #bbb;
 	width: 800px;
 	margin: auto;
 }
@@ -59,6 +59,10 @@
 li {
 	list-style-type: none;
 	display: flex;
+}
+
+.validate-box{
+	margin: auto;
 }
 </style>
 

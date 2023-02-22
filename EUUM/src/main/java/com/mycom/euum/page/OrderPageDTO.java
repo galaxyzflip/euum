@@ -14,6 +14,7 @@ public class OrderPageDTO {
 
 	public OrderPageDTO(OrderCriteria cri, int total) {
 
+		//한 페이지에서 몇개의 리스트를 출력할건지 결정하는 변수... 
 		final int amount = (cri.getAmount() != 0) ? cri.getAmount() : 10; 
 		
 		this.cri = cri;
