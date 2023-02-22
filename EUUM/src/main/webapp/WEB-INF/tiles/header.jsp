@@ -20,7 +20,7 @@
 			<ul>
 				<li><a href="#about">이용안내</a></li>
 				<li><a href="/request/requestList">의뢰게시판</a></li>
-				<li><a href="#events">공지사항</a></li>
+				<li><a href="/notice/notice">공지사항</a></li>
 				<li class="dropdown"><a href="#"><span>카테고리</span> <i
 						class="bi bi-chevron-down dropdown-indicator"></i></a>
 					<ul>

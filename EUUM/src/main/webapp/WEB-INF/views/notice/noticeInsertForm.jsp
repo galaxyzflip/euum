@@ -8,6 +8,30 @@ $(document).ready(function(){
 	$("#changeCategory").change(function(){
 		$("#category").val($(this).val());
 	});	
+	
+	
+	$("#noticeSubmit").on("click", function(e){
+		e.preventDefault();
+		
+		var content = $('#noticeContent').val()
+		var title = $('#noticeTitle').val()
+		
+		
+		if(content == "" || content == null){
+			alert("내용을 입력 해 주세요.");
+			
+			return false;
+		}
+		
+		if(title == "" || title == null){
+			alert("제목을 입력 해 주세요.");
+			
+			return false;
+		}
+		
+		$("#notice").submit();
+	});
+
  });
 
 </script>
@@ -18,10 +42,10 @@ $(document).ready(function(){
 <body>
 	<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
 
-	<form action="/notice/noticeInsertPro" method="post" enctype="multipart/form-data">
+	<form action="/notice/noticeInsertPro" method="post" enctype="multipart/form-data" id="notice">
 		<table style="margin-left: auto; margin-right: auto;">
 			<tr>
-				<td>제목 <input type="text" name="noticeTitle">
+				<td>제목 <input type="text" name="noticeTitle" id="noticeTitle">
 				</td>
 				
 				
@@ -37,7 +61,7 @@ $(document).ready(function(){
 				
 			<tr>	
 				<td>작성자
-				<input type="text" name= "noticeWriter" value="용주" readonly>
+				<input type="text" name= "noticeWriter" value="관리자" readonly>
 				</td>
 			</tr>
 			
@@ -48,14 +72,14 @@ $(document).ready(function(){
 			</td></tr>
 
 			<tr>
-				<td><textarea placeholder="입력하세요" name="noticeContent"></textarea></td>
+				<td><textarea placeholder="입력하세요" name="noticeContent" id="noticeContent"></textarea></td>
 			</tr>
 		</table>
 
 
 		<div align="center">
 			<button class="reset" type="reset"><span>다시작성</span></button>
-			<button class="done" type="submit"><span>작성하기</span></button>
+			<button id="noticeSubmit" class="done" type="submit"><span>작성하기</span></button>
 			
 		</div>
 	</form>

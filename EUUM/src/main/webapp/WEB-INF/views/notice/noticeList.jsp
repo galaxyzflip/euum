@@ -267,10 +267,11 @@ $(document).ready(function(){
 				<input type='hidden' name='type' value='<c:out value="${ pageMaker.cri.type }"/>'> 
 				<input type='hidden' name='keyword' value='<c:out value="${ pageMaker.cri.keyword }"/>'>
 			</form>
-				
-		<a href="noticeInsertForm">
-		<input type="button" value="글쓰기"></a> 
-
+		
+		<c:if test="${loginUser.memberClass eq 'A' }">		
+			<a href="/notice/noticeInsertForm">
+			<input type="button" value="글쓰기"></a> 
+		</c:if>
 </div>	
 	
 	

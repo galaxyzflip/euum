@@ -5,6 +5,46 @@
 
 <!DOCTYPE html>
 <html>
+<script>
+$(document).ready(function(){
+	
+	$("#reviewSubmit").on("click",function(e){
+	
+		e.preventDefault();
+		
+		var title = $('#title').val();
+		var content = $('#reviewContent').val();
+		
+		var star = $('input:radio[name=reviewStar]').is(":checked");
+		
+		alert(star);
+		
+		if(star != true){
+			alert("별점을 등록 해 주세요!");
+			
+			return false;
+		}
+		
+		if(title == "" || title == null){
+			alert("제목을 입력해 주세요.");
+			
+			return false;
+		}
+		
+		if(content == "" || content== null){
+			alert("내용을 입력 해 주세요.");
+			
+			return false;
+			
+		}
+		
+		$('#myform').submit();
+		
+		
+	});
+});
+</script>
+
 <style>
 	#myform fieldset{
     display: inline-block;
@@ -77,14 +117,14 @@
 		
 		
 		<div>
-			<textarea class="col-auto form-control" type="text" name="reviewTitle"
+			<textarea class="col-auto form-control" type="text" name="reviewTitle" id="title"
 					  placeholder="제목을 입력 해 주세요."></textarea>
-			<textarea class="col-auto form-control" type="text" name="reviewContent"
+			<textarea class="col-auto form-control" type="text" name="reviewContent" id="reviewContent"
 					  placeholder="후기를 입력 해 주세요."></textarea>
 		</div>
 		<div align="center">
 			<button class="reset" type="reset"><span>다시작성</span></button>
-			<button class="done" type="submit"><span>작성하기</span></button>
+			<button class="done" type="submit" id="reviewSubmit"><span>작성하기</span></button>
 		</div>
 	</form>
 	

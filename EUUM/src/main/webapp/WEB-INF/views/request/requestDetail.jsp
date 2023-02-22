@@ -126,8 +126,8 @@
 	<div class="col-lg-12">
 		<div class="panel panel-default">
 			<div class="panel-heading">
-			 <i class="fa fa-comments fa-fw"><i>comment
-			 	<button id='addCommentBtn' class="btn btn-primary btx-xs pull-right">댓글쓰기</button>
+			 <i class="fa fa-comments fa-fw"><i>
+			 	<button id='addCommentBtn' class="btn btn-primary btx-xs pull-right">지원하기</button>
 			</div>
 			
 			<div class="panel-body">
@@ -198,6 +198,14 @@ $(document).ready(function(){
 	    });
 	    
 	    $("#addCommentBtn").on("click", function(e){
+	    	
+	    	var seller = '${loginUser.memberClass}';
+	    	/* alert(seller); */
+	    	
+	    	if(seller != 'S'){
+	    		alert("작가회원만 작성 할 수 있습니다.");
+		    	return false;
+	    	}
 	      
 	      /* modal.find("input").val(""); */
 	      modalInputReplyDate.closest("div").hide();
