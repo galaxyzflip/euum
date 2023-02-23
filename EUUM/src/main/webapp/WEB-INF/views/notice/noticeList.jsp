@@ -6,7 +6,7 @@
 <!DOCTYPE html>
 <html>
 <style>
-body{
+/* body{
 margin-top: 100px;
 font-family: 'Trebuchet MS', serif;
 line-height: 1.6
@@ -15,40 +15,331 @@ line-height: 1.6
 	width: 5000px;
 	margin: 0 auto;
 }
+ */
 
 
-
-ul.tabs{
+/* ul.tabs{
 	margin: 0px;
 	padding: 0px;
 	list-style: none;
+} */
+
+
+
+.list_li {
+    list-style: none;
+    padding-left: 0px;
 }
+
 ul.tabs li{
 	background: none;
-	/* color: #222; */
+	color: #222; 
 	display: inline-block;
 	padding: 10px 15px;
 	cursor: pointer;
 }
 
 ul.tabs li.current{
-	background: #ededed;
-	color: #222;
+	/* background: #ededed; */
+	/* color: #222; */
 	list-style:none;
     padding-left:0px;
 }
 
 .tab-content{
 	display: none;
-	background: #ededed;
+	/* background: #ededed; */
 	padding: 15px;
 }
 
 .tab-content.current{
 	display: inherit;
+	
 }
+
+.tab-content. {
+	padding-left:0px;
+	padding-right:0px;
+}
+
+
+/* body, table, input, textarea, select {
+    font-size: 16.5px;
+    color: #242424;
+    font-style: normal;
+    font-family: "맑은 고딕","Malgun Gothic","돋움", sans-serif;
+    line-height: 140%;
+    letter-spacing: -0.5px;  
+} */
+
+.notice-table{
+	width:700px;
+	margin-left:auto;
+	margin-right:auto;
+	border-right:none;
+	border-left:none;
+}
+
+.notice-table thead tr{
+	
+	height:20px;
+	text-align:center;
+	border-bottom:1px #777 solid;
+	border-top:1px #777 solid;
+}
+
+.notice-table thead tr td{
+	
+	text-align:center;
+	border-bottom:1px #dadada solid;
+}
+
+.notice-table tbody tr{
+	
+	height:30px;
+}
+
+.notice-table tbody td{
+	
+	padding:5px;
+	border-bottom:1px #dadada solid;
+}
+
+.search-box{
+	
+}
+
+.row{
+	height:50px;
+	width:700px;
+	margin:auto;
+}
+
+.tab-box{
+	width:700px;
+	margin:auto;
+}
+
+
+/* #tab-1{
+    clear: both;
+    width: 100%;
+    margin-top: 4px;
+    float: left;
+    text-align: left;
+    overflow: hidden;
+} */
+
 </style>
 <head>
+
+
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<!-- 카테고리 값 넣어줘야 함  -->
+<br/><br/><br/><br/><br/><br/><br/><br/>
+	
+	<div class="container">
+		
+		<div class="tab-box">
+			<ul class="tabs">
+				<li class="tab-link current" data-tab="tab-1"><div>공지사항</div></li>
+				<li class="tab-link" data-tab="tab-2"><div>의뢰인FAQ</div></li>
+				<li class="tab-link" data-tab="tab-3"><div>전문가FAQ</div></li>
+			</ul>
+		</div>
+		
+		<div class='row'>
+			<div class="search-box">
+
+				<form id='searchForm' action="/notice/notice" method='get'>
+					<select name='type'>
+						<option value=""
+							<c:out value="${pageMaker.cri.type == null?'selected':''}"/>>--</option>
+						<option value="T"
+							<c:out value="${pageMaker.cri.type eq 'T'?'selected':''}"/>>제목</option>
+						<option value="C"
+							<c:out value="${pageMaker.cri.type eq 'C'?'selected':''}"/>>내용</option>
+						<option value="W"
+							<c:out value="${pageMaker.cri.type eq 'W'?'selected':''}"/>>작성자</option>
+						<option value="TC"
+							<c:out value="${pageMaker.cri.type eq 'TC'?'selected':''}"/>>제목 or 내용</option>
+						<option value="TW"
+							<c:out value="${pageMaker.cri.type eq 'TW'?'selected':''}"/>>제목 or 작성자</option>
+						<option value="TWC"
+							<c:out value="${pageMaker.cri.type eq 'TWC'?'selected':''}"/>>제목 or 내용 or 작성자</option>
+					</select> 
+					<input type='text' name='keyword'value='<c:out value="${pageMaker.cri.keyword}"/>' /> 
+					<input type='hidden' name='pageNum' value='<c:out value="${pageMaker.cri.pageNum}"/>' /> 
+					<input type='hidden' name='amount' value='<c:out value="${pageMaker.cri.amount}"/>' />
+					<button class='btn btn-default'>Search</button>
+				</form>
+			</div>
+		</div>
+		
+		<div id="tab-1" class="tab-content current"> 
+
+
+
+		
+			<table class="notice-table" id="tab-1">
+				<thead>
+					<tr>
+						<th scope="col" width="10%">번호</th>
+						<th scope="col" width="*">제목</th>
+						<th scope="col" width="20%">작성자</th>
+						<th scope="col" width="20%">등록일</th>
+					</tr>
+				</thead>
+
+				<tbody>
+
+					<c:forEach items="${list }" var="notice">
+
+						<tr>
+							<c:if test="${ notice.noticeCategory eq 1}">
+								<td><c:out value="${notice.noticeNum}" /></td>
+								<td><a class='move'	href='<c:out value="${notice.noticeNum}"/>'> 
+										<c:out	value="${notice.noticeTitle}" /></a>
+								</td>
+								<td><c:out value="${notice.noticeWriter}" /></td>
+								<td>
+									<fmt:formatDate pattern="yyyy-MM-dd" value="${notice.noticeRegdate}" />
+								</td>
+
+							</c:if>
+						</tr>
+					</c:forEach>
+
+				</tbody>
+			</table>
+
+		
+		
+		
+			<div class='pull-right'>
+				<ul class="pagination">
+				
+					<c:if test="${pageMaker.prev}">
+							<li class="paginate_button previous"><a
+								href="${pageMaker.startPage -1}">Previous</a></li>
+						</c:if>
+	
+						<c:forEach var="num" begin="${pageMaker.startPage}"
+							end="${pageMaker.endPage}">
+							<li class="paginate_button  ${pageMaker.cri.pageNum == num ? "active":""} ">
+								<a href="${num}">${num}</a>
+							</li>
+						</c:forEach>
+	
+						<c:if test="${pageMaker.next}">
+							<li class="paginate_button next"><a
+								href="${pageMaker.endPage +1 }">Next</a></li>
+						</c:if>
+				</ul>
+			
+			</div>
+
+
+		</div>
+
+		<div id="tab-2" class="tab-content">
+
+
+			<table class="notice-table" id="tab-2">
+				<thead>
+					<tr>
+						<th scope="col" width="10%">번호</th>
+						<th scope="col" width="*">제목</th>
+						<th scope="col" width="20%">작성자</th>
+						<th scope="col" width="20%">등록일</th>
+					</tr>
+				</thead>
+
+				<tbody>
+
+					<c:forEach items="${FAQ }" var="FAQ">
+							<c:if test="${ FAQ.noticeCategory eq 2}">
+						<tr>
+								<td><c:out value="${FAQ.noticeNum}" /></td>
+								<td><a class='move'
+									href='<c:out value="${FAQ.noticeNum}"/>'> <c:out
+											value="${FAQ.noticeTitle}" />
+								</a></td>
+								<td><c:out value="${FAQ.noticeWriter}" /></td>
+								<td><fmt:formatDate pattern="yyyy-MM-dd"
+										value="${FAQ.noticeRegdate}" /></td>
+
+						</tr>
+							</c:if>
+					</c:forEach>
+
+				</tbody>
+			</table>
+
+		</div>
+
+
+		<div id="tab-3" class="tab-content">
+
+
+
+		
+			<table class="notice-table" id="tab-3">
+				<thead>
+					<tr>
+						<th scope="col" width="10%">번호</th>
+						<th scope="col" width="*">제목</th>
+						<th scope="col" width="20%">작성자</th>
+						<th scope="col" width="20%">등록일</th>
+					</tr>
+				</thead>
+
+				<tbody>
+
+					<c:forEach items="${FAQ }" var="FAQ">
+
+							<c:if test= "${ FAQ.noticeCategory eq 3}">
+						<tr>
+								<td><c:out value="${FAQ.noticeNum}" /></td>
+								<td> <a class='move' href='<c:out value="${FAQ.noticeNum}"/>'>	                   
+	                   <c:out value="${FAQ.noticeTitle}" />  
+	                   </a>
+								</td>
+								<td><c:out value="${FAQ.noticeWriter}" /></td>
+								 <td><fmt:formatDate pattern="yyyy-MM-dd" value="${FAQ.noticeRegdate}" /></td>
+
+						</tr>
+							</c:if>
+					</c:forEach>
+					
+				</tbody>
+			</table>
+
+		</div>
+				
+			
+	
+			
+			<form id='actionForm' action="/notice/notice" method='get'>
+				<input type='hidden' name='pageNum' value='${pageMaker.cri.pageNum}'>
+				<input type='hidden' name='amount' value='${pageMaker.cri.amount}'>
+				<input type='hidden' name='type' value='<c:out value="${ pageMaker.cri.type }"/>'> 
+				<input type='hidden' name='keyword' value='<c:out value="${ pageMaker.cri.keyword }"/>'>
+			</form>
+		
+		<c:if test="${loginUser.memberClass eq 'A' }">		
+			<a href="/notice/noticeInsertForm">
+			<input type="button" value="글쓰기"></a> 
+		</c:if>
+</div>	
+	
+	
+</body>
+</html>
+
 <script>
 $(document).ready(function(){
 	
@@ -134,145 +425,55 @@ $(document).ready(function(){
 })
 </script>
 
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
-<!-- 카테고리 값 넣어줘야 함  -->
-<br/><br/><br/><br/><br/><br/><br/><br/>
-	
-	<div class="container">
 
-		<ul class="tabs">
-			<li class="tab-link current" data-tab="tab-1">공지사항</li>
-			<li class="tab-link" data-tab="tab-2">의뢰인FAQ</li>
-			<li class="tab-link" data-tab="tab-3">전문가FAQ</li>
-		</ul>
+
+		<!-- FAQ -->
+		<%-- <div id="tab-2" class="tab-content">
 			<thead>
 				<tr>
-					<th scope="col">번호</th>
+					<th scope="col">번호</th> 
 					<th scope="col">제목</th>	
 					<th scope="col">작성자</th>
 					<th scope="col">등록일</th>
-					<th scope="col">조회수</th>
 				</tr>			
 			</thead>
+			<c:forEach items="${FAQ }" var="FAQ">
+				<c:if test= "${ FAQ.noticeCategory eq 2}">
+				<li class="list_li">	
+					<c:out value="${FAQ.noticeNum}" />
+	                <td>
+	                   <a class='move' href='<c:out value="${FAQ.noticeNum}"/>'>	                   
+	                   <c:out value="${FAQ.noticeTitle}" />  
+	                   </a>
+	                </td>
+	               <td><c:out value="${FAQ.noticeWriter}" /></td>
+	               <td><fmt:formatDate pattern="yyyy-MM-dd" value="${FAQ.noticeRegdate}" /></td>
+				</li>
+				</c:if>
+			</c:forEach>
+		</div> --%>
 			
-			
-			<div id="tab-1" class="tab-content current">
-				<c:forEach items="${list }" var="notice">
-					<c:if test= "${ notice.noticeCategory eq 1}">
-					<li>	
-						<c:out value="${notice.noticeNum}" />
-		               <td>
-		                   <a class='move' href='<c:out value="${notice.noticeNum}"/>'>	                   
-		                   <c:out value="${notice.noticeTitle}" />  
-		                   </a>
-		                </td>
-		               <td><c:out value="${notice.noticeWriter}" /></td>
-		               <td><fmt:formatDate pattern="yyyy-MM-dd" value="${notice.noticeRegdate}" /></td>
-					</li>
-					</c:if>
-				</c:forEach>
-				
-				<div class='row'>
-					<div class="col-lg-12">
-
-						<form id='searchForm' action="/notice/notice" method='get'>
-							<select name='type'>
-								<option value=""
-									<c:out value="${pageMaker.cri.type == null?'selected':''}"/>>--</option>
-								<option value="T"
-									<c:out value="${pageMaker.cri.type eq 'T'?'selected':''}"/>>제목</option>
-								<option value="C"
-									<c:out value="${pageMaker.cri.type eq 'C'?'selected':''}"/>>내용</option>
-								<option value="W"
-									<c:out value="${pageMaker.cri.type eq 'W'?'selected':''}"/>>작성자</option>
-								<option value="TC"
-									<c:out value="${pageMaker.cri.type eq 'TC'?'selected':''}"/>>제목 or 내용</option>
-								<option value="TW"
-									<c:out value="${pageMaker.cri.type eq 'TW'?'selected':''}"/>>제목 or 작성자</option>
-								<option value="TWC"
-									<c:out value="${pageMaker.cri.type eq 'TWC'?'selected':''}"/>>제목 or 내용 or 작성자</option>
-							</select> 
-							<input type='text' name='keyword'value='<c:out value="${pageMaker.cri.keyword}"/>' /> 
-							<input type='hidden' name='pageNum' value='<c:out value="${pageMaker.cri.pageNum}"/>' /> 
-							<input type='hidden' name='amount' value='<c:out value="${pageMaker.cri.amount}"/>' />
-							<button class='btn btn-default'>Search</button>
-						</form>
-					</div>
-				</div>
-			
-			<div class='pull-right'>
-				<ul class="pagination">
-				
-					<c:if test="${pageMaker.prev}">
-							<li class="paginate_button previous"><a
-								href="${pageMaker.startPage -1}">Previous</a></li>
-						</c:if>
-
-						<c:forEach var="num" begin="${pageMaker.startPage}"
-							end="${pageMaker.endPage}">
-							<li class="paginate_button  ${pageMaker.cri.pageNum == num ? "active":""} ">
-								<a href="${num}">${num}</a>
-							</li>
-						</c:forEach>
-
-						<c:if test="${pageMaker.next}">
-							<li class="paginate_button next"><a
-								href="${pageMaker.endPage +1 }">Next</a></li>
-						</c:if>
-				</ul>
-			</div>	
-			</div>
-			
-			<!-- FAQ -->
-			<div id="tab-2" class="tab-content">
-				<c:forEach items="${FAQ }" var="FAQ">
-					<c:if test= "${ FAQ.noticeCategory eq 2}">
-					<li>	
-						<c:out value="${FAQ.noticeNum}" />
-		                <td>
-		                   <a class='move' href='<c:out value="${FAQ.noticeNum}"/>'>	                   
-		                   <c:out value="${FAQ.noticeTitle}" />  
-		                   </a>
-		                </td>
-		               <td><c:out value="${FAQ.noticeWriter}" /></td>
-		               <td><fmt:formatDate pattern="yyyy-MM-dd" value="${FAQ.noticeRegdate}" /></td>
-					</li>
-					</c:if>
-				</c:forEach>
-			</div>
-			
-			<div id="tab-3" class="tab-content">
-				<c:forEach items="${FAQ }" var="FAQ">
-					<c:if test= "${ FAQ.noticeCategory eq 3}">
-					<li>	
-						<c:out value="${FAQ.noticeNum}" />
-		                <td>
-		                   <a class='move' href='<c:out value="${FAQ.noticeNum}"/>'>	                   
-		                   <c:out value="${FAQ.noticeTitle}" />  
-		                   </a>
-		                </td>
-		               <td><c:out value="${FAQ.noticeWriter}" /></td>
-		               <td><fmt:formatDate pattern="yyyy-MM-dd" value="${FAQ.noticeRegdate}" /></td>
-					</li>
-					</c:if>
-				</c:forEach>
-			</div>
-			
-			<form id='actionForm' action="/notice/notice" method='get'>
-				<input type='hidden' name='pageNum' value='${pageMaker.cri.pageNum}'>
-				<input type='hidden' name='amount' value='${pageMaker.cri.amount}'>
-				<input type='hidden' name='type' value='<c:out value="${ pageMaker.cri.type }"/>'> 
-				<input type='hidden' name='keyword' value='<c:out value="${ pageMaker.cri.keyword }"/>'>
-			</form>
-				
-		<a href="noticeInsertForm">
-		<input type="button" value="글쓰기"></a> 
-
-</div>	
-	
-	
-</body>
-</html>
+		<%-- <div id="tab-3" class="tab-content">
+			<thead>
+				<tr>
+					<th scope="col">번호</th> 
+					<th scope="col">제목</th>	
+					<th scope="col">작성자</th>
+					<th scope="col">등록일</th>
+				</tr>			
+			</thead>
+			<c:forEach items="${FAQ }" var="FAQ">
+				<c:if test= "${ FAQ.noticeCategory eq 3}">
+				<li class="list_li">	
+					<c:out value="${FAQ.noticeNum}" />
+	                <td>
+	                   <a class='move' href='<c:out value="${FAQ.noticeNum}"/>'>	                   
+	                   <c:out value="${FAQ.noticeTitle}" />  
+	                   </a>
+	                </td>
+	               <td><c:out value="${FAQ.noticeWriter}" /></td>
+	               <td><fmt:formatDate pattern="yyyy-MM-dd" value="${FAQ.noticeRegdate}" /></td>
+				</li>
+				</c:if>
+			</c:forEach>
+		</div> --%>
