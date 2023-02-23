@@ -50,19 +50,6 @@ public class GoodsServiceImpl implements GoodsService {
 	/* ---------------------------- 상품 리스트 ---------------------------- */
 
 
-
-	
-	@Override
-	public List<GoodsBean> profileGoodsList(int memberNum) throws Exception {
-		return goodsMapper.profileGoodsList(memberNum);
-	}
-
-	@Override
-	public List<GoodsBean> selectCartGoodsList(Criteria2 cri) throws Exception {
-		return goodsMapper.selectCartGoodsList(cri);
-	}
-
-
 	/** 은정: 상품 리스트 가져오기 (List)*/
 
 
