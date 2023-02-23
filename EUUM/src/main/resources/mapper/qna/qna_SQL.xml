@@ -89,7 +89,7 @@ ORDER BY
      <![CDATA[	 
 	ORDER BY  qna_nid DESC, qna_ordered ASC) 
     q ) qq
-where rnum between (#{pageNum}-1) * #{amount} and #{pageNum} * #{amount}	  
+where rnum between (#{pageNum}-1) * #{amount} +1 and #{pageNum} * #{amount}
 	]]>		   
      </select>  
      

@@ -20,16 +20,30 @@
 			<ul>
 				<li><a href="#about">이용안내</a></li>
 				<li><a href="/request/requestList">의뢰게시판</a></li>
-				<li><a href="#events">공지사항</a></li>
+
+
+				<li class="dropdown"><a href="#"><span>공지사항</span> <i
+						class="bi bi-chevron-down dropdown-indicator"></i></a>
+
+					<ul>
+						<li><a href="/notice/notice">공지사항</a></li>
+						<li><a href="/qna/List">고객문의</a></li>
+
+					</ul>
+				</li>
+
+
 				<li class="dropdown"><a href="#"><span>카테고리</span> <i
 						class="bi bi-chevron-down dropdown-indicator"></i></a>
+						
 					<ul>
 						<li><a href="/goods/goodsList">캐릭터 / 일러스트</a></li>
-						<li><a href="#">일러스트</a></li>
-						<li><a href="#">디자인</a></li>
-						<li><a href="#">3D 모델링</a></li>
-						<li><a href="#">웹툰 / 만화</a></li>
+						<li><a href="/goods/goodsList">일러스트</a></li>
+						<li><a href="/goods/goodsList">디자인</a></li>
+						<li><a href="/goods/goodsList">3D 모델링</a></li>
+						<li><a href="/goods/goodsList">웹툰 / 만화</a></li>
 					</ul></li>
+					
 				<li><a href="/#contact">오시는길</a></li>
 			</ul>
 		</nav>
