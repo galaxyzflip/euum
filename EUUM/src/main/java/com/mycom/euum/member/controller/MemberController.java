@@ -1,6 +1,8 @@
 package com.mycom.euum.member.controller;
 
+
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,8 +25,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.github.scribejava.core.model.OAuth2AccessToken;
+import com.mycom.euum.goods.bean.GoodsBean;
+import com.mycom.euum.goods.service.GoodsService;
 import com.mycom.euum.member.bean.MemberBean;
 import com.mycom.euum.member.bean.SellerBean;
+import com.mycom.euum.member.mapper.MemberMapper;
 import com.mycom.euum.member.service.KakaoService;
 import com.mycom.euum.member.service.MemberService;
 import com.mycom.euum.naver.NaverLoginBO;
@@ -35,8 +41,11 @@ import lombok.extern.log4j.Log4j;
 @Log4j
 @AllArgsConstructor
 public class MemberController {
-
+	private GoodsService goodsService;
 	private MemberService memberService;
+
+	private MemberMapper memberMapper;
+
 	private NaverLoginBO naverLoginBO;
 	private KakaoService ks;
 	
@@ -116,9 +125,13 @@ public class MemberController {
 
     }
 	
+    
+    //로그인 폼으로 이동
 	@RequestMapping(value ="/member/loginForm", method= {RequestMethod.GET, RequestMethod.POST})
 	public String home(Model model, HttpSession session) {
 		String naverAuthUrl = naverLoginBO.getAuthorizationUrl(session);
+		
+		//naver 로그인 url 을 컨트롤러에서 만들어서 보냄... 카카오 로그인 url 은 jsp 에 있음...
 		model.addAttribute("url", naverAuthUrl);
 		
 		return "member/loginForm";
@@ -222,14 +235,40 @@ public class MemberController {
 	public String joinFormKakao() {
 		return "/member/joinForm3";
 	}
-	
-	
-	@GetMapping("/main")
-	public String test(HttpServletRequest request) {
+	@GetMapping("/")
+	public String main(Model model) {
 
+		List<SellerBean> seller = memberMapper.mainSellerList(); // 수정
+		List<GoodsBean> goods = memberMapper.mainGoodsList();
+		int memberCount = memberMapper.memberCount();
+		int goodsCount = memberMapper.goodsCount();
+		int orderCount = memberMapper.orderCount();
+		int sellerCount = memberMapper.sellerCount();
+
+		log.info("==============seller : " + seller);
+		log.info("==============goods : " + goods);
+		log.info("==============memberc : " + memberCount);
+		log.info("==============goodsc : " + goodsCount);
+		log.info("==============orderc : " + orderCount);
+		log.info("==============sellerc : " + sellerCount);
+
+		model.addAttribute("seller", seller);
+		model.addAttribute("goods", goods);
+		model.addAttribute("memberCount", memberCount);
+		model.addAttribute("goodsCount", goodsCount);
+		model.addAttribute("orderCount", orderCount);
+		model.addAttribute("sellerCount", sellerCount);
+		
 		return "main/main";
-
 	}
+	
+
+
+	@GetMapping("/main")
+	public String main2() {
+		return "redirect:/";
+	}
+
 
 	//
 	// 로그인 폼 로드
@@ -240,12 +279,18 @@ public class MemberController {
 	 */
 	
 
+
+	
+	//로그인 처리, 로그인이 성공하면 로그인한 이용자 정보 세션에 저장
+	//로그인 실패하면 result에 loginFail문자열 담아서 보냄...
+
 	@PostMapping("/member/loginPro")
 	public String loginPro(MemberBean bean, HttpServletRequest request,
 			RedirectAttributes rttr) {
 		HttpSession session = request.getSession();
 
 		MemberBean loginUser = memberService.loginService(bean);
+
 
 		if (loginUser != null) {
 			SellerBean loginSeller = memberService.getSeller(loginUser.getMemberNum());
@@ -256,10 +301,17 @@ public class MemberController {
 				session.setAttribute("loginUser", loginUser);
 				session.setAttribute("loginSeller", loginSeller); // "seller" -> "loginSeller"
 				session.setMaxInactiveInterval(60 * 30);
+
+
 				log.info("셀러회원, loginUser 세션 정보 : " + loginUser.toString() + ", loginSeller 세션 정보 : " + loginSeller.toString());
 				return "redirect:/main";
 			}
 			session.setMaxInactiveInterval(60 * 30);
+
+
+			log.info("*** 멤버 + 셀러");
+
+
 			return "redirect:/main";
 		} else {
 
@@ -269,10 +321,10 @@ public class MemberController {
 	}
 
 	// ajax 로그인 처리
-
+	// 주문폼에서 모달로 계정받아서 처리하고있음...
 	@ResponseBody
 	@PostMapping("/member/loginProAjax")
-	public String loginProAjax(MemberBean bean, HttpServletRequest request) {
+	public String loginProAjax(@RequestBody MemberBean bean, HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		log.info("받아온 bean 출력 : " + bean.toString());
 		MemberBean loginUser = memberService.loginService(bean);
@@ -298,14 +350,13 @@ public class MemberController {
 	}
 
 	// 계정찾기 폼 로드... 인증은 어떻게 할 것인가...
-
 	@GetMapping("/member/findAccountForm")
 	public String findAccountForm() {
 
 		return "member/findAccountForm";
 	}
 
-	// 계정찾기 처리... 하나의 메소드로 처리할것인가 나눠서 작업할것인가...
+	// 아이디 찾기... 
 	@PostMapping("/member/findIdPro")
 //	public String findAccountPro(MemberBean bean, @RequestParam("target") String target) {
 	public String findIdPro(MemberBean bean, Model model) {
@@ -319,6 +370,7 @@ public class MemberController {
 		return "member/findAccountPro";
 	}
 
+	//비밀번호 찾기... 비밀번호 찾기는 아니고 비밀번호 재설정 할 수 있음
 	@PostMapping("/member/findPwPro")
 	public String findPwPro(MemberBean bean, Model model) {
 
@@ -329,6 +381,8 @@ public class MemberController {
 		return "member/resetPassword";
 	}
 
+	
+	//비밀번호 재설정 처리 메소드
 	@PostMapping("/member/resetPass")
 	public String resetPassPro(MemberBean bean, @RequestParam("memberPassword_check") String memberPassword_check,
 			RedirectAttributes rttr) {
@@ -433,5 +487,20 @@ public class MemberController {
 		return "0";
 
 	}
+
+
+	@GetMapping(value = "/member/sellerProfile")
+	public String sellerProfile(@RequestParam("memberNum") String memberNum, Model model) throws Exception {
+		if(memberNum!=null) {
+		SellerBean sellerProfile = memberService.getSeller(Integer.parseInt(memberNum));
+		model.addAttribute("seller", sellerProfile);
+
+		List<GoodsBean> goodsList =
+		goodsService.profileGoodsList(Integer.parseInt(memberNum));
+		model.addAttribute("goodsList",goodsList);
+		}
+		return "member/sellerProfile";
+	}
+
 
 }

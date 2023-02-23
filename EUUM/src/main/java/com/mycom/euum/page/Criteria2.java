@@ -20,6 +20,7 @@ public class Criteria2 {
 	private String type;
 	private String keyword;
 	private String sortCom; //정렬 
+	private int MemberNum;
 	
 	// 한 페이지에서 보여줄 데이터 개수 : 10
 	public Criteria2() { 

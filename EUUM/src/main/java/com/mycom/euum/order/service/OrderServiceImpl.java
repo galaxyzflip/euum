@@ -25,6 +25,7 @@ import lombok.extern.log4j.Log4j;
 public class OrderServiceImpl implements OrderService{
 
 	
+
 	private OrderMapper orderMapper;
 	private FileUtils fileUtils;
 	private ImageService imageService;
@@ -177,6 +178,53 @@ public class OrderServiceImpl implements OrderService{
 	}
 
 	@Override
+	public String selectSellerOrder1(int sellerNum) {
+		
+		return orderMapper.selectSellerOrder1(sellerNum);
+	}
+	
+	@Override
+	public String selectSellerOrder2(int sellerNum) {
+		
+		return orderMapper.selectSellerOrder2(sellerNum);
+	}
+	
+	@Override
+	public String selectSellerOrder3(int sellerNum) {
+		
+		return orderMapper.selectSellerOrder3(sellerNum);
+	}
+	
+	@Override
+	public String selectSellerOrder4(int sellerNum) {
+		
+		return orderMapper.selectSellerOrder4(sellerNum);
+	}
+	
+	@Override
+	public String selectSellerOrder11(int sellerNum) {
+		
+		return orderMapper.selectSellerOrder11(sellerNum);
+	}
+	
+	@Override
+	public String selectSellerOrder22(int sellerNum) {
+		
+		return orderMapper.selectSellerOrder22(sellerNum);
+	}
+	
+	@Override
+	public String selectSellerOrder33(int sellerNum) {
+		
+		return orderMapper.selectSellerOrder33(sellerNum);
+	}
+	
+	@Override
+	public String selectSellerOrder44(int sellerNum) {
+		
+		return orderMapper.selectSellerOrder44(sellerNum);
+	}
+
 	public int selectOrderCountByMember(OrderCriteria cri) {
 		
 		return orderMapper.selectMemberOrderCount(cri);
@@ -190,6 +238,7 @@ public class OrderServiceImpl implements OrderService{
 
 
 	 
+
 }
 
 

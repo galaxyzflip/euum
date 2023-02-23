@@ -19,9 +19,4 @@ public class AdminController {
 	}
 	
 	
-	@GetMapping("/admin/memberList")
-	public String adminList() {
-		return "admin/memberList";
-	}
-	
 }

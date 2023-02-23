@@ -13,7 +13,7 @@ public interface CommentMapper {
 	
 	public int commentInsert(CommentBean commentBean);
 	
-	public List<CommentBean> commentList(@Param("ccri") CCriteria ccri, @Param("commentOriginamNun") int commentOriginamNun);
+	public List<CommentBean> commentList(@Param("ccri") CCriteria ccri, @Param("requestNum") int requestNum);
 	
 	public CommentBean commentRead(int commentNum);
 	

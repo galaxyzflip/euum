@@ -30,21 +30,7 @@
 	display: inline-block;
 }
 
-.profile_con {
-	margin-top: 40px;
-	margin-bottom: 20px;
-}
 
-.profile_mp {
-	width: 130px;
-	height: 130px;
-	display: inline-block;
-	border-radius: 50%;
-	background-repeat: no-repeat;
-	background-position: 50% 50%;
-	background-size: cover;
-	border: 0;
-}
 
 .hrline {
 	width: 80%;
@@ -80,15 +66,8 @@
 
 	<!-- 메인 내용 -->
 
-	<section id="book-a-table" class="book-a-table">
+	<section id="book-a-table" class="book-a-table" style="    padding: 10px 0;">
 		<div class="container" data-aos="fade-up">
-
-			<div class="section-header">
-				<p style="text-align: left;">
-					나의 <span>관심 작가</span>
-				</p>
-			</div>
-
 			<c:choose>
 				<c:when test="${fn:length(myCartList) > 0}">
 					<c:forEach items="${myCartList}" var="row">
