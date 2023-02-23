@@ -18,14 +18,28 @@
 		NOTICE_WRITER, NOTICE_HITCOUNT, NOTICE_DELETE, NOTICE_CATEGORY
 		from (select rownum rn, NOTICE_NUM, NOTICE_TITLE, NOTICE_REGDATE,
 		                NOTICE_WRITER, NOTICE_HITCOUNT, NOTICE_DELETE, NOTICE_CATEGORY
-		                FROM NOTICE_TBL
+		                FROM (select * from NOTICE_TBL ORDER BY NOTICE_NUM DESC)
 		                WHERE 
      ]]>	
      <include refid="criteria"></include>
      <![CDATA[
-     					rownum <=#{pageNum} * #{amount} AND NOTICE_CATEGORY=1 AND NOTICE_DELETE = 'N')
-		where rn>(#{pageNum}-1) * #{amount} ORDER BY NOTICE_NUM DESC
+     					rownum <=#{pageNum} * #{amount} AND NOTICE_CATEGORY=1 AND NOTICE_DELETE = 'N' ORDER BY NOTICE_NUM DESC)
+		where rn>(#{pageNum}-1) * #{amount} 
 	]]>	
+	 <!-- <![CDATA[
+		select * from
+		(SELECT ROWNUM rn, notice_num, notice_title, notice_regdate, notice_writer,
+		    notice_hitcount, notice_delete, notice_category 
+		    FROM notice_tbl
+		    where 1=1
+	
+	]]>	    
+	<include refid="criteria"></include>
+	<![CDATA[
+		ORDER BY notice_num DESC)
+		where rn between (#{pageNum}-1) * #{amount} and #{pageNum} * #{amount}
+	]]> -->
+		
 <!-- 	<![CDATA[
 		select NOTICE_NUM, NOTICE_TITLE, NOTICE_REGDATE,
 		NOTICE_WRITER, NOTICE_HITCOUNT, NOTICE_DELETE, NOTICE_CATEGORY
@@ -147,7 +161,7 @@
 	</select>
 	
 	<sql id="criteria">
-		<trim prefix="(" suffix=") AND " prefixOverrides="OR">
+		<trim prefix="(" suffix=")AND" prefixOverrides="OR">
 			<foreach item='type' collection="typeArr">
 				<trim prefix="OR">
 					<choose>

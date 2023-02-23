@@ -59,6 +59,8 @@
 			<div class="bg-white py-2 collapse-inner rounded">
 				<h6 class="collapse-header">게시판 목록:</h6>
 
+				<a class="collapse-item" href="/admin/notice">공지사항</a> 
+
 				<a class="collapse-item" href="/admin/requestList">의뢰게시판</a> 
 				<a class="collapse-item" href="/admin/goodsQNAList">상품문의</a> 
 				<a class="collapse-item" href="/admin/reviewList">상품리뷰</a>

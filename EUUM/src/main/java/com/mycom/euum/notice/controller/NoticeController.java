@@ -57,6 +57,27 @@ public class NoticeController {
 		return "notice/noticeList";
 	}
 	
+	@GetMapping("/admin/notice")
+	public String adminNoticeList(Model model, Criteria cri) {
+		
+//		int noticeCategory = noticeService.category();
+//		
+//		System.out.println("category----------------------" + noticeCategory);
+		
+		
+		model.addAttribute("list",noticeService.noticeList(cri));
+		model.addAttribute("FAQ", noticeService.FAQList());
+		
+		int total=noticeService.getTotal(cri);     //공지사항(1)번만 토탈로 불러오게 함 
+		model.addAttribute("pageMaker", new PageDTO(cri, total));
+		
+		log.info("sql돌려요=======================" + noticeService.noticeList(cri));
+		log.info("이거 전체 몇개냐=======================" + new PageDTO(cri, total));
+		log.info("모델에 뭐들었지=======================" + model);
+		
+		return "notice/noticeList";
+	}
+	
 	
 	//공지사항 등록 폼으로 이동
 	@GetMapping("/notice/noticeInsertForm")

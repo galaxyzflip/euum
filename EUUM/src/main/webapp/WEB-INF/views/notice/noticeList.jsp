@@ -1,11 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
 <!DOCTYPE html>
 <html>
 <style>
+
 /* body{
 margin-top: 100px;
 font-family: 'Trebuchet MS', serif;
@@ -39,20 +40,22 @@ ul.tabs li{
 	cursor: pointer;
 }
 
+
 ul.tabs li.current{
 	/* background: #ededed; */
 	/* color: #222; */
 	list-style:none;
     padding-left:0px;
+
 }
 
-.tab-content{
+.tab-content {
 	display: none;
 	/* background: #ededed; */
 	padding: 15px;
 }
 
-.tab-content.current{
+.tab-content.current {
 	display: inherit;
 	
 }
@@ -121,14 +124,54 @@ ul.tabs li.current{
 }
 
 
-/* #tab-1{
-    clear: both;
-    width: 100%;
-    margin-top: 4px;
-    float: left;
-    text-align: left;
-    overflow: hidden;
-} */
+.tab-content . {
+	padding-left: 0px;
+	padding-right: 0px;
+}
+
+.notice-table {
+	width: 700px;
+	margin-left: auto;
+	margin-right: auto;
+	border-right: none;
+	border-left: none;
+}
+
+.notice-table thead tr {
+	height: 20px;
+	text-align: center;
+	border-bottom: 1px #777 solid;
+	border-top: 1px #777 solid;
+}
+
+.notice-table thead tr td {
+	text-align: center;
+	border-bottom: 1px #dadada solid;
+}
+
+.notice-table tbody tr {
+	height: 30px;
+}
+
+.notice-table tbody td {
+	padding: 5px;
+	border-bottom: 1px #dadada solid;
+}
+
+.search-box {
+	
+}
+
+.row {
+	height: 50px;
+	width: 700px;
+	margin: auto;
+}
+
+.tab-box {
+	width: 700px;
+	margin: auto;
+}
 
 </style>
 <head>
@@ -138,11 +181,20 @@ ul.tabs li.current{
 <title>Insert title here</title>
 </head>
 <body>
-<!-- 카테고리 값 넣어줘야 함  -->
-<br/><br/><br/><br/><br/><br/><br/><br/>
-	
+
+	<!-- 카테고리 값 넣어줘야 함  -->
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+
 	<div class="container">
-		
+
+
 		<div class="tab-box">
 			<ul class="tabs">
 				<li class="tab-link current" data-tab="tab-1"><div>공지사항</div></li>
@@ -150,7 +202,7 @@ ul.tabs li.current{
 				<li class="tab-link" data-tab="tab-3"><div>전문가FAQ</div></li>
 			</ul>
 		</div>
-		
+
 		<div class='row'>
 			<div class="search-box">
 
@@ -165,25 +217,33 @@ ul.tabs li.current{
 						<option value="W"
 							<c:out value="${pageMaker.cri.type eq 'W'?'selected':''}"/>>작성자</option>
 						<option value="TC"
-							<c:out value="${pageMaker.cri.type eq 'TC'?'selected':''}"/>>제목 or 내용</option>
+
+							<c:out value="${pageMaker.cri.type eq 'TC'?'selected':''}"/>>제목
+							or 내용</option>
 						<option value="TW"
-							<c:out value="${pageMaker.cri.type eq 'TW'?'selected':''}"/>>제목 or 작성자</option>
+							<c:out value="${pageMaker.cri.type eq 'TW'?'selected':''}"/>>제목
+							or 작성자</option>
 						<option value="TWC"
-							<c:out value="${pageMaker.cri.type eq 'TWC'?'selected':''}"/>>제목 or 내용 or 작성자</option>
-					</select> 
-					<input type='text' name='keyword'value='<c:out value="${pageMaker.cri.keyword}"/>' /> 
-					<input type='hidden' name='pageNum' value='<c:out value="${pageMaker.cri.pageNum}"/>' /> 
-					<input type='hidden' name='amount' value='<c:out value="${pageMaker.cri.amount}"/>' />
+							<c:out value="${pageMaker.cri.type eq 'TWC'?'selected':''}"/>>제목
+							or 내용 or 작성자</option>
+					</select> <input type='text' name='keyword'
+						value='<c:out value="${pageMaker.cri.keyword}"/>' /> <input
+						type='hidden' name='pageNum'
+						value='<c:out value="${pageMaker.cri.pageNum}"/>' /> <input
+						type='hidden' name='amount'
+						value='<c:out value="${pageMaker.cri.amount}"/>' />
+
 					<button class='btn btn-default'>Search</button>
 				</form>
 			</div>
 		</div>
+
 		
 		<div id="tab-1" class="tab-content current"> 
 
 
 
-		
+
 			<table class="notice-table" id="tab-1">
 				<thead>
 					<tr>
@@ -201,46 +261,49 @@ ul.tabs li.current{
 						<tr>
 							<c:if test="${ notice.noticeCategory eq 1}">
 								<td><c:out value="${notice.noticeNum}" /></td>
-								<td><a class='move'	href='<c:out value="${notice.noticeNum}"/>'> 
-										<c:out	value="${notice.noticeTitle}" /></a>
-								</td>
+
+								<td><a class='move'
+									href='<c:out value="${notice.noticeNum}"/>'> <c:out
+											value="${notice.noticeTitle}" /></a></td>
 								<td><c:out value="${notice.noticeWriter}" /></td>
-								<td>
-									<fmt:formatDate pattern="yyyy-MM-dd" value="${notice.noticeRegdate}" />
-								</td>
+								<td><fmt:formatDate pattern="yyyy-MM-dd"
+										value="${notice.noticeRegdate}" /></td>
+
 
 							</c:if>
 						</tr>
 					</c:forEach>
 
 				</tbody>
-			</table>
 
-		
-		
-		
-			<div class='pull-right'>
-				<ul class="pagination">
-				
-					<c:if test="${pageMaker.prev}">
-							<li class="paginate_button previous"><a
-								href="${pageMaker.startPage -1}">Previous</a></li>
-						</c:if>
-	
-						<c:forEach var="num" begin="${pageMaker.startPage}"
-							end="${pageMaker.endPage}">
-							<li class="paginate_button  ${pageMaker.cri.pageNum == num ? "active":""} ">
-								<a href="${num}">${num}</a>
-							</li>
-						</c:forEach>
-	
-						<c:if test="${pageMaker.next}">
-							<li class="paginate_button next"><a
-								href="${pageMaker.endPage +1 }">Next</a></li>
-						</c:if>
-				</ul>
-			
-			</div>
+
+				<tr>
+					<td>
+						<div class='pull-right'>
+							<ul class="pagination">
+
+								<c:if test="${pageMaker.prev}">
+									<li class="paginate_button previous"><a
+										href="${pageMaker.startPage -1}">Previous</a></li>
+								</c:if>
+
+								<c:forEach var="num" begin="${pageMaker.startPage}"
+									end="${pageMaker.endPage}">
+									<li class="paginate_button  ${pageMaker.cri.pageNum == num ? "active":""} ">
+										<a href="${num}">${num}</a>
+									</li>
+								</c:forEach>
+
+								<c:if test="${pageMaker.next}">
+									<li class="paginate_button next"><a
+										href="${pageMaker.endPage +1 }">Next</a></li>
+								</c:if>
+							</ul>
+
+						</div>
+					</td>
+				</tr>
+			</table>
 
 
 		</div>
@@ -261,8 +324,10 @@ ul.tabs li.current{
 				<tbody>
 
 					<c:forEach items="${FAQ }" var="FAQ">
-							<c:if test="${ FAQ.noticeCategory eq 2}">
-						<tr>
+
+						<c:if test="${ FAQ.noticeCategory eq 2}">
+							<tr>
+
 								<td><c:out value="${FAQ.noticeNum}" /></td>
 								<td><a class='move'
 									href='<c:out value="${FAQ.noticeNum}"/>'> <c:out
@@ -272,8 +337,10 @@ ul.tabs li.current{
 								<td><fmt:formatDate pattern="yyyy-MM-dd"
 										value="${FAQ.noticeRegdate}" /></td>
 
+
 						</tr>
 							</c:if>
+
 					</c:forEach>
 
 				</tbody>
@@ -286,7 +353,6 @@ ul.tabs li.current{
 
 
 
-		
 			<table class="notice-table" id="tab-3">
 				<thead>
 					<tr>
@@ -301,134 +367,155 @@ ul.tabs li.current{
 
 					<c:forEach items="${FAQ }" var="FAQ">
 
-							<c:if test= "${ FAQ.noticeCategory eq 3}">
-						<tr>
-								<td><c:out value="${FAQ.noticeNum}" /></td>
-								<td> <a class='move' href='<c:out value="${FAQ.noticeNum}"/>'>	                   
-	                   <c:out value="${FAQ.noticeTitle}" />  
-	                   </a>
-								</td>
-								<td><c:out value="${FAQ.noticeWriter}" /></td>
-								 <td><fmt:formatDate pattern="yyyy-MM-dd" value="${FAQ.noticeRegdate}" /></td>
 
-						</tr>
-							</c:if>
+						<c:if test="${ FAQ.noticeCategory eq 3}">
+							<tr>
+								<td><c:out value="${FAQ.noticeNum}" /></td>
+								<td><a class='move'
+									href='<c:out value="${FAQ.noticeNum}"/>'> <c:out
+											value="${FAQ.noticeTitle}" />
+								</a></td>
+								<td><c:out value="${FAQ.noticeWriter}" /></td>
+								<td><fmt:formatDate pattern="yyyy-MM-dd"
+										value="${FAQ.noticeRegdate}" /></td>
+
+							</tr>
+						</c:if>
 					</c:forEach>
-					
+
+
 				</tbody>
 			</table>
 
 		</div>
-				
-			
-	
-			
-			<form id='actionForm' action="/notice/notice" method='get'>
-				<input type='hidden' name='pageNum' value='${pageMaker.cri.pageNum}'>
-				<input type='hidden' name='amount' value='${pageMaker.cri.amount}'>
-				<input type='hidden' name='type' value='<c:out value="${ pageMaker.cri.type }"/>'> 
-				<input type='hidden' name='keyword' value='<c:out value="${ pageMaker.cri.keyword }"/>'>
-			</form>
-		
-		<c:if test="${loginUser.memberClass eq 'A' }">		
-			<a href="/notice/noticeInsertForm">
-			<input type="button" value="글쓰기"></a> 
+
+
+		<form id='actionForm' action="/notice/notice" method='get'>
+			<input type='hidden' name='pageNum' value='${pageMaker.cri.pageNum}'>
+			<input type='hidden' name='amount' value='${pageMaker.cri.amount}'>
+			<input type='hidden' name='type'
+				value='<c:out value="${ pageMaker.cri.type }"/>'> <input
+				type='hidden' name='keyword'
+				value='<c:out value="${ pageMaker.cri.keyword }"/>'>
+		</form>
+
+		<c:if test="${loginUser.memberClass eq 'A' }">
+			<a href="/notice/noticeInsertForm"> <input type="button"
+				value="글쓰기"></a>
 		</c:if>
-</div>	
-	
-	
+	</div>
+
+
+
 </body>
 </html>
 
 <script>
-$(document).ready(function(){
-	
-	$('ul.tabs li').click(function(){
-		var tab_id = $(this).attr('data-tab');
+	$(document)
+			.ready(
+					function() {
 
-		$('ul.tabs li').removeClass('current');
-		$('.tab-content').removeClass('current');
+						$('ul.tabs li').click(function() {
+							var tab_id = $(this).attr('data-tab');
 
-		$(this).addClass('current');
-		$("#"+tab_id).addClass('current');
-	})
-			
-		$(".move").on("click", function(e){
-			e.preventDefault();
-			actionForm.append("<input type='hidden' name='noticeNum' value='"+$(this).attr("href")+"'>");
-			actionForm.attr("action","/notice/detail");
-			actionForm.submit();
-		});
+							$('ul.tabs li').removeClass('current');
+							$('.tab-content').removeClass('current');
 
-		var actionForm = $("#actionForm");
+							$(this).addClass('current');
+							$("#" + tab_id).addClass('current');
+						})
 
-		$(".paginate_button a").on("click", function(e) {
+						$(".move")
+								.on(
+										"click",
+										function(e) {
+											e.preventDefault();
+											actionForm
+													.append("<input type='hidden' name='noticeNum' value='"
+															+ $(this).attr(
+																	"href")
+															+ "'>");
+											actionForm.attr("action",
+													"/notice/detail");
+											actionForm.submit();
+										});
 
-					e.preventDefault();
+						var actionForm = $("#actionForm");
 
-					console.log('click');
+						$(".paginate_button a").on(
+								"click",
+								function(e) {
 
-					actionForm.find("input[name='pageNum']").val($(this).attr("href"));
-					actionForm.submit();
-				});
-		
-		var searchForm = $("#searchForm");
+									e.preventDefault();
 
-		$("#searchForm button").on("click",function(e) {
-			
+									console.log('click');
 
-			if (!searchForm.find("option:selected").val()) {
-				alert("검색종류를 선택하세요");
-				return false;
-				}
+									actionForm.find("input[name='pageNum']")
+											.val($(this).attr("href"));
+									actionForm.submit();
+								});
 
-				if (!searchForm.find("input[name='keyword']").val()) {
-				alert("키워드를 입력하세요");
-				return false;
-				}
+						var searchForm = $("#searchForm");
 
-				searchForm.find("input[name='pageNum']").val("1");
-				e.preventDefault();
-				searchForm.submit();
+						$("#searchForm button").on(
+								"click",
+								function(e) {
 
-				});
-		$("#regBtn").on("click", function() {
+									if (!searchForm.find("option:selected")
+											.val()) {
+										alert("검색종류를 선택하세요");
+										return false;
+									}
 
-			self.location = "/board/register";
+									if (!searchForm.find(
+											"input[name='keyword']").val()) {
+										alert("키워드를 입력하세요");
+										return false;
+									}
 
-		}); 
-		
+									searchForm.find("input[name='pageNum']")
+											.val("1");
+									e.preventDefault();
+									searchForm.submit();
 
-		/*	var result = '<c:out value="${result}"/>';
+								});
+						$("#regBtn").on("click", function() {
 
-			checkModal(result);
+							self.location = "/board/register";
 
-			history.replaceState({}, null, null);
+						});
 
-			 function checkModal(result) {
+						/*	var result = '<c:out value="${result}"/>';
 
-				if (result === '' || history.state) {
-					return;
-				}
+							checkModal(result);
 
-				if (parseInt(result) > 0) {
-					$(".modal-body").html(
-							"게시글 " + parseInt(result)
-									+ " 번이 등록되었습니다.");
-				}
+							history.replaceState({}, null, null);
 
-				$("#myModal").modal("show");
-			}
-		*/
-			
+							 function checkModal(result) {
 
-})
+								if (result === '' || history.state) {
+									return;
+								}
+
+								if (parseInt(result) > 0) {
+									$(".modal-body").html(
+											"게시글 " + parseInt(result)
+													+ " 번이 등록되었습니다.");
+								}
+
+								$("#myModal").modal("show");
+							}
+						 */
+
+					})
 </script>
 
 
 
-		<!-- FAQ -->
-		<%-- <div id="tab-2" class="tab-content">
+
+<!-- FAQ -->
+<%-- <div id="tab-2" class="tab-content">
+
 			<thead>
 				<tr>
 					<th scope="col">번호</th> 
@@ -452,8 +539,10 @@ $(document).ready(function(){
 				</c:if>
 			</c:forEach>
 		</div> --%>
-			
-		<%-- <div id="tab-3" class="tab-content">
+
+
+<%-- <div id="tab-3" class="tab-content">
+
 			<thead>
 				<tr>
 					<th scope="col">번호</th> 

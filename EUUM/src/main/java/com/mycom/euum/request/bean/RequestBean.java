@@ -18,6 +18,8 @@ public class RequestBean {
 	private String requestWriter;
 	private String requestTitle;
 	private String requestContent;
+	
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date requestRegDate;
 	
 	@DateTimeFormat(pattern = "yyyy-MM-dd")

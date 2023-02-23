@@ -38,7 +38,7 @@
 		             REQUEST_WRITER, REQUEST_DELETE, REQUEST_FINISH, REQUEST_DEAD	
 				FROM(select rownum rn, REQUEST_NUM, REQUEST_STATUS, REQUEST_CATEGORY, REQUEST_USE, REQUEST_TITLE, 
 					  		 REQUEST_WRITER, REQUEST_DELETE, REQUEST_FINISH, REQUEST_DEAD
-				      FROM REQUEST_TBL
+				      FROM (select * from request_tbl order by request_num desc)
 				      WHERE REQUEST_DELETE = 'N']]> 
 				     
 					  <if test="requestUse !='' and requestUse!=null">
@@ -87,7 +87,7 @@
 	<select id="requestDetail" resultType="com.mycom.euum.request.bean.RequestBean">
 		select REQUEST_NUM, REQUEST_CATEGORY, REQUEST_USE, REQUEST_MONEY, MEMBER_NUM,
 				REQUEST_CONTENT, REQUEST_STATUS, REQUEST_TITLE, REQUEST_WRITER,
-				REQUEST_FINISH, REQUEST_DEAD, REQUEST_DELETE
+				REQUEST_FINISH, REQUEST_DEAD, REQUEST_DELETE, REQUEST_REGDATE
 		from REQUEST_TBL
 		where REQUEST_NUM = #{requestNum} AND REQUEST_DELETE='N'
 	</select>
