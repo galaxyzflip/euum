@@ -30,9 +30,7 @@ public class JoinAuthController {
     }
 	
 	
-	
-	
-	
+
 	 @GetMapping("/member/joinAuthAjax")
 	 public String sendOne(@RequestParam(value="mobno") String mobno) {
 		 Random rand = new Random(); 
@@ -46,7 +44,9 @@ public class JoinAuthController {
 		 System.out.println(numStr);
 		 Message message = new Message();
 	        // 발신번호 및 수신번호는 반드시 01012345678 형태로 입력되어야 합니다.
-	        message.setFrom(mobno);
+
+	        message.setFrom("01012345678");
+
 	        message.setTo(mobno);
 	        message.setText("[EUUM] 이음 회원 인증번호는 " + numStr + "입니다.");
 

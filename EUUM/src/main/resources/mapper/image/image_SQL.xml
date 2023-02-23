@@ -113,6 +113,15 @@
 			AND IMAGE_USE_NUM = #{goodsQNANum}
 	 ]]>		   
   </select>
+  
+   <!-- 의종: 공지사항 이미지 가져오기-->
+   <select id="selectNoticeImage" resultType="com.mycom.euum.image.bean.ImageBean">		
+     <![CDATA[
+		SELECT * FROM IMAGE_TBL
+		  WHERE IMAGE_USE = 'notice'
+			AND IMAGE_USE_NUM = #{noticeNum}
+	 ]]>		   
+  </select>
 
 
 </mapper>

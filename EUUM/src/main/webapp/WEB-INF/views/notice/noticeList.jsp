@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
@@ -87,12 +87,12 @@ $(document).ready(function(){
 			
 
 			if (!searchForm.find("option:selected").val()) {
-				alert("°Ë»öÁ¾·ù¸¦ ¼±ÅÃÇÏ¼¼¿ä");
+				alert("ê²€ìƒ‰ì¢…ë¥˜ë¥¼ ì„ íƒí•˜ì„¸ìš”");
 				return false;
 				}
 
 				if (!searchForm.find("input[name='keyword']").val()) {
-				alert("Å°¿öµå¸¦ ÀÔ·ÂÇÏ¼¼¿ä");
+				alert("í‚¤ì›Œë“œë¥¼ ìž…ë ¥í•˜ì„¸ìš”");
 				return false;
 				}
 
@@ -122,8 +122,8 @@ $(document).ready(function(){
 
 				if (parseInt(result) > 0) {
 					$(".modal-body").html(
-							"°Ô½Ã±Û " + parseInt(result)
-									+ " ¹øÀÌ µî·ÏµÇ¾ú½À´Ï´Ù.");
+							"ê²Œì‹œê¸€ " + parseInt(result)
+									+ " ë²ˆì´ ë“±ë¡ë˜ì—ˆìŠµë‹ˆë‹¤.");
 				}
 
 				$("#myModal").modal("show");
@@ -134,27 +134,27 @@ $(document).ready(function(){
 })
 </script>
 
-<meta charset="EUC-KR">
+<meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
 <body>
-<!-- Ä«Å×°í¸® °ª ³Ö¾îÁà¾ß ÇÔ  -->
+<!-- ì¹´í…Œê³ ë¦¬ ê°’ ë„£ì–´ì¤˜ì•¼ í•¨  -->
 <br/><br/><br/><br/><br/><br/><br/><br/>
 	
 	<div class="container">
 
 		<ul class="tabs">
-			<li class="tab-link current" data-tab="tab-1">°øÁö»çÇ×</li>
-			<li class="tab-link" data-tab="tab-2">ÀÇ·ÚÀÎFAQ</li>
-			<li class="tab-link" data-tab="tab-3">Àü¹®°¡FAQ</li>
+			<li class="tab-link current" data-tab="tab-1">ê³µì§€ì‚¬í•­</li>
+			<li class="tab-link" data-tab="tab-2">ì˜ë¢°ì¸FAQ</li>
+			<li class="tab-link" data-tab="tab-3">ì „ë¬¸ê°€FAQ</li>
 		</ul>
 			<thead>
 				<tr>
-					<th scope="col">¹øÈ£</th>
-					<th scope="col">Á¦¸ñ</th>	
-					<th scope="col">ÀÛ¼ºÀÚ</th>
-					<th scope="col">µî·ÏÀÏ</th>
-					<th scope="col">Á¶È¸¼ö</th>
+					<th scope="col">ë²ˆí˜¸</th>
+					<th scope="col">ì œëª©</th>	
+					<th scope="col">ìž‘ì„±ìž</th>
+					<th scope="col">ë“±ë¡ì¼</th>
+					<th scope="col">ì¡°íšŒìˆ˜</th>
 				</tr>			
 			</thead>
 			
@@ -183,17 +183,17 @@ $(document).ready(function(){
 								<option value=""
 									<c:out value="${pageMaker.cri.type == null?'selected':''}"/>>--</option>
 								<option value="T"
-									<c:out value="${pageMaker.cri.type eq 'T'?'selected':''}"/>>Á¦¸ñ</option>
+									<c:out value="${pageMaker.cri.type eq 'T'?'selected':''}"/>>ì œëª©</option>
 								<option value="C"
-									<c:out value="${pageMaker.cri.type eq 'C'?'selected':''}"/>>³»¿ë</option>
+									<c:out value="${pageMaker.cri.type eq 'C'?'selected':''}"/>>ë‚´ìš©</option>
 								<option value="W"
-									<c:out value="${pageMaker.cri.type eq 'W'?'selected':''}"/>>ÀÛ¼ºÀÚ</option>
+									<c:out value="${pageMaker.cri.type eq 'W'?'selected':''}"/>>ìž‘ì„±ìž</option>
 								<option value="TC"
-									<c:out value="${pageMaker.cri.type eq 'TC'?'selected':''}"/>>Á¦¸ñ or ³»¿ë</option>
+									<c:out value="${pageMaker.cri.type eq 'TC'?'selected':''}"/>>ì œëª© or ë‚´ìš©</option>
 								<option value="TW"
-									<c:out value="${pageMaker.cri.type eq 'TW'?'selected':''}"/>>Á¦¸ñ or ÀÛ¼ºÀÚ</option>
+									<c:out value="${pageMaker.cri.type eq 'TW'?'selected':''}"/>>ì œëª© or ìž‘ì„±ìž</option>
 								<option value="TWC"
-									<c:out value="${pageMaker.cri.type eq 'TWC'?'selected':''}"/>>Á¦¸ñ or ³»¿ë or ÀÛ¼ºÀÚ</option>
+									<c:out value="${pageMaker.cri.type eq 'TWC'?'selected':''}"/>>ì œëª© or ë‚´ìš© or ìž‘ì„±ìž</option>
 							</select> 
 							<input type='text' name='keyword'value='<c:out value="${pageMaker.cri.keyword}"/>' /> 
 							<input type='hidden' name='pageNum' value='<c:out value="${pageMaker.cri.pageNum}"/>' /> 
@@ -269,7 +269,7 @@ $(document).ready(function(){
 			</form>
 				
 		<a href="noticeInsertForm">
-		<input type="button" value="±Û¾²±â"></a> 
+		<input type="button" value="ê¸€ì“°ê¸°"></a> 
 
 </div>	
 	

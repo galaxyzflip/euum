@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+   PUBLIC "-//mybatis.org//DTD Mapper 3.0/EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+   
+<mapper namespace="com.mycom.euum.admin.goodsQNA.mapper.AdminGoodsQNAMapper">
+
+    <!-- 의종: 관리자용 상품문의 가져오기 -->
+	<select id="getAdminGQNAList" resultMap="goodsQNA">
+		<![CDATA[
+		select * from goods_qna_tbl
+		order by goods_qna_num desc
+		]]>
+    </select>
+    
+    <!-- 의종: 상품문의 삭제 취소-->
+     <update id="cancelGdelete" parameterType="com.mycom.euum.goodsQNA.bean.GoodsQNABean">
+        <![CDATA[       
+		update goods_qna_tbl
+			set goods_qna_delete = 'N'
+			where GOODS_QNA_NUM = #{goodsQNANum}
+        ]]>	
+    </update> 
+    
+     <!--상품문의 이미지 가져오기-->
+    <select id="getAdminQimage" resultType="com.mycom.euum.image.bean.ImageBean" parameterType="int">
+	   <![CDATA[ 
+	    select * from image_tbl
+          where IMAGE_USE_NUM = #{goodsQNANum}
+          and IMAGE_USE = 'goodsQNA'
+        ]]>	
+	</select> 
+	
+	 <resultMap id="goodsQNA" type="com.mycom.euum.goodsQNA.bean.GoodsQNABean">
+	  <result property="goodsNum" column="GOODS_NUM"/>
+	  <result property="goodsQNANum" column="GOODS_QNA_NUM"/>
+	  <result property="memberNum" column="MEMBER_NUM"/>
+	  <result property="goodsQNAWriter" column="GOODS_QNA_WRITER"/>
+	  <result property="goodsQNATitle" column="GOODS_QNA_TITLE"/>
+	  <result property="goodsQNAContent" column="GOODS_QNA_CONTENT"/>
+	  <result property="goodsQNARegdate" column="GOODS_QNA_REGDATE"/>
+	  <result property="goodsQNASecret" column="GOODS_QNA_SECRET"/>
+	  <result property="goodsQNADelete" column="GOODS_QNA_DELETE"/>
+	  <result property="goodsQNAComment" column="GOODS_QNA_COMMENT"/>	
+	  <collection column="GOODS_QNA_NUM" 
+                  property="imageBean" 
+                  javaType="java.util.List" 
+                  ofType="com.mycom.euum.image.bean.ImageBean" 
+                  select="getAdminQimage">
+      </collection>  
+	</resultMap> 
+
+</mapper>

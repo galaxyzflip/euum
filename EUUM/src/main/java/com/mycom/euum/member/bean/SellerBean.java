@@ -2,7 +2,6 @@ package com.mycom.euum.member.bean;
 
 import java.sql.Date;
 
-
 import lombok.Data;
 
 @Data

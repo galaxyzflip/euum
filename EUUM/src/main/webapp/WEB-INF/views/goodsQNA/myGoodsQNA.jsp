@@ -37,22 +37,29 @@
     </thead>
     <tbody>
      <c:forEach items="${list}" var="var" varStatus="vs">
+    
         <tr data-toggle="collapse" data-target=".demo1${vs.index }">
             <td>답변자이름</td>
             <td>${var.goodsQNATitle }</td>
             <td><fmt:formatDate value="${var.goodsQNARegdate}" pattern="yyyy-MM-dd" />
             
 <!-- modal button -->
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal${vs.index }" onclick="openModal('${var.goodsQNANum}','${var.goodsQNATitle }','${var.goodsQNAContent }')">수정/삭제</button>
-            </td>
-            
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal${vs.index }" onclick="openModal('${var.goodsQNANum}','${var.goodsQNATitle }','${var.goodsQNAContent}','${vs.index }')">수정/삭제</button> 
+        </td>
+    
         </tr>
         <tr>
             <td class="hiddenRow">
                 <div class="collapse demo1${vs.index }">1</div>
             </td>
             <td class="hiddenRow">
-                <div class="collapse demo1${vs.index }">${var.goodsQNAContent }
+                <div class="collapse demo1${vs.index }">
+                
+           <c:forEach var="image" items="${var.imageBean}" > 
+		    <img src="/resources/img/${image.imageUploadPath}${image.imageFileName}" width=200; height=200;>
+		<input type="hidden" class="image${vs.index }" name="image${vs.index }" value="${image.imageUploadPath}${image.imageFileName}">	   
+		   </c:forEach> 
+                ${var.goodsQNAContent }
                 <p>${var.goodsQNAComment }</p>
                 </div>
             </td>
@@ -70,7 +77,7 @@
 
 <!-- modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-   <form id="frm" method="post">
+   <form id="frm" method="post" enctype="multipart/form-data">
 	  <div class="modal-dialog">
 	    <div class="modal-content">
 	      <div class="modal-header">
@@ -82,8 +89,20 @@
 	          <div class="mb-3">
 	            <label for="recipient-name" class="col-form-label">제목:</label>
 	            <input type="text" class="form-control" id="goodsQNATitle" name="goodsQNATitle" value="${var.goodsQNATitle }">
-				<input type="text" name="goodsQNANum" />	          
+				<input type="hidden" name="goodsQNANum" />	          
 	          </div>
+	          
+	          <div id="showImage">이미지
+
+	          
+	          </div>
+	          
+	           <td>
+		      <input type="file" name="uploadFile">
+	          <input type="file" name="uploadFile">	
+	          <input type="file" name="uploadFile">	
+              </td>  
+	          
 	          <div class="mb-3">
 	            <label for="message-text" class="col-form-label">내용:</label>
 	            <textarea class="form-control" id="goodsQNAContent" name="goodsQNAContent"></textarea>
@@ -94,11 +113,16 @@
 	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
 	        <button type="button" class="btn btn-primary" id="delete" data-oper="delete">삭제</button>
 	        <button type="button" class="btn btn-primary" id="modify" data-oper="modify">저장</button>
+
+	
+	    
 	      </div>
 	    </div>
 	  </div>
   </form>
+  
 </div> 
+
 
 <!-- 페이징 -->
 <div class='pull-right'>
@@ -129,6 +153,7 @@
 
 </div>
 
+<br><br><br><br><br><br><br><br><br><br><br><br>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script type="text/javascript">  
@@ -173,13 +198,62 @@ $(document).ready(function(){
    });
 });		
 
-
-function openModal(goodsQNANum,goodsQNATitle,goodsQNAContent){
+ 
+function openModal(goodsQNANum,goodsQNATitle,goodsQNAContent,index){
+/* 	const path = $('input[name=imageUploadPath]').eq(index).val();  
+	const file = $('input[name=imageFileName]').eq(index).val();  */  
+	
 	$('.modal').modal('show');
 	$('input[name="goodsQNANum"]').val(goodsQNANum);
 	$('input[name="goodsQNATitle"]').val(goodsQNATitle);
 	$('textarea[name="goodsQNAContent"]').text(goodsQNAContent);
+	
+   const image = document.getElementsByClassName('image'+index);
+    
+    let inner ='';
+    
+    for(var i=0;i<image.length;i++){
+    	console.log(i + " 번째 파일이름" + image[i].value);
+        
+   		
+    	inner += "<img src='/resources/img/"+ image[i].value +"' width='150' heigh='150'/>";		 	
+        
+    }
+   console.log("이미지" + image) 
+   document.getElementById('showImage').innerHTML = inner;
+
+	
+	
+	
 }
+
+/*  function imageTest(index){
+
+	const path = $('input[name=imageUploadPath]').eq('0').val();  
+	const file = $('input[name=imageFileName]').eq('0').val();   
+	
+
+    alert(path);
+	alert(file); 
+	
+ document.getElementById('showImage').innerHTML = "<img src='/resources/img/"+ path + file + "' width='100' heigh='100'/>";
+
+}    */
+/* 	for(let i=0; i<3; i++){
+
+idx = $('input[name="imageIdx"]').eq(i).val();
+
+const path = $('input[name=imageUploadPath]').eq(i).val();  
+const file = $('input[name=imageFileName]').eq(i).val(); 
+
+document.getElementById('showImage').innerHTML = "<img src='/resources/img/"+ path + file + "' width='100' heigh='100'/>";		 */
+/* alert(path);
+alert(file); 
+}  */ 
+
+	
+
+
 
 
 </script>  

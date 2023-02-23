@@ -3,6 +3,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <div class="myGoods">
+
 		<div class="myGoodsList" style="padding-bottom:20px">
 			<li>[내 상품]</li>
 			<c:choose>

@@ -61,7 +61,7 @@ $(document).ready(function(){
 				
 			<tr>	
 				<td>작성자
-				<input type="text" name= "requestWriter" value="용주" readonly>
+				<input type="text" name= "requestWriter" value="${loginUser.memberEmail }" readonly>
 				</td>
 			</tr>
 			

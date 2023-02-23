@@ -14,6 +14,7 @@ import com.mycom.euum.image.service.ImageService;
 import com.mycom.euum.order.bean.OrderBean;
 import com.mycom.euum.order.bean.OrderOptionBean;
 import com.mycom.euum.order.mapper.OrderMapper;
+import com.mycom.euum.page.OrderCriteria;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
@@ -108,9 +109,9 @@ public class OrderServiceImpl implements OrderService{
 	}
 
 	@Override
-	public List<OrderBean> selectOrderListByMember(int memberNum) {
+	public List<OrderBean> selectOrderListByMember(OrderCriteria cri) {
 		
-		return orderMapper.selectOrderListByMember(memberNum);
+		return orderMapper.selectOrderListByMember(cri);
 	}
 
 
@@ -142,9 +143,9 @@ public class OrderServiceImpl implements OrderService{
 	}
 
 	@Override
-	public List<OrderBean> selectOrderListBySeller(int sellerNum) {
+	public List<OrderBean> selectOrderListBySeller(OrderCriteria cri) {
 
-		return orderMapper.selectOrderListBySeller(sellerNum);
+		return orderMapper.selectOrderListBySeller(cri);
 	}
 	@Override	
 	public int cancleOrder(OrderBean orderBean) {
@@ -223,6 +224,21 @@ public class OrderServiceImpl implements OrderService{
 		
 		return orderMapper.selectSellerOrder44(sellerNum);
 	}
+
+	public int selectOrderCountByMember(OrderCriteria cri) {
+		
+		return orderMapper.selectMemberOrderCount(cri);
+	}
+
+	@Override
+	public int selectOrderCountBySeller(OrderCriteria cri) {
+		
+		return orderMapper.selectSellerOrderCount(cri);
+	}
+
+
+	 
+
 }
 
 

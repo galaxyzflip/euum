@@ -58,6 +58,7 @@ html,body {
 <div class="container">
    
     <br><br><br><br><br><br>
+    
     <h2>문의 및 답변</h2>
     <form action="/goodsQNA/InsertForm" method="get">
     <button type="submit" class="btn btn-default" >문의하기</button>   
@@ -76,11 +77,13 @@ html,body {
         </tr>
       </thead>
       <c:forEach items="${list}" var="var" varStatus="vs">
-        
+       
+      
       <input type="hidden" id="goodsNum" name="goodsNum" value="${var.goodsNum}"/> 
    
       <tbody class="text-center">
         <tr>
+        
           <td>${var.goodsQNANum}</td>
           
           <c:choose>
@@ -94,10 +97,14 @@ html,body {
           
           <td class="text-left" width="50%">
             <div class="panel-faq-container">
-              <p class="panel-faq-title">${var.goodsQNATitle }</p>
+              <p class="panel-faq-title">${var.goodsQNATitle }
+              </p>
+              
+              
               <div class="panel-faq-answer">              
-                   
-             <%--  <img src="/resources/img/${var.imageUploadPath}${var.imageFileName}" width=200; height=200;>  --%>
+           <c:forEach var="image" items="${var.imageBean}">
+		    <img src="/resources/img/${image.imageUploadPath}${image.imageFileName}" width=200; height=200;>
+		   </c:forEach>       
                 <p>${var.goodsQNAContent }</p>
             
                 <p>${var.goodsQNAComment }</p>

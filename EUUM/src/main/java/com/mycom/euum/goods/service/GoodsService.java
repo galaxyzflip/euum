@@ -19,6 +19,13 @@ public interface GoodsService {
 
 	/* ---------------------------- 상품 리스트 ---------------------------- */
 
+	
+	public List<GoodsBean> profileGoodsList(int memberNum) throws Exception;
+	
+	public List<GoodsBean> selectCartGoodsList(Criteria2 cri) throws Exception;
+	
+
+
 	/** 은정: 상품 리스트 가져오기 (List) */
 	public List<GoodsBean> selectGoodsList(Criteria2 cri);
 
@@ -97,10 +104,20 @@ public interface GoodsService {
 	/** 선민: 상품 등록 시 이미지 업로드 */
 	public List<ImageBean> goodsFileUpload(MultipartFile[] uploadFile, HttpServletRequest request) throws Exception;
 
+
 	/** 선민: 관리자 상품조회 리스트 */
 	public List<GoodsBean> selectAdminGoodsList() throws Exception;
 
 	/** 선민: 관리자 상품 상태변경 */
 	public void updateAdminGoodsStatus(String goodsNum, String goodsStatus) throws Exception;
+
+
+	public List<Map<String, Object>> memberCart(int memberNum) throws Exception;
+	
+
+	
+
+
+
 
 }

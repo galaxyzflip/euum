@@ -15,7 +15,7 @@ public interface NoticeService {
 	
 	public int category();
 	
-	public void noticeInsert(NoticeBean noticeBean);
+	public int noticeInsert(NoticeBean noticeBean);
 	
 	public NoticeBean noticeDetail(int noticeNum);
 	
