@@ -1,34 +1,51 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-	pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
 <!DOCTYPE html>
 <html>
 <style>
-#detail{
+#detail {
+	width: 700px;
 	margin: auto;
 }
 
-#detail td{
+#detail td {
 	float: left;
-	
 }
 
-#detail tr{
-border-bottom:1px solid #dadada
+#detail tr {
+	border-bottom: 1px solid #dadada
 }
 
-thead{
-	font-weight:bold;
+thead {
+	font-weight: bold;
 }
 
+#sBtn3 {
+	display: block;
+	float: left;
+	background-color: #818181;
+	font-size: 14px;
+	letter-spacing: -1px;
+	line-height: 34px;
+	height: 34px;
+	width: 108px;
+	text-align: center;
+	overflow: hidden;
+}
+
+thead td{
+	padding:5px;
+}
 
 
 </style>
 
 <head>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <script type="text/javascript">
 	$(document).ready(function() {
@@ -50,19 +67,18 @@ thead{
 		});
 
 	});
-	/* ÁÙ¹Ù²Ş */
 </script>
 
 <script>
 	$(document).ready(function() {
 		var str = $("#textarea").val();
-		alert(str);
+		/* alert(str); */
 		str = str.replace(/(?:\r\n|\r|\n)/g, '<br />');
 		$("#content").html(str);
 	});
 </script>
 
-<meta charset="EUC-KR">
+<meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
 <body>
@@ -70,71 +86,68 @@ thead{
 	<br />
 	<br />
 	<br />
-	<br />
-	<br />
-	<br />
-	<br />
-	<br />
-	<br />
+
+
 	<div class="main">
-		<form>
-			<table id="detail">
-			
-				<td><input type="hidden" value="${detail.noticeNum }" /></td>
-				
+		<table id="detail">
 			<thead>
-				<td><c:out value="${detail.noticeTitle }" /></td>
+				<tr>
+					<td><input type="hidden" value="${detail.noticeNum }" /></td>
+				</tr>
+
+				<tr>
+					<td><c:out value="${detail.noticeTitle }" /></td>
+				</tr>
+
 			</thead>
-				<tr />
-	
-				<td>µî·ÏÀÏ :</td>
-				<td><fmt:formatDate pattern="yyyy-MM-dd"
-						value="${detail.noticeRegdate}" /> &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;    
-				</td>
-				
 
-				<td>ÀÛ¼ºÀÚ :</td>
-				<td><c:out value="${detail.noticeWriter }" /></td>
-				<tr /><br/><br/><br/><br/>
+			<tbody>
+				<tr>
+					<td>ë“±ë¡ì¼ :</td>
+					<td><fmt:formatDate pattern="yyyy-MM-dd"
+							value="${detail.noticeRegdate}" /> &nbsp;&nbsp;&nbsp;
+						&nbsp;&nbsp;&nbsp;</td>
 
-				
-				<td>
-					<div>
-						<span id="content"></span> 
-						<textarea id="textarea" style="display: none;">${detail.noticeContent }</textarea> 
-					</div>
-				
-					<div>
-					<!--  ÀÌ¹ÌÁö ¸®½ºÆ® -->
-						<c:forEach items="${image}" var="row">
-							<img src="/resources/img/${row.imageUploadPath}${row.imageFileName}" width=350; height=350;>
-						</c:forEach>
-					</div>
-				</td>
-				<tr />
-			</table>
-		</form>
+
+					<td>ì‘ì„±ì :</td>
+					<td><c:out value="${detail.noticeWriter }" /></td>
+				</tr>
+
+				<tr>
+					<td style="padding-top:50px; padding-bottom:50px;">
+						<div>
+							<span id="content"></span>
+							${detail.noticeContent }
+						</div>
+
+						<div>
+							<!-- ì´ë¯¸ì§€ ë¦¬ìŠ¤íŠ¸ -->
+							<c:forEach items="${image}" var="row">
+								<img
+									src="/resources/img/${row.imageUploadPath}${row.imageFileName}"
+									width=350; height=350;>
+							</c:forEach>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td><c:if test="${loginUser.memberClass eq 'A' }">
+							<button data-oper='modify' id="sBtn3">ìˆ˜ì •</button>
+						</c:if>
+						<button data-oper='list' id="sBtn3">ëª©ë¡</button></td>
+				</tr>
+			</tbody>
+		</table>
 
 		<form id="operForm" action="/notice/noticeModifyForm" method="get">
-			<input type="hidden" id="noticeNum" name="noticeNum" value='<c:out value="${detail.noticeNum }"/>'> 
-			<input type="hidden" id="pageNum" name="pageNum" value='<c:out value="${cri.pageNum }"/>'> 
-			<input type="hidden" id="amount" name="amount" value='<c:out value="${cri.amount }"/>'>
+			<input type="hidden" id="noticeNum" name="noticeNum"
+				value='<c:out value="${detail.noticeNum }"/>'> <input
+				type="hidden" id="pageNum" name="pageNum"
+				value='<c:out value="${cri.pageNum }"/>'> <input
+				type="hidden" id="amount" name="amount"
+				value='<c:out value="${cri.amount }"/>'>
 		</form>
-		
-	
-			<c:if test="${loginUser.memberClass eq 'A' }">
-				<button data-oper='modify'>¼öÁ¤</button>
-			</c:if>
-			<button data-oper='list' id="sBtn3">¸ñ·Ï</button>
-		
 
-
-		<%-- <a href='/notice/noticeModifyForm?noticeNum=<c:out value="${detail.noticeNum}"/>'>
-	<input type="button" value="±Û ¼öÁ¤"></a>
-	<td>
-		<a class='move' href='<c:out value="${detail.noticeNum}"/>'>
-		<input type="button" value="±Û ¸ñ·Ï"></a>
-	</td> --%>
 	</div>
 
 </body>

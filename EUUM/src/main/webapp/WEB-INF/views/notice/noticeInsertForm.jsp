@@ -46,7 +46,7 @@ $(document).ready(function(){
 	<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
 
 	<form action="/notice/noticeInsertPro" method="post" enctype="multipart/form-data" id="notice">
-		<table style="margin-left: auto; margin-right: auto;">
+		<table style="margin: auto;" >
 			<tr>
 				<td>제목 <input type="text" name="noticeTitle" id="noticeTitle">
 				</td>
@@ -79,14 +79,17 @@ $(document).ready(function(){
 					<textarea placeholder="입력하세요" name="noticeContent" id="noticeContent"></textarea>
 				</td>
 			</tr>
-		</table>
-
-
+		</form>
+		
 		<div align="center">
-			<button class="reset" type="reset"><span>다시작성</span></button>
-			<button id="noticeSubmit" class="done" type="submit"><span>작성하기</span></button>
+			<tr>
+				<td>
 			
+				<button class="reset" type="reset"><span>다시작성</span></button>
+				<button id="noticeSubmit" class="done" type="submit"><span>작성하기</span></button>
+				</td>
+			</tr>		
 		</div>
-	</form>
+	</table>
 </body>
 </html>
