@@ -211,7 +211,7 @@ border-bottom: 1px solid #e7e7e7;
 					
 					<div class="panel-body">
 						<ul class="chat">
-							<li class='left clearfix' data-commentnum='"+list[i].commentNum+"' data-commentwriter='"+list[i].commentWriter+"'>";
+							<li class='left clearfix' data-commentnum='"+list[i].commentNum+"' data-commentwriter='"+list[i].commentWriter+"'>
 	    	 
 	    	  
 						</ul>
