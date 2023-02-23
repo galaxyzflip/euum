@@ -7,6 +7,7 @@
 <html>
 <style>
 #detail {
+
 	width: 700px;
 	margin: auto;
 }

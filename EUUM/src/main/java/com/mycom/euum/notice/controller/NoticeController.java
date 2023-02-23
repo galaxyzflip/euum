@@ -131,18 +131,22 @@ public class NoticeController {
 	
 	@PostMapping("notice/noticeModifyPro")
 	public String noticeModifyPro(@RequestParam("noticeNum")int noticeNum, NoticeBean noticeBean,MultipartFile[] uploadFile)throws Exception {
-		
-     System.out.println("notice숫자==================" + noticeNum);		
+
      
-     noticeService.noticeModifyPro(noticeBean);
-     
-	log.info("===== 이미지 수정 처리 ====="); 
+    noticeService.noticeModifyPro(noticeBean);
+    
+    int nNum = noticeBean.getNoticeNum(); 
+   
+
+    log.info("===== 이미지 수정 처리 ====="); 
 	List<ImageBean> imageBeanList = fileUtils.noticeFileUpload(uploadFile);
 	
 	  log.info("---------- (6) 이미지파일 정보 DB 저장 ----------");
-	  log.info("이미지 쿼리 동작하기 전 imageBeanList: " + imageBeanList);
-	  imageService.updateImage(imageBeanList, noticeNum);
-		 
+	  log.info("이미지 쿼리 동작하기 전 imageBeanList================== " + imageBeanList);
+	  imageService.updateImage(imageBeanList, nNum);
+	  
+	  log.info("noticeBean후==========" + noticeBean);
+	  log.info("uploadFile후====================" + uploadFile);
 	      return "redirect:/notice/notice";
 	}
 	

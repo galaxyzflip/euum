@@ -89,7 +89,7 @@ ORDER BY
      <![CDATA[	 
 	ORDER BY  qna_nid DESC, qna_ordered ASC) 
     q ) qq
-where rnum between (#{pageNum}-1) * #{amount} and #{pageNum} * #{amount}	  
+where rnum between (#{pageNum}-1) * #{amount} +1 and #{pageNum} * #{amount}
 	]]>		   
      </select>  
      
@@ -110,7 +110,7 @@ where rnum between (#{pageNum}-1) * #{amount} and #{pageNum} * #{amount}
   <!-- 문의글 상세보기 -->
   <select id="qnaDetail" resultType="com.mycom.euum.qna.bean.QNABean">		
      <![CDATA[
-		SELECT MEMBER_NUM, QNA_NUM, QNA_TITLE, QNA_WRITER, QNA_REGDATE, QNA_CONTENT
+		SELECT MEMBER_NUM, QNA_NUM, QNA_TITLE, QNA_WRITER, QNA_REGDATE, QNA_CONTENT, MEMBER_NUM
           FROM (SELECT * FROM QNA_TBL WHERE QNA_NUM = #{qnaNum})
 	 ]]>		   
   </select>

@@ -1,15 +1,46 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib  prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
 <style>
 @media ( min-width : 1200px) .col-xl-4 {
-	flex:0 0 auto;
-	width:20%;
+	flex
+	:
+	0
+	 
+	0
+	 
+	auto
+	;
+	
+	
+	width
+	:
+	20
+	%;
+	
+
 }
 
 @media ( min-width : 992px) .col-lg-8 {
-	flex:0 0 auto;
-	width:100%;
+	flex
+	:
+	0
+	 
+	0
+	 
+	auto
+	;
+	
+	
+	width
+	:
+	100
+	%;
+	
+
 }
 
 .add {
@@ -20,27 +51,29 @@
 	font-size: 16px;
 }
 
-
 .stats-counter {
-    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(https://cdnb.artstation.com/p/assets/images/images/058/265/325/large/quanyi-jianzhux.jpg?1673780860) center center;
-    background-size: cover;
-    padding: 100px 0;
+	background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+		url(https://cdnb.artstation.com/p/assets/images/images/058/265/325/large/quanyi-jianzhux.jpg?1673780860)
+		center center;
+	background-size: cover;
+	padding: 100px 0;
 }
 
-.iconimg{
-	margin-bottom:25px;
+.iconimg {
+	margin-bottom: 25px;
 }
-.loginBtn{
+
+.loginBtn {
 	font-size: 16px;
 	transition: 0.5s;
 	margin-left: 25px;
-	color: var(--font-secondary);
+	color: var(- -font-secondary);
 	font-weight: 600;
-	align-items: center!important;
-	display: flex!important;
+	align-items: center !important;
+	display: flex !important;
 }
 </style>
-	
+
 
 
 <!-- ======= Hero Section ======= -->
@@ -51,24 +84,24 @@
 				class="col-lg-5 order-2 order-lg-1 d-flex flex-column justify-content-center align-items-center align-items-lg-start text-center text-lg-start">
 				<h2 data-aos="fade-up">안전하게 전문가에게 맡기세요</h2>
 				<p data-aos="fade-up" data-aos-delay="100">당신이 필요한 전문가가 당신과의 이음을
-					기다리고 있습니다.</p><br>
-					
+					기다리고 있습니다.</p>
+				<br>
+
 				<c:choose>
-				<c:when test="${loginUser == null}">
-					<!-- 로그인하지 않았을 때 -->
-					<div class="d-flex" data-aos="fade-up" data-aos-delay="200">
-						<a href="member/joinForm1" class="btn-book-a-table">회원가입</a> 
-						<a href="member/loginForm" class="loginBtn">
-						<span>로그인</span></a>
-					</div>
-				</c:when>
-				<c:otherwise>
+					<c:when test="${loginUser == null}">
+						<!-- 로그인하지 않았을 때 -->
+						<div class="d-flex" data-aos="fade-up" data-aos-delay="200">
+							<a href="member/joinForm1" class="btn-book-a-table">회원가입</a> <a
+								href="member/loginForm" class="loginBtn"> <span>로그인</span></a>
+						</div>
+					</c:when>
+					<c:otherwise>
 
 					
 					&nbsp;
 				</c:otherwise>
-			</c:choose>
-				
+				</c:choose>
+
 			</div>
 			<div class="col-lg-5 order-1 order-lg-2 text-center text-lg-start">
 				<img
@@ -83,7 +116,8 @@
 <main id="main">
 
 	<!-- ======= Why Us Section ======= -->
-	<section id="why-us" class="why-us section-bg" style="padding-top: 0px;">
+	<section id="why-us" class="why-us section-bg"
+		style="padding-top: 0px;">
 		<div class="container" data-aos="fade-up">
 
 			<div class="row gy-4">
@@ -164,7 +198,8 @@
 
 				<div class="col-lg-3 col-md-6">
 					<div class="stats-item text-center w-100 h-100">
-						<span data-purecounter-start="0" data-purecounter-end="232"
+						<span data-purecounter-start="0"
+							data-purecounter-end="${memberCount}"
 							data-purecounter-duration="1" class="purecounter"></span>
 						<p>의뢰자</p>
 					</div>
@@ -173,7 +208,8 @@
 
 				<div class="col-lg-3 col-md-6">
 					<div class="stats-item text-center w-100 h-100">
-						<span data-purecounter-start="0" data-purecounter-end="521"
+						<span data-purecounter-start="0"
+							data-purecounter-end="${goodsCount}"
 							data-purecounter-duration="1" class="purecounter"></span>
 						<p>등록된 게시물</p>
 					</div>
@@ -182,7 +218,8 @@
 
 				<div class="col-lg-3 col-md-6">
 					<div class="stats-item text-center w-100 h-100">
-						<span data-purecounter-start="0" data-purecounter-end="1453"
+						<span data-purecounter-start="0"
+							data-purecounter-end="${orderCount}"
 							data-purecounter-duration="1" class="purecounter"></span>
 						<p>진행된 의뢰</p>
 					</div>
@@ -191,7 +228,8 @@
 
 				<div class="col-lg-3 col-md-6">
 					<div class="stats-item text-center w-100 h-100">
-						<span data-purecounter-start="0" data-purecounter-end="32"
+						<span data-purecounter-start="0"
+							data-purecounter-end="${sellerCount}"
 							data-purecounter-duration="1" class="purecounter"></span>
 						<p>전문가</p>
 					</div>
@@ -204,102 +242,65 @@
 	</section>
 	<!-- End Stats Counter Section -->
 
-	
 
 
-	
+
+
 
 	<!-- ======= Chefs Section ======= -->
 	<section id="chefs" class="chefs section-bg">
 		<div class="container" data-aos="fade-up">
 
 			<div class="section-header">
-				<p style="font-size:30px;">
+				<p style="font-size: 30px;">
 					우리의 <span>문제를 해결해줄</span> 전문가
 				</p>
 			</div>
 
 			<div class="row gy-4">
 
-				<div class="col-lg-4 col-md-6 d-flex align-items-stretch"
-					data-aos="fade-up" data-aos-delay="100">
-					<div class="chef-member">
-						<div class="member-img">
-							<img src="https://cdnweb01.wikitree.co.kr/webdata/editor/202205/13/img_20220513145322_7474becc.webp"
-								class="img-fluid" alt="">
-							<div class="social">
-								<a href=""><i class="bi bi-twitter"></i></a> <a href=""><i
-									class="bi bi-facebook"></i></a> <a href=""><i
-									class="bi bi-instagram"></i></a> <a href=""><i
-									class="bi bi-linkedin"></i></a>
-							</div>
-						</div>
-						<div class="member-info">
-							<h4>침착맨</h4>
-							<span>만화가</span>
-							<p>테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트.</p>
-						</div>
-					</div>
-				</div>
-				<!-- End Chefs Member -->
 
-				<div class="col-lg-4 col-md-6 d-flex align-items-stretch"
-					data-aos="fade-up" data-aos-delay="200">
-					<div class="chef-member">
-						<div class="member-img">
-							<img src="https://upload.wikimedia.org/wikipedia/commons/8/81/Joo_Ho-min_%EC%A3%BC%ED%98%B8%EB%AF%BC_161207.png"
-								class="img-fluid" alt="">
-							<div class="social">
-								<a href=""><i class="bi bi-twitter"></i></a> <a href=""><i
-									class="bi bi-facebook"></i></a> <a href=""><i
-									class="bi bi-instagram"></i></a> <a href=""><i
-									class="bi bi-linkedin"></i></a>
+					<c:choose>
+						<c:when test="${fn:length(seller)>0}">
+							<c:forEach items="${seller}" var="row">
+						<div class="col-lg-4 col-md-6 d-flex align-items-stretch"
+							data-aos="fade-up" data-aos-delay="100">
+							<div class="chef-member">
+								<div class="member-img" style="height:445px; bottom-margin:-4px;">
+									<img src="${row.sellerImage}" class="img-fluid" height="445px" alt="">
+									<div class="social">
+										<a href=""><i class="bi bi-twitter"></i></a> <a href=""><i
+											class="bi bi-facebook"></i></a> <a href=""><i
+											class="bi bi-instagram"></i></a> <a href=""><i
+											class="bi bi-linkedin"></i></a> 
+									</div>
+								</div>
+								<div class="member-info">
+									<h4>${row.sellerNickName}</h4>
+									<span>${row.sellerSpecialty}</span>
+									<p>${row.sellerDescription}</p>
+								</div>
 							</div>
 						</div>
-						<div class="member-info">
-							<h4>주호민</h4>
-							<span>일러스트</span>
-							<p>테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스.</p>
-						</div>
-					</div>
-				</div>
-				<!-- End Chefs Member -->
-
-				<div class="col-lg-4 col-md-6 d-flex align-items-stretch"
-					data-aos="fade-up" data-aos-delay="300">
-					<div class="chef-member">
-						<div class="member-img">
-							<img src="https://file.mk.co.kr/meet/neds/2021/06/image_readtop_2021_542687_16228104364670690.jpg"
-								class="img-fluid" alt="">
-							<div class="social">
-								<a href=""><i class="bi bi-twitter"></i></a> <a href=""><i
-									class="bi bi-facebook"></i></a> <a href=""><i
-									class="bi bi-instagram"></i></a> <a href=""><i
-									class="bi bi-linkedin"></i></a>
-							</div>
-						</div>
-						<div class="member-info">
-							<h4>기안</h4>
-							<span>만화가</span>
-							<p>테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트.</p>
-						</div>
-					</div>
-				</div>
-				<!-- End Chefs Member -->
+						</c:forEach>
+					</c:when>
+				</c:choose>
+					
+				
 
 			</div>
 
 		</div>
 	</section>
 	<!-- End Chefs Section -->
-	
-	
+
+
 	<!-- ======= Events Section ======= -->
 	<section id="events" class="events">
 		<div class="container-fluid" data-aos="fade-up">
 
 			<div class="section-header">
-				<p style="font-size:30px;">
+				<p style="font-size: 30px;">
 					<span>인기있는</span> 게시물
 				</p>
 			</div>
@@ -307,34 +308,21 @@
 			<div class="slides-3 swiper" data-aos="fade-up" data-aos-delay="100">
 				<div class="swiper-wrapper">
 
+
+					<c:choose>
+						<c:when test="${fn:length(goods)>0}">
+							<c:forEach items="${goods}" var="row">
 					<div
 						class="swiper-slide event-item d-flex flex-column justify-content-end"
-						style="background-image: url(https://i.pinimg.com/564x/0d/be/89/0dbe89275cc20f915bcafa722f302dea.jpg)">
-						<h3>게시물이름1</h3>
-						<div class="price align-self-start">9,900￦</div>
-						<p class="description">테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트</p>
+						style="background-image: url(${row.goodsImage1})">
+						<h3>${row.goodsName }</h3>
+						<div class="price align-self-start"><fmt:formatNumber value="${row.goodsPrice}" pattern="#,###,###" />￦</div>
+						<p class="description">${fn:substring(row.goodsContent,0,90) }</p>
 					</div>
+					</c:forEach>
+					</c:when>
+					</c:choose>
 					<!-- End Event item -->
-
-					<div
-						class="swiper-slide event-item d-flex flex-column justify-content-end"
-						style="background-image: url(https://cdnb.artstation.com/p/assets/images/images/058/882/015/large/jjjjjam-kiwi1.jpg?1675175358)">
-						<h3>게시물이름2</h3>
-						<div class="price align-self-start">80,000￦</div>
-						<p class="description">테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트</p>
-					</div>
-					<!-- End Event item -->
-
-					<div
-						class="swiper-slide event-item d-flex flex-column justify-content-end"
-						style="background-image: url(https://i.pinimg.com/564x/3a/4c/c6/3a4cc6f6c8e3cacca7a870f9b0791997.jpg)">
-						<h3>게시물이름3</h3>
-						<div class="price align-self-start">980,000￦</div>
-						<p class="description">테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트	
-						</p>
-					</div>
-					<!-- End Event item -->
-
 				</div>
 				<div class="swiper-pagination"></div>
 			</div>
@@ -342,18 +330,18 @@
 		</div>
 	</section>
 	<!-- End Events Section -->
-	
-	
+
+
 
 
 
 	<!-- ======= Contact Section ======= -->
 	<section id="contact" class="contact">
-		<div style="margin-top:10px;">&nbsp</div>
+		<div style="margin-top: 10px;">&nbsp</div>
 		<div class="container" data-aos="fade-up">
 
 			<div class="section-header">
-				<p style="font-size:25px;">
+				<p style="font-size: 25px;">
 					도움이 필요하시다면 <span>회사로 방문해주세요</span>
 				</p>
 			</div>
@@ -406,8 +394,7 @@
 						<div>
 							<h3>영업시간</h3>
 							<div>
-								<strong>월-금:</strong> 10AM - 18PM  <strong>일요일:</strong>
-								Closed
+								<strong>월-금:</strong> 10AM - 18PM <strong>일요일:</strong> Closed
 							</div>
 						</div>
 					</div>

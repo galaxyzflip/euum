@@ -7,13 +7,41 @@
 <head>
 <style>
 .table{
-  margin: auto;
-  width: 1000px;
+  margin-left: 100px;
+  width: 1200px;
   height: 200px;
 }
+ .row, .table{
+   align:center
+}
+/* 검색 */ 
+.row{
+   margin-right: 725px;
+}
+#qnaFoot{
+	width: 65%;
+    margin: 10px auto;
+    display: flex;
+}
+/* 페이징 */
+ .pull-right{
+   margin: 0px 40%;
+   flex:1;
+   width:30%;
+}
+/* 글작성버튼 */
+#writeBtn{
+   flex:1;
+   width:30%;
+   margin-left:10px;
+}
+h1, h6{
+  font-family:맑음 고딕;
+  margin-left:295px;
+}
 
-#write{
-  float: right;
+#main{
+	cursor:pointer;
 }
 </style>
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -26,10 +54,32 @@
 <body>
 
 <br><br><br><br><br><br>
+<h1 id="main">고객 문의</h1>
+<h6>상담 업무 시간 : AM 10시 ~ PM 5시 / 점심 12 ~ 1시. 토, 일, 공휴일 휴무</h6>
+<br>
 <div id="qnaMain" align="center">
-<table class="table">
+	<div class='row'>
+		<div class="col-lg-12">
+			<form id='searchForm' action="/qna/List" method='get'>
+				<select name='type'>
+					
+					<option value="T"
+						<c:out value="${pageMaker.cri.type eq 'T'?'selected':''}"/>>제목</option>
+					<option value="C"
+						<c:out value="${pageMaker.cri.type eq 'C'?'selected':''}"/>>내용</option>
+					<option value="W"
+						<c:out value="${pageMaker.cri.type eq 'W'?'selected':''}"/>>작성자</option>
+				</select> 
+				<input type='text' name='keyword'value='<c:out value="${pageMaker.cri.keyword}"/>' /> 
+				<input type='hidden' name='pageNum' value='<c:out value="${pageMaker.cri.pageNum}"/>' /> 
+				<input type='hidden' name='amount' value='<c:out value="${pageMaker.cri.amount}"/>' />
+				<button class='btn btn-default'>Search</button>
+			</form>
+		</div>
+	</div>
 
-  
+
+<table class="table">
   <thead>
     <tr>
       <th scope="col">번호</th>
@@ -79,28 +129,6 @@
 
 <div id="qnaFoot">
 
-  	<div class='row'>
-		<div class="col-lg-12">
-
-			<form id='searchForm' action="/qna/List" method='get'>
-				<select name='type'>
-					<option value=""
-						<c:out value="${pageMaker.cri.type == null?'selected':''}"/>>--</option>
-					<option value="T"
-						<c:out value="${pageMaker.cri.type eq 'T'?'selected':''}"/>>제목</option>
-					<option value="C"
-						<c:out value="${pageMaker.cri.type eq 'C'?'selected':''}"/>>내용</option>
-					<option value="W"
-						<c:out value="${pageMaker.cri.type eq 'W'?'selected':''}"/>>작성자</option>
-				</select> 
-				<input type='text' name='keyword'value='<c:out value="${pageMaker.cri.keyword}"/>' /> 
-				<input type='hidden' name='pageNum' value='<c:out value="${pageMaker.cri.pageNum}"/>' /> 
-				<input type='hidden' name='amount' value='<c:out value="${pageMaker.cri.amount}"/>' />
-				<button class='btn btn-default'>Search</button>
-			</form>
-		</div>
-	</div>
-
 <div class='pull-right'>
   <ul class="pagination">
  
@@ -125,17 +153,40 @@
 </div>	
 
 
+
+  <%-- 	<div class='row'>
+		<div class="col-lg-12">
+			<form id='searchForm' action="/qna/List" method='get'>
+				<select name='type'>
+					<option value=""
+						<c:out value="${pageMaker.cri.type == null?'selected':''}"/>>--</option>
+					<option value="T"
+						<c:out value="${pageMaker.cri.type eq 'T'?'selected':''}"/>>제목</option>
+					<option value="C"
+						<c:out value="${pageMaker.cri.type eq 'C'?'selected':''}"/>>내용</option>
+					<option value="W"
+						<c:out value="${pageMaker.cri.type eq 'W'?'selected':''}"/>>작성자</option>
+				</select> 
+				<input type='text' name='keyword'value='<c:out value="${pageMaker.cri.keyword}"/>' /> 
+				<input type='hidden' name='pageNum' value='<c:out value="${pageMaker.cri.pageNum}"/>' /> 
+				<input type='hidden' name='amount' value='<c:out value="${pageMaker.cri.amount}"/>' />
+				<button class='btn btn-default'>Search</button>
+			</form>
+		</div>
+	</div> --%>
+
 <form id="actionForm" action="/qna/List" method='get'>
 	<input type='hidden' name='pageNum' value='${pageMaker.cri.pageNum}'>
 	<input type='hidden' name='amount' value='${pageMaker.cri.amount}'>
 	<input type='hidden' name='type' value='<c:out value="${ pageMaker.cri.type }"/>'> 
 	<input type='hidden' name='keyword' value='<c:out value="${ pageMaker.cri.keyword }"/>'>
 </form>
-	
+
+<div id="writeBtn">	
+<button class="btn btn-primary" type="submit" id="write" onclick="location.href='/qna/insertForm';">글쓰기</button>
 </div>
 
-<button class="btn btn-primary" type="submit" id="write" onclick="location.href='/qna/insertForm';">글쓰기</button>
-
+</div>
 
 </div>
  
@@ -165,6 +216,10 @@ function move(index) {
 } 
 
 $(document).ready(function(){
+	
+	$('#main').on('click', function(){
+		self.location.href="/qna/List";
+	})
 	var actionForm = $("#actionForm");
 
 	$(".page-link").on("click", function(e) {

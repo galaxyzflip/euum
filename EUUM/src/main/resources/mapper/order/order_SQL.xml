@@ -231,6 +231,7 @@
 	
 	
 	<!-- order 1개와 order-option n개를 가져올 수 있는 resultMap -->
+	<!-- 현재 resultMap 안쓰고있음... -->
 	<resultMap type="com.mycom.euum.order.bean.OrderBean" id="orderMap">
 		<result property="orderKeyNum" column="order_Key_Num"/>
 		<result property="orderNum" column="order_Num"/>
@@ -300,7 +301,7 @@
         ORDER_CANCLE_DATE,
         ORDER_CANCLE_REASON,
         nvl2(I.IMAGE_USE_NUM, 'Y', 'N') as FILE_YN,
-        nvl2(image_file_name, gi.image_upload_path||'s_'||image_file_name, null) as image_name,
+        nvl2(image_file_name, gi.image_upload_path||image_file_name, null) as image_name,
         nvl2(review_num, 'Y', 'N') as reviewYn,
         review_num
         
@@ -322,8 +323,6 @@
         
         left outer join  (select * from(select rownum,gi.* from image_tbl gi where image_use='goods' order by image_use_num asc) where rowNum <=1 )gi
         on  gi.image_use_num=g.goods_num
-        
-		
 		
 		]]>
 		
@@ -367,7 +366,7 @@
         ORDER_CANCLE_DATE,
         ORDER_CANCLE_REASON,
         nvl2(I.IMAGE_USE_NUM, 'Y', 'N') as FILE_YN,
-        nvl2(image_file_name, gi.image_upload_path||'s_'||image_file_name, null) as image_name,
+        nvl2(image_file_name, gi.image_upload_path||image_file_name, null) as image_name,
         nvl2(review_num, 'Y', 'N') as reviewYn
         
 		FROM ORDER_TBL O 
@@ -433,7 +432,7 @@
         ORDER_CANCLE_DATE,
         ORDER_CANCLE_REASON,
         nvl2(I.IMAGE_USE_NUM, 'Y', 'N') as FILE_YN,
-        nvl2(image_file_name, gi.image_upload_path||'s_'||image_file_name, null) as image_name,
+        nvl2(image_file_name, gi.image_upload_path||image_file_name, null) as image_name,
         nvl2(review_num, 'Y', 'N') as reviewYn
         
 		FROM ORDER_TBL O 
@@ -552,7 +551,7 @@
 
 	<!-- ORDER_NUM 조건으로 레코드 1개 가져오기 -->
 	<!-- <select id="selectOrder" resultType="com.mycom.euum.order.bean.OrderBean"> -->
-	<select id="selectOrder" resultMap="orderMap">
+	<!-- <select id="selectOrder" resultMap="orderMap">
 		SELECT
 		order_key_num,
 		o.order_num,
@@ -589,9 +588,9 @@
 		
 		where o.order_num = p.order_num
 		and o.ORDER_NUM = #{orderNum}
-	</select>
+	</select> -->
 
-
+	<!-- 페이지용 sql 검색, 정렬까지 모두 끝난 쿼리 위 아래에 덮어서 사용 -->
 	<sql id="pagingPre">
       <![CDATA[
          SELECT
@@ -615,7 +614,7 @@
    
 <sql id="criteriaForStatus">
 
-	
+	<!-- orderStatus를 list 로 담아서 사용... orderStatus 내 값들을 or 로 연결하여 사용 -->
 	<trim prefix="where" prefixOverrides="AND | OR">
 		<if test="orderStatus != null and orderStatus.size != 0">
 		order_status in
@@ -624,10 +623,13 @@
 			</foreach>
 		</if>
 		
+		<!-- 구매자 리스트 조회시 memberNum을 조건으로 조회 -->
 		<if test="memberNum != null and memberNum != ''">
 			and m.member_num = #{memberNum}
 		</if>
 		
+		
+		<!-- 판매자 리스트 조회시 sellerNum을 조건으로 조회 -->
 		<if test="sellerNum != null and sellerNum != ''">
 			and seller_num = #{sellerNum}
 		</if>
@@ -638,6 +640,7 @@
 		
 		
 	
+	<!-- 검색어가 있을경우 검색대상, 검색어 조합으로 조건절 추가 -->
 		<if test="keyword != null and keyword != '' ">
 			<trim prefix="AND (" suffix=")" prefixOverrides="OR | AND" >
 				<foreach item='type' collection="typeArr">
@@ -668,6 +671,89 @@
 	
 </sql>
 
+
+
+<select id="selectSellerOrder1" resultType="com.mycom.euum.order.bean.OrderBean">
+<![CDATA[
+select count (order_status)
+
+from order_tbl o, order_opt_tbl op
+
+where seller_num = #{sellerNum} and o.order_status = 2
+]]>
+</select>
+
+<select id="selectSellerOrder2" resultType="com.mycom.euum.order.bean.OrderBean">
+<![CDATA[
+select count (order_status)
+
+from order_tbl o, order_opt_tbl op
+
+where seller_num = #{sellerNum} and o.order_status = 3
+]]>
+</select>
+
+<select id="selectSellerOrder3" resultType="com.mycom.euum.order.bean.OrderBean">
+<![CDATA[
+select count (order_status)
+
+from order_tbl o, order_opt_tbl op
+
+where seller_num = #{sellerNum} and o.order_status = 1
+]]>
+</select>
+
+<select id="selectSellerOrder4" resultType="com.mycom.euum.order.bean.OrderBean">
+<![CDATA[
+select count (order_status)
+
+from order_tbl o, order_opt_tbl op
+
+where seller_num = #{sellerNum} and o.order_status = 6
+]]>
+</select>
+
+<select id="selectSellerOrder11" resultType="com.mycom.euum.order.bean.OrderBean">
+<![CDATA[
+select sum(order_opt_price)
+
+from order_tbl o, order_opt_tbl op
+
+where seller_num = #{sellerNum} and o.order_status = 2
+]]>
+</select>
+
+<select id="selectSellerOrder22" resultType="com.mycom.euum.order.bean.OrderBean">
+<![CDATA[
+select sum(order_opt_price)
+
+from order_tbl o, order_opt_tbl op
+
+where seller_num = #{sellerNum} and o.order_status = 3
+]]>
+</select>
+
+<select id="selectSellerOrder33" resultType="com.mycom.euum.order.bean.OrderBean">
+<![CDATA[
+select sum(order_opt_price)
+
+from order_tbl o, order_opt_tbl op
+
+where seller_num = #{sellerNum} and o.order_status = 1
+]]>
+</select>
+
+<select id="selectSellerOrder44" resultType="com.mycom.euum.order.bean.OrderBean">
+<![CDATA[
+select sum(order_opt_price)
+
+from order_tbl o, order_opt_tbl op
+
+where seller_num = #{sellerNum} and o.order_status = 6
+]]>
+</select>
+
+<!-- 정렬용 sql... 정렬대상, 정렬방식을 필요 -->
 <sql id="sort">
 
 	<if test="sortType != 'order_status'">
@@ -687,6 +773,7 @@
 	</if>
 
 </sql>
+
 
 
 </mapper>

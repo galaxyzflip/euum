@@ -75,7 +75,6 @@
 
 #sellerInfo #section3 {
     margin-left: 54px;
-    width: 300px;
     overflow: hidden;
 }
 
@@ -147,6 +146,7 @@ input[type='file'] {
     font-size: 13px;
     margin: 0 auto;
     border-radius: 3px;
+    
 }
 
 .rBtn_dGray {
@@ -226,15 +226,15 @@ input[type='file'] {
 
 <div id="section1">
 <ul class="name">${seller.sellerNickName}</ul>
-<ul class="brief default">${seller.sellerDescription}</ul>
+<ul class="brief default" id="text">${seller.sellerDescription}</ul>
 </div>
 
 
 <div id="section2">
-<ul class="line left_right_ol"><ol>결제완료</ol><ol class="lsp0">0건 / 0원</ol></ul>
-<ul class="line left_right_ol"><ol>작업중</ol><ol class="lsp0">0건 / 0원</ol></ul>
-<ul class="line left_right_ol"><ol>입금대기중</ol><ol class="lsp0">0건 / 0원</ol></ul>
-<ul class="left_right_ol"><ol>완료</ol><ol class="lsp0">0건 / 0원</ol></ul>
+<ul class="line left_right_ol"><ol>결제완료</ol><ol class="lsp0">${sellerOrder1.orderStatus}건 / ${sellerOrder11.orderOptPrice}원</ol></ul>
+<ul class="line left_right_ol"><ol>작업중</ol><ol class="lsp0">${sellerOrder2.orderStatus}건 / ${sellerOrder22.orderOptPrice}원</ol></ul>
+<ul class="line left_right_ol"><ol>입금대기중</ol><ol class="lsp0">${sellerOrder3.orderStatus}건 / ${sellerOrder33.orderOptPrice}원</ol></ul>
+<ul class="left_right_ol"><ol>완료</ol><ol class="lsp0">${sellerOrder4.orderStatus}건 / ${sellerOrder44.orderOptPrice}원</ol></ul>
 </div>
 
 
@@ -315,7 +315,7 @@ input[type='file'] {
 <ol>소개글</ol>
 <ol>
 <dl>
-<textarea name="sellerDescription" rows="5" maxlength="300" placeholder="※ 연락수단과 관련된 내용 불가, SNS 홍보 불가.(한글 기준 100자 이내)">${seller.sellerDescription}</textarea>
+<textarea id="textarea" name="sellerDescription" rows="5" maxlength="300" placeholder="※ 연락수단과 관련된 내용 불가, SNS 홍보 불가.(한글 기준 100자 이내)">${seller.sellerDescription}</textarea>
 </dl>
 <dl>
 <font class="comment orange Ldefault">
@@ -388,6 +388,13 @@ input[type='file'] {
 </body>
 
 <script>
+
+/* 자기소개 글 줄바꿈 */
+var str = $("#textarea").val();
+
+str = str.replace(/(?:\r\n|\r|\n)/g, '<br />');
+
+$("#text").html(str);
 
 /* radio 버튼 값 표시 */
 

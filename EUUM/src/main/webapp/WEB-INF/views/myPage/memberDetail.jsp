@@ -129,6 +129,10 @@
     float: right;
 }
 
+#orgButton {
+    display: none; 
+}
+
 #orgFile {
     display: none; 
 }
@@ -166,24 +170,52 @@
 <div>휴대전화 번호</div>
 <div class="left_ol cf">
 <div class="lsp0" style="line-height: 32px; margin-right: 20px">${memberDetail.memberMobile}</div>
+<div class="rBtn_lGray" style="height:25px; line-height: 25px; margin-top:2px" onclick="onDisplay();">전화번호 변경</div>
 </div>
 </li>
 
-<div id="change_phone" class="cf">
+<!-- 									<div class="int_mobile_area" id="phoneNoBox" style="display:none ;">
+										<span class="ps_box int_mobile"> <input type="tel"
+											id="phoneNo" name="memberMobile" placeholder="전화번호 입력"
+											aria-label="전화번호 입력" class="int" maxlength="16"> <label
+											for="phoneNo" class="lbl"></label>
+										</span> <a href="#" class="btn_verify btn_primary gray" id="btnSend"
+											role="button"> <span class="">인증번호 받기</span>
+										</a>
+									</div>
+									<div class="ps_box_disable box_right_space" id="authNoBox" style="display:none ;">
+										<input type="tel" id="authNo" name="authNo"
+											placeholder="인증번호 입력"
+											aria-label="인증번호 입력하세요" aria-describedby="wa_verify"
+											class="int" disabled="" maxlength="4"> <label
+											id="wa_verify" for="authNo" class="lbl"> <span
+											class="wa_blind">인증받은 후 인증번호를 입력해야 합니다.</span> <span
+											class="input_code" id="authNoCode" style="display: none;"></span>
+										</label>
+									</div>
+
+									<span class="error_next_box" id="phoneNoMsg"
+										style="display: none" aria-live="assertive"></span> <span
+										class="error_next_box" id="authNoMsg" style="display: none"
+										aria-live="assertive"></span> <span class="error_next_box"
+										id="joinMsg" style="display: none" aria-live="assertive"></span> -->
+
+<div id="change_phone" class="cf" style="display:none ;">
 <div>
 <div class="left_ol cf">
 <div class="fsize12 " style="margin-bottom: 10px">
-<i class="fa fa-exclamation-circle" style="margin:-3px 4px 0 0; font-size: 14px"></i>번호 인증 후에 저장 버튼을 누르셔야 변경됩니다.</div>
+<i class="fa fa-exclamation-circle" style="margin:-3px 4px 0 0; font-size: 14px"></i>저장 버튼이 아닌 변경 버튼을 누르셔야 전화번호가 변경됩니다.</div>
 <div><input type="text" name="memberMobile" id="memberMobile" placeholder="휴대전화 번호"></div>
-<div class="btn_auth">인증</div>
+<div class="btn_auth" onclick="return submit3();">변경</div>
 </div>
 
-<div id="atuhNum" style="margin-top: 10px;">
+<!-- <div id="atuhNum" style="margin-top: 10px;">
 <div class="left_ol">
 <div><input type="text" name="auth_num" id="auth_num" style="width:266px" placeholder="인증번호 입력"></div>
+<input type="button" id="orgButton" class="btn_aauth" onclick="return submit3(this.form);">
 <div class="btn_auth">확인</div>
 </div>
-</div>
+</div> -->
 </div>
 
 <!-- 변경될 번호 입력 및 인증 번호 -->
@@ -245,6 +277,8 @@ function kakaoPost() {
 	}).open();
 }
 
+
+/* 진짜 버튼 기능과 가짜 보이는 버튼 연동 */
 const realButton = document.querySelector('.real-Button');
 const Button = document.querySelector('.Button');
 
@@ -263,12 +297,48 @@ function submit2(frm) {
 	}
 }
 
+function submit3(frmm) {
+	
+	var frmm = document.getElementById("modifyForm");
+	var phone = $("#memberMobile").val();
+	var pcheck = RegExp(/^[0-9]{3}[0-9]{4}[0-9]{4}$/);
+	
+/* 	if (confirm("휴대폰 번호를 변경 하시겠습니까?") == true) {
+		frmm.action = '/myPage/modifyMobilePro';
+		frmm.target = "_self";
+		frmm.method = "post";
+		frmm.submit();
+		alert("휴대폰 번호가 변경 되셨습니다.");
+	} else {
+		return false;
+	} */
+	
+	if (phone == "") {
+	 alert("전화번호를 입력해주세요.");
+	 $("#memberMobile").focus();
+	 return false;
+	}
+	if(!pcheck.test(phone)) {
+	 alert("'-'을 제외한 전화번호 형식에 맞게 입력해주세요.");
+	 $("#memberMobile").val("");
+	 $("#memberMobile").focus();
+	 return false;
+	}else {
+		alert("전화번호가 변경 되었습니다.");
+		frmm.action = '/myPage/modifyMobilePro';
+		frmm.target = "_self";
+		frmm.method = "post";
+		frmm.submit();
+		return true;
+	}
+}
+
 function modifyPro() {
 	
 	var name = $("#memberName").val();
 	var ncheck = RegExp(/^[가-힣]+$/);
 	
-	if(name == ""){
+	if(name == "") {
 	 alert("이름을 입력해주세요.");
 	 $("#memberName").focus();
 	 return false;
@@ -284,6 +354,154 @@ function modifyPro() {
 	}
 	
 }
-		
+
+/* 버튼 클릭시 숨겨진 div 보이기 */
+function onDisplay() { 
+
+$('#change_phone').show();
+
+
+ } 
+
+
+/* function offDisplay() { 
+
+$('#noneDiv').hide(); 
+
+}  */
+
 </script>
+
+<!-- <script>
+
+$(document).ready(function() {
+	defaultScript();
+
+$("#phoneNo").blur(function() {
+	checkPhoneNo();
+});
+
+$("#btnSend").click(function() {
+	sendSmsButton();
+	return false;
+});
+
+}
+
+// 휴대폰 입력 확인
+function checkPhoneNo() {
+	var phoneNo = $("#phoneNo").val();
+	var oMsg = $("#phoneNoMsg");
+	var oInput = $("#phoneNo");
+
+	if (phoneNo == "") {
+		showErrorMsg(oMsg, "필수 정보입니다.");
+		setFocusToInputObject(oInput);
+		return false;
+	}
+//	authFlag = true;   // 인증안할시 활성화
+	hideMsg(oMsg);
+	return true;
+}
+
+// 휴대폰 번호 인증 유효성 검사
+function sendSmsButton() {
+	var phoneNo = $("#phoneNo").val();
+	var oMsg = $("#phoneNoMsg");
+	var email = $("#email").val();
+	var oCode = $("#authNoCode");
+
+
+	phoneNo = phoneNo.replace(/ /gi, "").replace(/-/gi, "");
+	$("#phoneNo").val(phoneNo);
+	authFlag = false;
+
+	$("#authNoMsg").hide();
+	if (!isCellPhone(phoneNo)) {
+		showErrorMsg(oMsg, "형식에 맞지 않는 번호입니다.");
+		return false;
+	}
+	$
+			.ajax({
+				type : "GET",
+				url : "/member/joinAuthAjax?mobno=" + phoneNo,
+				success : function(data) {
+					console.log(data);
+					const checkNum = data;
+					showSuccessMsg(
+							oMsg,
+							"인증번호를 발송했습니다.(유효시간 30분)<br>인증번호가 오지 않으면 입력하신 정보가 정확한지 확인하여 주세요.<br>없는 번호이거나, 가상전화번호는 인증번호를 받을 수 없습니다.");
+					$("#authNo").attr("disabled", false);
+					
+		            //인증하기 이벤트
+					$("#authNo").blur(function(){
+						var authNo = $("#authNo").val();	
+						if(checkNum == authNo){
+							showSuccessMsg(oMsg, "인증이 성공했습니다.");
+							showAuthSuccessBox(oBox, oCode, "일치");
+							$("#phoneNoMsg").hide();
+							authFlag = true;
+							return true;
+						}else {
+							showErrorMsg(oMsg, "인증번호를 다시 확인해주세요.");
+							showAuthErrorBox(oBox, oCode, "불일치");
+							setFocusToInputObject(oInput);
+							authFlag = false;
+						}
+					});
+
+	return false;
+}
+			});
+}
+
+// 포커스를 입력 개체에 설정
+function setFocusToInputObject(obj) {
+	if (submitFlag) {
+		submitFlag = false;
+		obj.focus();
+	}
+}
+
+// 조건에 맞지 않을 시 메세지 출력
+function showErrorMsg(obj, msg) {
+	obj.attr("class", "error_next_box");
+	obj.html(msg);
+	obj.show();
+}
+
+// 조건에 맞을 시 메세지 출력
+function showSuccessMsg(obj, msg) {
+	obj.attr("class", "error_next_box green");
+	obj.html(msg);
+	obj.show();
+}
+
+// 인증 기본 
+function showAuthDefaultBox(oBox, oCode) {
+	oBox.attr("class", "ps_box");
+	oCode.html("");
+	oCode.hide();
+}
+
+// 인증 완료
+function showAuthSuccessBox(oBox, oCode, msg) {
+	oBox.attr("class", "ps_box accord");
+	oCode.html(msg);
+	oCode.show();
+}
+
+// 인증 실패
+function showAuthErrorBox(oBox, oCode, msg) {
+	oBox.attr("class", "ps_box discord");
+	oCode.html(msg);
+	oCode.show();
+}
+
+// 전화번호 정규식
+function isCellPhone(p) {
+	var regPhone = /^((01[1|6|7|8|9])[1-9][0-9]{6,7})$|(010[1-9][0-9]{7})$/;
+	return regPhone.test(p);
+}		
+</script> -->
 </html>

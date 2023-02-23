@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-	pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,13 +18,13 @@ $(document).ready(function(){
 		
 		
 		if(content == "" || content == null){
-			alert("³»¿ëÀ» ÀÔ·Â ÇØ ÁÖ¼¼¿ä.");
+			alert("ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ô·ï¿½ ï¿½ï¿½ ï¿½Ö¼ï¿½ï¿½ï¿½.");
 			
 			return false;
 		}
 		
 		if(title == "" || title == null){
-			alert("Á¦¸ñÀ» ÀÔ·Â ÇØ ÁÖ¼¼¿ä.");
+			alert("ï¿½ï¿½ï¿½ï¿½ ï¿½Ô·ï¿½ ï¿½ï¿½ ï¿½Ö¼ï¿½ï¿½ï¿½.");
 			
 			return false;
 		}
@@ -39,7 +39,7 @@ $(document).ready(function(){
 
 </script>
 
-<meta charset="EUC-KR">
+<meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
 <body>
@@ -48,23 +48,27 @@ $(document).ready(function(){
 	<form action="/notice/noticeInsertPro" method="post" enctype="multipart/form-data" id="notice">
 		<table style="margin: auto;" >
 			<tr>
-				<td>Á¦¸ñ <input type="text" name="noticeTitle" id="noticeTitle">
+
+				<td>ì œëª© <input type="text" name="noticeTitle">
+
 				</td>
 				
 				
-				<td><label for="category">Ä«Å×°í¸® ¼±ÅÃ</label>
+				<td><label for="category">ì¹´í…Œê³ ë¦¬ ì„ íƒ</label>
 				<input type="hidden" id="category"/>
 					<select id="changeCategory" name="noticeCategory">
-							<option value="1">°øÁö»çÇ×</option>
-							<option value="2">ÀÇ·ÚÀÎFAQ</option>
-							<option value="3">Àü¹®°¡FAQ</option>
+							<option value="1">ê³µì§€ì‚¬í•­</option>
+							<option value="2">ì˜ë¢°ì¸FAQ</option>
+							<option value="3">ì „ë¬¸ê°€FAQ</option>
 					</select>
 				</td>
 			</tr>
 				
 			<tr>	
-				<td>ÀÛ¼ºÀÚ
-				<input type="text" name= "noticeWriter" value="°ü¸®ÀÚ" readonly>
+
+				<td>ì‘ì„±ì
+				<input type="text" name= "noticeWriter" value="ìš©ì£¼" readonly>
+
 				</td>
 			</tr>
 			
@@ -75,18 +79,20 @@ $(document).ready(function(){
 			</td></tr>
 
 			<tr>
-				<td>
-					<textarea placeholder="ÀÔ·ÂÇÏ¼¼¿ä" name="noticeContent" id="noticeContent"></textarea>
-				</td>
+
+				<td><textarea placeholder="ì…ë ¥í•˜ì„¸ìš”" name="noticeContent" id="noticeContent"></textarea></td>
+
 			</tr>
 		</form>
 		
 		<div align="center">
+
 			<tr>
 				<td>
-			
-				<button class="reset" type="reset"><span>´Ù½ÃÀÛ¼º</span></button>
-				<button id="noticeSubmit" class="done" type="submit"><span>ÀÛ¼ºÇÏ±â</span></button>
+
+			<button class="reset" type="reset"><span>ë‹¤ì‹œì‘ì„±</span></button>
+			<button class="done" type="submit"><span>ì‘ì„±í•˜ê¸°</span></button>
+
 				</td>
 			</tr>		
 		</div>

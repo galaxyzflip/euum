@@ -6,24 +6,47 @@
 <!DOCTYPE html>
 <html>
 <style>
-.list_li {
+
+/* body{
+margin-top: 100px;
+font-family: 'Trebuchet MS', serif;
+line-height: 1.6
+}
+.container{
+	width: 5000px;
+	margin: 0 auto;
+}
+ */
+
+
+/* ul.tabs{
+	margin: 0px;
+	padding: 0px;
 	list-style: none;
-	padding-left: 0px;
+} */
+
+
+
+.list_li {
+    list-style: none;
+    padding-left: 0px;
 }
 
-ul.tabs li {
+ul.tabs li{
 	background: none;
-	color: #222;
+	color: #222; 
 	display: inline-block;
 	padding: 10px 15px;
 	cursor: pointer;
 }
 
-ul.tabs li.current {
+
+ul.tabs li.current{
 	/* background: #ededed; */
 	/* color: #222; */
-	list-style: none;
-	padding-left: 0px;
+	list-style:none;
+    padding-left:0px;
+
 }
 
 .tab-content {
@@ -34,7 +57,72 @@ ul.tabs li.current {
 
 .tab-content.current {
 	display: inherit;
+	
 }
+
+.tab-content. {
+	padding-left:0px;
+	padding-right:0px;
+}
+
+
+/* body, table, input, textarea, select {
+    font-size: 16.5px;
+    color: #242424;
+    font-style: normal;
+    font-family: "맑은 고딕","Malgun Gothic","돋움", sans-serif;
+    line-height: 140%;
+    letter-spacing: -0.5px;  
+} */
+
+.notice-table{
+	width:700px;
+	margin-left:auto;
+	margin-right:auto;
+	border-right:none;
+	border-left:none;
+}
+
+.notice-table thead tr{
+	
+	height:20px;
+	text-align:center;
+	border-bottom:1px #777 solid;
+	border-top:1px #777 solid;
+}
+
+.notice-table thead tr td{
+	
+	text-align:center;
+	border-bottom:1px #dadada solid;
+}
+
+.notice-table tbody tr{
+	
+	height:30px;
+}
+
+.notice-table tbody td{
+	
+	padding:5px;
+	border-bottom:1px #dadada solid;
+}
+
+.search-box{
+	
+}
+
+.row{
+	height:50px;
+	width:700px;
+	margin:auto;
+}
+
+.tab-box{
+	width:700px;
+	margin:auto;
+}
+
 
 .tab-content . {
 	padding-left: 0px;
@@ -84,6 +172,7 @@ ul.tabs li.current {
 	width: 700px;
 	margin: auto;
 }
+
 </style>
 <head>
 
@@ -92,6 +181,7 @@ ul.tabs li.current {
 <title>Insert title here</title>
 </head>
 <body>
+
 	<!-- 카테고리 값 넣어줘야 함  -->
 	<br />
 	<br />
@@ -103,6 +193,7 @@ ul.tabs li.current {
 	<br />
 
 	<div class="container">
+
 
 		<div class="tab-box">
 			<ul class="tabs">
@@ -126,6 +217,7 @@ ul.tabs li.current {
 						<option value="W"
 							<c:out value="${pageMaker.cri.type eq 'W'?'selected':''}"/>>작성자</option>
 						<option value="TC"
+
 							<c:out value="${pageMaker.cri.type eq 'TC'?'selected':''}"/>>제목
 							or 내용</option>
 						<option value="TW"
@@ -140,12 +232,14 @@ ul.tabs li.current {
 						value='<c:out value="${pageMaker.cri.pageNum}"/>' /> <input
 						type='hidden' name='amount'
 						value='<c:out value="${pageMaker.cri.amount}"/>' />
+
 					<button class='btn btn-default'>Search</button>
 				</form>
 			</div>
 		</div>
 
-		<div id="tab-1" class="tab-content current">
+		
+		<div id="tab-1" class="tab-content current"> 
 
 
 
@@ -167,6 +261,7 @@ ul.tabs li.current {
 						<tr>
 							<c:if test="${ notice.noticeCategory eq 1}">
 								<td><c:out value="${notice.noticeNum}" /></td>
+
 								<td><a class='move'
 									href='<c:out value="${notice.noticeNum}"/>'> <c:out
 											value="${notice.noticeTitle}" /></a></td>
@@ -174,11 +269,13 @@ ul.tabs li.current {
 								<td><fmt:formatDate pattern="yyyy-MM-dd"
 										value="${notice.noticeRegdate}" /></td>
 
+
 							</c:if>
 						</tr>
 					</c:forEach>
 
 				</tbody>
+
 
 				<tr>
 					<td>
@@ -208,6 +305,7 @@ ul.tabs li.current {
 				</tr>
 			</table>
 
+
 		</div>
 
 		<div id="tab-2" class="tab-content">
@@ -226,8 +324,10 @@ ul.tabs li.current {
 				<tbody>
 
 					<c:forEach items="${FAQ }" var="FAQ">
+
 						<c:if test="${ FAQ.noticeCategory eq 2}">
 							<tr>
+
 								<td><c:out value="${FAQ.noticeNum}" /></td>
 								<td><a class='move'
 									href='<c:out value="${FAQ.noticeNum}"/>'> <c:out
@@ -237,8 +337,10 @@ ul.tabs li.current {
 								<td><fmt:formatDate pattern="yyyy-MM-dd"
 										value="${FAQ.noticeRegdate}" /></td>
 
-							</tr>
-						</c:if>
+
+						</tr>
+							</c:if>
+
 					</c:forEach>
 
 				</tbody>
@@ -248,7 +350,6 @@ ul.tabs li.current {
 
 
 		<div id="tab-3" class="tab-content">
-
 
 
 
@@ -266,6 +367,7 @@ ul.tabs li.current {
 
 					<c:forEach items="${FAQ }" var="FAQ">
 
+
 						<c:if test="${ FAQ.noticeCategory eq 3}">
 							<tr>
 								<td><c:out value="${FAQ.noticeNum}" /></td>
@@ -281,12 +383,11 @@ ul.tabs li.current {
 						</c:if>
 					</c:forEach>
 
+
 				</tbody>
 			</table>
 
 		</div>
-
-
 
 
 		<form id='actionForm' action="/notice/notice" method='get'>
@@ -303,6 +404,7 @@ ul.tabs li.current {
 				value="글쓰기"></a>
 		</c:if>
 	</div>
+
 
 
 </body>
@@ -410,8 +512,10 @@ ul.tabs li.current {
 
 
 
+
 <!-- FAQ -->
 <%-- <div id="tab-2" class="tab-content">
+
 			<thead>
 				<tr>
 					<th scope="col">번호</th> 
@@ -436,7 +540,9 @@ ul.tabs li.current {
 			</c:forEach>
 		</div> --%>
 
+
 <%-- <div id="tab-3" class="tab-content">
+
 			<thead>
 				<tr>
 					<th scope="col">번호</th> 
