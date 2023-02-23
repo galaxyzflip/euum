@@ -64,24 +64,7 @@ public class GoodsController {
 	/* ---------------------------- 상품 리스트 ---------------------------- */
 /** 은정: 상품 리스트 - 전체 상품 리스트(02/01 페이징추가) */
 	@GetMapping(value="/goods/goodsList")
-	public String selectGoodsList(Model model, Criteria2 cri, HttpServletRequest request) throws Exception {
-		
-		
-    HttpSession session = request.getSession();
-		MemberBean loginUser = (MemberBean)session.getAttribute("loginUser");
-		log.info("=======================loginUser : "+loginUser);
-		
-		// 로그인이 되어 있을 시
-		if(loginUser!=null) {
-			cri.setMemberNum(loginUser.getMemberNum());
-			List<GoodsBean> goodsList = goodsService.selectCartGoodsList(cri);
-			int total=goodsService.getTotal(cri);
-			model.addAttribute("pageMaker", new PageDTO2(cri, total));
-			model.addAttribute("goodsList", goodsList);
-			return "goods/goodsList";
-		}
-    
-    
+	public String selectGoodsList(Model model, Criteria2 cri, HttpSession session) throws Exception {
     
     log.info("===== 상품 리스트 =====");
 
