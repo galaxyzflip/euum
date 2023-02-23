@@ -16,10 +16,9 @@ public class ImageBean {
 	String imageUploadPath;
 	String imageFileName;
 	String imageFileType;
-	String imageUse;
+	String imageUse; 
 	String originalFileName; // 창선님이 만들었는지 확인
-	int imageUseNum;
-	
+	int imageUseNum; 
 	
 	int imageSequence; 
 	boolean newImage = false;

@@ -15,8 +15,8 @@
 			</c:otherwise>
 		</c:choose>		
 		
-			<div class="div_register">
-			<h1><strong>상품 등록</strong></h1>
+			<div class="div_modify">
+			<h1><strong>상품 수정</strong></h1>
 			<hr style="border:solid 1px #FF6600;"><br/><br/>
 				<table>
 					<tr>
@@ -51,7 +51,7 @@
 					</tr>
 				</table>
 			</div>
-			<div class="div_register">
+			<div class="div_modify">
 				<table>
 					<tr>
 						<th>현재 등록 이미지</th>
@@ -99,7 +99,7 @@
 				* 업로드 중 에러가 발행할 경우 이미지 사이즈를 줄여주세요.
 				</div>
 			</div>
-			<div class="div_register">
+			<div class="div_modify">
 				<table>
 					<tr>
 						<th>제작용도</th>
@@ -155,14 +155,12 @@
 					</tr>
 				</table>
 			</div>
-			<div class="div_register">
+			<div class="div_modify">
 				<table class="opTable">
 					<tr>
 						<th>추가옵션</th>
 						<td>
 							<button type="button" id="opAdd_bt">옵션추가</button>
-							<button type="button" id="test" onclick="copyOptNameArr()">테스트</button>
-							<button type="button" id="test" onclick="test2()">테스트2</button>
 						</td>
 					</tr>
 					<tr>
@@ -173,30 +171,50 @@
 							<div class="input_options" style="width: 130px;">가격</div>
 						</td>
 					</tr>
+					
 					<!-- 옵션수정 -->
 					<c:choose>
 						<c:when test="${fn:length(optionList) > 0}">
-							<c:forEach items="${optionList}" var="row" varStatus="status">
-								<tbody class="opBody_${status.count}" id="opBody_${status.count}">
-									<tr class="opList_1" id="opList_1">
-										<td style="width: 850px;" colspan="2">
-											<div class="input_options" style="width: 146px;"></div>
-											<input type="text" name="goodsOptNameArr" id="input_goodsOptNameArr" style="width: 146px;" class="input_options optNameArr_1 optName">
-											<button type="button" id="opContentAdd_bt" onclick="opContentAdd(1);">+</button>
-											<input type="text" name="goodsOptContentArr" id="input_goodsOptContentArr" style="width: 350px;" class="input_options optContent">
-											<input type="text" name="goodsOptPriceArr" id="input_goodsOptPriceArr" style="width: 130px;" class="input_options optPrice">
-										</td>
-									</tr>
+							<c:forEach items="${optionList}" var="list" varStatus="status1">
+								<tbody class="opBody_${status1.count}" id="opBody_${status1.count}">
+									<c:forEach items="${list}" var="row" varStatus="status2">
+										<tr class="opList_${status2.count}" id="opList_${status2.count}" class="opList_${status2.count}">
+											<td style="width: 850px;" colspan="2">
+												<div class="input_options" style="width: 146px;"></div>
+												<c:choose>
+													<c:when test="${status2.count == 1}">
+														<input type="text" name="goodsOptNameArr" id="input_goodsOptNameArr" value="${row.goodsOptName}" style="width: 146px;" class="input_options optNameArr_${status1.count} optName">
+													</c:when>
+													<c:otherwise>
+														<input type="text" name="goodsOptNameArr" value="${row.goodsOptName}" style="width: 146px;margin-right: 28.5px;visibility:hidden;" class="input_options optName">
+													</c:otherwise>
+												</c:choose>
+
+												<c:choose>
+													<c:when test="${status2.count == 1}">
+														<button type="button" id="opContentAdd_bt" onclick="opContentAdd(${status1.count});">+</button>
+													</c:when>
+												</c:choose>
+												<input type="text" name="goodsOptContentArr" value="${row.goodsOptContent}" style="width: 350px;" class="input_options optContent">
+												<input type="text" name="goodsOptPriceArr" value="${row.goodsOptPrice}" style="width: 130px;" class="input_options optPrice">
+												
+												<c:choose>
+													<c:when test="${status1.count == 1 && status2.count == 1}">
+													</c:when>
+													<c:when test="${status2.count == 1}">
+														<button type="button" id="opContentDel_bt" onclick="opDel(${status1.count});">X</button>
+													</c:when>
+													<c:otherwise>
+														<button type="button" id="opContentDel_bt" onclick="opContentDel(${status1.count}, ${status2.count});">X</button>
+													</c:otherwise>
+												</c:choose>
+											</td>
+										</tr>
+									</c:forEach>
 								</tbody>
 							</c:forEach>
 						</c:when>
 					</c:choose>
-					
-					
-					
-					
-					
-					
 				</table>
 				<div class="caution" style="margin:10px 0 0 150px;">
 					<span class="span_validate" style="margin-left: 0px;" id="goodsOptionMsg" aria-live="assertive"></span>
@@ -205,12 +223,13 @@
 				* 추가옵션은 최소 1개 이상 입력해야 등록, 임시저장이 가능합니다. 
 				</div>
 			</div>
-			<div class="div_register">
+			<div class="div_modify">
 				<table>
 					<tr>
 						<th>상세안내</th>
 						<td>
-							<textarea class="input_text_l" name="goodsContent" id="input_goodsContent" cols="30" rows="5">${goods.goodsContent}</textarea>
+							<textarea class="input_text_l" name="goodsContent" id="input_goodsContent" cols="30" rows="5"></textarea>
+							<textarea id="textarea" style="display:none;">${goods.goodsContent}</textarea>
 						</td>
 					</tr>
 				</table>
@@ -229,15 +248,17 @@
 							<button type="button" id="registerBtn" style="margin-top: 8px">등록</button>
 						</div>
 						<div>
-							<button type="button" id="cancelBtn" style="margin-top: 8px">뒤로가기</button>
+<!-- 							<button type="button" id="cancelBtn" onclick="location.href='/myPage/myGoods'" style="margin-top: 8px">뒤로가기</button> -->
+							<button type="button" id="cancelBtn" onclick="window.history.back();" style="margin-top: 8px">뒤로가기</button>
 						</div>
 					</c:when>
 					<c:otherwise>
 						<div>
-							<button type="button" id="registerBtn">수정 완료</button>
+							<button type="button" id="modifyBtn">수정 완료</button>
 						</div>
 						<div>
-							<button type="button" id="cancelBtn" style="margin-top: 8px">뒤로가기</button>
+<!-- 							<button type="button" id="cancelBtn" onclick="location.href='/myPage/myGoods'" style="margin-top: 8px">뒤로가기</button> -->
+							<button type="button" id="cancelBtn" onclick="window.history.back();" style="margin-top: 8px">뒤로가기</button>
 						</div>
 					</c:otherwise>
 				</c:choose>
@@ -247,33 +268,60 @@
 	</div>
 </div>
 
-
-
 <!-- ------------------------------------------------------------------------------------------ -->
 <script>
+/* 줄바꿈 */
+// str = str.replace(/(?:\r\n|\r|\n)/g, '<br />');
 
-function test2() {
-    console.log("유효성 시작");
-	if(checkUnrealInput()) {
-	    console.log("유효성 O");
-		copyOptNameArr();
-	} else {
-	    console.log("유효성 X");
+
+$(document).ready(function() {
+    let goodsUse = "<c:out value='${goods.goodsUse}'/>";
+    let goodsCategory = "<c:out value='${goods.goodsCategory}'/>";
+    let goodsUseInput;
+    
+    /* goodsUse 초기화 */
+    switch(goodsUse) {
+		case '상업용':
+			goodsUseInput = document.querySelector('input[id=commercial]');
+			break;
+		case '비상업용':
+		    goodsUseInput = document.querySelector('input[id=no_commercial]');
+			break;
+		case '상업용+비상업용':
+		    goodsUseInput = document.querySelector('input[id=all_for_use]');
+			break;
+		default:
+			alert('이거뜨면먼가오류있음');
+			break;
 	}
-	return false;
+	goodsUseInput.setAttribute('checked', true);
+	
+    /* goodsCategory 초기화 */
+    $("#input_goodsCategory").val(goodsCategory).attr("selected", "selected");
+    
+    /* 줄바꿈 */
+    var str = $("#textarea").val();
+    str = str.replace(/\\r\\n|\\n|\\r/gm,"<br>");
+    $("#input_goodsContent").html(str);
+});
+
+
+function modifyValidate() {
+	console.log("유효성 시작");
+	copyOptNameArr();
+	return checkUnrealModifyInput();
+}
+
+function modifyTempValidate() {
+	console.log("유효성 시작");
+	copyOptNameArr();
+	return checkUnrealModifyTempInput();
 }
 
 function registerValidate() {
 	console.log("유효성 시작");
 	copyOptNameArr();
-	console.log(checkUnrealInput());
 	return checkUnrealInput();
-}
-
-function registerTempValidate() {
-	console.log("유효성 시작");
-	copyOptNameArr();
-	return checkUnrealTempInput();
 }
 
 $("#input_goodsCategory").change(function() {
@@ -309,6 +357,18 @@ $("#input_goodsModifyCount").blur(function() {
 $("#input_goodsPeriod").blur(function() {
     checkPeriod();
 });
+$(".input_options").blur(function() {
+    checkOption();
+});
+// $(".optName").blur(function() {
+//     checkOption();
+// });
+// $(".optContent").blur(function() {
+//     checkOption();
+// });
+// $(".optPrice").blur(function() {
+//     checkOption();
+// });
 $("#input_goodsContent").blur(function() {
     checkContent();
 });
@@ -422,6 +482,7 @@ function checkResolution() {
 		console.log("해상도 X");
 	    return false;
 	}
+	
 	console.log("해상도 OK");
 	hideMsg(oMsg);
 	return true;
@@ -537,18 +598,6 @@ function checkOption() {
     return true; // true
 }
 
-// 옵션명 placeholder 유효성
-// function checkOptNameArr(optName, index) {
-// 	var inputTag = $(".optNameArr_" + index);
-	
-// 	if(optName == "") {
-// 		document.getElementsByClassName("optNameArr_" + index)[0].setAttribute("placeholder", "옵션명 입력 필수");
-//     	setFocusToInputObject(inputTag);
-// 		return true;
-// 	} else {
-// 		return false;
-// 	}
-// }
 
 function checkContent() {
     var oMsg = $("#goodsContentMsg");
@@ -569,8 +618,8 @@ function checkContent() {
 // 텍스트기입 공란방지 사후처리
 function PreventBlank(inputValue, inputTag, oMsg) {
 	if(inputValue == "") {
-	    showErrorMsg(oMsg, "필수 입력 사항입니다.");
-    	setFocusToInputObject(inputTag);
+	    showErrorMsg(oMsg, "필수 입력 사항입니다."); // 유효성탈락에 대한 메시지
+    	setFocusToInputObject(inputTag); // 포커스를 줌
 		return true;
 	} else {
 		return false;
@@ -624,10 +673,9 @@ function hideMsg(obj) {
 	obj.hide();
 }
 
-// (상품등록) 유효성 전체 검사
+//(등록) 유효성 전체 검사
 function checkUnrealInput() {
-	if (checkCategory() & checkName() & checkImage() & checkUse() &  checkFormat() & checkSize() & checkResolution() & checkModifyCount() & checkPeriod() & checkOption() & checkContent()) {
-// 	if (checkOption()) {
+	if (checkCategory() & checkName() & checkImage() &checkUse() &  checkFormat() & checkSize() & checkResolution() & checkModifyCount() & checkPeriod() & checkOption() & checkContent()) {
 	    console.log("성공ㅇㅇ");
 	    return true; // true
 	} else {
@@ -636,8 +684,18 @@ function checkUnrealInput() {
 	}
 }
 
+// (수정) 유효성 이미지를 제외한 전체 검사
+function checkUnrealModifyInput() {
+	if (checkCategory() & checkName() & checkUse() &  checkFormat() & checkSize() & checkResolution() & checkModifyCount() & checkPeriod() & checkOption() & checkContent()) {
+	    console.log("성공ㅇㅇ");
+	    return true; // true
+	} else {
+	    console.log("실패ㅜㅜ");
+	    return false;
+	}
+}
 // (임시저장) 유효성 부분 검사
-function checkUnrealTempInput() {
+function checkUnrealModifyTempInput() {
 	if (checkCategory() & checkName() & checkUse() & checkOption()) {
 	    console.log("성공ㅇㅇ");
 	    return true; // true
@@ -651,23 +709,23 @@ function checkUnrealTempInput() {
 
 
 <script>
-let opNum = 1;
-let op = 1;
+let opNum = "<c:out value='${fn:length(optionList)}'/>";
+let op = "<c:out value='${optionContentCount}'/>"; 
 let newBox;
 let opBody;
 let opTable;
 
 $(function() {
-    /* 임시 저장 버튼 */
-    var registerTempBtn = $("#registerTempBtn");
+	/* 상품 수정 버튼 */
+    var modifyBtn = $("#modifyBtn");
 
-	registerTempBtn.click(function() {
-	    if(!registerTempValidate()) {
+	modifyBtn.click(function() {
+	    if(!modifyValidate()) {
 			return false;
 	    }
 		
 		const form = $("#goodsForm");
-		form.attr("action", "/goods/goodsRegisterTempPro");
+		form.attr("action", "/goods/goodsModifyPro");
 		form.attr("method", "post");
 		form.submit();
 	})
@@ -681,10 +739,26 @@ $(function() {
 	    }
 		
 		const form = $("#goodsForm");
-		form.attr("action", "/goods/goodsRegisterPro");
+		form.attr("action", "/goods/goodsModifyTempToRegularPro");
 		form.attr("method", "post");
 		form.submit();
 	})
+	
+	/* 임시저장 버튼 */
+    var modifyTempBtn = $("#modifyTempBtn");
+
+	modifyTempBtn.click(function() {
+	    if(!modifyTempValidate()) {
+			return false;
+	    }
+		
+		const form = $("#goodsForm");
+		form.attr("action", "/goods/goodsModifyTempPro");
+		form.attr("method", "post");
+		form.submit();
+	})
+	
+	
 });
 
 $(document).ready(function() {
@@ -698,7 +772,7 @@ $(document).ready(function() {
 		op++;
 		
 		newBox += '<tbody class="opBody_' + opNum + '" id="opBody_' + opNum + '">';
-		newBox += '<tr class="opList_' + op + '" id="opList_' + op + '">';
+		newBox += '<tr class="opList_' + op + '" id="opList_' + op + '" class="opList_' + op + '">';
 		newBox += '<td style="width: 850px;" colspan="2">';
 		newBox += '<div class="input_options" style="width: 146px;"></div>';
 		newBox += '<input type="text" name="goodsOptNameArr" id="input_goodsOptNameArr" style="width: 146px;margin-left: 4px;margin-right: 2px;" class="input_options optNameArr_' + opNum + ' optName">';
@@ -713,9 +787,21 @@ $(document).ready(function() {
 });
 
 /* 옵션세부항목 개별삭제 버튼 */
-function opContentDel(index) {
-	var opList = document.getElementById("opList_" + index);
-	opList.remove();
+function opContentDel(index1, index2) {
+    console.log(index1 + '의 ' + index2 + '옵션');
+    
+// 	var opBody = document.querySelector("#opBody_" + index1);
+	var opBody = document.getElementById("opBody_" + index1);
+	var opList = opBody.getElementsByClassName("opList_" + index2);
+
+// 	var aaa = '#opBody_'+index1;
+// 	var bbb = '#opList_'+index2;
+// 	var opList = $('aaa bbb');
+	
+    console.log("opBody: " + opBody);
+    console.log("opList: " + opList[0]);
+	
+	opList[0].remove();
 }
 
 /* 옵션 통합삭제 버튼 */
@@ -752,50 +838,24 @@ function copyOptNameArr() {
     }
 }
 
-/* 상세항목 추가 버튼 */
+/* 세부항목 추가 버튼 */
 function opContentAdd(index) {
     newBox = "";
 	opBody = document.querySelector('.opBody_' + index);
     
     op++;
     
-    newBox += '<tr class="opList_' + op + '" id="opList_' + op + '">';
+    newBox += '<tr class="opList_' + op + '" id="opList_' + op + '" class="opList_' + op + '">';
 	newBox += '<td style="width: 850px;" colspan="2">';
 	newBox += '<div class="input_options" style="width: 146px;margin-left:2px;"></div>';
 	newBox += '<input type="text" name="goodsOptNameArr" value="" style="width: 146px;margin-left: 2px;margin-right: 31px;visibility:hidden;" class="input_options optName">';
 	newBox += '<input type="text" name="goodsOptContentArr" style="width: 350px;margin-left: 2px;margin-right: 2px;" class="input_options optContent">';
 	newBox += '<input type="text" name="goodsOptPriceArr" style="width: 130px;margin-left: 2px;margin-right: 4px;" class="input_options optPrice">';
-	newBox += '<button type="button" id="opContentDel_bt" onclick="opContentDel(' + op + ');">X</button>';
+	newBox += '<button type="button" id="opContentDel_bt" onclick="opContentDel(' + index + ', ' + op + ');">X</button>';
 	newBox += '</td></tr>';
 
 	opBody.insertAdjacentHTML('beforeend', newBox);
 }
-
-$(document).ready(function() {
-    let goodsUse = "<c:out value='${goods.goodsUse}'/>";
-    let goodsCategory = "<c:out value='${goods.goodsCategory}'/>";
-    let goodsUseInput;
-    
-    /* goodsUse 초기화 */
-    switch(goodsUse) {
-		case '상업용':
-			goodsUseInput = document.querySelector('input[id=commercial]');
-			break;
-		case '비상업용':
-		    goodsUseInput = document.querySelector('input[id=no_commercial]');
-			break;
-		case '상업용+비상업용':
-		    goodsUseInput = document.querySelector('input[id=all_for_use]');
-			break;
-		default:
-			alert('이거뜨면먼가오류있음');
-			break;
-	}
-	goodsUseInput.setAttribute('checked', true);
-	
-    /* goodsCategory 초기화 */
-    $("#input_goodsCategory").val(goodsCategory).attr("selected", "selected");
-});
 </script>
 
 
@@ -814,9 +874,6 @@ table {
 	border-collapse: separate;
 	border-spacing: 0 5px;
 }
-/* tr { */
-/* 	margin-bottom: 15px; */
-/* } */
 .mainDiv {
 	width: 950px;
 	margin: 130px auto 0 auto;
@@ -862,7 +919,8 @@ table {
 	color: red;
 }
 .thumb {
-	width: 160px;
-	height: 120px;
+	width: 140px;
+	height:105px; 
 }
+
 </style>

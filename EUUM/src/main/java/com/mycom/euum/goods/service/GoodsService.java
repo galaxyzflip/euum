@@ -17,14 +17,14 @@ import com.mycom.euum.page.PageForGoodsDTO;
 
 public interface GoodsService {
 
-	/* ---------------------------- 상품 리스트 ---------------------------- */
-
 	
+	/** 명식: */
 	public List<GoodsBean> profileGoodsList(int memberNum) throws Exception;
 	
+	/** 명식: */
 	public List<GoodsBean> selectCartGoodsList(Criteria2 cri) throws Exception;
-	
 
+	/* ---------------------------- 상품 리스트 ---------------------------- */
 
 	/** 은정: 상품 리스트 가져오기 (List) */
 	public List<GoodsBean> selectGoodsList(Criteria2 cri);
@@ -93,10 +93,10 @@ public interface GoodsService {
 	/** 선민: 상품 상세보기 - 품번에 해당하는 상품의 추가옵션 정보 가져오기 (List) */
 	public List<GoodsOptionBean> selectGoodsOptionInfo(String goodsNum) throws Exception;
 
-	/** 선민: 상품 상세보기 - 품번에 해당하는 상품의 추가옵션 옵션 개수 꺼내오기 (int) */
+	/** 선민: 상품 상세보기 - 품번에 해당하는 상품의 옵션명 개수 꺼내오기 (int) */
 	public int selectGoodsOptionCount(String goodsNum) throws Exception;
 
-	/** 선민: 상품 상세보기 - 품번에 해당하는 상품의 추가옵션 세부항목 리스트 꺼내오기 (List) */
+	/** 선민: 상품 상세보기/수정 - 상품번호와 옵션명번호를 받아서 각 옵션명의 모든 세부항목 가져오기 (List) */
 	public List<List<GoodsOptionBean>> selectGoodsOptionContent(String goodsNum, int optionCount) throws Exception;
 
 	/* ---------------------------- 기타 기능 ---------------------------- */
@@ -111,13 +111,14 @@ public interface GoodsService {
 	/** 선민: 관리자 상품 상태변경 */
 	public void updateAdminGoodsStatus(String goodsNum, String goodsStatus) throws Exception;
 
+	/** 선민: 상품 수정 - 품번에 해당하는 상품의 모든 세부항목 개수 꺼내오기 (int) */
+	public int selectGoodsOptionContentCount(String goodsNum) throws Exception;
+
+//	/** 선민: 상품 수정 - 상품번호와 옵션명번호를 받아서 각 옵션명의 모든 세부항목 가져오기 */
+//	public List<List<GoodsOptionBean>> selectGoodsOption(String goodsNum, int optionCount) throws Exception;
+
 
 	public List<Map<String, Object>> memberCart(int memberNum) throws Exception;
 	
-
-	
-
-
-
 
 }

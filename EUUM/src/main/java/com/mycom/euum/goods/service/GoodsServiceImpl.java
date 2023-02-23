@@ -34,8 +34,21 @@ public class GoodsServiceImpl implements GoodsService {
 	private GoodsMapper goodsMapper;
 	private ImageMapper imageMapper;
 	private FileUtils fileUtils;
+	
+	
+	
+	@Override
+	public List<GoodsBean> profileGoodsList(int memberNum) throws Exception {
+		return goodsMapper.profileGoodsList(memberNum);
+	}
+
+	@Override
+	public List<GoodsBean> selectCartGoodsList(Criteria2 cri) throws Exception {
+		return goodsMapper.selectCartGoodsList(cri);
+	}
 
 	/* ---------------------------- 상품 리스트 ---------------------------- */
+
 
 
 	
@@ -52,6 +65,7 @@ public class GoodsServiceImpl implements GoodsService {
 
 	/** 은정: 상품 리스트 가져오기 (List)*/
 
+
 	@Override
 	public List<GoodsBean> selectGoodsList(Criteria2 cri) {
 		return goodsMapper.selectGoodsList(cri);
@@ -63,7 +77,6 @@ public class GoodsServiceImpl implements GoodsService {
 		// TODO Auto-generated method stub
 		return goodsMapper.getTotalCount(cri);
 	}
-
 
 	/** 선민: 나의 상품 리스트 가져오기 - 승인완료 상품 (List) */
 	@Override
@@ -150,13 +163,14 @@ public class GoodsServiceImpl implements GoodsService {
 		for (int i = 0; i < imageBeanList.size(); i++) {
 			log.info(i + "번째 imageBean의 파일 이름: " + imageBeanList.get(i).getImageFileName());
 			log.info(i + "번째 imageBean의 년/월/일: " + imageBeanList.get(i).getImageUploadPath());
-			log.info(i + "번째 imageBean: " + imageBeanList.get(0).getImageUploadPath() + imageBeanList.get(0).getImageFileName());
+			log.info(i + "번째 imageBean: " + imageBeanList.get(0).getImageUploadPath()
+					+ imageBeanList.get(0).getImageFileName());
 		}
 
 		goodsBean.setGoodsImageDate1(""); // 1~3번째 파일이 모두 다 비어있을 경우 null값 방지를 위한 공백문자열
 		goodsBean.setGoodsImageDate2(""); // 1~3번째 파일이 모두 다 비어있을 경우 null값 방지를 위한 공백문자열
 		goodsBean.setGoodsImageDate3(""); // 1~3번째 파일이 모두 다 비어있을 경우 null값 방지를 위한 공백문자열
-		
+
 		for (int i = 0; i < imageBeanList.size(); i++) {
 			switch (i) {
 			case 0:
@@ -322,6 +336,7 @@ public class GoodsServiceImpl implements GoodsService {
 	public void updateGoodsTempToRegular(GoodsBean goodsBean) throws Exception {
 		int goodsNum = goodsBean.getGoodsNum(); // 기존 임시저장 상품의 goodsNum을 그대로 사용
 		goodsMapper.deleteGoodsOption(goodsNum);
+
 	}
 
 	/** 선민: 상품 임시저장에서 다시 임시저장 */
@@ -367,6 +382,13 @@ public class GoodsServiceImpl implements GoodsService {
 
 		return goodsNum;
 	}
+	
+	/** 선민: 상품 수정 - 품번에 해당하는 상품의 모든 세부항목 개수 꺼내오기 (int) */
+	@Override
+	public int selectGoodsOptionContentCount(String goodsNum) throws Exception {
+		return goodsMapper.selectGoodsOptionContentCount(goodsNum);
+
+	}
 
 	/* ---------------------------- 상품 삭제 ---------------------------- */
 
@@ -403,7 +425,7 @@ public class GoodsServiceImpl implements GoodsService {
 		return goodsMapper.selectGoodsOptionCount(goodsNum);
 	}
 
-	/** 선민: 상품 상세보기 - 추가옵션 선택항목 리스트 꺼내오기 (List) */
+	/** 선민: 상품 상세보기/수정 - 상품번호와 옵션명번호를 받아서 각 옵션명의 모든 세부항목 가져오기 (List) */
 	@Override
 	public List<List<GoodsOptionBean>> selectGoodsOptionContent(String goodsNum, int optionCount) throws Exception {
 		List<List<GoodsOptionBean>> optionList = new ArrayList<List<GoodsOptionBean>>();
@@ -443,7 +465,6 @@ public class GoodsServiceImpl implements GoodsService {
 	}
 
 
-
 	@Override
 	public List<Map<String, Object>> memberCart(int memberNum) throws Exception {
 		return goodsMapper.memberCart(memberNum);
@@ -454,5 +475,6 @@ public class GoodsServiceImpl implements GoodsService {
 	
 	
 }
+
 
 

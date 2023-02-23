@@ -155,7 +155,7 @@
 						<th>상세안내</th>
 						<td>
 							<textarea class="input_text_l" name="goodsContent" id="input_goodsContent" cols="30" rows="5"></textarea>
-
+							<textarea id="textarea" style="display:none;">${detail.goodsContent}</textarea>
 						</td>
 					</tr>
 				</table>
@@ -181,6 +181,9 @@
 
 <!-- ------------------------------------------------------------------------------------------ -->
 <script>
+// $(function() {
+//     checkOption();
+// });
 
 function test2() {
     console.log("유효성 시작");
@@ -230,20 +233,27 @@ $("#input_goodsFormat").blur(function() {
 $("#input_goodsSize").blur(function() {
     checkSize();
 });
-
-
-
 $("#input_goodsResolution").blur(function() {
     checkResolution();
 });
-
-
 $("#input_goodsModifyCount").blur(function() {
     checkModifyCount();
 });
 $("#input_goodsPeriod").blur(function() {
     checkPeriod();
 });
+$(".input_options").blur(function() {
+    checkOption();
+});
+// $(".optName").blur(function() {
+//     checkOption();
+// });
+// $(".optContent").blur(function() {
+//     checkOption();
+// });
+// $(".optPrice").blur(function() {
+//     checkOption();
+// });
 $("#input_goodsContent").blur(function() {
     checkContent();
 });
@@ -357,8 +367,7 @@ function checkResolution() {
 		console.log("해상도 X");
 	    return false;
 	}
-
-
+	
 	console.log("해상도 OK");
 	hideMsg(oMsg);
 	return true;
@@ -505,13 +514,19 @@ function checkContent() {
 /* ------------------------------------------------------------------------------------------------------------ */
 // 텍스트기입 공란방지 사후처리
 function PreventBlank(inputValue, inputTag, oMsg) {
-
+    
+    
+    
 	if(inputValue == "") {
-	    showErrorMsg(oMsg, "필수 입력 사항입니다.");
-    	setFocusToInputObject(inputTag);
+	    showErrorMsg(oMsg, "필수 입력 사항입니다."); // 유효성탈락에 대한 메시지
+    	setFocusToInputObject(inputTag); // 포커스를 줌
 		return true;
-	} else {
-
+	} 
+	
+	
+	
+	
+	else {
 		return false;
 	}
 }
@@ -773,41 +788,6 @@ table {
 	font-size: 12px;
 	margin-left: 10px;
 	color: red;
-}
-
-
-#opAdd_bt {
-	 border: 1px solid #818181;
-}
-
-#registerTempBtn {
-	width: 188px;
-    height: 58px;
-    line-height: 58px;
-    background: #818181;
-    color: #fff;
-    text-align: center;
-    cursor: pointer;
-    border: 1px solid #818181;
-}
-
-#registerBtn {
-    width: 188px;
-    height: 58px;
-    line-height: 58px;
-    background: #343434;
-    color: #fff;
-    text-align: center;
-    cursor: pointer;
-    margin: 0 auto;
-}
-
-#opContentAdd_bt {
- 	border: 1px solid #818181;
-}
-
-#opContentDel_bt {
- 	border: 1px solid #818181;
 }
 
 </style>
