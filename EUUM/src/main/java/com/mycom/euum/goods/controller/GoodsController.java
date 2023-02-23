@@ -32,10 +32,7 @@ import com.mycom.euum.page.CriteriaForGoods;
 import com.mycom.euum.page.PageDTO;
 import com.mycom.euum.page.PageDTO2;
 import com.mycom.euum.page.PageForGoodsDTO;
-import com.mycom.euum.page.RCriteria;
-import com.mycom.euum.page.RPageDTO;
 import com.mycom.euum.review.service.ReviewService;
-
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
@@ -424,7 +421,7 @@ public class GoodsController {
 	/** 선민: 상품 상세보기 */
 	@GetMapping(value = "/goods/goodsDetail")
 
-	public String goodsDetail(Model model, String goodsNum, Criteria cri, GoodsQNABean goodsQNABean) throws Exception {
+	public String goodsDetail(Model model, String goodsNum, Criteria cri, GoodsQNABean goodsQNABean, HttpSession session) throws Exception {
 		log.info("===== 상품 상세보기 =====");
 
 
@@ -455,10 +452,10 @@ public class GoodsController {
 		SellerBean sellerBean = getSessionSeller(session);
 		
 		if(sellerBean != null) {
-		String sellerNickName = sellerBean.getSellerNickName();
+		int sellerMemberNum = sellerBean.getMemberNum();
 		log.info("sellerBean셀러빈 뭐받음?????????========= " + sellerBean);
 		
-		model.addAttribute("sellerName", sellerNickName);
+		model.addAttribute("memberNum", sellerMemberNum);
 		}
 
 

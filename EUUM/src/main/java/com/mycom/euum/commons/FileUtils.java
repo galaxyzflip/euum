@@ -260,7 +260,7 @@ public class FileUtils {
 	
 
 	// request
-	public List<ImageBean> orderFileUpload1(MultipartFile[] uploadFile) throws Exception {
+	public List<ImageBean> orderFileUpload(MultipartFile[] uploadFile) throws Exception {
 		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
 				.getRequest();
 		List<ImageBean> imageBeanList = new ArrayList<ImageBean>();

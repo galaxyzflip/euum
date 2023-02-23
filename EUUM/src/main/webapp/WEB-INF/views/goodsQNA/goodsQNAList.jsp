@@ -125,7 +125,7 @@ td {
             <pre><c:out value="${var.goodsQNAComment }" /></pre>  </p>          
               <!-- Button trigger modal -->
              <c:choose>
-             <c:when test="${detail.goodsSellerNickname eq sellerName }">
+             <c:when test="${detail.memberNum eq memberNum }">
 			 <br>
 			 <button type="button" id="comment" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop${vs.index}" onclick="openModal('${var.goodsQNANum}','${vs.index }','${var.goodsNum}')">
 				  답변 작성

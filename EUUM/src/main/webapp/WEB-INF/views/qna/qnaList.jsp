@@ -39,6 +39,10 @@ h1, h6{
   font-family:맑음 고딕;
   margin-left:295px;
 }
+
+#main{
+	cursor:pointer;
+}
 </style>
 <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/5.2.3/css/bootstrap.min.css">
@@ -50,7 +54,7 @@ h1, h6{
 <body>
 
 <br><br><br><br><br><br>
-<h1>고객 문의</h1>
+<h1 id="main">고객 문의</h1>
 <h6>상담 업무 시간 : AM 10시 ~ PM 5시 / 점심 12 ~ 1시. 토, 일, 공휴일 휴무</h6>
 <br>
 <div id="qnaMain" align="center">
@@ -58,8 +62,7 @@ h1, h6{
 		<div class="col-lg-12">
 			<form id='searchForm' action="/qna/List" method='get'>
 				<select name='type'>
-					<option value=""
-						<c:out value="${pageMaker.cri.type == null?'selected':''}"/>>--</option>
+					
 					<option value="T"
 						<c:out value="${pageMaker.cri.type eq 'T'?'selected':''}"/>>제목</option>
 					<option value="C"
@@ -213,6 +216,10 @@ function move(index) {
 } 
 
 $(document).ready(function(){
+	
+	$('#main').on('click', function(){
+		self.location.href="/qna/List";
+	})
 	var actionForm = $("#actionForm");
 
 	$(".page-link").on("click", function(e) {

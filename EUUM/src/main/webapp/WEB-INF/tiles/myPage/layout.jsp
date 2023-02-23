@@ -146,7 +146,7 @@
 								<li><a href="/member/sellerDetail">내 프로필</a></li>
 								<li><a href="/myPage/orderList">내 주문 관리</a></li>
 								<li><a href="/myPage/myGoods">내 작품 관리</a></li>
-								<li><a href="/myPage/goodsQna">상품 문의 내역</a></li>
+								<li><a href="/myPage/goodsQNA">상품 문의 내역</a></li>
 								<li><a href="/myPage/goodsReview">나의 상품 후기</a></li>
 								<li><a href="/myPage/sellerList">관심 작가</a></li>
 								<li><a href="/myPage/modifyForm">내 정보 수정</a></li>
