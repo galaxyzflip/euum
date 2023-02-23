@@ -18,6 +18,7 @@
    		select * 
 		from(select rownum rn, GOODS_NUM , GOODS_NAME, GOODS_USE,
 		            GOODS_SELLER_NICKNAME, GOODS_PRICE
+		            
 			 from GOODS_TBL  
 			 where GOODS_STATUS = '승인완료'
 		]]>
@@ -53,6 +54,15 @@
 	 ]]>
 
 	</select>
+	
+	<!-- 상품 리스트 가져오기 프로필용 -->
+   <select id="profileGoodsList" resultType="com.mycom.euum.goods.bean.GoodsBean">
+      select *
+      from GOODS_TBL
+      where GOODS_STATUS = '승인완료'
+      and MEMBER_NUM = ${memberNum}
+      order by GOODS_NUM DESC
+   </select>
 
 	<select id="selectCartGoodsList" resultType="com.mycom.euum.goods.bean.GoodsBean">
 		 	<![CDATA[
