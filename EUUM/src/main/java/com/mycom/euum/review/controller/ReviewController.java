@@ -134,9 +134,11 @@ public class ReviewController {
 		return "redirect:/review/list";
 	}
 
-	@GetMapping("/review/myReviewList")
-	public String myReviewList(Model model, Criteria cri) {
+	@GetMapping("/myPage/goodsReview")
+	public String myReviewList(Model model, Criteria cri, HttpSession session) {
 
+		MemberBean loginUser = (MemberBean) session.getAttribute("loginUser");
+		cri.setMemberNum(loginUser.getMemberNum());
 		int total = reviewService.myGetTotal(cri);
 		model.addAttribute("pageMaker", new PageDTO(cri, total));
 
@@ -144,6 +146,6 @@ public class ReviewController {
 
 		log.info("sql돌려요=======================" + reviewService.myReviewList(cri));
 
-		return "review/myReviewList";
+		return "myPage/myReviewList";
 	}
 }
