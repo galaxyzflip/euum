@@ -197,24 +197,31 @@ public class FileUtils {
 
 		return imageBeanList;
 	}
-
+	
 	// 리뷰
-	public List<ImageBean> reviewFileUpload(MultipartFile[] uploadFile) throws Exception {
-		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
-				.getRequest();
-		List<ImageBean> imageBeanList = new ArrayList<ImageBean>();
-		imageBeanList = fileUpload(uploadFile, request, "review");
+		public List<ImageBean> reviewFileUpload(MultipartFile[] uploadFile) throws Exception {
+			System.out.println("d1");
+			HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
+					.getRequest();
+			System.out.println("c1");
+			List<ImageBean> imageBeanList = new ArrayList<ImageBean>();
+			System.out.println("c2");
+			imageBeanList = fileUpload(uploadFile, request, "review");
+			System.out.println("c3");
 
-		return imageBeanList;
-	}
+			return imageBeanList;
+		}
 
 
 	// 공지사항
 	public List<ImageBean> noticeFileUpload(MultipartFile[] uploadFile) throws Exception {
 		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
 				.getRequest();
+		System.out.println("aaa");
 		List<ImageBean> imageBeanList = new ArrayList<ImageBean>();
+		System.out.println("bbb");
 		imageBeanList = fileUpload(uploadFile, request, "notice");
+		System.out.println("ccc");
 
 		return imageBeanList;
 	}
@@ -228,6 +235,8 @@ public class FileUtils {
 
 		return imageBeanList;
 	}
+	
+
 
 
 	public List<ImageBean> goodsQNAFileUpload(MultipartFile[] uploadFile) throws Exception {
@@ -249,8 +258,9 @@ public class FileUtils {
 		return imageBeanList;
 	}
 	
+
 	// request
-	public List<ImageBean> orderFileUpload(MultipartFile[] uploadFile) throws Exception {
+	public List<ImageBean> orderFileUpload1(MultipartFile[] uploadFile) throws Exception {
 		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
 				.getRequest();
 		List<ImageBean> imageBeanList = new ArrayList<ImageBean>();
@@ -258,5 +268,6 @@ public class FileUtils {
 
 		return imageBeanList;
 	}
+
 
 }

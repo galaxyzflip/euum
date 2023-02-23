@@ -12,6 +12,7 @@
 </head>
 
 <script type="text/javascript">
+
 function checkCart(goodsNum) {
     
     console.log(goodsNum);
@@ -32,6 +33,7 @@ function checkCart(goodsNum) {
 	return false;
 } 
 
+
 function onImg(goodsNum){
 	var ddd = "#wish"+goodsNum;
 	
@@ -49,10 +51,12 @@ function offImg(goodsNum){
 }
 
 
+
 // 페이징 + 정렬 																																					
 $(document).ready(function(e) {
 	var actionForm = $("#actionForm");
 	actionForm.find("input[name='pageNum']").val('1');
+
 	
 	let sortCom = '${pagaMaker.cri.sortCom}';
 	
@@ -84,6 +88,7 @@ $(document).ready(function(e) {
 	<br>
 	<br>
 	<div class="container">
+
 		<div class="main">
 			<div class="sub_menu_back">
 				<ul class="head_title">
@@ -114,6 +119,7 @@ $(document).ready(function(e) {
 			<br>
 		</div>
 
+
 		<div class="clear 5px;"></div>
 		<br> <br>
 
@@ -122,12 +128,14 @@ $(document).ready(function(e) {
 				<div class="col">
 					<div style="float: left; font-size: 14.5px;">
 						<div id="searchBox">
+
 							<form id='actionForm' action="/goods/goodsList" method='get'>
 								<input type='hidden' name='pageNum' value='${pageMaker.cri.pageNum}'>
 								<input type='hidden' name='amount' value='${pageMaker.cri.amount}'>
 								<input type="hidden" name="sortCom" value="${pageMaker.cri.sortCom }">
 								<input type="hidden" name="goodsCategory" value="${pageMaker.cri.goodsCategory}">
 								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
 								<select name="type" value="${pageMaker.cri.type }">
 									<option value="GOODS_NAME">상품 이름</option>
 									<option value="GOODS_SELLER_NICKNAME">작가 이름</option>
@@ -171,6 +179,7 @@ $(document).ready(function(e) {
 
 				<c:choose>
 					<c:when test="${fn:length(goodsList) > 0}">
+
 						<c:forEach items="${goodsList}" var="row" varStatus="status">
 							<div class="myGoodsDiv">
 								<table>
@@ -204,6 +213,7 @@ $(document).ready(function(e) {
 													</c:otherwise>
 												</c:choose>
 											</a>
+
 										</td>
 										<td class="myg_info">
 											<li class="myGoodsLi myGoodsText">[${row.goodsCategory}]&nbsp;&nbsp;${row.goodsUse}</li>
@@ -232,43 +242,7 @@ $(document).ready(function(e) {
 
 
 
-				<%-- 			<c:choose> --%>
-				<%-- 				<c:when test="${fn:length(goodsList) > 0}"> --%>
-				<%-- 					<c:forEach items="${goodsList}" var="row"> --%>
-				<!-- 						<div style="padding-bottom: 15px;"> -->
-				<!-- 							<form id='goodsList' action='/goods/goodsList' method='get'> -->
-				<%-- 								<span>${row.goodsNum}</span> --%>
-				<!-- 								<table> -->
-				<!-- 									<tr> -->
-				<!-- 										<td> -->
-				<%-- 											<a href="/goods/goodsDetail?goodsNum=${row.goodsNum}"> --%>
-				<%-- 												<img class="thumb" src="${pageContext.request.contextPath}/resources/img/${row.goodsImageDate1}s_${row.goodsImage1}">  --%>
-				<%-- 												<img class="thumb" src="${pageContext.request.contextPath}/resources/img/${row.goodsImageDate2}s_${row.goodsImage2}">  --%>
-				<%-- 												<img class="thumb" src="${pageContext.request.contextPath}/resources/img/${row.goodsImageDate3}s_${row.goodsImage3}"> --%>
-				<!-- 											</a> -->
-				<!-- 										</td> -->
-				<!-- 										<td class="myg_info"> -->
-				<%-- 											<li>[${row.goodsCategory}]&nbsp;&nbsp;${row.goodsUse}</li> --%>
-				<!-- 											<br> -->
-				<!-- 											<li> -->
-				<%-- 												<a href="/goods/goodsDetail?goodsNum=${row.goodsNum}"> --%>
-				<%-- 													${row.goodsName} --%>
-				<!-- 												</a> -->
-				<!-- 											</li> -->
-				<!-- 											<br> -->
-				<%-- 											<li>작가: ${row.goodsSellerNickname}&nbsp;&nbsp;&nbsp;&nbsp;기본가: <fmt:formatNumber value="${row.goodsPrice}" pattern="#,###,###"/>원</li> --%>
-				<!-- 										</td> -->
-				<!-- 									</tr> -->
-				<!-- 								</table> -->
-				<!-- 							</form> -->
-
-				<!-- 						</div> -->
-				<%-- 					</c:forEach> --%>
-				<%-- 				</c:when> --%>
-				<%-- 				<c:otherwise> --%>
-				<!-- 						판매중인 상품이 없습니다. -->
-				<%-- 				</c:otherwise> --%>
-				<%-- 		</c:choose> --%>
+			
 			</div>
 
 
@@ -278,14 +252,18 @@ $(document).ready(function(e) {
 					<c:if test="${pageMaker.prev}">
 						<li class="paginate_button previous"><a href="${pageMaker.startPage -1}">Previous</a></li>
 
+
 					</c:if>
+
 
 					<c:forEach var="num" begin="${pageMaker.startPage}" end="${pageMaker.endPage}">
 						<li class="paginate_button  ${pageMaker.cri.pageNum == num ? "active":""}"><a href="${num}">${num}</a>&nbsp;&nbsp;&nbsp;</li>
 					</c:forEach>
 
+
 					<c:if test="${pageMaker.next}">
 						<li class="paginate_button next"><a href="${pageMaker.endPage +1}">Next</a></li>
+
 					</c:if>
 				</ul>
 			</div>
@@ -295,36 +273,7 @@ $(document).ready(function(e) {
 </html>
 
 <style>
-/* li { */
-/* 	list-style: none; */
-/* } */
-/* .thumb { */
-/* 	width: 160px; */
-/* 	height: 120px; */
-/* } */
-/* .small { */
-/* 	width: 100px; */
-/* 	height: 75px; */
-/* } */
-/* .myg_info { */
-/* 	text-align: center; */
-/* 	padding-left: 20px; */
-/* 	width: 400px; */
-/* } */
-/* table { */
-/* 	border-top: 1px solid #444444; */
-/* 	border-collapse: collapse; */
-/* } */
-/* th, td { */
-/* 	border-top: 2px solid #444444; */
-/* 	border-bottom: 2px solid #444444; */
-/* 	/*   border-left: 1px solid #444444; */
-* /
-	/* 	padding: 10px; */
-	/* } */
-	/* th:first-child, td:first-child { */
-	/* 	border-left: none; */
-	/* } */ 
+
 
 
 li {

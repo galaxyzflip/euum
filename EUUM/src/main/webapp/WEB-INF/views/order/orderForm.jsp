@@ -104,7 +104,7 @@
 	
 	    <tr>
 	        <td>입금자명</td>
-	        <td><input type="text" value="${loginUser.memberName }"/> * 작가에게 노출 안됨</td>
+	        <td><input type="text" id="depositor" value="${loginUser.memberName }"/> * 작가에게 노출 안됨</td>
 		</tr>
 		<tr>
 		    <td>연락처</td>
@@ -278,6 +278,42 @@ let modal = $('#loginModal');
 		return true;
 	}
 	
+	function inputValidateCheck(){
+		const depositor = $('#depositor').val();
+		const orderContact = $('input[name="orderContact"]').val();
+		const startEmail = $('.start-email').val(); 
+		const endEmail = $('.end-email').val(); 
+		const orderRequest = $('textarea[name="orderRequest"]').val();
+		
+		if(depositor == '' || depositor == null){
+			alert("입금자명을 입력해주세요.")
+			$('#depositor').focus();
+			return false;
+		}
+		if(orderContact == '' || orderContact == null){
+			alert("연락처를 입력해주세요.")
+			$('input[name="orderContact"]').focus();
+			return false;
+		}
+		if(startEmail == '' || startEmail == null){
+			alert("이메일을 입력해주세요.")
+			$('.start-email').focus();
+			return false;
+		}
+		if(endEmail == '' || endEmail == null){
+			alert("이메일을 입력해주세요.")
+			$('.end-email').focus();
+			return false;
+		}
+		if(orderRequest == '' || orderRequest == null){
+			alert("요청사항을 입력해주세요.")
+			$('textarea[name="orderRequest"]').focus();
+			return false;
+		}
+
+		return true;
+	}
+	
 	function loginService(memberEmail, memberPassword){
 		$.ajax({
 			url : "/member/loginProAjax",
@@ -321,7 +357,6 @@ let modal = $('#loginModal');
 
 		//옵션합계 금액 모두 더해서 총 결제금액 표시해주기
 		const optTotalPrice = document.getElementsByClassName("optTotalPrice")
-		console.log("옵션 합계 가격들 : " + optTotalPrice);
 		let totalPrice = 0;
 
 		$.each(optTotalPrice, function(index, item) {
@@ -334,12 +369,17 @@ let modal = $('#loginModal');
 
 		//결제버튼 클릭시 이메일 합치고 submit
 		$('#order-btn').on('click', function(e) {
+				e.preventDefault();
 			
 			if(loginCheck()){
-				e.preventDefault();
 				let email = $('.start-email').val() + "@" + $('.end-email').val();
 				$('input[name="orderEmail"]').val(email);
-				$('#order-form').submit();
+				
+				
+				if(inputValidateCheck()){
+					$('#order-form').submit();
+					
+				}
 			}
 
 		})

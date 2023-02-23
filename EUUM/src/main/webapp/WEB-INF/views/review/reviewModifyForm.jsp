@@ -51,7 +51,7 @@
 <br/><br/><br/><br/><br/><br/>
 
 <div align="center">
-	<form id="myform" action="/review/reviewModifyPro" method="post">
+	<form id="myform" action="/review/reviewModifyPro" method="post" enctype="multipart/form-data">
 		<input type="hidden" name="memberNum" value="1">
 		<input type="hidden" name="goodsNum" value="1">
 		<input type="hidden" name="orderNum" value="1">
@@ -77,6 +77,16 @@
 		<div>
 			<textarea class="col-auto form-control" type="text" name="reviewTitle"
 					  placeholder="제목을 입력 해 주세요.">${modify.reviewTitle }</textarea>
+			
+			<!--  이미지 리스트 -->
+            <c:forEach items="${image}" var="row">
+            <img src="/resources/img/${row.imageUploadPath}${row.imageFileName}" width=350; height=350;>        
+            </c:forEach>			  	
+             <p>
+             <input type="file" name="uploadFile">
+	         <input type="file" name="uploadFile">	
+	         <input type="file" name="uploadFile">				  
+		      </p>	
 			<textarea class="col-auto form-control" type="text" name="reviewContent"
 					  placeholder="후기를 입력 해 주세요.">${modify.reviewContent }</textarea>
 		</div>

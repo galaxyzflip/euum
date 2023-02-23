@@ -78,12 +78,20 @@ public class QNAController {
 	}
 	
 	@GetMapping("/qna/Detail")
-	public String qnaDetail(@RequestParam("qnaNum") int qnaNum, Model model) {
+	public String qnaDetail(@RequestParam("qnaNum") int qnaNum, Model model, HttpSession session) {
 		
 		qnaService.updateQNAcnt(qnaNum);
 		
-		model.addAttribute("detail", qnaService.qnaDetail(qnaNum));
+		MemberBean memberBean = (MemberBean)session.getAttribute("loginUser");
+		if(memberBean != null) {
+			int memberNum = memberBean.getMemberNum();
+			
+			model.addAttribute("memberNum", memberNum);	
+	    }
+			
 		
+		model.addAttribute("detail", qnaService.qnaDetail(qnaNum));
+		log.info("member가져옴???????????????///" + qnaService.qnaDetail(qnaNum));
 		//고객문의 이미지 리스트
 		model.addAttribute("image", imageService.selectQNAImage(qnaNum));
 		
@@ -101,10 +109,21 @@ public class QNAController {
 	
 	//답변글 등록폼
 	@RequestMapping("/qna/rewriteForm")
-	public String openrewrite(@RequestParam("qnaNum") int qnaNum, Model model) {
+	public String openrewrite(@RequestParam("qnaNum") int qnaNum, Model model,HttpSession session) {
 		
 		model.addAttribute("re", qnaService.selectInfo(qnaNum));
 		log.info("등록폼 받아오는거=======================" + qnaService.selectInfo(qnaNum));
+		
+		// (2) 세션 정보 확인
+		log.info("---------- (2) 세션 정보 확인 ----------");
+		MemberBean memberBean = (MemberBean)session.getAttribute("loginUser");
+		int memberNum = memberBean.getMemberNum();
+		log.info("memberNum: " + memberNum);
+		String memberName = memberBean.getMemberName();
+		log.info("memberName: " + memberName);
+
+		model.addAttribute("memberNum", memberNum);
+		model.addAttribute("memberName", memberName);
 	    
 		return "qna/qnaRewrite";
 	}
@@ -133,11 +152,20 @@ public class QNAController {
 	 
 	 //수정하기
 	 @PostMapping("/qna/modifyPro")
-		public String qnaModifyPro(Model model,QNABean qnaBean) {
-		   
+		public String qnaModifyPro(Model model,QNABean qnaBean, MultipartFile[] uploadFile)throws Exception {
 		 
-		   qnaService.qnaModifyPro(qnaBean);
-		  
+		 int qnaNum = qnaBean.getQnaNum();
+		 
+		 log.info("===== 상품 수정 처리 =====");
+		 List<ImageBean> imageBeanList = fileUtils.qnaFileUpload(uploadFile);
+		 
+		 qnaService.qnaModifyPro(qnaBean);
+		 
+		 log.info("---------- (6) 이미지파일 정보 DB 저장 ----------");
+		 log.info("이미지 쿼리 동작하기 전 imageBeanList: " + imageBeanList);
+		 imageService.updateImage(imageBeanList, qnaNum);
+		 
+		 
 		   return "redirect:/qna/List";
 		}
 	 

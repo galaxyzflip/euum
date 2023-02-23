@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <!DOCTYPE html>
@@ -17,16 +17,25 @@ $(document).ready(function(){
 <script type="text/javascript">
 function modify(){
 	
+	var form = $('#frm')[0];
+    var formData = new FormData(form);
+	
 	var noticeModify=$("#frm").serialize();
 		alert(noticeModify);
 		$.ajax({
 			type : "POST",
 			url : "<c:url value='/notice/noticeModifyPro'/>",
-			data : noticeModify,
+			processData : false,
+	        contentType : false,
+			data : formData,
 			async: false,
 			success : function(data){
 				
-				location.href="<c:url value='/notice/notice'/>"; 	        		
+  			location.href="<c:url value='/notice/notice'/>"; 	        		
+		},
+		error : function(error) {
+		
+			alert("ì‹¤íŒ¨");
 		}
 			
 	});
@@ -57,40 +66,53 @@ function deletee(){
 </script>
 
 
-<meta charset="EUC-KR">
+<meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
 <body>
 <br/><br/><br/><br/><br/><br/><br/><br/>
 	<div>
+	<form id="frm" enctype="multipart/form-data">
 		<table align="center">
 			<tr>
-			<form id="frm">
-				<input type="hidden" name="noticeNum" value="${modify.noticeNum }">
-				<td>Á¦¸ñ</td>
-				<td><input type="text" name="noticeTitle" value="${modify.noticeTitle }"/>
-				</td>
-				
-				<td><label for="category">Ä«Å×°í¸® ¼±ÅÃ</label>
+	
+				<input type="hidden" name="noticeNum" value="${modify.noticeNum }"/>
+				<td>ï¿½ï¿½ï§ï¿½</td>
+				<td><input type="text" name="noticeTitle" value="${modify.noticeTitle }"/></td>
+				<tr>
+				<td><label for="category">ç§»ëŒ„ï¿½ï¿½æ€¨ï¿½ç”±ï¿½ ï¿½ï¿½ï¿½ï¿½</label>
 					<input type="hidden" id="category"/>
 						<select id="changeCategory" name="noticeCategory">
-								<option value="1">°øÁö»çÇ×</option>
-								<option value="2">ÀÇ·ÚÀÎFAQ</option>
-								<option value="3">Àü¹®°¡FAQ</option>
+								<option value="1">æ€¨ë“­ï¿½ï¿½Ñ‹ï¿½ï¿½</option>
+								<option value="2">ï¿½ï¿½çŒ¶ê³—ï¿½ï¿½FAQ</option>
+								<option value="3">ï¿½ï¿½è‡¾ë©¸ï¿½FAQ</option>
 						</select>
 				</td>
 				</tr>
-				
-				<td>ÀÛ¼ºÀÚ</td>
+			<tr>
+				<td>ï¿½ï¿½ï¿½ê¹†ï¿½ï¿½</td>
 				<td><input type="text" value="${modify.noticeWriter }" readonly="readonly"/>
-				</td></tr>
-								
-				<td>³»¿ë</td>
-				<td><textarea name="noticeContent">${modify.noticeContent }</textarea>
 				</td>
-			</form>	
 			</tr>
+								
+				<td>ï¿½ëŒï¿½ï¿½</td>
+				<td><textarea name="noticeContent">${modify.noticeContent }</textarea></td>
+				
+				<!-- ì´ë¯¸ì§€ ë¦¬ìŠ¤íŠ¸ -->
+	            <td> 
+	           <c:forEach items="${image}" var="row">
+	          <img src="/resources/img/${row.imageUploadPath}${row.imageFileName}" width=350; height=350;>     
+	   
+	          </c:forEach>	      
+	              <input type="file" name="uploadFile" id="uploadFile">
+	              <input type="file" name="uploadFile" id="uploadFile">
+	              <input type="file" name="uploadFile" id="uploadFile">
+				</td> 
+			
+		
+		</tr>
 		</table>
+			</form>	
 	</div>
 	
 	<form id="operForm" action="/notice/noticeModifyForm" method="get">
@@ -100,11 +122,12 @@ function deletee(){
 	</form>
 		
 		<div align="center">
-			<button type="button" onclick="modify()">¼öÁ¤</button>
-			<button type="button" onclick="deletee()">»èÁ¦</button>
+			<button type="button" onclick="modify()">ìˆ˜ì •</button>
+			<button type="button" onclick="deletee()">ì‚­ì œ</button>
 		</div>	
 	
 
 
 </body>
+
 </html>

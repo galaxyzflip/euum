@@ -1,6 +1,6 @@
 package com.mycom.euum.goods.controller;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
+
 
 import java.util.List;
 import java.util.Map;
@@ -32,6 +32,10 @@ import com.mycom.euum.page.CriteriaForGoods;
 import com.mycom.euum.page.PageDTO;
 import com.mycom.euum.page.PageDTO2;
 import com.mycom.euum.page.PageForGoodsDTO;
+import com.mycom.euum.page.RCriteria;
+import com.mycom.euum.page.RPageDTO;
+import com.mycom.euum.review.service.ReviewService;
+
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
@@ -47,8 +51,9 @@ public class GoodsController {
 	private GoodsService goodsService;
 	private ImageService imageService;
 	private GoodsQNAService goodsQNAService;
-
-	private FileUtils fileUtils;
+	private ReviewService reviewService;
+	private FileUtils fileUtils; // 123
+	
 
 	@RequestMapping(value = "/")
 	public String test() {
@@ -56,11 +61,33 @@ public class GoodsController {
 		return "main_layout";
 	}
 
+
+	
+	
 	/* ---------------------------- 상품 리스트 ---------------------------- */
-	/** 은정: 상품 리스트 - 전체 상품 리스트(검색,정렬,페이징) */
-	@GetMapping(value = "/goods/goodsList")
-	public String selectGoodsList(Model model, Criteria2 cri, HttpSession session) throws Exception {
-		log.info("===== 상품 리스트 =====");
+/** 은정: 상품 리스트 - 전체 상품 리스트(02/01 페이징추가) */
+	@GetMapping(value="/goods/goodsList")
+	public String selectGoodsList(Model model, Criteria2 cri, HttpServletRequest request) throws Exception {
+		
+		
+    HttpSession session = request.getSession();
+		MemberBean loginUser = (MemberBean)session.getAttribute("loginUser");
+		log.info("=======================loginUser : "+loginUser);
+		
+		// 로그인이 되어 있을 시
+		if(loginUser!=null) {
+			cri.setMemberNum(loginUser.getMemberNum());
+			List<GoodsBean> goodsList = goodsService.selectCartGoodsList(cri);
+			int total=goodsService.getTotal(cri);
+			model.addAttribute("pageMaker", new PageDTO2(cri, total));
+			model.addAttribute("goodsList", goodsList);
+			return "goods/goodsList";
+		}
+    
+    
+    
+    log.info("===== 상품 리스트 =====");
+
 		
 		/* 명식님 부분 ----------------------------- */
 		MemberBean loginUser = getSessionMember(session);
@@ -98,6 +125,7 @@ public class GoodsController {
 	@RequestMapping(value = "/myPage/myGoods") // 일단 RequestMapping -> 추후 myPage 탭 완성되면 PostMapping
 	public String myGoods(HttpSession session, Model model, CriteriaForGoods cri) throws Exception {
 		log.info("===== 내 작품 관리 =====");
+
 		log.info("---------- (0) Criteria 확인 ----------");
 		log.info("PageNum1: " + cri.getPageNum1());
 		log.info("Amount1: " + cri.getAmount1());
@@ -105,6 +133,7 @@ public class GoodsController {
 		log.info("Amount2: " + cri.getAmount2());
 		log.info("PageNum3: " + cri.getPageNum3());
 		log.info("Amount3: " + cri.getAmount3());
+
 
 		// (1) 세션 정보 확인
 		log.info("---------- (1) 세션 정보 확인 ----------");
@@ -120,13 +149,18 @@ public class GoodsController {
 		Map<String, PageForGoodsDTO> pagingMap = goodsService.createMyGoodsPaging(memberNum, cri);
 		log.info("pagingMap :" + pagingMap);
 
+
 		model.addAttribute("myGoodsMap", myGoodsMap);
 		model.addAttribute("pagingMap", pagingMap);
 		model.addAttribute("memberNum", memberNum);
 		log.info("컨트롤러 끝 !!!");
 
+
+		
 		return "myPage/myGoods";
 	}
+
+
 
 	/* ---------------------------- 상품 등록 ---------------------------- */
 
@@ -137,6 +171,7 @@ public class GoodsController {
 		return "goods/goodsRegisterGuide";
 	}
 
+
 	/** 선민: 상품등록 폼 이동 */
 	@GetMapping(value = "/goods/goodsRegisterForm")
 	public String goodsRegisterForm() throws Exception {
@@ -144,12 +179,7 @@ public class GoodsController {
 		return "goods/goodsRegisterForm";
 	}
 
-	/** 선민: 상품등록 폼 이동 */
-	@GetMapping(value = "/goods/goodsRegisterForm2")
-	public String goodsRegisterForm2() throws Exception {
-		log.info("===== 상품 등록 폼 =====");
-		return "goods/goodsRegisterForm2";
-	}
+
 
 	/** 선민: 상품등록 */
 	@Transactional
@@ -159,14 +189,6 @@ public class GoodsController {
 			throws Exception {
 		log.info("===== 상품 등록 처리 =====");
 		
-//		int i;
-//		for(i=0; i<goodsOptNameArr.length; i++) {
-//			log.info("goodsOptNameArr: " + goodsOptNameArr[i]);
-//			log.info("goodsOptContentArr: " + goodsOptContentArr[i]);
-//			log.info("goodsOptPriceArr: " + goodsOptPriceArr[i]);
-//			log.info("--------------------");
-//		}
-
 		log.info("---------- (1) 파일 파라미터 확인 ----------");
 		log.info("파라미터 uploadFile의 객체 유무: " + uploadFile);
 		log.info("요청받은 파라미터의 개수: " + uploadFile.length);
@@ -175,12 +197,14 @@ public class GoodsController {
 		SellerBean sellerBean = getSessionSeller(session);
 		log.info("sellerBean: " + sellerBean);
 
+
 		log.info("---------- (3) 파일 업로드 메소드 호출 ----------");
 		List<ImageBean> imageBeanList = fileUtils.goodsFileUpload(uploadFile);
 
 		log.info("---------- (4) 상품 등록 ----------");
 		goodsBean.setGoodsPrice(goodsOptPriceArr[0]); // 추가옵션 첫번째 옵션의 첫번째 항목 가격을 해당 상품의 대표가격으로 set
 		int goodsNum = goodsService.insertGoods(sellerBean, goodsBean, imageBeanList);
+
 
 		log.info("---------- (5) 상품 추가옵션 등록 ----------");
 		goodsService.insertGoodsOption(goodsNum, goodsOptNameArr, goodsOptContentArr, goodsOptPriceArr);
@@ -190,6 +214,7 @@ public class GoodsController {
 
 		return "redirect:/myPage/myGoods";
 	}
+
 
 	/** 선민: 상품 임시저장 */
 	@Transactional
@@ -201,10 +226,11 @@ public class GoodsController {
 
 		log.info("goodsBean: " + goodsBean);
 		log.info("Use값은: " + goodsBean.getGoodsUse());
-		
+
 		log.info("---------- (1) 파일 파라미터 확인 ----------");
 		log.info("파라미터 uploadFile의 객체 유무: " + uploadFile);
 		log.info("요청받은 파라미터의 개수: " + uploadFile.length);
+
 
 		log.info("---------- (2) 세션 정보 확인 ----------");
 		SellerBean sellerBean = getSessionSeller(session);
@@ -212,6 +238,7 @@ public class GoodsController {
 
 		log.info("---------- (3) 파일 업로드 메소드 호출 ----------");
 		List<ImageBean> imageBeanList = fileUtils.goodsFileUpload(uploadFile);
+
 
 		log.info("---------- (4) 상품 등록 ----------");
 		goodsBean.setGoodsPrice(goodsOptPriceArr[0]); // 추가옵션 첫번째 옵션의 첫번째 항목 가격을 해당 상품의 대표가로 책정
@@ -221,11 +248,15 @@ public class GoodsController {
 		goodsService.insertGoodsOption(goodsNum, goodsOptNameArr, goodsOptContentArr, goodsOptPriceArr);
 		log.info("임시저장된 상품 추가옵션 없음");
 
+		log.info("임시저장된 상품 추가옵션 없음");
+
+
 		log.info("---------- (6) 이미지파일 정보 DB 저장 ----------");
 		imageService.insertImage(imageBeanList, goodsNum);
 
 		return "redirect:/myPage/myGoods";
 	}
+
 
 	/* ---------------------------- 상품 수정 ---------------------------- */
 
@@ -236,6 +267,7 @@ public class GoodsController {
 		log.info("===== 상품 수정 폼 =====");
 		log.info("goodsNum: " + goodsNum);
 
+
 		GoodsBean goodsBean = goodsService.selectGoodsInfo(goodsNum);
 		int optionCount = goodsService.selectGoodsOptionCount(goodsNum);
 		int optionContentCount = goodsService.selectGoodsOptionContentCount(goodsNum);
@@ -245,26 +277,32 @@ public class GoodsController {
 		
 //		model.addAttribute("optionCount", optionCount);
 		model.addAttribute("optionContentCount", optionContentCount);
+
 		model.addAttribute("goods", goodsBean);
 		model.addAttribute("optionList", optionList);
 		return "goods/goodsModifyForm";
 	}
 
+
 	/** 선민: 상품수정 처리 */
+
 	@Transactional
 	@PostMapping(value = "/goods/goodsModifyPro")
 	public String goodsModifyPro(HttpSession session, MultipartFile[] uploadFile, GoodsBean goodsBean,
 			String[] goodsOptNameArr, String[] goodsOptContentArr, int[] goodsOptPriceArr, Model model)
 			throws Exception {
+
 		log.info("===== 상품 수정 처리 =====");
 		int goodsNum = goodsBean.getGoodsNum();
 
 		SellerBean sellerBean = getSessionSeller(session);
 		List<ImageBean> imageBeanList = fileUtils.goodsFileUpload(uploadFile);
 
+
 		log.info("---------- (4) 상품 수정 ----------");
 		goodsBean.setGoodsPrice(goodsOptPriceArr[0]); // 추가옵션 첫번째 옵션의 첫번째 항목 가격을 해당 상품의 대표가격으로 set
 		goodsService.updateGoods(sellerBean, goodsBean, imageBeanList);
+
 
 		// (5) 상품 추가옵션 등록
 		log.info("---------- (5) 상품 추가옵션 등록 ----------");
@@ -278,6 +316,7 @@ public class GoodsController {
 
 		return "redirect:/myPage/myGoods";
 	}
+
 
 	/** 선민: 상품 임시저장에서 등록 */
 	@Transactional
@@ -345,6 +384,7 @@ public class GoodsController {
 
 	/* ---------------------------- 상품 삭제 ---------------------------- */
 
+
 	/** 선민: 상품삭제 (Ajax가 반환한 result 데이터를 jsp에 그려서 가져오기) */
 	@Transactional
 	@PostMapping(value = "/goods/goodsDeletePro")
@@ -378,21 +418,26 @@ public class GoodsController {
 		return "myPage/myGoodsAjax";
 	}
 
+
 	/* ---------------------------- 상품 상세보기 ---------------------------- */
 
 	/** 선민: 상품 상세보기 */
 	@GetMapping(value = "/goods/goodsDetail")
+
 	public String goodsDetail(Model model, String goodsNum, Criteria cri, GoodsQNABean goodsQNABean) throws Exception {
 		log.info("===== 상품 상세보기 =====");
+
 
 		// (1) 상품 정보 가져오기
 		log.info("---------- (1) 상품 정보 가져오기 ----------");
 		GoodsBean goodsBean = goodsService.selectGoodsInfo(goodsNum);
 		log.info("goodsBean: " + goodsBean);
 
+
 		// (2) 상품 존재유무 판별
 		log.info("---------- (2) 상품 존재유무 ----------");
 		if (goodsBean == null) {
+
 			log.info("상품이 존재하지 않음");
 			return "redirect:/goods/goodsList";
 		} else {
@@ -404,6 +449,18 @@ public class GoodsController {
 		int optionCount = goodsService.selectGoodsOptionCount(goodsNum);
 		log.info("옵션의 개수: " + optionCount);
 		List<List<GoodsOptionBean>> optionList = goodsService.selectGoodsOptionContent(goodsNum, optionCount);
+
+
+	/** 의종: 답변작성시 유효성검사 */		
+		SellerBean sellerBean = getSessionSeller(session);
+		
+		if(sellerBean != null) {
+		String sellerNickName = sellerBean.getSellerNickName();
+		log.info("sellerBean셀러빈 뭐받음?????????========= " + sellerBean);
+		
+		model.addAttribute("sellerName", sellerNickName);
+		}
+
 
 		/** 의종: goodsQNA 리스트 가져오기 및 페이징 */
 		int amount = cri.getAmount();
@@ -436,5 +493,6 @@ public class GoodsController {
 																					// Controller에 작성)
 		return sellerBean;
 	}
+
 
 }

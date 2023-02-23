@@ -11,5 +11,5 @@ public class CartBean {
 	private int memberNum;
 	private Date cartRegdate;
 	private Date cartDeleteDate;
-	
+
 }

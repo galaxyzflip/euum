@@ -10,6 +10,69 @@
 -->
 
 <mapper namespace="com.mycom.euum.member.mapper.MemberMapper">
+
+<!-- 메인용 쿼리 -->
+	
+	
+	
+	<select id="memberCount" resultType="int"> 
+		select count(member_num)
+		from member_tbl
+		where member_grade != 0
+		and member_class = 'M'
+	</select>
+	
+	<select id="goodsCount" resultType="int"> 
+		select count(goods_num)
+		from goods_tbl
+		where GOODS_STATUS = '승인완료'
+	</select>
+	
+	<select id="orderCount" resultType="int"> 
+		select count(order_num)
+		from order_tbl
+		where ORDER_STATUS not in (1,7,8,9,0)
+	</select>
+	
+	<select id="sellerCount" resultType="int"> 
+		select count(member_num)
+		from member_tbl
+		where member_grade != 0
+		and member_class = 'S'
+	</select>
+	
+
+	<select id="selectAPIJoinInfo" resultType="com.mycom.euum.member.bean.MemberBean">
+		SELECT * 
+		FROM MEMBER_TBL
+		WHERE MEMBER_JOIN_API=#{memberJoinApi} 
+		AND MEMBER_JOIN_DI=#{memberJoinDi}
+	
+	</select>
+	
+	<!-- 메인용 쿼리 -->
+	<select id="mainSellerList" resultType="com.mycom.euum.member.bean.SellerBean">
+		<![CDATA[
+		select *
+		from seller_tbl
+		where member_num in(select member_num
+		                    from GOODS_TBL
+		                    where GOODS_STATUS = '승인완료'
+		                    )
+		and rownum <= 3
+		]]>
+	</select>
+	
+	<select id="mainGoodsList" resultType="com.mycom.euum.goods.bean.GoodsBean">
+		<![CDATA[
+		select *
+		from GOODS_TBL
+		where GOODS_STATUS = '승인완료'
+		and rownum <= 3
+		order by GOODS_NUM DESC
+		]]>
+	</select>
+	
 	
 	<!-- 로그인 확인 쿼리... -->
 	<select id="checkLogin" resultType="com.mycom.euum.member.bean.MemberBean">
@@ -39,13 +102,27 @@
 	
 	<!-- 회원 가입시 INSERT 쿼리 -->
 	<insert id="insertMember">
+	<if test="memberJoinDi == null or memberJoinDi == ''">
 		insert into member_tbl(member_num, member_name, member_email, member_password, 
 			member_mobile, member_class, member_grade, member_point, member_zipcode, member_address,
 			member_detail_address, member_reg_date, member_modify_date)
 		values(member_num_seq.nextval, #{memberName}, #{memberEmail}, #{memberPassword}, 
 			#{memberMobile}, 'M', '1', '0', #{memberZipcode}, #{memberAddress}, 
 			#{memberDetailAddress}, sysdate, sysdate)
+	</if>
+	
+	
+	<if test="memberJoinDi != null and memberJoinDi != ''">
+		insert into member_tbl(member_num, member_name, member_email,  
+			member_mobile, member_class, member_grade, member_point, 
+			member_reg_date, member_modify_date, member_join_api, member_join_di)
+		values(member_num_seq.nextval, #{memberName}, #{memberEmail}, 
+			#{memberMobile}, 'M', '1', '0',
+			sysdate, sysdate, #{memberJoinApi}, #{memberJoinDi})
+	</if>
 	</insert>
+	
+	
 	
 	
 	<!-- 계정 찾기 쿼리... -->
@@ -76,9 +153,22 @@
 	<!-- 회원공통 정보 수정 쿼리 -->
 	<update id="updateMember">
 		update member_tbl
-		set member_name=#{memberName}, 
-		member_zipcode=#{memberZipcode},
-		member_address=#{memberAddress}, 
+
+		set member_name=#{memberName} 
+		
+		<if test="memberZipcode != null and memberZipcode != ''">
+		, member_zipcode=#{memberZipcode},
+		</if>
+		
+		<if test="memberDetailAddress != null and memberDetailAddress != ''">
+		, member_detail_address=#{memberDetailAddress},
+		</if>
+		
+		<if test="memberAddress != null and memberAddress != ''">
+		, member_zipcode=#{memberAddress},
+		</if>
+		
+		,member_address=#{memberAddress}, 
 		member_detail_address=#{memberDetailAddress}, 
 		member_modify_date=sysdate
 		where member_num=#{memberNum}
@@ -161,11 +251,14 @@
 	<!-- getMemberList (2) 멤버 리스트만 가져오고 필요할때만 ajax 조회 후 seller_tbl 불러오기...
 		select * from member_tbl where member_grade != '0'
 		select * from seller_tbl where member_num = #{memberNum} -->
-	<select id="getMemberList" resultType="com.mycom.euum.member.bean.SellerBean">
-		select * 
+	<!-- select * 
 		from member_tbl b left outer join seller_tbl s
 		on b.member_num = s.member_num
-		and member_grade != '0'
+		and member_grade != '0' -->
+	<select id="getMemberList" resultType="com.mycom.euum.member.bean.MemberBean">
+		select * 
+		from member_tbl 
+		where member_grade != '0'
 	</select>
 	
 	

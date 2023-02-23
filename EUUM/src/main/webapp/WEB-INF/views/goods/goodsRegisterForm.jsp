@@ -789,4 +789,5 @@ table {
 	margin-left: 10px;
 	color: red;
 }
+
 </style>

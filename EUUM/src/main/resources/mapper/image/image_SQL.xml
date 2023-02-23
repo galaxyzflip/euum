@@ -64,7 +64,7 @@
 	
 	</select>
   
-  <delete id="deleteImage">
+    <delete id="deleteImage">
 		delete from IMAGE_TBL
 		where IMAGE_USE = #{imageUse} and IMAGE_USE_NUM = #{imageUseNum}
 	</delete>
@@ -76,7 +76,8 @@
 			IMAGE_FILE_NAME,
 			IMAGE_FILE_TYPE,
 			IMAGE_USE,
-			IMAGE_USE_NUM
+			IMAGE_USE_NUM,
+			IMAGE_SEQUENCE
 		)
 		values
 		(
@@ -84,7 +85,8 @@
 			'image.png',
 			'i',
 			'seller',
-			#{imageUseNum}
+			#{imageUseNum},
+			 1
 		)
 	</insert>
 	
@@ -94,7 +96,7 @@
 		where image_use_num = #{imageUseNum}
 	</select>
 	
-		 <!-- 의종: 고객문의 이미지 가져오기-->
+  <!-- 의종: 고객문의 이미지 가져오기-->
   <select id="selectQNAImage" resultType="com.mycom.euum.image.bean.ImageBean">		
      <![CDATA[
 		SELECT * FROM IMAGE_TBL
@@ -109,6 +111,15 @@
 		SELECT * FROM IMAGE_TBL
 		  WHERE IMAGE_USE = 'goodsQNA'
 			AND IMAGE_USE_NUM = #{goodsQNANum}
+	 ]]>		   
+  </select>
+  
+   <!-- 의종: 공지사항 이미지 가져오기-->
+   <select id="selectNoticeImage" resultType="com.mycom.euum.image.bean.ImageBean">		
+     <![CDATA[
+		SELECT * FROM IMAGE_TBL
+		  WHERE IMAGE_USE = 'notice'
+			AND IMAGE_USE_NUM = #{noticeNum}
 	 ]]>		   
   </select>
 

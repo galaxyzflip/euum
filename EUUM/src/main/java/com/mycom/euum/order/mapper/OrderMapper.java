@@ -23,17 +23,42 @@ public interface OrderMapper {
 	
 	
 	/** 작성자 : 최창선, 용도 : 회원번호 조건으로 주문리스트 불러오기*/
-	public List<OrderBean> selectOrderListByMember(int memberNum);
+	public List<OrderBean> selectOrderListByMember(OrderCriteria cri);
 	
-	public List<OrderBean> selectOrderListBySeller(int sellerNum);
+	public List<OrderBean> selectOrderListBySeller(OrderCriteria cri);
 	
 	public List<OrderBean> selectAdminOrderList(OrderCriteria cri);
 	
+	
+	//카운트 구하는 메소드
 	public int selectAdminOrderCount(OrderCriteria cri);
+	
+	public int selectMemberOrderCount(OrderCriteria cri);
+	
+	public int selectSellerOrderCount(OrderCriteria cri);
+	
+	
 	
 	public int updateOrderStatus(OrderBean orderBean);
 	
 	public int updateOrderCancel(OrderBean orderBean);
 	
+	
+	/** 주문 상태에 따른 건 수와 가격 */
+	public String selectSellerOrder1(int sellerNum);
+	
+	public String selectSellerOrder2(int sellerNum);
+	
+	public String selectSellerOrder3(int sellerNum);
+	
+	public String selectSellerOrder4(int sellerNum);
+	
+	public String selectSellerOrder11(int sellerNum);
+	
+	public String selectSellerOrder22(int sellerNum);
+	
+	public String selectSellerOrder33(int sellerNum);
+	
+	public String selectSellerOrder44(int sellerNum);
 	
 }

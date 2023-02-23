@@ -15,11 +15,12 @@ public class Criteria2 {
 	private int amount;  //한 페이지 당 보여줄 데이터 수  
 	private int total;  //총 데이터 개수  
 	
-//	private int goodsCategory;
+	private int goodsCategory;
 	
 	private String type;
 	private String keyword;
 	private String sortCom; //정렬 
+	private int MemberNum;
 	
 	// 한 페이지에서 보여줄 데이터 개수 : 10
 	public Criteria2() { 

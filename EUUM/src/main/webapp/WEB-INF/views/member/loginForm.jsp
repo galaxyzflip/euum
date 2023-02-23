@@ -34,13 +34,13 @@
 	display: flex;
 	flex-direction: row;
 	align-items: center;
-	width: 500px;
+	width: 300px;
 	height: 120px;
 	margin: auto;
 }
 
 .main-form {
-	border: solid 1px black;
+	border: solid 1px #bbb;
 	width: 800px;
 	margin: auto;
 }
@@ -59,6 +59,10 @@
 li {
 	list-style-type: none;
 	display: flex;
+}
+
+.validate-box{
+	margin: auto;
 }
 </style>
 
@@ -79,7 +83,7 @@ li {
 			<div>
 				<ul>
 					<li>아직 이음 아이디가 없다면</li>
-					<li><a href="">회원가입 바로가기</a></li>
+					<li><a href="/member/joinForm1">회원가입 바로가기</a></li>
 				</ul>
 				
 			</div>
@@ -109,16 +113,23 @@ li {
 				<ul>
 					<li><input type="checkbox" value="아이디 저장">아이디 저장</li>
 					<li><a href="/member/findAccountForm">아이디 찾기/비밀번호 찾기</a></li>
-					
-					
 				</ul>
 			</div>
-		</div>
+
+				<div id="naver_id_login" style="text-align: center">
+					<a href="${url}"> <img width="223" src="https://developers.naver.com/doc/review_201802/CK_bEFnWMeEBjXpQ5o8N_20180202_7aot50.png" /></a>
+				</div>
+				<div id="kakao_id_login" style="text-align: center">
+					<a href="https://kauth.kakao.com/oauth/authorize?client_id=406f013cd09687a6ebea7a93af36fe8e&redirect_uri=http://localhost:9020/kakaoLoginCallback&response_type=code
+"> <img width="223" src="/resources\img\kakao_login_medium_narrow.png" /></a>
+				</div>
+				<br>
+			</div>
 		</form>
 
 	</div>
 </div>
-
+<script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.2.js" charset="utf-8"></script>
 <script>
 
 	$(document).ready(function() {
@@ -131,6 +142,8 @@ li {
 				
 			}else if(message == 'resetError'){
 				alert('비밀번호 변경 오류');
+			}else if(message =='duplicateId'){
+				alert("이메일이 중복됩니다")
 			}
 		}
 		

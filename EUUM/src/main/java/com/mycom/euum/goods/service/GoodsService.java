@@ -16,6 +16,7 @@ import com.mycom.euum.page.CriteriaForGoods;
 import com.mycom.euum.page.PageForGoodsDTO;
 
 public interface GoodsService {
+
 	
 	/** 명식: */
 	public List<GoodsBean> profileGoodsList(int memberNum) throws Exception;
@@ -103,6 +104,7 @@ public interface GoodsService {
 	/** 선민: 상품 등록 시 이미지 업로드 */
 	public List<ImageBean> goodsFileUpload(MultipartFile[] uploadFile, HttpServletRequest request) throws Exception;
 
+
 	/** 선민: 관리자 상품조회 리스트 */
 	public List<GoodsBean> selectAdminGoodsList() throws Exception;
 
@@ -114,5 +116,9 @@ public interface GoodsService {
 
 //	/** 선민: 상품 수정 - 상품번호와 옵션명번호를 받아서 각 옵션명의 모든 세부항목 가져오기 */
 //	public List<List<GoodsOptionBean>> selectGoodsOption(String goodsNum, int optionCount) throws Exception;
+
+
+	public List<Map<String, Object>> memberCart(int memberNum) throws Exception;
+	
 
 }

@@ -31,21 +31,15 @@ $(document).ready(function(){
 	$('#requestSort').on('change', function(){
 		let requestSort = $(this).find('option:selected').val();
 		console.log(requestSort);
-		$('input[name="requestCategoey"]').val(requestCategoey);
-		console.log($('input[name="requestCategoey"]').val());
+		$('input[name="requestCategory"]').val(requestCategory);
+		console.log($('input[name="requestCategory"]').val());
 		alert(requestSort);
 		$('#actionForm1').submit();
 	}) */
 	
-	var searchForm = $("#searchForm");
+	/* var searchForm = $("#searchForm");
 
 	$("#searchForm button").on("click",function(e) {
-		
-
-		if (!searchForm.find("option:selected").val()) {
-			alert("검색종류를 선택하세요");
-			return false;
-			}
 
 			if (!searchForm.find("input[name='rqkeyword']").val()) {
 			alert("키워드를 입력하세요");
@@ -56,19 +50,48 @@ $(document).ready(function(){
 			e.preventDefault();
 			searchForm.submit();
 
-			});
-});
-</script type="text/javascript">
+			}); */
+	
 
-<script>
+	var actionForm = $("#actionForm");
+		/* actionForm.find("input[name='rqpageNum']").val('1'); */
 
-function search(){
-	var search= document.requestCategoey;
-	search.submit();
-	return false;
-}
+		$('#category').on('change', function() {
+					let requestCategory = $(this).find('option:selected').val();
+					alert(requestCategory);
+					$('select[name="requestCategory"]').val(requestCategory);
+					alert($('select[name="requestCategory"]').val());
+					$('#actionForm').submit();
+				});
 
+		$('#use').on('change', function() {
+							let requestUse = $(this).find('option:selected').val();
+							alert(requestUse);
+							$('select[name="requestUse"]').val(requestUse);
+							alert($('select[name="requestUse"]').val());
+							$('#actionForm').submit();
+						});
+
+		$("#actionForm button").on("click",function(e) {
+	
+			
+			e.preventDefault();
+					let keyword= $(actionForm).find("input[name='rqkeyword']").val();
+					alert("외않된데"+keyword);
+					if (!keyword) {
+						alert("키워드를 입력하세요");
+						return false;
+					}
+
+					actionForm.find("input[name='rqpageNum']").val("1");
+					
+					actionForm.submit();
+
+				});
+
+	});
 </script>
+
 <meta charset="EUC-KR">
 <title>Insert title here</title>
 </head>
@@ -76,67 +99,45 @@ function search(){
 <br/><br/><br/><br/><br/><br/><br/>
 <div>
 	<div class="requestSort">
-		<ul>
-			<form method="post" action="/request/requestCategoryChange" name="requestCategoey">
-	
-				<select id="requestSort" name="requestCategoey" onchange="search()">
+		<ul align="center" >
+			<form id="actionForm" method="get" action="/request/requestList">
+				<input type='hidden' name='rqpageNum' value='${rqpageMaker.rqcri.rqpageNum}'>
+				<input type='hidden' name='rqamount' value='${rqpageMaker.rqcri.rqamount}'>
+				
+				<select id="category" name="requestCategory">
 					<option value="">선택해주세요</option>
-					<option value="1"
-						${rqpageMaker.rqcri.requestCategoey eq "일러스트" ? 'selected' : ''}>일러스트</option>
-					<option value="2"
-						${rqpageMaker.rqcri.requestCategoey eq "디자인" ? 'selected' : ''}>디자인</option>
-					<option value="3"
-						${pageMaker.rqcri.requestCategoey eq "버츄얼" ? 'selected' : ''}>버츄얼</option>
-					<option value="4"
-						${rqpageMaker.rqcri.requestCategoey eq "영상" ? 'selected' : ''}>영상</option>
-					<option value="5"
-					${rqpageMaker.rqcri.requestCategoey eq "웹툰" ? 'selected' : ''}>웹툰</option>
-					<option value="6"
-					${rqpageMaker.rqcri.requestCategoey eq "기타" ? 'selected' : ''}>기타</option>
+					<option value="일러스트"
+						${rqpageMaker.rqcri.requestCategory eq "일러스트" ? 'selected' : ''}>일러스트</option>
+					<option value="디자인"
+						${rqpageMaker.rqcri.requestCategory eq "디자인" ? 'selected' : ''}>디자인</option>
+					<option value="버츄얼"
+						${pageMaker.rqcri.requestCategory eq "버츄얼" ? 'selected' : ''}>버츄얼</option>
+					<option value="영상"
+						${rqpageMaker.rqcri.requestCategory eq "영상" ? 'selected' : ''}>영상</option>
+					<option value="웹툰"
+					${rqpageMaker.rqcri.requestCategory eq "웹툰" ? 'selected' : ''}>웹툰</option>
+					<option value="기타"
+					${rqpageMaker.rqcri.requestCategory eq "기타" ? 'selected' : ''}>기타</option>
 				</select>
 			
-				<select id="useSort" name="requestUse" onchange="search()">
+				<select id="use" name="requestUse">
 					<option value="">선택해주세요</option>
-					<option value="1"
-						${rqpageMaker.rqcri.requestCategoey eq "상업용" ? 'selected' : ''}>상업용</option>
-					<option value="2"
-						${rqpageMaker.rqcri.requestCategoey eq "방송용" ? 'selected' : ''}>방송용</option>
-					<option value="3"
-						${pageMaker.rqcri.requestCategoey eq "비상업용" ? 'selected' : ''}>비상업용</option>
+					<option value="상업용"
+						${rqpageMaker.rqcri.requestUse eq "상업용" ? 'selected' : ''}>상업용</option>
+					<option value="방송용"
+						${rqpageMaker.rqcri.requestUse eq "방송용" ? 'selected' : ''}>방송용</option>
+					<option value="비상업용"
+						${pageMaker.rqcri.requestUse eq "비상업용" ? 'selected' : ''}>비상업용</option>
 				</select>
+				
+				<input type='text' name='rqkeyword' value='${rqpageMaker.rqcri.rqkeyword}' placeholder="제목,작성자" /> 
+				<input type="hidden" name="rqtype" value="TW">
+				<button type="submit">Search</button>
 			</form>
 		</ul>
 	</div>
-	
-	<div class='row'>
-		<div class="col-lg-12">
-	
-			<form id='searchForm' action="/request/requestList" method='get'>
-				<select name='rqtype'>
-					<option value=""
-						<c:out value="${rqpageMaker.rqcri.rqtype == null?'selected':''}"/>>--</option>
-					<option value="T"
-						<c:out value="${rqpageMaker.rqcri.rqtype eq 'T'?'selected':''}"/>>제목</option>
-					<option value="C"
-						<c:out value="${rqpageMaker.rqcri.rqtype eq 'C'?'selected':''}"/>>내용</option>
-					<option value="W"
-						<c:out value="${rqpageMaker.rqcri.rqtype eq 'W'?'selected':''}"/>>작성자</option>
-					<option value="TC"
-						<c:out value="${rqpageMaker.rqcri.rqtype eq 'TC'?'selected':''}"/>>제목 or 내용</option>
-					<option value="TW"
-						<c:out value="${rqpageMaker.rqcri.rqtype eq 'TW'?'selected':''}"/>>제목 or 작성자</option>
-					<%-- <option value="TWC"
-						<c:out value="${rqpageMaker.rqcri.rqtype eq 'TWC'?'selected':''}"/>>제목 or 내용 or 작성자</option> --%>
-				</select> 
-				<input type='text' name='rqkeyword'value='<c:out value="${rqpageMaker.rqcri.rqkeyword}"/>' /> 
-				<input type='hidden' name='rqpageNum' value='<c:out value="${rqpageMaker.rqcri.rqpageNum}"/>' /> 
-				<input type='hidden' name='rqamount' value='<c:out value="${rqpageMaker.rqcri.rqamount}"/>' />
-				<button class='btn btn-default'>Search</button>
-			</form>
-		</div>
-	</div>
 
-	<table border="1">
+	<table border="1" align="center" >
 		<thead>
 			<tr>
 				<th>상태</th>
@@ -157,7 +158,7 @@ function search(){
 						<td><c:out value="${rqlist.requestCategory }"/></td>
 						<td>
 						<a class='move' href='<c:out value="${rqlist.requestNum }"/>'>	
-						<c:out value="${rqlist.requestUse }"/> &nbsp;&nbsp;<c:out value="${rqlist.requestTitle }"/></a></td>
+						<c:out value="${rqlist.requestUse }"/> &nbsp;-&nbsp;<c:out value="${rqlist.requestTitle }"/></a></td>
 						<td><c:out value="${rqlist.requestWriter }"/></td>
 						<td><fmt:formatDate pattern="yyyy-MM-dd" value="${rqlist.requestFinish }" /></td>
 						<td><fmt:formatDate pattern="yyyy-MM-dd" value="${rqlist.requestDead }" /></td>							
@@ -168,7 +169,7 @@ function search(){
 	</table>
 	
 	<div class='pull-right'>
-		<ul class="pagination">
+		<ul class="pagination" align="center">
 		
 			<c:if test="${rqpageMaker.prev}">
 					<li class="paginate_button previous"><a
@@ -189,15 +190,11 @@ function search(){
 		</ul>
 	</div>	
 	
-	<form id='actionForm' action="/request/requestList" method='get'>
-		<input type='hidden' name='rqpageNum' value='${rqpageMaker.rqcri.rqpageNum}'>
-		<input type='hidden' name='rqamount' value='${rqpageMaker.rqcri.rqamount}'>
-		<input type='hidden' name='rqtype' value='<c:out value="${ rqpageMaker.rqcri.rqtype }"/>'> 
-		<input type='hidden' name='rqkeyword' value='<c:out value="${ pageMaker.rqcri.rqkeyword }"/>'>
-		<input type='hidden' name='category' value='${rqpageMaker.rqcri.requestCategoey}'>
-	</form>
-	
-	
+	<c:if test="${loginUser != null }">
+	<a href="/request/requestInsertForm">
+		<button type="submit" value="글쓰기">글쓰기</button>
+	</a>
+	</c:if>
 </div>
 
 </body>

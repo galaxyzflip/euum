@@ -2,9 +2,13 @@ package com.mycom.euum.review.service;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.mycom.euum.goodsQNA.bean.GoodsQNABean;
+import com.mycom.euum.image.bean.ImageBean;
 import com.mycom.euum.notice.bean.NoticeBean;
 import com.mycom.euum.page.Criteria;
 import com.mycom.euum.page.RCriteria;
@@ -31,12 +35,19 @@ public class ReviewServiceImpl implements ReviewService {
 //		// TODO Auto-generated method 
 //		return reviewMapper.reviewList(goodsNum, pageNum, amount);
 //	}
-
+    
 	@Override
-	public void reviewInsert(ReviewBean reviewBean) {
-		// TODO Auto-generated method stub
+	public int reviewInsert(ReviewBean reviewBean, HttpServletRequest request) {
+		
 		reviewMapper.reviewInsert(reviewBean);
+		
+		int reviewSelectKey = reviewBean.getReviewNum();
+		
+		System.out.println("service selectkey====================" + reviewBean.getReviewNum());
+		
+		return reviewSelectKey;
 	}
+	
 
 	@Override
 	public int reviewModifyPro(ReviewBean reviewBean) {
@@ -82,6 +93,15 @@ public class ReviewServiceImpl implements ReviewService {
 		// TODO Auto-generated method stub
 		return reviewMapper.myGetTotal(cri);
 	}
+    
+	/** 리뷰이미지 가져오기 */
+	@Override
+	public List<ImageBean> getSelectRimage(int reviewNum) {
+		
+		return reviewMapper.getSelectRimage(reviewNum);
+	}
+	
+	
 
 	
 

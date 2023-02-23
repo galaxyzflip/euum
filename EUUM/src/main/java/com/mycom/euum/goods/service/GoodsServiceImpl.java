@@ -16,6 +16,7 @@ import com.mycom.euum.goods.bean.GoodsOptionBean;
 import com.mycom.euum.goods.mapper.GoodsMapper;
 import com.mycom.euum.image.bean.ImageBean;
 import com.mycom.euum.image.mapper.ImageMapper;
+import com.mycom.euum.member.bean.CartBean;
 import com.mycom.euum.member.bean.SellerBean;
 import com.mycom.euum.page.Criteria2;
 import com.mycom.euum.page.CriteriaForGoods;
@@ -28,6 +29,7 @@ import lombok.extern.log4j.Log4j;
 @Log4j
 @AllArgsConstructor
 public class GoodsServiceImpl implements GoodsService {
+
 
 	private GoodsMapper goodsMapper;
 	private ImageMapper imageMapper;
@@ -47,7 +49,23 @@ public class GoodsServiceImpl implements GoodsService {
 
 	/* ---------------------------- 상품 리스트 ---------------------------- */
 
-	/** 은정: 상품 리스트 가져오기 (List) */
+
+
+	
+	@Override
+	public List<GoodsBean> profileGoodsList(int memberNum) throws Exception {
+		return goodsMapper.profileGoodsList(memberNum);
+	}
+
+	@Override
+	public List<GoodsBean> selectCartGoodsList(Criteria2 cri) throws Exception {
+		return goodsMapper.selectCartGoodsList(cri);
+	}
+
+
+	/** 은정: 상품 리스트 가져오기 (List)*/
+
+
 	@Override
 	public List<GoodsBean> selectGoodsList(Criteria2 cri) {
 		return goodsMapper.selectGoodsList(cri);
@@ -318,6 +336,7 @@ public class GoodsServiceImpl implements GoodsService {
 	public void updateGoodsTempToRegular(GoodsBean goodsBean) throws Exception {
 		int goodsNum = goodsBean.getGoodsNum(); // 기존 임시저장 상품의 goodsNum을 그대로 사용
 		goodsMapper.deleteGoodsOption(goodsNum);
+
 	}
 
 	/** 선민: 상품 임시저장에서 다시 임시저장 */
@@ -368,6 +387,7 @@ public class GoodsServiceImpl implements GoodsService {
 	@Override
 	public int selectGoodsOptionContentCount(String goodsNum) throws Exception {
 		return goodsMapper.selectGoodsOptionContentCount(goodsNum);
+
 	}
 
 	/* ---------------------------- 상품 삭제 ---------------------------- */
@@ -430,6 +450,7 @@ public class GoodsServiceImpl implements GoodsService {
 		return imageBeanList;
 	}
 
+
 	/** 선민: 관리자 상품조회 리스트 */
 	@Override
 	public List<GoodsBean> selectAdminGoodsList() throws Exception {
@@ -444,17 +465,16 @@ public class GoodsServiceImpl implements GoodsService {
 	}
 
 
-//	/** 선민: 상품 수정 - 상품번호와 옵션명번호를 받아서 각 옵션명의 모든 세부항목 가져오기 */
-//	@Override
-//	public List<List<GoodsOptionBean>> selectGoodsOption(String goodsNum, int optionCount) throws Exception {
-//		List<List<GoodsOptionBean>> lists = new ArrayList<List<GoodsOptionBean>>();
-//		for (int i = 1; i <= optionCount; i++) {
-//			List<GoodsOptionBean> list = goodsMapper.selectGoodsOption(goodsNum, optionCount);
-//			lists.add(list);
-//			log.info("list: " + list);
-//		}
-//		log.info("lists: " + lists);
-//		return lists;
-//	}
+	@Override
+	public List<Map<String, Object>> memberCart(int memberNum) throws Exception {
+		return goodsMapper.memberCart(memberNum);
+	}
 
+	
+
+	
+	
 }
+
+
+

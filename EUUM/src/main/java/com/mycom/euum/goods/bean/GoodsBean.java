@@ -35,4 +35,5 @@ public class GoodsBean {
 	String goodsImageDate1;
 	String goodsImageDate2;
 	String goodsImageDate3;
+
 }
