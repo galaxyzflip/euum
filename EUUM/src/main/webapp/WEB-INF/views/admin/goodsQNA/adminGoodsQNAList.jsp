@@ -50,7 +50,7 @@
 					
 					<tbody>
 					<c:forEach items="${list}" var="var" varStatus="status">
-						<tr>s
+						<tr>
 							<td>${var.goodsQNANum }</td>
 							<td>답변 중
 											

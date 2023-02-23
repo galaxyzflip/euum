@@ -17,18 +17,24 @@ $(document).ready(function(){
 <script type="text/javascript">
 function modify(){
 	
+	var form = $('#frm')[0];
+    var formData = new FormData(form);
+	
 	var noticeModify=$("#frm").serialize();
 		alert(noticeModify);
 		$.ajax({
 			type : "POST",
 			url : "<c:url value='/notice/noticeModifyPro'/>",
-			data : noticeModify,
+			processData : false,
+	        contentType : false,
+			data : formData,
 			async: false,
 			success : function(data){
 				
   			location.href="<c:url value='/notice/notice'/>"; 	        		
 		},
 		error : function(error) {
+		
 			alert("실패");
 		}
 			
@@ -69,8 +75,8 @@ function deletee(){
 	<form id="frm" enctype="multipart/form-data">
 		<table align="center">
 			<tr>
-			
-				<input type="hidden" name="noticeNum" value="${modify.noticeNum }">
+	
+				<input type="hidden" name="noticeNum" value="${modify.noticeNum }"/>
 				<td>��紐�</td>
 				<td><input type="text" name="noticeTitle" value="${modify.noticeTitle }"/></td>
 				<tr>
@@ -96,12 +102,11 @@ function deletee(){
 	            <td> 
 	           <c:forEach items="${image}" var="row">
 	          <img src="/resources/img/${row.imageUploadPath}${row.imageFileName}" width=350; height=350;>     
-	          <input type="hidden" name="imageUploadPath" id="imageUploadPath" value="${row.imageUploadPath}">
-		      <input type="hidden" name="imageFileName" id="imageFileName" value="${row.imageFileName}">
+	   
 	          </c:forEach>	      
-	              <input type="file" name="uploadFile">
-	              <input type="file" name="uploadFile">
-	              <input type="file" name="uploadFile">
+	              <input type="file" name="uploadFile" id="uploadFile">
+	              <input type="file" name="uploadFile" id="uploadFile">
+	              <input type="file" name="uploadFile" id="uploadFile">
 				</td> 
 			
 		

@@ -155,6 +155,7 @@
 						<th>상세안내</th>
 						<td>
 							<textarea class="input_text_l" name="goodsContent" id="input_goodsContent" cols="30" rows="5"></textarea>
+
 						</td>
 					</tr>
 				</table>
@@ -229,9 +230,14 @@ $("#input_goodsFormat").blur(function() {
 $("#input_goodsSize").blur(function() {
     checkSize();
 });
+
+
+
 $("#input_goodsResolution").blur(function() {
     checkResolution();
 });
+
+
 $("#input_goodsModifyCount").blur(function() {
     checkModifyCount();
 });
@@ -351,6 +357,8 @@ function checkResolution() {
 		console.log("해상도 X");
 	    return false;
 	}
+
+
 	console.log("해상도 OK");
 	hideMsg(oMsg);
 	return true;
@@ -497,11 +505,13 @@ function checkContent() {
 /* ------------------------------------------------------------------------------------------------------------ */
 // 텍스트기입 공란방지 사후처리
 function PreventBlank(inputValue, inputTag, oMsg) {
+
 	if(inputValue == "") {
 	    showErrorMsg(oMsg, "필수 입력 사항입니다.");
     	setFocusToInputObject(inputTag);
 		return true;
 	} else {
+
 		return false;
 	}
 }
@@ -765,6 +775,7 @@ table {
 	color: red;
 }
 
+
 #opAdd_bt {
 	 border: 1px solid #818181;
 }
@@ -798,4 +809,5 @@ table {
 #opContentDel_bt {
  	border: 1px solid #818181;
 }
+
 </style>

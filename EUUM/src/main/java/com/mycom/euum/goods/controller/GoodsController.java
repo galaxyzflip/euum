@@ -417,6 +417,15 @@ public class GoodsController {
 		log.info("옵션의 개수: " + optionCount);
 		List<List<GoodsOptionBean>> optionList = goodsService.selectGoodsOptionContent(goodsNum, optionCount);
 
+	/** 의종: 답변작성시 유효성검사 */		
+		SellerBean sellerBean = getSessionSeller(session);
+		
+		if(sellerBean != null) {
+		String sellerNickName = sellerBean.getSellerNickName();
+		log.info("sellerBean셀러빈 뭐받음?????????========= " + sellerBean);
+		
+		model.addAttribute("sellerName", sellerNickName);
+		}
 
 		/** 의종: goodsQNA 리스트 가져오기 및 페이징 */
 		int amount = cri.getAmount();
