@@ -13,6 +13,7 @@ import lombok.Data;
 @Data
 public class GoodsBean {
 	
+	int goodsCart;
 	int goodsNum;
 	String goodsCategory; 
 	String goodsStatus;
@@ -34,6 +35,4 @@ public class GoodsBean {
 	String goodsImageDate1;
 	String goodsImageDate2;
 	String goodsImageDate3;
-	
-	
 }
