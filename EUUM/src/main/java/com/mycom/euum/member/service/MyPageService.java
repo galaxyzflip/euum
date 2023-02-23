@@ -21,7 +21,9 @@ public interface MyPageService {
 	public int updateSellerFile(SellerBean bean, List<ImageBean> imageBeanList);
 
 	public int updatePassword(MemberBean bean);
-
+	
+	public int updateMobile(MemberBean bean);
+	
 	public int secessionMember(String memberNum);
 
 	public int secessionSeller(String sellerNum);

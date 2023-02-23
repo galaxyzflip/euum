@@ -45,6 +45,13 @@ public class MyPageServiceImpl implements MyPageService {
 
 		return memberMapper.updateMember(bean);
 	}
+	
+	// 회원 휴대폰 번호 수정
+	@Override
+	public int updateMobile(MemberBean bean) {
+		
+		return memberMapper.updateMobile(bean);
+	}
 
 	// 전문가 정보 수정
 	@Override

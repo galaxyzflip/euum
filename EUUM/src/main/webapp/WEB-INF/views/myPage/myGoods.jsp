@@ -5,6 +5,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 
+
 <style>
 li {
 	list-style: none;
@@ -159,13 +160,16 @@ li {
 		
 	</div>
 
+
 <div style="margin: 100px">
 	<div>
 		<h2>내 작품 관리</h2>
 	</div><br/>
 	<div>
 		<!-- <a href="/goods/goodsRegisterGuide">작품 등록</a> -->
-		<button type="button" onclick="location.href='/goods/goodsRegisterGuide'">작품 등록</button>
+
+		<button type="button" id="registerbtn" onclick="location.href='/goods/goodsRegisterGuide'">작품 등록</button>
+
 	</div><br/>
 
 	<div class="myGoods">
@@ -178,6 +182,7 @@ li {
 							<table style="border: solid 1px">   
 								<tr id="tr_${row.goodsNum}">
 									<td class="myg_category">${row.goodsCategory}</td>
+
 									<td class="myg_sts">${row.goodsStatus}</td>
 									<%-- <td class="myg_category">${row.goodsNum}</td> --%>
 									<td>
@@ -214,6 +219,7 @@ li {
 										<input type="hidden" id="goodsNum_${status.index}" value="${row.goodsNum}"/>
 										<button type="button" onclick="modifyMyGoods('${row.goodsStatus}', ${status.index});">수정</button>
 										<button type="button" onclick="deleteMyGoods('${row.goodsStatus}', ${status.index});">삭제</button>
+
 									</td>
 								</tr>
 							</table>
@@ -221,8 +227,10 @@ li {
 					</c:forEach>
 				</c:when>
 				<c:otherwise>
+
 					판매중인 내 상품이 없습니다.
 				</c:otherwise>
+
 			</c:choose>
 			<div id="goodsPaging1">
 				<div class='pull-right'>
@@ -231,6 +239,7 @@ li {
 						<c:if test="${pagingMap.pageMakerGoods.prev1}">
 							<li class="page-item"><a class="page-link page1" href="${pagingMap.pageMakerGoods.startPage1 -1}" tabindex="-1">Previous</a></li>
 						</c:if>
+
 	
 							<c:forEach var="num" begin="${pagingMap.pageMakerGoods.startPage1}" end="${pagingMap.pageMakerGoods.endPage1}">
 								<li class="page-item ${pagingMap.pageMakerGoods.cri.pageNum1 == num ? "active":""} ">
@@ -238,6 +247,7 @@ li {
 								</li>
 							</c:forEach>
 	
+
 						<c:if test="${pagingMap.pageMakerGoods.next1}">
 							<li class="page-item"><a class="page-link page1" href="${pagingMap.pageMakerGoods.endPage1 +1}" tabindex="-1">Next</a></li>
 						</c:if>
@@ -258,6 +268,7 @@ li {
 									<td class="myg_category">${row.goodsCategory}</td>
 									<%-- <td class="myg_category">${row.goodsNum}</td> --%>
 									<td>
+
 										<c:choose>
 											<c:when test="${row.goodsImage1 eq null}">
 												<img class="thumb" src="/resources/img/no_image.png">
@@ -291,6 +302,7 @@ li {
 										<input type="hidden" id="goodsNum_${status.index}" value="${row.goodsNum}"/>
 										<button type="button" onclick="modifyMyGoods('${row.goodsStatus}', ${status.index});">수정</button>
 										<button type="button" onclick="deleteMyGoods('${row.goodsStatus}', ${status.index});">삭제</button>
+
 									</td>
 								</tr>
 							</table>
@@ -335,6 +347,7 @@ li {
 									<td class="myg_category">${row.goodsCategory}</td>
 									<%-- <td class="myg_category">${row.goodsNum}</td> --%>
 									<td>
+
 										<c:choose>
 											<c:when test="${row.goodsImage1 eq null}">
 												<img class="thumb" src="/resources/img/no_image.png">
@@ -368,6 +381,7 @@ li {
 										<input type="hidden" id="goodsNum_${status.index}" name="goodsNum" value="${row.goodsNum}"/>
 										<button type="button" onclick="modifyMyGoods('${row.goodsStatus}', ${status.index});">수정</button>
 										<button type="button" onclick="deleteMyGoods('${row.goodsStatus}', ${status.index});">삭제</button>
+
 									</td>
 								</tr>
 							</table>
@@ -378,7 +392,9 @@ li {
 					<span>임시 저장된 상품이 없습니다.</span>
 				</c:otherwise>
 			</c:choose>
+
 			<div id="goodsPaging1">
+
 				<div class='pull-right'>
 					<ul class="pagination">
 	
@@ -400,51 +416,88 @@ li {
 				</div>
 			</div>
 		</div>
-		
-		<!-- 선민: 수정을 위한 폼 -->
-		<form id="modifyForm"></form>
-		
-		<!-- 선민: 페이징을 위한 폼 -->
-<!-- 		<form id="actionForm" action="/myPage/myGoods" method='get'> -->
-		<form id="actionForm" action="/myPage/myGoods" method='post'>
-			<input type='hidden' name='pageNum1' value='${pagingMap.pageMakerGoods.cri.pageNum1}'>
-			<input type='hidden' name='amount1' value='${pagingMap.pageMakerGoods.cri.amount1}'>
-			<input type='hidden' name='pageNum2' value='${pagingMap.pageMakerUnapprovedGoods.cri.pageNum2}'>
-			<input type='hidden' name='amount2' value='${pagingMap.pageMakerUnapprovedGoods.cri.amount2}'>
-			<input type='hidden' name='pageNum3' value='${pagingMap.pageMakerTempGoods.cri.pageNum3}'>
-			<input type='hidden' name='amount3' value='${pagingMap.pageMakerTempGoods.cri.amount3}'>
+
+	
+	
+	
+	<!-- 선민: 수정을 위한 폼 -->
+	<form id="modifyForm"></form>
+	
+	<!-- 선민: 페이징을 위한 폼 -->
+	<!-- <form id="actionForm" action="/myPage/myGoods" method='get'> -->
+	<form id="actionForm" action="/myPage/myGoods" method='post'>
+		<input type='hidden' name='pageNum1' value='${pagingMap.pageMakerGoods.cri.pageNum1}'>
+		<input type='hidden' name='amount1' value='${pagingMap.pageMakerGoods.cri.amount1}'>
+		<input type='hidden' name='pageNum2' value='${pagingMap.pageMakerUnapprovedGoods.cri.pageNum2}'>
+		<input type='hidden' name='amount2' value='${pagingMap.pageMakerUnapprovedGoods.cri.amount2}'>
+		<input type='hidden' name='pageNum3' value='${pagingMap.pageMakerTempGoods.cri.pageNum3}'>
+		<input type='hidden' name='amount3' value='${pagingMap.pageMakerTempGoods.cri.amount3}'>
+	</form>
+	
+	<!-- 모달모달 -->
+	<div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<form id="frm" method="post">
+			<input type="hidden" name="goodsNum" value="" />
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h1 class="modal-title fs-5" id="exampleModalLabel">상품 수정</h1>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">상품 정보를 수정하시겠습니까?</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary" data-oper="modify" id="modify">수정</button>
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+					</div>
+				</div>
+			</div>
 		</form>
-<!-- 		<form id="actionForm2" name="actionForm2"> -->
-<%-- 			<input type='hidden' name='pageNum1' value='${pagingMap.pageMakerGoods.cri.pageNum1}'> --%>
-<%-- 			<input type='hidden' name='amount1' value='${pagingMap.pageMakerGoods.cri.amount1}'> --%>
-<%-- 			<input type='hidden' name='pageNum2' value='${pagingMap.pageMakerUnapprovedGoods.cri.pageNum2}'> --%>
-<%-- 			<input type='hidden' name='amount2' value='${pagingMap.pageMakerUnapprovedGoods.cri.amount2}'> --%>
-<%-- 			<input type='hidden' name='pageNum3' value='${pagingMap.pageMakerTempGoods.cri.pageNum3}'> --%>
-<%-- 			<input type='hidden' name='amount3' value='${pagingMap.pageMakerTempGoods.cri.amount3}'> --%>
-<!-- 		</form> -->
-		
 	</div>
-	<br/>
+
+	<div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<form id="frmm" method="post">
+			<input type="hidden" name="goodsNum" value="" />
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h1 class="modal-title fs-5" id="exampleModalLabel">상품 삭제</h1>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">정말 삭제하시겠습니까?</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary" data-oper="delete" id="delete">삭제</button>
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+
 	
-<%-- 	<div>맵: ${myGoodsMap}</div><br/> --%>
+	<%-- 	<div>맵: ${myGoodsMap}</div><br/> --%>
 	<div>맵: ${pagingMap}</div><br/>
-	
+		
 	<div>
-<%-- 		<li>승인완료 pageNum: ${pagingMap.pageMakerGoods.cri.pageNum1}</li> --%>
-<%-- 		<li>승인완료 amount: ${pagingMap.pageMakerGoods.cri.amount1}</li> --%>
+		<li>승인완료 pageNum: ${pagingMap.pageMakerGoods.cri.pageNum1}</li>
+		<li>승인완료 amount: ${pagingMap.pageMakerGoods.cri.amount1}</li>
 		<li>승인완료 startPage: ${pagingMap.pageMakerGoods.startPage1}</li>
 		<li>승인완료 endPage: ${pagingMap.pageMakerGoods.endPage1}</li>
 		<li>--------------------------------</li>
+		<li>승인대기 pageNum: ${pagingMap.pageMakerUnapprovedGoods.cri.pageNum2}</li>
+		<li>승인대기 amount: ${pagingMap.pageMakerUnapprovedGoods.cri.amount2}</li>
 		<li>승인대기 startPage: ${pagingMap.pageMakerUnapprovedGoods.startPage2}</li>
 		<li>승인대기 endPage: ${pagingMap.pageMakerUnapprovedGoods.endPage2}</li>
 		<li>--------------------------------</li>
+		<li>임시저장 pageNum: ${pagingMap.pageMakerTempGoods.cri.pageNum3}</li>
+		<li>임시저장 amount: ${pagingMap.pageMakerTempGoods.cri.amount3}</li>
 		<li>임시저장 startPage: ${pagingMap.pageMakerTempGoods.startPage3}</li>
 		<li>임시저장 endPage: ${pagingMap.pageMakerTempGoods.endPage3}</li>
 	</div><br/>
-</div>
-  </div></div></div>
-
+	
+	
 <script>
+
+
 // 상품페이징
 $(document).ready(function(){
 	var actionForm = $("#actionForm");
@@ -462,22 +515,6 @@ $(document).ready(function(){
 	    actionForm.find("input[name='pageNum2']").val(targetPage);
 	    actionForm.submit();
 
-// 		var queryString = $("form[id=actionForm]").serialize();
-		
-// 		$.ajax({
-// 			url: '/myPage/myGoods',
-// 			processData: false,
-// 			contentType: false,
-// 			data: queryString,  
-// 			type: 'POST',
-			
-// 			error: function(error){
-// 				alert("실패");
-// 			},
-// 			success: function(result) { 
-// 			    alert("성공");
-// 			}	
-// 		}); // $.ajax
 	});
 	
 	$(".page3").on("click", function(e) {
@@ -489,13 +526,57 @@ $(document).ready(function(){
 })		
 
 
+
+function openModal(status, index, first, last, type) {
+    console.log("---------------");
+    console.log(status);
+    console.log(index);
+    console.log(first);
+    console.log(last);
+    console.log(type);
+    
+	if(type == 'modify') {
+	    console.log("---------------");
+	    console.log("수정수정");
+	    $('#exampleModal1').modal('show');
+	    
+	    var modifyBtn = $("#modify");
+	    modifyBtn.click(function(e) {
+		    e.preventDefault();
+			var oper = $(this).data("oper");
+			
+			if(oper == 'modify') {
+			    modifyMyGoods(status, index);
+			}
+		})
+	    
+	} else if(type == 'delete') {
+	    console.log("---------------");
+	    console.log("삭제삭제");
+	    $('#exampleModal2').modal('show');
+	    
+	    var deleteBtn = $("#delete");
+	    deleteBtn.click(function(e) {
+		    e.preventDefault();
+			var oper = $(this).data("oper");
+			
+			if(oper == 'delete') {
+			    // 스크롤잠금 풀기
+				$('#exampleModal2').modal('hide'); 
+				$('#exampleModal2').hide();
+			    // 상품 삭제
+			    deleteMyGoods(status, index, first, last);
+			}
+		})
+	} 
+}
+
+
+
 function modifyMyGoods(status, index) {
     let formData = new FormData(); // 가상의 <form>태그 객체를 생성
     let goodsNum;
-    
-    if(!confirm("상품 정보를 수정하시겠습니까?")) { return false; }
-    else {}
-    
+       
 	switch(status) {
 		case '승인완료':
 			goodsNum = document.querySelector('div.myGoodsList input[id=goodsNum_' + index + ']').value;
@@ -516,23 +597,37 @@ function modifyMyGoods(status, index) {
 	form.setAttribute("method", "Post");  //Post 방식
 	form.setAttribute("action", "/goods/goodsModifyForm"); //요청 보낼 주소
 	
-	var input   = document.createElement('input'); 
-	input.type   = 'hidden';
-	input.name  = 'goodsNum';
-	input.value  = goodsNum;
+
+	var input = document.createElement('input'); 
+	input.type = 'hidden';
+	input.name = 'goodsNum';
+	input.value = goodsNum;
+
 	form.appendChild(input);
 	
 	form.submit();
 }
 
-function deleteMyGoods(status, index) {
+
+function deleteMyGoods(status, index, first, last) {
     let formData = new FormData(); // 가상의 <form>태그 객체를 생성
     let goodsNum;
     
-    alert(status);
+    let pageNum1;
+    let amount1;
+    let pageNum2;
+    let amount2;
+    let pageNum3;
+    let amount3;
     
-    if(!confirm("정말 삭제하시겠습니까?")) { return false; }
-    else {}
+    console.log(status);
+    console.log(goodsNum);
+    console.log(first);
+    console.log(last);
+    
+//     if(!confirm("정말 삭제하시겠습니까?")) { return false; }
+//     else {}
+
     
 	switch(status) {
 		case '승인완료':
@@ -548,8 +643,53 @@ function deleteMyGoods(status, index) {
 			alert('이거뜨면먼가오류있음');
 	}
 
+	
+	pageNum1 = document.querySelector('input[name=pageNum1]').value;
+	amount1 = document.querySelector('input[name=amount1]').value;
+	pageNum2 = document.querySelector('input[name=pageNum2]').value;
+	amount2 = document.querySelector('input[name=amount2]').value;
+	pageNum3 = document.querySelector('input[name=pageNum3]').value;
+	amount3 = document.querySelector('input[name=amount3]').value;
+	
+	if(first == true && last == true) {
+	    switch(status) {
+		case '승인완료':
+		    pageNum1 = document.querySelector('input[name=pageNum1]').value;
+			amount1 = document.querySelector('input[name=amount1]').value;
+			pageNum1--;
+			if(pageNum1 == 0) {
+				pageNum1 = 1;
+			}
+			break;
+		case '승인대기':
+		    pageNum2 = document.querySelector('input[name=pageNum2]').value;
+			amount2 = document.querySelector('input[name=amount2]').value;
+			pageNum2--;
+			if(pageNum2 == 0) {
+			    pageNum2 = 1;
+			} 
+			break;
+		case '임시저장':
+		    pageNum3 = document.querySelector('input[name=pageNum3]').value;
+			amount3 = document.querySelector('input[name=amount3]').value;
+			pageNum3--;
+			if(pageNum3 == 0) {
+			    pageNum3 = 1;
+			}
+			break;
+	    }
+	}
+
 	// 1. 가상의 <form>태그에 전송할 data를 담기
 	formData.append("goodsNum", goodsNum);
+	
+	formData.append("pageNum1", pageNum1);
+	formData.append("amount1", amount1);
+	formData.append("pageNum2", pageNum2);
+	formData.append("amount2", amount2);
+	formData.append("pageNum3", pageNum3);
+	formData.append("amount3", amount3);
+
 		
 	// 2-1. 약간의 옵션을 설정하고 Ajax로 전송 후 html 코드를 remove()
 // 	$.ajax({
@@ -571,7 +711,7 @@ function deleteMyGoods(status, index) {
 		type: 'POST',
 		
 		success: function(result) { 
-		    alert("상품이 정상적으로 삭제되었습니다.");
+
 		    var html = jQuery('<div>').html(result);
 			var contents = html.find("div.myGoods").html();
 			$(".myGoods").html(contents);
@@ -597,17 +737,23 @@ function deleteMyGoods(status, index) {
 // 		alert('이거뜨면먼가오류있음');
 // 	}
 	
-	document.getElementById(tr).remove();
+
+// 	document.getElementById(tr).remove();
 }
 </script>
 
-<!-- <style>
+
+
+<style>
+
 li {
 	list-style: none;
 }
 .thumb {
-	width: 160px;
-	height:120px; 
+
+	width: 140px;
+	height:105px; 
+
 }
 .small {
 	width: 100px;
@@ -618,12 +764,30 @@ li {
 }
 .myg_info {
 	padding-left: 20px;
-	width: 400px;
+
+	width: 200px;
 }
 .myg_button {
 	padding-left: 20px;
-	width: 160px;
+	width: 140px;
 }
-</style> -->
 
+#btn11 {
+	 border: 1px solid #818181;
+}
+
+#registerbtn {
+	width: 188px;
+    height: 58px;
+    line-height: 58px;
+    background: #343434;
+    color: #fff;
+    text-align: center;
+    cursor: pointer;
+    margin: 0 auto;
+}
+
+</style>
+
+</div> <!-- myGoodsAjax.jsp에서도 페이징을 유지하기 위해 <div class="myGoods">태그를 최하단에서 닫음 -->
 

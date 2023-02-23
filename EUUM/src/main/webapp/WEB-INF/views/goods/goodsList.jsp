@@ -11,73 +11,8 @@
 </head>
 
 <script type="text/javascript">
-function checkCart(goodsNum){
-	
-	var memberNum = '${loginUser.memberNum}';
-	$.ajax({
-			type : "GET",
-			url : "/myPage/ajaxCartCheck?memberNum=" + memberNum+"&goodsNum="+goodsNum,
-			success : function(data) {
-				if (data == "Y") {
-					onImg(goodsNum);
-				} else {
-					offImg(goodsNum);
-				}
-			}
-		});
-	
-	return false;
-} 
 
-function onImg(goodsNum){
-	var ddd = "#wish"+goodsNum;
-	
-	console.log(ddd);
-	console.log("#heart"+goodsNum); 
-	$("#wish"+goodsNum).attr("src", "/resources/img/icon/heart_icon.png");
-}
 
-function offImg(goodsNum){
-	var ddd = "#heart"+goodsNum;
-	
-	console.log(ddd);
-	console.log("#heart"+goodsNum); 
-	$("#wish"+goodsNum).attr("src", "/resources/img/icon/empty_heart_icon.png");
-}
-
-/* var iMenuLayers = 6; // 총레이어개수
-function OnDisplayToggle(szObjName)
-{
-	var objId = document.all['idMenu'+szObjName];
-	var menuId = document.all['menuTop'+szObjName];
-	var arMenu = new Array(iMenuLayers);
-
-	for( var i=0; i<iMenuLayers; i++ )
-		arMenu[i] = 'idMenu'+i;
-
-	for( var i=0; i<arMenu.length; i++ ) {
-		if(document.all[arMenu[i]] && document.all[arMenu[i]]!=objId)
-			document.all[arMenu[i]].style.display = 'none';
-	}
-
-	    if(objId){
-		if(objId.style.display == ''){
-			objId.style.display = 'none';
-			if(menuId) menuId.style.backgroundColor = '';
-		} else {
-			objId.style.display = '';
-			if(menuId) menuId.style.backgroundColor = '#c65926';
-		}
-	}
-}  */
-
- function loading(){
-	document.getElementById('list_loading').style.display='block';
-	setTimeout(function(){
-			document.getElementById('list_loading').style.display='none';
-	},2000);
-
-} 
 
   //작품등록시,memberClass로 전문가회원인지 일반회원인지 구분하기 위함 
 /* function writer_chk(level){
@@ -94,7 +29,6 @@ function OnDisplayToggle(szObjName)
 /* document.getElementById("sortCom").onchange = function() {
 	this.form.submit();
 } */
-
 
 
 
@@ -132,64 +66,43 @@ function OnDisplayToggle(szObjName)
 
 </script>
 
+
 <body>
 	<br><br><br><br><br>
 	<div class="container">
 		<div class="sub_menu_back">
 			<ul class="head_title">
-				<span>작품 리스트</span>
-				<span class="head_title_s">커미션은 상업적인 용도로 사용할 수 없습니다</span>
+				
+			<!-- 	<span>작품 리스트</span> -->
+			<span>
+				<a href="/goods/goodsList">작품 리스트</a></span>  <!-- //클릭하면 전체 리스트 페이지로 돌아감  -->
+              <span class="head_title_s">커미션은 상업적인 용도로 사용할 수 없습니다</span>
 			</ul>
 			<br> <br>
 
-			<ul id="sub_menu">
-				<a href="#" onclick="loading();">
-					<li class="">캐릭터 일러스트</li>
-				</a>
-				<a href="#" onclick="loading();">
-					<li class="">일러스트</li>
-				</a>
-				<a href="#" onclick="loading();">
-					<li class="">버츄얼 · Live2D</li>
-				</a>
-				<a href="#" onclick="loading();">
-					<li class="">디자인</li>
-				</a>
-				<a href="#" onclick="loading();">
-					<li class="">영상 · 음향</li>
-				</a>
-				<a href="#" onclick="loading();">
-					<li class="">웹툰 · 만화</li>
-				</a>
-			</ul>
+            <!--상품 카테고리 -->
+            <ul id="sub_menu">
+			   <li><a href="/goods/goodsList?goodsCategory=1&pageNum=1">캐릭터 일러스트</a></li>
+               <li><a href="/goods/goodsList?goodsCategory=2&pageNum=1">일러스트</a></li>
+               <li><a href="/goods/goodsList?goodsCategory=3&pageNum=1">3D 모델링</a></li>
+               <li><a href="/goods/goodsList?goodsCategory=4&pageNum=1">디자인</a></li>
+               <li><a href="/goods/goodsList?goodsCategory=5&pageNum=1">웹툰 · 만화</a></li>
+            </ul>
+				
 		</div>
 		<br> <br> <br> <br>
 
 
-		<div class="subContent">
+		<%-- <div class="subContent">
 			<!-- MAIN CENTER START -->
 			<div class="cate_banner_title">
 				<ul>프리미엄 작가</ul>
 			</div>
 
-			<div id="cate_banner" class="clear">
-				<a href="/goods/goodsDetail?goods_num=${goodsNum}">
-					<%-- 		<img src="${pageContext.request.contextPath}/resources/assets/img/image/zz1.jpeg/${goodsImage1}" alt="" style='width: 260px; height: 220px'> --%>
-				</a>
-				<a href="/goods/goodsDetail?goods_num=${goodsNum}">
-					<img src="${pageContext.request.contextPath}/resources/assets/img/zz1.jpeg/${goodsImage1}" alt="" style='width: 260px; height: 220px'>
-				</a>
-				<a href="/goods/goodsDetail?goods_num=${goodsNum}">
-					<img src="${pageContext.request.contextPath}/resources/assets/img/zz2.jpeg/${goodsImage2}" alt="" style='width: 260px; height: 220px'>
-				</a>
-				<a href="/goods/goodsDetail?goods_num=${goodsNum}">
-					<img src="${pageContext.request.contextPath}/resources/assets/img/zz3.jpeg/${goodsImage3}" alt="" style='width: 260px; height: 220px'>
-				</a>
-			</div>
 			
 			
 			
-		</div>
+		</div> --%>
 	</div>
 
 	<div class="clear 5px;">&nbsp;</div>
@@ -205,6 +118,7 @@ function OnDisplayToggle(szObjName)
 				<input type='hidden' name='pageNum' value='${pageMaker.cri.pageNum}'>
 				<input type='hidden' name='amount' value='${pageMaker.cri.amount}'>
 				<input type="hidden" name="sortCom" value="${pageMaker.cri.sortCom }">
+				<input type="hidden" name="goodsCategory" value="${pageMaker.cri.goodsCategory}">
 			    <%-- <input type='hidden' name='type' value='<c:out value="${ pageMaker.cri.type }"/>'> --%>
 				<%-- <input type='hidden' name='keyword' value='<c:out value="${ pageMaker.cri.keyword }"/>'>  --%>
 			<!-- </form> -->
@@ -257,38 +171,22 @@ function OnDisplayToggle(szObjName)
 						<c:forEach items="${goodsList}" var="row" >
 							<div style="padding-bottom: 15px;">
 							<form id='goodsList' action='/goods/goodsList' method='get'> ${row.goodsNum}
-                                        
+                                         <a href="/goods/goodsDetail?goodsNum=${row.goodsNum}">
 								<table style="border: solid 1px">
 								  
 									<tr>
 										<td>    
-										 <a href="/goods/goodsDetail?goodsNum=${row.goodsNum}">
-											<img class="thumb" src="${pageContext.request.contextPath}/resources/assets/img/zz1.jpeg/${row.goodsImageDate1}s_${row.goodsImage1}"> 
-											<img class="thumb" src="${pageContext.request.contextPath}/resources/assets/img/zz2.jpeg/${row.goodsImageDate2}s_${row.goodsImage2}"> 
-											<img class="thumb" src="${pageContext.request.contextPath}/resources/assets/img/zz3.jpeg/${row.goodsImageDate3}s_${row.goodsImage3}">
+											<img class="thumb" src="${pageContext.request.contextPath}/resources/img/${row.goodsImageDate1}s_${row.goodsImage1}"> 
+											<img class="thumb" src="${pageContext.request.contextPath}/resources/img/${row.goodsImageDate2}s_${row.goodsImage2}"> 
+											<img class="thumb" src="${pageContext.request.contextPath}/resources/img/${row.goodsImageDate3}s_${row.goodsImage3}">
 										</td>
-										</a>
 										<td class="myg_info">
-										<a href="/goods/goodsDetail?goodsNum=${row.goodsNum}">
 											<li>${row.goodsName} / ${row.goodsUse}</li>
 											<li>${row.goodsSellerNickname} / ${row.goodsPrice}</li>
-											</a>
-                      <li><a id="heart${row.goodsNum}" onclick="checkCart(${row.goodsNum});">
-													<c:choose>
-														<c:when test="${row.goodsCart==0}">
-															<img id="wish${row.goodsNum}" class="hearticon"
-																src="/resources/img/icon/empty_heart_icon.png" />
-														</c:when>
-														<c:otherwise>
-															<img id="wish${row.goodsNum}" class="hearticon"
-																src="/resources/img/icon/heart_icon.png" />
-														</c:otherwise>
-													</c:choose>
-											</a></li>
 										</td>
 									 </tr>
 								</table>
-								       
+								       </a>
 						     </form>
 								
 							</div>
@@ -313,14 +211,14 @@ function OnDisplayToggle(szObjName)
 
 						<c:forEach var="num" begin="${pageMaker.startPage}" end="${pageMaker.endPage}">
 							<li class="paginate_button  ${pageMaker.cri.pageNum == num ? "active":""}">
-								<a href="${num }">${num }</a>&nbsp;&nbsp;
+								<a href="${num}">${num}</a>&nbsp;&nbsp;
 							</li>
 						</c:forEach>
 
 
 					 <c:if test="${pageMaker.next}">
 					      <li class="paginate_button next">
-						  <a href="${pageMaker.endPage +1 }">Next</a></li>
+						  <a href="${pageMaker.endPage +1}">Next</a></li>
 					</c:if>
 				</ul>
 			</div>
@@ -330,11 +228,6 @@ function OnDisplayToggle(szObjName)
 </html>
 
 <style>
-
-.hearticon{
-	width:20px;
-	height:20px;
-}
 li {
 	list-style: none;
 }
@@ -353,5 +246,4 @@ li {
 	padding-left: 20px;
 	width: 400px;
 }
-
 </style>

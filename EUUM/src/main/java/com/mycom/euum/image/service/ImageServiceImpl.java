@@ -133,6 +133,7 @@ public class ImageServiceImpl implements ImageService {
 		
 		return imageMapper.selectGoodsQNAImage(goodsQNANum);
 	}
+
 	
 	/** 의종: 공지사항 이미지 가져오기*/
 	@Override
@@ -140,6 +141,7 @@ public class ImageServiceImpl implements ImageService {
 		
 		return imageMapper.selectNoticeImage(noticeNum);
 	}
+
 
 
 

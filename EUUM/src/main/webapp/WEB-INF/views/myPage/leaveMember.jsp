@@ -112,23 +112,14 @@
 </div>
 </body>
 <script>
-/* function leavePro() {
-	if (confirm("정말 탈퇴 하시겠습니까?") == true) {
-		alert("탈퇴 처리 되었습니다.");
-		return true;
-	} else {
-		return false;
-	} 
-} */
 
-function leavePro(){
+function leavePro() {
 
 	 var pw = $("#memberPassword").val();
 	 var num = pw.search(/[0-9]/g);
 	 var eng = pw.search(/[a-z]/ig);
 	 var spe = pw.search(/[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/gi);
 	 
-
 	 if(pw.length < 1 || pw.length > 20){
 
 	  alert("비밀번호를 입력해 주세요.");

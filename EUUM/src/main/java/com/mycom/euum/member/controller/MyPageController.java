@@ -2,6 +2,7 @@ package com.mycom.euum.member.controller;
 
 
 import java.util.ArrayList;
+
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,6 +25,7 @@ import com.mycom.euum.member.bean.MemberBean;
 import com.mycom.euum.member.bean.SellerBean;
 import com.mycom.euum.member.mapper.CartMapper;
 import com.mycom.euum.member.service.MyPageService;
+import com.mycom.euum.order.service.OrderService;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
@@ -36,6 +38,7 @@ public class MyPageController {
 	private CartMapper cartMapper;
 	private MyPageService myPageService;
 	ImageService imageService;
+	OrderService orderService;
 	private FileUtils fileUtils;
 
 	// 굿즈리스트에서 insert or delete	
@@ -105,6 +108,20 @@ public class MyPageController {
 
 		return "myPage/memberDetail";
 	}
+
+	
+	
+	 // 회원정보 휴대폰 번호 수정 처리
+	  
+	 @PostMapping("/myPage/modifyMobilePro") 
+	 public String modifyMobile(MemberBean bean) {
+	  
+		myPageService.updateMobile(bean);
+	  
+		return "redirect:/myPage/modifyForm"; 
+	 
+	}	
+	 
 
 	// 회원정보 수정 처리
 	@PostMapping("/myPage/modifyPro")
@@ -188,7 +205,8 @@ public class MyPageController {
 
 	// 전문가 내 프로필 상세보기 겸 수정 창
 	@GetMapping("/myPage/modifySellerForm")
-	public String modifySellerInfo(MultipartFile[] uploadFile, Model model, HttpServletRequest request, String sellerNum, SellerBean sellerBean) throws Exception {
+	public String modifySellerInfo(MultipartFile[] uploadFile, Model model, HttpServletRequest request, SellerBean sellerBean) throws Exception {
+		
 
 		HttpSession session = request.getSession();
 
@@ -201,7 +219,26 @@ public class MyPageController {
 
 		ImageBean image = imageService.getSellerImage(seller.getSellerNum());
 
+		
+		String sellerOrder1 = orderService.selectSellerOrder1(seller.getSellerNum());
+		String sellerOrder2 = orderService.selectSellerOrder2(seller.getSellerNum());
+		String sellerOrder3 = orderService.selectSellerOrder3(seller.getSellerNum());
+		String sellerOrder4 = orderService.selectSellerOrder4(seller.getSellerNum());
+		String sellerOrder11 = orderService.selectSellerOrder11(seller.getSellerNum());
+		String sellerOrder22 = orderService.selectSellerOrder22(seller.getSellerNum());
+		String sellerOrder33 = orderService.selectSellerOrder33(seller.getSellerNum());
+		String sellerOrder44 = orderService.selectSellerOrder44(seller.getSellerNum());
+		
 		model.addAttribute("image", image);
+		model.addAttribute("sellerOrder1", sellerOrder1);
+		model.addAttribute("sellerOrder2", sellerOrder2);
+		model.addAttribute("sellerOrder3", sellerOrder3);
+		model.addAttribute("sellerOrder4", sellerOrder4);
+		model.addAttribute("sellerOrder11", sellerOrder11);
+		model.addAttribute("sellerOrder22", sellerOrder22);
+		model.addAttribute("sellerOrder33", sellerOrder33);
+		model.addAttribute("sellerOrder44", sellerOrder44);
+		
 
 		return "myPage/sellerDetail";
 	}
@@ -226,7 +263,8 @@ public class MyPageController {
 		log.info("uploadFile: " + uploadFile.length);
 
 
-		List<String> profile = new ArrayList<>();
+		/* List<String> profile = new ArrayList<String>(); */
+			
 
 		/* profile = fileUtils.fileUpload(uploadFile); */
 

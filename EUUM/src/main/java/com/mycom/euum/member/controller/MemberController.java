@@ -311,6 +311,7 @@ public class MemberController {
 
 			log.info("*** 멤버 + 셀러");
 
+
 			return "redirect:/main";
 		} else {
 
