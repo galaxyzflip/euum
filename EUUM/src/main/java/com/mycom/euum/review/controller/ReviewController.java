@@ -95,6 +95,9 @@ public class ReviewController {
 		System.out.println(reviewNum + "-============================");
 
 		model.addAttribute("modify", reviewService.reviewModifyForm(reviewNum));
+		
+		//리뷰이미지
+		model.addAttribute("image", reviewService.getSelectRimage(reviewNum));
 
 		System.out.println("수정받냐???????????????????" + reviewService.reviewModifyForm(reviewNum));
 
@@ -103,15 +106,20 @@ public class ReviewController {
 	}
 
 	@PostMapping("review/reviewModifyPro")
-	public String reviewModifyPro(@RequestParam("reviewNum") int reviewNum, ReviewBean reviewBean) {
+	public String reviewModifyPro(@RequestParam("reviewNum") int reviewNum, ReviewBean reviewBean, MultipartFile[] uploadFile)throws Exception {
 
-		// noticeBean.setNoticeNum(noticeNum);
+		/* int rNum = reviewBean.getReviewNum(); */
 		System.out.println("수정처리 빈에 무엇이 들었습니까>??????????????????" + reviewBean);
 		reviewService.reviewModifyPro(reviewBean);
 
-		System.out.println("수정 되냐?????????????????????" + reviewService.reviewModifyPro(reviewBean));
-
-		return "redirect:/review/list";
+		 log.info("===== 상품 수정 처리 =====");
+		 List<ImageBean> imageBeanList = fileUtils.reviewFileUpload(uploadFile);
+		 
+		 log.info("---------- (6) 이미지파일 정보 DB 저장 ----------");
+		 log.info("이미지 쿼리 동작하기 전 imageBeanList: " + imageBeanList);
+		 imageService.updateImage(imageBeanList, reviewNum);
+		
+		return "redirect:/myPage/orderList";
 	}
 
 	@PostMapping("review/reviewDelete")

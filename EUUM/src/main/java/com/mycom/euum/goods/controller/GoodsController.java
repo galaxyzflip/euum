@@ -322,13 +322,13 @@ public class GoodsController {
 
 	/** 선민: 상품 상세보기 */
 	@GetMapping(value = "/goods/goodsDetail")
-	public String goodsDetail(Model model, String goodsNum, Criteria cri, GoodsQNABean goodsQNABean, RCriteria rcri) throws Exception {
+	public String goodsDetail(Model model, String goodsNum, Criteria cri, GoodsQNABean goodsQNABean, RCriteria rcri,HttpSession session) throws Exception {
 		log.info("===== 상품 상세보기 =====");
 		
 		// (1) 상품 정보 가져오기
 		log.info("---------- (1) 상품 정보 가져오기 ----------");
 		GoodsBean goodsBean = goodsService.selectGoodsInfo(goodsNum);
-		log.info("goodsBean: " + goodsBean);
+		log.info("goodsBean상품정보==========: " + goodsBean);
 		
 		// (2) 상품 존재유무 판별
 		log.info("---------- (2) 상품 존재유무 ----------");
@@ -353,6 +353,16 @@ public class GoodsController {
 	
 		
 		log.info("sql상품 컨트롤러=======================" + reviewService.reviewList(rcri));
+		
+		/** 의종: 답변작성시 유효성검사 */		
+		SellerBean sellerBean = getSessionSeller(session);
+		
+		if(sellerBean != null) {
+		String sellerNickName = sellerBean.getSellerNickName();
+		log.info("sellerBean셀러빈 뭐받음?????????========= " + sellerBean);
+		
+		model.addAttribute("sellerName", sellerNickName);
+		}
 		
 	/** 의종: goodsQNA 리스트 가져오기 및 페이징 */
 		int amount = cri.getAmount();
