@@ -9,6 +9,7 @@
 .container {
 	margin-top: 100px;
 	margin-bottom: 100px;
+	background-color:white;
 }
 
 .page-item.active .page-link {
@@ -144,9 +145,12 @@ hr{
 	margin-left:auto;
 	margin-right:auto;
 }
+
+
 </style>
 
 <div class="container">
+<div class="main">
 
 	<div class="tap-class">
 		<div class="tap search-tap">검색하기</div>
@@ -447,7 +451,7 @@ hr{
 	</div>
 
 	
-
+</div>
 </div>    
     
 <script>

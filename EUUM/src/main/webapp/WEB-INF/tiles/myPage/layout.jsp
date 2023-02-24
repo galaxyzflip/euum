@@ -89,6 +89,9 @@
 
 </head>
 <body style="background:#eee;">
+
+
+
 <!-- header -->
 <div id="header">
 	<tiles:insertAttribute name="header" />
@@ -226,13 +229,17 @@
 			</div>
 
 		</div>
+		
+	
 	</div>
 </div>
+
+
 
 <!-- footer -->
 <tiles:insertAttribute name="footer" />
 
 </body>
-</html>
 
+</html>
 

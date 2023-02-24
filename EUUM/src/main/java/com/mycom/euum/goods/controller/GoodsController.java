@@ -79,25 +79,28 @@ public class GoodsController {
 			int total=goodsService.getTotal(cri);
 			model.addAttribute("pageMaker", new PageDTO2(cri, total));
 			model.addAttribute("goodsList", goodsList);
+			log.info("로그인 되어있음");
+			return "goods/goodsList";
+		}else {
+				
+			
+			/* ----------------------------------------- */
+			
+			System.out.println("cri 내용 : " + cri.toString());
+			System.out.println("cri 내용 : " + cri.toString());
+			System.out.println("cri 내용 : " + cri.toString());
+			System.out.println("cri 내용 : " + cri.toString());
+	
+			List<GoodsBean> goodsList = goodsService.selectGoodsList(cri);
+			log.info("상품 리스트: " + goodsList);
+			model.addAttribute("goodsList", goodsList);
+	
+			int total = goodsService.getTotal(cri);
+	
+			model.addAttribute("pageMaker", new PageDTO2(cri, total));
+			log.info("로그인 안돼있음");
 			return "goods/goodsList";
 		}
-		/* ----------------------------------------- */
-		
-		System.out.println("cri 내용 : " + cri.toString());
-		System.out.println("cri 내용 : " + cri.toString());
-		System.out.println("cri 내용 : " + cri.toString());
-		System.out.println("cri 내용 : " + cri.toString());
-
-		List<GoodsBean> goodsList = goodsService.selectGoodsList(cri);
-		log.info("상품 리스트: " + goodsList);
-		model.addAttribute("goodsList", goodsList);
-
-		int total = goodsService.getTotal(cri);
-
-		model.addAttribute("pageMaker", new PageDTO2(cri, total));
-
-		return "goods/goodsList";
-
 	}
 
 	/** 선민: 상품리스트 - 나의 상품 리스트 */
@@ -462,7 +465,7 @@ public class GoodsController {
 
 	/** 선민: 세션 정보 받아오기 - 일반회원 */
 	private MemberBean getSessionMember(HttpSession session) {
-		MemberBean memberBean = (MemberBean) session.getAttribute("loginMember"); // 세션 정보 저장 (이식성을 고려하여 웹 의존성이 있는 로직은
+		MemberBean memberBean = (MemberBean) session.getAttribute("loginUser"); // 세션 정보 저장 (이식성을 고려하여 웹 의존성이 있는 로직은
 																					// Controller에 작성)
 		return memberBean;
 	}

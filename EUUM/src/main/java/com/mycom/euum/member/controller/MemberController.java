@@ -330,7 +330,16 @@ public class MemberController {
 		MemberBean loginUser = memberService.loginService(bean);
 
 		if (loginUser != null) {
+			SellerBean loginSeller = memberService.getSeller(loginUser.getMemberNum());
 			session.setAttribute("loginUser", loginUser);
+			log.info("일반회원, loginUser 세션 정보 : " + loginUser.toString());
+
+			if (loginSeller != null) {
+				session.setAttribute("loginUser", loginUser);
+				session.setAttribute("loginSeller", loginSeller); // "seller" -> "loginSeller"
+				session.setMaxInactiveInterval(60 * 30);
+				
+			}
 			session.setMaxInactiveInterval(60 * 30);
 
 			return "loginSuccess";

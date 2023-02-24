@@ -551,7 +551,7 @@
 
 	<!-- ORDER_NUM 조건으로 레코드 1개 가져오기 -->
 	<!-- <select id="selectOrder" resultType="com.mycom.euum.order.bean.OrderBean"> -->
-	<!-- <select id="selectOrder" resultMap="orderMap">
+	<select id="selectOrder" resultMap="orderMap">
 		SELECT
 		order_key_num,
 		o.order_num,
@@ -588,7 +588,7 @@
 		
 		where o.order_num = p.order_num
 		and o.ORDER_NUM = #{orderNum}
-	</select> -->
+	</select>
 
 	<!-- 페이지용 sql 검색, 정렬까지 모두 끝난 쿼리 위 아래에 덮어서 사용 -->
 	<sql id="pagingPre">

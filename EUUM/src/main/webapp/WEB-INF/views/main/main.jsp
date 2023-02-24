@@ -127,7 +127,7 @@
 					<div class="row gy-4" style="width: 100%; margin: 0 auto;">
 
 						<div class="col-xl-4 add" data-aos="fade-up" data-aos-delay="100">
-							<a href="">
+							<a href="/goods/goodsList?goodsCategory=1">
 								<div
 									class="icon-box d-flex flex-column justify-content-center align-items-center">
 									<img src="../resources/img/icon/01.png" class="iconimg">
@@ -138,7 +138,7 @@
 						<!-- End Icon Box -->
 
 						<div class="col-xl-4 add" data-aos="fade-up" data-aos-delay="200">
-							<a href="">
+							<a href="/goods/goodsList?goodsCategory=2">
 								<div
 									class="icon-box d-flex flex-column justify-content-center align-items-center">
 									<img src="../resources/img/icon/03.png" class="iconimg">
@@ -149,7 +149,7 @@
 						<!-- End Icon Box -->
 
 						<div class="col-xl-4 add" data-aos="fade-up" data-aos-delay="300">
-							<a href="">
+							<a href="/goods/goodsList?goodsCategory=3">
 								<div
 									class="icon-box d-flex flex-column justify-content-center align-items-center">
 									<img src="../resources/img/icon/04.png" class="iconimg">
@@ -160,7 +160,7 @@
 						<!-- End Icon Box -->
 
 						<div class="col-xl-4 add" data-aos="fade-up" data-aos-delay="400">
-							<a href="">
+							<a href="/goods/goodsList?goodsCategory=4">
 								<div
 									class="icon-box d-flex flex-column justify-content-center align-items-center">
 									<img src="../resources/img/icon/02.png" class="iconimg">
@@ -171,7 +171,7 @@
 						<!-- End Icon Box -->
 
 						<div class="col-xl-4 add" data-aos="fade-up" data-aos-delay="500">
-							<a href="">
+							<a href="/goods/goodsList?goodsCategory=5">
 								<div
 									class="icon-box d-flex flex-column justify-content-center align-items-center">
 									<img src="../resources/img/icon/05.png" class="iconimg">

@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-
+<html>
 <style>
 .container {
 	margin-top: 150px;
@@ -177,6 +177,9 @@ hr{
 	cursor : pointer;
 }
 
+.modal{
+	z-index:1050 !important;
+}
 </style>
 
 
@@ -461,9 +464,9 @@ hr{
 	</div>
 </div>
 
-<!-- Modal -->
+	<!-- Modal -->
 <div class="modal fade" id="addOptionModal" tabindex="-1"
-	aria-labelledby="exampleModalLabel" aria-hidden="true">
+	aria-labelledby="exampleModalLabel" aria-hidden="true" style="z-index:8;">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -886,4 +889,4 @@ hr{
 </script>
 
 
-
+</html>
