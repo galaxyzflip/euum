@@ -34,7 +34,7 @@
 	 	   
   <!-- </select> -->
   
-  <select id="reviewList" resultMap="review">
+  <select id="reviewList" resultType="com.mycom.euum.review.bean.ReviewBean">
    <![CDATA[
 	 	select REVIEW_NUM, MEMBER_NUM, REVIEW_WRITER, REVIEW_TITLE, REVIEW_REGDATE, REVIEW_STAR, 
         GOODS_NUM, REVIEW_CONTENT, REVIEW_DELETE

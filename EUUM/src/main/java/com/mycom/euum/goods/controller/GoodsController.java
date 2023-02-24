@@ -32,6 +32,8 @@ import com.mycom.euum.page.CriteriaForGoods;
 import com.mycom.euum.page.PageDTO;
 import com.mycom.euum.page.PageDTO2;
 import com.mycom.euum.page.PageForGoodsDTO;
+import com.mycom.euum.page.RCriteria;
+import com.mycom.euum.page.RPageDTO;
 import com.mycom.euum.review.service.ReviewService;
 
 import lombok.AllArgsConstructor;
@@ -407,7 +409,7 @@ public class GoodsController {
 	/** 선민: 상품 상세보기 */
 	@GetMapping(value = "/goods/goodsDetail")
 
-	public String goodsDetail(Model model, String goodsNum, Criteria cri, GoodsQNABean goodsQNABean, HttpSession session) throws Exception {
+	public String goodsDetail(Model model, String goodsNum, Criteria cri, GoodsQNABean goodsQNABean, HttpSession session, RCriteria rcri) throws Exception {
 		log.info("===== 상품 상세보기 =====");
 
 
@@ -432,6 +434,10 @@ public class GoodsController {
 		int optionCount = goodsService.selectGoodsOptionCount(goodsNum);
 		log.info("옵션의 개수: " + optionCount);
 		List<List<GoodsOptionBean>> optionList = goodsService.selectGoodsOptionContent(goodsNum, optionCount);
+		
+		int rtotal=reviewService.getTotal(rcri);
+		model.addAttribute("rpageMaker", new RPageDTO(rcri, rtotal));					
+		model.addAttribute("reviewList", reviewService.reviewList(rcri));
 
 
 	/** 의종: 답변작성시 유효성검사 */		

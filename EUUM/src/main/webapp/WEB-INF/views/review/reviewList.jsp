@@ -1,7 +1,7 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>   
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>  
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
  
 <!DOCTYPE html>
@@ -10,15 +10,51 @@
 <style>
     .menu a{cursor:pointer;}
     .menu .hide{display:none;}
+    
+.review-head {
+	width: 1000px;
+	margin-left: auto;
+	margin-right: auto;
+	border-right: none;
+	border-left: none;
+}
+
+.review-head thead tr {
+	height: 20px;
+	text-align: center;
+	border-bottom: 1px #777 solid;
+	border-top: 1px #777 solid;
+}
+
+.review-head thead tr td {
+	text-align: center;
+	border-bottom: 1px #dadada solid;
+	
+}
+
+.review-head tbody tr {
+	height: 30px;
+}
+
+.review-head tbody td {
+	padding: 5px;
+	border-bottom: 1px #dadada solid;
+	text-align: center;
+	
+}
+.menu .hide{
+text-align: left;
+}    
 </style>
 
 <script type="text/javascript">
+
 	$(document).ready(function(){
-	    // menu Å¬·¡½º ¹Ù·Î ÇÏÀ§¿¡ ÀÖ´Â a ÅÂ±×¸¦ Å¬¸¯ÇßÀ»¶§
+	    // menu í´ë˜ìŠ¤ ë°”ë¡œ í•˜ìœ„ì— ìˆëŠ” a íƒœê·¸ë¥¼ í´ë¦­í–ˆì„ë•Œ
 	    $(".menu>a").click(function(){
 	        var submenu = $(this).next("ul");
 	
-	        // submenu °¡ È­¸é»ó¿¡ º¸ÀÏ¶§´Â À§·Î º¸µå¶ø°Ô Á¢°í ¾Æ´Ï¸é ¾Æ·¡·Î º¸µå¶ø°Ô ÆîÄ¡±â
+	        // submenu ê°€ í™”ë©´ìƒì— ë³´ì¼ë•ŒëŠ” ìœ„ë¡œ ë³´ë“œëê²Œ ì ‘ê³  ì•„ë‹ˆë©´ ì•„ë˜ë¡œ ë³´ë“œëê²Œ í¼ì¹˜ê¸°
 	        if( submenu.is(":visible") ){
 	            submenu.slideUp();
 	        }else{
@@ -47,24 +83,26 @@
 <br/><br/><br/><br/><br/><br/><br/><br/>
 <div class="container">
 
-    <h2>ÀÌ¿ë ÈÄ±â</h2>
+    <h2>ì´ìš© í›„ê¸°</h2>
      <form action="/myPage/orderList">
-    <button type="submit" class="btn btn-default" >ÈÄ±â ÀÛ¼º</button>   
+    <button type="submit" class="btn btn-default" >í›„ê¸° ì‘ì„±</button>   
     <input type="hidden" name="goodsNum" value="${goodsNum }"/>
     <input type="hidden" name="orderStatus" value="6" />
     </form>
  
-	<table>
+	<table class="review-head">
 		<thead>
 				<tr>
-					<th scope="col">¹øÈ£</th>
-					<th scope="col">ÆòÁ¡</th>
-					<th scope="col">Á¦¸ñ</th>	
-					<th scope="col">ÀÛ¼ºÀÚ</th>
-					<th scope="col">µî·ÏÀÏ</th>
+					<th scope="col">ë²ˆí˜¸</th>
+					<th scope="col">í‰ì </th>
+					<th scope="col">ì œëª©</th>	
+					<th scope="col">ì‘ì„±ì</th>
+					<th scope="col">ë“±ë¡ì¼</th>
 				</tr>		
 					
 		</thead>
+		
+		<tbody>
 		
 		<c:if test="${fn:length(reviewList) != 0}">
 			<c:forEach items="${reviewList}" var="reviewList">
@@ -75,15 +113,15 @@
 					<td>
 						<span style="color: #ffc81e"> 
 						<c:if test="${reviewList.reviewStar eq 1}">
-							<c:out value="¡Ú¡Ù¡Ù¡Ù¡Ù" /></c:if>
+							<c:out value="â˜…â˜†â˜†â˜†â˜†" /></c:if>
 						 <c:if test="${reviewList.reviewStar eq 2}">
-							<c:out value="¡Ú¡Ú¡Ù¡Ù¡Ù" /></c:if>
+							<c:out value="â˜…â˜…â˜†â˜†â˜†" /></c:if>
 						 <c:if test="${reviewList.reviewStar eq 3}">
-							<c:out value="¡Ú¡Ú¡Ú¡Ù¡Ù" /></c:if> 
+							<c:out value="â˜…â˜…â˜…â˜†â˜†" /></c:if> 
 						<c:if test="${reviewList.reviewStar eq 4}">
-							<c:out value="¡Ú¡Ú¡Ú¡Ú¡Ù" /></c:if> 
+							<c:out value="â˜…â˜…â˜…â˜…â˜†" /></c:if> 
 						<c:if test="${reviewList.reviewStar eq 5}">
-							<c:out value="¡Ú¡Ú¡Ú¡Ú¡Ú" /></c:if>
+							<c:out value="â˜…â˜…â˜…â˜…â˜…" /></c:if>
 						</span>
 					</td>
 					<td>
@@ -112,12 +150,12 @@
 			<div>
 				<table>
 					<tr>
-					<td>µî·ÏµÈ °Ô½Ã±ÛÀÌ ¾ø½À´Ï´Ù.</td>
+					<td>ë“±ë¡ëœ ê²Œì‹œê¸€ì´ ì—†ìŠµë‹ˆë‹¤.</td>
 					</tr>
 				</table>
 			</div>
 		</c:if>
-				
+	</tbody>			
 		<form id='actionForm' action="/goods/goodsDetail" method='get'>
 				<input type='hidden' name='rpageNum' value='${rpageMaker.rcri.rpageNum}'>
 				<input type='hidden' name='ramount' value='${rpageMaker.rcri.ramount}'>
@@ -146,8 +184,6 @@
 						<c:if test="${rpageMaker.next}">
 							<li class="paginate_button next"><a
 								href="${rpageMaker.endPage +1 }">Next</a></li>
-							<%-- <li class="paginate_button next">
-							<a href="/goods/goodsDetail?goodsNum=${detail.goodsNum}&pageNum=${rpageMaker.endPage + 1}">Next</a></li> --%>
 						</c:if>
 			</ul>
 		</div>	
@@ -156,8 +192,5 @@
 			
 					
 </div>
-
-
-
 </body>
 </html>
