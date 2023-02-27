@@ -418,85 +418,6 @@ hr{
 	</table>
 </div>
 
-<!-- Modal -->
-<div class="modal fade" id="fileUploadModal" tabindex="-1"
-	aria-labelledby="exampleModalLabel" aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h1 class="modal-title fs-5" id="exampleModalLabel">파일 업로드</h1>
-				<button type="button" class="btn-close" data-bs-dismiss="modal"
-					aria-label="Close"></button>
-			</div>
-
-
-			<div class="modal-body">
-				<div id="option1">
-					
-					<form action="/order/fileUpload" id="file-form" enctype="multipart/form-data" method="post">
-	
-						<div class="input-group">
-							<input type="file" class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload" name=uploadFile value="">
-							
-						</div>
-	
-						<div>
-							<input type="hidden" name="orderKeyNum" value=""/>
-							<input type="hidden" name="orderForm" value="">
-							<input type="hidden" name="orderStatus" value="">
-							<input type="hidden" name="orderNum" value="">
-						</div>
-					</form>
-					
-				</div>
-			</div>
-
-			<div class="modal-footer">
-				<button type="button" id="cancle-order" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-				<button type="button" id="add-order" class="btn btn-primary"  onClick="fileUpload()">업로드</button>
-			</div>
-			
-		</div>
-	</div>
-</div>
-<!-- /.modal -->
-
-
-<!-- Modal -->
-<div class="modal fade" id="cancleModal" tabindex="-1"
-	aria-labelledby="exampleModalLabel" aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h1 class="modal-title fs-5" id="exampleModalLabel">주문취소</h1>
-				<button type="button" class="btn-close" data-bs-dismiss="modal"	aria-label="Close"></button>
-			</div>
-			<div class="modal-body">
-				<div id="option1">
-					<form action="" id="file-form" method="">
-						<div class="input-group">
-							<div>
-								<div><span>주문번호 : </span><span class="order-num"> </span></div>
-								<div><span>취소사유 : </span></div>
-								<div>
-									<textarea name="orderCancleReason" cols="40"></textarea>
-								</div>
-								
-								<input type="hidden" class="order-form">
-							</div>
-						</div>
-					</form>
-				</div>
-			</div>
-			<div class="modal-footer">
-				<button type="button" id="cancle-order" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-				<button type="button" id="add-order" class="btn btn-primary"  onClick="cancleOrder()">주문취소</button>
-			</div>
-			
-		</div>
-	</div>
-</div>
-<!-- /.modal -->
 
 <!-- 페이징 작업할 부분 -->
 <div style="margin:auto; text-align:center; width:700px">
@@ -607,8 +528,7 @@ $(document).ready(function() {
 	
 
 })
-	let uploadModal = $('#fileUploadModal');
-	let cancleModal = $('#cancleModal');
+	
 	
 	function cancleOrder(){
 		let orderCancleReason = $(cancleModal).find('textarea').val();

@@ -90,7 +90,7 @@ public class MyPageServiceImpl implements MyPageService {
 
 	// 전문가 등급 회원으로 전환
 	@Override
-	public void insertSeller(SellerBean bean) {
+	public void insertSeller(SellerBean bean, String memberBean) {
 
 		memberMapper.insertSeller(bean);
 	}

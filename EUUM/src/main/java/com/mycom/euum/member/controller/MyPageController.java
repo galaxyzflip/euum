@@ -190,18 +190,31 @@ public class MyPageController {
 	}
 
 	// 전문가 등급 회원으로 전환 처리
-	@PostMapping("/myPage/transSeller")
-	public String transSeller(MultipartFile[] uploadFile, HttpServletRequest request, SellerBean sellerBean, MemberBean memberBean, ImageBean imageBean) throws Exception {
+		@PostMapping("/myPage/transSeller")
+		public String transSeller(MultipartFile[] uploadFile, HttpServletRequest request, SellerBean sellerBean, MemberBean memberBean, ImageBean imageBean) throws Exception {
+			
+			HttpSession session = request.getSession();
+			
+			MemberBean loginUser = (MemberBean)session.getAttribute("loginUser");
+			
+			myPageService.updateMemberClass(memberBean);
+			loginUser.setMemberClass("S");
+			session.setAttribute("S", loginUser.getMemberClass());
+			myPageService.insertSeller(sellerBean, memberBean.getMemberName());
+//			myPageService.insertSeller(sellerBean);
 
-		myPageService.updateMemberClass(memberBean);
-		myPageService.insertSeller(sellerBean);
+			int selectKeySellerNum = sellerBean.getSellerNum();
+			imageService.insertSellerImage(selectKeySellerNum);
+			log.info("----------------------------------------------" + selectKeySellerNum);
+			
+			int selectKeyMemberNum = sellerBean.getMemberNum();
+			
+			SellerBean loginSeller = myPageService.getSeller(selectKeyMemberNum);
+			session.setAttribute("loginSeller", loginSeller);
+			log.info("----------------------------------------------" + loginSeller);
 
-		int selectKeySellerNum = sellerBean.getSellerNum();
-		imageService.insertSellerImage(selectKeySellerNum);
-		log.info("----------------------------------------------" + selectKeySellerNum);
-
-		return "redirect:/myPage/modifyForm";
-	}
+			return "redirect:/myPage/modifyForm";
+		}
 
 	// 전문가 내 프로필 상세보기 겸 수정 창
 	@GetMapping("/myPage/modifySellerForm")

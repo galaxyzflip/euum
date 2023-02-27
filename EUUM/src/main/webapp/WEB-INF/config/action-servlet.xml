@@ -91,7 +91,7 @@
 	<!-- 인터셉터 적용 -->
 	<mvc:interceptors>
 		<mvc:interceptor>
-			<mvc:mapping path="/myPage/orderList"></mvc:mapping>
+			<mvc:mapping path="/myPage/*"></mvc:mapping>
 			<bean id="loginInterceptor" class="com.mycom.euum.commons.interceptor.LoginInterceptor"/>
 		</mvc:interceptor>
 	</mvc:interceptors>

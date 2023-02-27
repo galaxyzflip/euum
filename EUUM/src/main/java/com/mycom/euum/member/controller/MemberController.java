@@ -55,6 +55,8 @@ public class MemberController {
     }
     
     
+    
+    
     //카카오로그인 콜백 메소드, 카카오 로그인 화면에서 로그인 후 아래 메소드로 콜백
     @GetMapping("/kakaoLoginCallback")
     public String getCI(@RequestParam String code, Model model, HttpServletRequest request) throws IOException {
@@ -510,6 +512,8 @@ public class MemberController {
 		}
 		return "member/sellerProfile";
 	}
+	
+	
 
 
 }

@@ -74,7 +74,7 @@ ORDER BY
    -->
    
         <!-- 문의글 리스트 -->
-   <select id="qnaList" resultType="com.mycom.euum.qna.bean.QNABean">		
+  <!--  <select id="qnaList" resultType="com.mycom.euum.qna.bean.QNABean">		
 	   <![CDATA[
   select * from
     (select rownum rnum, q.* 
@@ -91,9 +91,27 @@ ORDER BY
     q ) qq
 where rnum between (#{pageNum}-1) * #{amount} +1 and #{pageNum} * #{amount}
 	]]>		   
-     </select>  
+     </select>   -->
      
-   
+      <!-- 문의글 리스트 -->
+   <select id="qnaList" resultType="com.mycom.euum.qna.bean.QNABean">		
+	   <![CDATA[
+  select * from
+    (select rownum rnum, q.* 
+    from (
+        SELECT
+            qna_num, qna_title, qna_regdate,substr(qna_writer,1,1) || lpad('*',length(qna_writer)-2,'*') || substr(qna_writer, length(qna_writer), 1) qnaWriter ,  
+            qna_ordered, qna_delete, qna_nid,qna_hitcount
+        FROM  qna_tbl
+        where 1=1
+        ]]>	
+	<include refid="criteria"></include>
+     <![CDATA[	 
+	ORDER BY  qna_nid DESC, qna_ordered ASC) 
+    q ) qq
+where rnum between (#{pageNum}-1) * #{amount} +1 and #{pageNum} * #{amount}
+	]]>		   
+     </select>  
    
    
   <!-- 문의글 등록 -->

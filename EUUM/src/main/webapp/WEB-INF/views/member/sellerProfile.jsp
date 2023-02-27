@@ -136,7 +136,7 @@
 												</div>
 											</div>
 										</div>
-										<img src="${row.goodsImage1}" class="imguri" width="100%" height="100%">
+										<img src="${pageContext.request.contextPath}/resources/img/${row.goodsImageDate1}s_${row.goodsImage1}" class="imguri" width="100%" height="100%">
 										
 								
 								</a>
@@ -157,7 +157,7 @@
 												</div>
 											</div>
 										</div>
-									<img class="imguri" width="100%" height="100%" src="${row.goodsImage2}"/>
+									<img class="imguri" width="100%" height="100%" src="${pageContext.request.contextPath}/resources/img/${row.goodsImageDate2}s_${row.goodsImage2}"/>
 								</a>
 							</div>
 						</div>
@@ -176,7 +176,7 @@
 												</div>
 											</div>
 										</div>
-									<img class="imguri" width="100%" height="100%" src="${row.goodsImage3}"/>
+									<img class="imguri" width="100%" height="100%" src="${pageContext.request.contextPath}/resources/img/${row.goodsImageDate3}s_${row.goodsImage3}"/>
 								</a>
 							</div>
 						</div>

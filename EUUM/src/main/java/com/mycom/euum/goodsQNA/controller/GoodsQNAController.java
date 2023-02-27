@@ -105,7 +105,7 @@ public class GoodsQNAController {
 		
 		log.info("나의 상품내역" + goodsQNAService.myGoodsQNAList(memberNum, pageNum, amount));
 		
-		return "goodsQNA/myGoodsQNA";
+		return "myPage/myGoodsQNA";
 	}
 	
 	//마이페이지 상품문의 삭제

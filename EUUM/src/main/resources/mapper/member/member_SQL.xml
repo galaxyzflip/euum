@@ -53,13 +53,14 @@
 	<!-- 메인용 쿼리 -->
 	<select id="mainSellerList" resultType="com.mycom.euum.member.bean.SellerBean">
 		<![CDATA[
-		select *
-		from seller_tbl
-		where member_num in(select member_num
-		                    from GOODS_TBL
-		                    where GOODS_STATUS = '승인완료'
-		                    )
-		and rownum <= 3
+		select s.*, i.image_upload_path||i.image_file_name as seller_image_name
+    	  from seller_tbl s, (select * from image_tbl where image_use='seller') i
+      	  where member_num in(select member_num
+                          from GOODS_TBL
+                          where GOODS_STATUS = '승인완료'
+                          )
+     	  and s.seller_num=i.image_use_num(+)
+          and rownum <= 3
 		]]>
 	</select>
 	

@@ -118,8 +118,8 @@
 						<th>추가옵션</th>
 						<td>
 							<button type="button" id="opAdd_bt">옵션추가</button>
-							<button type="button" id="test" onclick="copyOptNameArr()">테스트</button>
-							<button type="button" id="test" onclick="test2()">테스트2</button>
+<!-- 							<button type="button" id="test" onclick="copyOptNameArr()">테스트</button> -->
+<!-- 							<button type="button" id="test" onclick="test2()">테스트2</button> -->
 						</td>
 					</tr>
 					<tr>
@@ -790,4 +790,37 @@ table {
 	color: red;
 }
 
+#opAdd_bt {
+	 border: 1px solid #818181;
+}
+
+#registerTempBtn {
+	width: 188px;
+    height: 58px;
+    line-height: 58px;
+    background: #818181;
+    color: #fff;
+    text-align: center;
+    cursor: pointer;
+    border: 1px solid #818181;
+}
+
+#registerBtn {
+    width: 188px;
+    height: 58px;
+    line-height: 58px;
+    background: #343434;
+    color: #fff;
+    text-align: center;
+    cursor: pointer;
+    margin: 0 auto;
+}
+
+#opContentAdd_bt {
+ 	border: 1px solid #818181;
+}
+
+#opContentDel_bt {
+ 	border: 1px solid #818181;
+}
 </style>

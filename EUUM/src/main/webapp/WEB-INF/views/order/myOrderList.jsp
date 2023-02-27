@@ -461,56 +461,7 @@ hr{
 	</div>
 </div>
 
-<!-- Modal -->
-<div class="modal fade" id="addOptionModal" tabindex="-1"
-	aria-labelledby="exampleModalLabel" aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h1 class="modal-title fs-5" id="exampleModalLabel">추가 주문하기</h1>
-				<button type="button" class="btn-close" data-bs-dismiss="modal"
-					aria-label="Close"></button>
-			</div>
 
-
-			<div class="modal-body">
-			<form id="addOrder">
-				<div id="option1">
-
-					<div class="input-group mb-3">
-						<span class="input-group-text" id="inputGroup-sizing-default">결제 내용</span> 
-						<input type="text" class="form-control add-option"
-							aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" name="orderName"	value="">
-					</div>
-
-					<div class="input-group mb-3">
-						<span class="input-group-text" id="inputGroup-sizing-default">추가 금액</span> 
-						<input type="text" class="form-control add-option"
-							aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" name="orderPrice"> 원
-					</div>
-					
-					<div>
-						<input type="hidden" name="goodsNum" value=""/>
-						<input type="hidden" name="orderContact" value=""/>
-						<input type="hidden" name="orderEmail" value=""/>
-						<input type="hidden" name="sellerNickname" value=""/>
-						<input type="hidden" name="sellerNum" value=""/>
-						<input type="hidden" name="orderPayType" value="임시값"/>
-					</div>
-				</div>
-			</form>
-			</div>
-
-
-			<div class="modal-footer">
-				<button type="button" id="cancle-order" class="btn btn-secondary"
-					data-bs-dismiss="modal">취소</button>
-				<button type="button" id="add-order" class="btn btn-primary">주문</button>
-			</div>
-		</div>
-	</div>
-</div>
-<!-- /.modal -->
 <script>
 
 	function postReview(orderKeyNum, orderNum, goodsNum, orderForm){
@@ -841,11 +792,11 @@ hr{
 	function openModal(orderNum, goodsNum, orderEmail, orderContact, sellerNickname, sellerNum) {
 		//기존에 입력된 가격 초기화...
 		$('input[name="orderPrice"]').val('');
-		$(modal).find("input[name='goodsNum']").val(goodsNum);
-		$(modal).find("input[name='orderEmail']").val(orderEmail);
-		$(modal).find("input[name='orderContact']").val(orderContact);
-		$(modal).find("input[name='sellerNickname']").val(sellerNickname);
-		$(modal).find("input[name='sellerNum']").val(sellerNum);
+		$(orderModal).find("input[name='goodsNum']").val(goodsNum);
+		$(orderModal).find("input[name='orderEmail']").val(orderEmail);
+		$(orderModal).find("input[name='orderContact']").val(orderContact);
+		$(orderModal).find("input[name='sellerNickname']").val(sellerNickname);
+		$(orderModal).find("input[name='sellerNum']").val(sellerNum);
 
 		console.log("선택한 orderNum : " + orderNum);
 		console.log("선택된 goodsNum : " + goodsNum)
@@ -853,7 +804,7 @@ hr{
 		console.log("선택된 sellerNickname : " + sellerNickname)
 
 		$('input[name="orderName"]').val(orderNum + " 주문의 추가 금액 결제");
-		modal.modal('show');
+		orderModal.modal('show');
 		//
 	}
 
@@ -879,7 +830,7 @@ hr{
 			} 
 		})//end ajax
 		
-		modal.modal('hide');
+		orderModal.modal('hide');
 	})
 	
 	
