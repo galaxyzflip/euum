@@ -34,15 +34,15 @@
 				</li>
 
 
-				<li class="dropdown"><a href="#"><span>카테고리</span> <i
+				<li class="dropdown"><a href="/goods/goodsList"><span>카테고리</span> <i
 						class="bi bi-chevron-down dropdown-indicator"></i></a>
 						
 					<ul>
-						<li><a href="/goods/goodsList">캐릭터 / 일러스트</a></li>
-						<li><a href="/goods/goodsList">일러스트</a></li>
-						<li><a href="/goods/goodsList">디자인</a></li>
-						<li><a href="/goods/goodsList">3D 모델링</a></li>
-						<li><a href="/goods/goodsList">웹툰 / 만화</a></li>
+						<li><a href="/goods/goodsList?goodsCategory=1&pageNum=1">캐릭터 / 일러스트</a></li>
+						<li><a href="/goods/goodsList?goodsCategory=2&pageNum=1">일러스트</a></li>
+						<li><a href="/goods/goodsList?goodsCategory=3&pageNum=1">디자인</a></li>
+						<li><a href="/goods/goodsList?goodsCategory=4&pageNum=1">3D 모델링</a></li>
+						<li><a href="/goods/goodsList?goodsCategory=5&pageNum=1">웹툰 / 만화</a></li>
 					</ul></li>
 					
 				<li><a href="/#contact">오시는길</a></li>

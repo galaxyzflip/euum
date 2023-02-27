@@ -10,7 +10,6 @@
 		<div class="topCategory">${detail.goodsCategory} / 작품번호: ${detail.goodsNum}</div>
 
 		<div class="topSubject"><h2><b>${detail.goodsName}</b></h2></div>
-
 	</div>
 	<div class="middleDiv">
 		<div class="middleLeftDiv">
@@ -26,41 +25,56 @@
 				<img src="${pageContext.request.contextPath}/resources/img/${detail.goodsImageDate3}${detail.goodsImage3}" style="width: 625px;" />
 			</div>
 		</div>
-		<div class="middleRightDiv">
+		<div class="middleRightDiv" id="goodsInfo">
 			<!-- 작가프로필 -->
-			<div style="height: 450px; border: 1px solid black;">
-<!-- 			<div style="height: 450px;"> -->
-				<span>작가프로필</span>
+			<div style="display: inline-block; width:350px; height: 450px; padding:15px 0 15px 0;border: 1px solid black;">
+				<span class="head">작가프로필</span>
+				<dl>
+					<img class="round_face" src="${pageContext.request.contextPath}/resources/img/${image.imageUploadPath}${image.imageFileName}">
+				</dl>
+				
+				<dl>
+					${seller.sellerNickName}
+				</dl>
+				
+				<dl id="text_seller">
+					${seller.sellerDescription}
+					<textarea id="textarea_seller" style="display:none;">${seller.sellerDescription}</textarea>
+				</dl>
+				
+				<dl>
+					${seller.sellerContact1}
+				</dl>
 			</div>
 			<!-- 상세옵션 (고정 개수) -->
-			<div style="height: 280px; border: 1px solid black;">
-<!-- 			<div style="height: 280px;"> -->
-				<span>상세옵션</span>
-				<dl>
-					<dt>제출 파일 유형</dt>
-					<dd>${detail.goodsFormat}</dd>
-				</dl>
-				<dl>
-					<dt>해상도</dt>
-					<dd>${detail.goodsResolution}</dd>
-				</dl>
-				<dl>
-					<dt>기본 사이즈</dt>
-					<dd>${detail.goodsSize}</dd>
-				</dl>
-				<dl>
-					<dt>수정 횟수</dt>
-					<dd>${detail.goodsModifyCount}</dd>
-				</dl>
-				<dl>
-					<dt>작업 기간</dt>
-					<dd>${detail.goodsPeriod}</dd>
-				</dl>
+			<div style="width:350px; height: 280px; border: 1px solid black; padding:15px 0 15px 0;">
+				<span style="text-align:center;" class="head">상세옵션</span><br/><br/>
+				<div style="width:240px;text-align:left;margin:auto;">
+					<dl>
+						<dt class="goods_info">제출 파일 유형</dt>
+						<dd>${detail.goodsFormat}</dd>
+					</dl>
+					<dl>
+						<dt class="goods_info">해상도</dt>
+						<dd>${detail.goodsResolution}</dd>
+					</dl>
+					<dl>
+						<dt class="goods_info">기본 사이즈</dt>
+						<dd>${detail.goodsSize}</dd>
+					</dl>
+					<dl>
+						<dt class="goods_info">수정 횟수</dt>
+						<dd>${detail.goodsModifyCount}</dd>
+					</dl>
+					<dl>
+						<dt class="goods_info">작업 기간</dt>
+						<dd>${detail.goodsPeriod}</dd>
+					</dl>
+				</div>
 			</div>
 			<!-- 추가옵션 (유동 개수) -->
-			<div style="display: inline-block; width:350px; border: 1px solid black;">
-<!-- 			<div style="display: inline-block; width:350px;"> -->
-				<span>추가옵션</span>
+			<div style="display: inline-block; width:350px; padding:15px 0 15px 0;border: 1px solid black;">
+				<span class="head">추가옵션</span><br/><br/>
 				<ul>
 					<c:choose>
 						<c:when test="${fn:length(optionList) > 0}">
@@ -83,60 +97,53 @@
 				</ul>
 			</div>
 			<!-- 주문 -->
-			<div style="display: inline-block; width:350px; height:200px; border: 1px solid black;">
-<!-- 			<div style="display: inline-block; width:350px;"> -->
-
-
+			<div style="display: inline-block; width:350px; padding:15px 0 15px 0;border: 1px solid black;">
 				<!-- 선택된 옵션 보여주는곳... -->
-				<div class="selected-option">
-				
-				</div>
-
-				<span>결제 금액</span><br/>
-				
-				<strong><span class="total_price">0</span> 원</strong>
-				<button type="button" onclick="buy()">주문 하기</button>
+				<div class="selected-option"></div>
+					<span>결제 금액</span><br/><br/>
+					<strong><span class="total_price">0</span> 원</strong>
+					<button type="button" onclick="buy()">주문 하기</button>
 			</div>
 		</div>
 	</div>
 	<!-- 상품 상세안내 -->
 	<div class="bottomDiv">
 		<div class="content">
-			<span>상세 안내</span>
-			<div>${detail.goodsContent}</div>
+			<div style="padding-bottom:40px;">
+				<span>상품 안내</span>
+			</div>
+			<div id="text_goods">${detail.goodsContent}</div>
+			<textarea id="textarea_goods" style="display:none;">${detail.goodsContent}</textarea>
 		</div>
-		
 	</div>
-		<!-- 테스트로 만들어본 input type file -->
-		<div class="grid-wrapper">
-			<input type="file">
-			<input type="file">
-			<input type="file">
-		</div>
 </div>
-
 
 <!-- 주문시 아래 폼에 input 태그 입력 후 서브밋 -->
 <form id="orderForm" action="/order/orderForm" method="post">
 	<input type="hidden" name="" value="${detail.memberNum }"/> 
 	<input type="hidden" name="" value="${detail.goodsSellerNickname }"/> 
-	
 </form>
 
-
 <div id="goodsReview">
-	   <jsp:include	page="/WEB-INF/views/review/reviewList.jsp"></jsp:include>
+	<jsp:include page="/WEB-INF/views/review/reviewList.jsp"></jsp:include>
 </div>
-
 <div id="goodsQNAList">
-	 <jsp:include page="/WEB-INF/views/goodsQNA/goodsQNAList.jsp"></jsp:include>
-
+	<jsp:include page="/WEB-INF/views/goodsQNA/goodsQNAList.jsp"></jsp:include>
 </div>
 
 <script>
+// 줄바꿈
+
+var str = $("#textarea_seller").val();
+str = str.replace(/(?:\r\n|\r|\n)/g, '<br />');
+$("#text_seller").html(str);
+
+var str = $("#textarea_goods").val();
+str = str.replace(/(?:\r\n|\r|\n)/g, '<br />');
+$("#text_goods").html(str);
+
 
 let num = 0;
-
 
 function buy(){
 	const selectedOption = document.getElementsByClassName('option-data');
@@ -183,7 +190,8 @@ function insertSelectedOption(optionName, optionContent, optionPrice){
 	
 	
 	let selectedOptionList = $('.option-name');
-	let orderOptionName = optionName + ' / ' + optionContent;
+// 	let orderOptionName = optionName + ' / ' + optionContent;
+	let orderOptionName = optionName + ' (' + optionContent + ')';
 	
 	// 선민: toLocaleString()을 위한 Number타입 형변환
 	let toLocaleStringOptionPrice = parseInt(optionPrice).toLocaleString();
@@ -191,7 +199,6 @@ function insertSelectedOption(optionName, optionContent, optionPrice){
 		
 	if(dulicateCheck(selectedOptionList, orderOptionName) != 0){
 		console.log(optionName);
-		
 		let inner = '';
 		
 		inner += '<div class="option-data" id="optionData'+num+'"><div>';
@@ -346,25 +353,18 @@ function deleteOption(index){
 	padding-right:10px;
 	padding-left:10px;
 }
-
-
-
 div {
 	display: block;
 }
-
 ul {
 	list-style: none;
 }
-
 .option-data dl dd{
 	display : inline-block;
 }
-
 .option-data dl dt{
 	display : block;
 }
-
 .mainDiv {
 /* 	background-color: #d3d3d3; */
 	position: relative;
@@ -373,68 +373,66 @@ ul {
 /* 	max-width: 1000px; */
 	min-height: 1000px;
 }
-
 .topDiv {
 	height: 60px;
 	margin: 120px 0px 30px;
 }
-
 .topUse {
 	display: inline;
 	margin: 0px 10px 0px 0px;
 }
-
 .topCategory {
 	display: inline;
 }
-
 .topSubject {
 	font-size: 4;
 	margin: 10px 0px 10px 0px;
 }
-
 .middleDiv {
 	max-width: 1080px;
 	margin: 0 auto;
 	display: flex;
 	justify-content: center;
 }
-
 .middleLeftDiv {
 	display: inline-block;
-/* 	width: 65%; */
 	width: 650px;
- 	border: 1px solid black; 
+/*  	border: 1px solid black;  */
 }
-
 .middleRightDiv {
 	display: inline-block;
-/* 	width: 35%; */
 	width: 350px;
-	text-align: center;
+ 	text-align: center;
 }
-
 .bottomDiv {
 	display: inline-block;
-	border: 1px solid black; 
+ 	border: 1px solid black;
 	position: relative;
 	width: 100%;
-	margin: 0 auto;
+	margin: 15px auto;
 	max-width: 1000px;
 	min-height: 300px;
 }
-
 .grid-wrapper {
 	display: flex;
 	justify-content: space-between;
 }
-
-.content {
-	display: block;
-	text-align: center;
-	margin: 60px 0px 40px 0px
+.content { 
+ 	display: block; 
+ 	text-align: center; 
+	margin: 30px 0px 40px 0px;
+}
+.goods_info {
+	width: 130px;
+	padding-left: 10px;
 }
 
+.round_face {
+    width: 190px;
+    height: 190px;
+    border-radius: 45px;
+    overflow: hidden;
+}
 
 
 

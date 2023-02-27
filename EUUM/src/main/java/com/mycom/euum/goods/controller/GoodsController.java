@@ -26,6 +26,7 @@ import com.mycom.euum.image.bean.ImageBean;
 import com.mycom.euum.image.service.ImageService;
 import com.mycom.euum.member.bean.MemberBean;
 import com.mycom.euum.member.bean.SellerBean;
+import com.mycom.euum.member.service.MyPageService;
 import com.mycom.euum.page.Criteria;
 import com.mycom.euum.page.Criteria2;
 import com.mycom.euum.page.CriteriaForGoods;
@@ -51,6 +52,7 @@ public class GoodsController {
 	private ImageService imageService;
 	private GoodsQNAService goodsQNAService;
 	private ReviewService reviewService;
+	private MyPageService myPageService;
 	private FileUtils fileUtils; // 123
 	
 
@@ -418,6 +420,11 @@ public class GoodsController {
 		GoodsBean goodsBean = goodsService.selectGoodsInfo(goodsNum);
 		log.info("goodsBean: " + goodsBean);
 
+		// (1.5) 상품의 전문가 정보 가져오기
+				SellerBean seller = myPageService.getSeller(goodsBean.getMemberNum());
+				ImageBean image = imageService.getSellerImage(seller.getSellerNum());
+				model.addAttribute("seller", seller);
+				model.addAttribute("image", image);
 
 		// (2) 상품 존재유무 판별
 		log.info("---------- (2) 상품 존재유무 ----------");

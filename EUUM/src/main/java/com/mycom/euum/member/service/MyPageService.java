@@ -30,7 +30,7 @@ public interface MyPageService {
 
 	public SellerBean getSeller(int sellerNum);
 
-	public void insertSeller(SellerBean bean);
+	public void insertSeller(SellerBean bean, String memberBean);
 
 	public int updateMemberClass(MemberBean bean);
 

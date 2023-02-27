@@ -20,4 +20,7 @@ public class SellerBean {
 	private String sellerBuisnessYn;
 	private Date sellerRegDate;
 	private String sellerImage;
+	
+	private String memberName;
+	private String sellerImageName;
 }

@@ -267,7 +267,7 @@
 							data-aos="fade-up" data-aos-delay="100">
 							<div class="chef-member">
 								<div class="member-img" style="height:445px; bottom-margin:-4px;">
-									<img src="${row.sellerImage}" class="img-fluid" height="445px" alt="">
+									<img src="${pageContext.request.contextPath}/resources/img/${row.sellerImageName}" class="img-fluid" height="445px" alt="">
 									<div class="social">
 										<a href=""><i class="bi bi-twitter"></i></a> <a href=""><i
 											class="bi bi-facebook"></i></a> <a href=""><i

@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>    
 <!DOCTYPE html>
@@ -154,9 +154,9 @@ border-bottom: 1px solid #e7e7e7;
 			<tr id ="bbs_view">
 				<td id ="bbs_view">
 				 <div class="line_info">
-				<ul>Á¢¼ö ¸¶°¨ÀÏ : <fmt:formatDate pattern="yyyy-MM-dd" value="${detail.requestDead }"/></ul>
-				<ul>ÀÛ¾÷ ¸¶°¨ÀÏ : <fmt:formatDate pattern="yyyy-MM-dd" value="${detail.requestFinish }"/></ul>
-				<ul>¿¹»ê : <c:out value="${detail.requestMoney }"/></ul>
+				<ul>ì ‘ìˆ˜ ë§ˆê°ì¼ : <fmt:formatDate pattern="yyyy-MM-dd" value="${detail.requestDead }"/></ul>
+				<ul>ì‘ì—… ë§ˆê°ì¼ : <fmt:formatDate pattern="yyyy-MM-dd" value="${detail.requestFinish }"/></ul>
+				<ul>ì˜ˆì‚° : <c:out value="${detail.requestMoney }"/></ul>
 				 <div class="line_info_b">
 				 <ul>${detail.requestWriter } &nbsp;&nbsp; </ul>
 				 <ul><fmt:formatDate pattern="yyyy-MM-dd" value="${detail.requestRegDate }"/></ul>
@@ -189,9 +189,9 @@ border-bottom: 1px solid #e7e7e7;
 				<td>
 				<div>
 					<c:if test="${detail.memberNum eq loginUser.memberNum }">	
-						<button data-oper='modify'>¼öÁ¤</button>
+						<button data-oper='modify'>ìˆ˜ì •</button>
 					</c:if>		
-						<button data-oper='list'>¸ñ·Ï</button>
+						<button data-oper='list'>ëª©ë¡</button>
 				</div>		
 				</td>
 			</tr>	
@@ -205,7 +205,7 @@ border-bottom: 1px solid #e7e7e7;
 					<div class="panel-heading">
 						
 							 <i class="fa fa-comments fa-fw"></i>
-							 	<button id='addCommentBtn' class="btn btn-primary btx-xs pull-right">Áö¿øÇÏ±â</button>
+							 	<button id='addCommentBtn' class="btn btn-primary btx-xs pull-right">ì§€ì›í•˜ê¸°</button>
 					 	
 					</div>
 					
@@ -234,19 +234,19 @@ border-bottom: 1px solid #e7e7e7;
             <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal"
                 aria-hidden="true">&times;</button>
-              <h4 class="modal-title" id="myModalLabel">´ñ±Û ÀÔ·Â</h4>
+              <h4 class="modal-title" id="myModalLabel">ëŒ“ê¸€ ì…ë ¥</h4>
             </div>
             <div class="modal-body">
               <div class="form-group">
-                <label>³»¿ë</label> 
+                <label>ë‚´ìš©</label> 
                 <input class="form-control" name='commentContent'>
               </div>      
               <div class="form-group">
-                <label>ÀÛ¼ºÀÚ</label> 
+                <label>ì‘ì„±ì</label> 
                 <input class="form-control" name='commentWriter' value='${loginUser.memberEmail }' readonly>
               </div>
               <div class="form-group">
-                <label>µî·ÏÀÏ</label> 
+                <label>ë“±ë¡ì¼</label> 
                 <input class="form-control" name='commentRegdate'>
               </div>
               <div>
@@ -256,10 +256,10 @@ border-bottom: 1px solid #e7e7e7;
       
             </div>
 				<div class="modal-footer">
-			        <button id='modalModBtn' type="button" class="btn btn-warning">¼öÁ¤</button>
-			        <button id='modalRemoveBtn' type="button" class="btn btn-danger">»èÁ¦</button>
-			        <button id='modalRegisterBtn' type="button" class="btn btn-primary">µî·Ï</button>
-			        <button id='modalCloseBtn' type="button" class="btn btn-default">Ãë¼Ò</button>
+			        <button id='modalModBtn' type="button" class="btn btn-warning">ìˆ˜ì •</button>
+			        <button id='modalRemoveBtn' type="button" class="btn btn-danger">ì‚­ì œ</button>
+			        <button id='modalRegisterBtn' type="button" class="btn btn-primary">ë“±ë¡</button>
+			        <button id='modalCloseBtn' type="button" class="btn btn-default">ì·¨ì†Œ</button>
 		      </div>          
 	      </div>
           <!-- /.modal-content -->
@@ -268,14 +268,14 @@ border-bottom: 1px solid #e7e7e7;
      </div>
      <!-- /.modal -->
 
-<!-- ´ñ±Û ÆÄÆ® -->
+<!-- ëŒ“ê¸€ íŒŒíŠ¸ -->
 
 <!-- <div class='row'>
 	<div class="col-lg-12">
 		<div class="panel panel-default">
 			<div class="panel-heading">
 			 <i class="fa fa-comments fa-fw"><i>
-			 	<button id='addCommentBtn' class="btn btn-primary btx-xs pull-right">Áö¿øÇÏ±â</button>
+			 	<button id='addCommentBtn' class="btn btn-primary btx-xs pull-right">ì§€ì›í•˜ê¸°</button>
 			</div>
 			
 			<div class="panel-body">
@@ -320,10 +320,10 @@ $(document).ready(function(){
 	           str +="    <small>"+replyService.displayTime(list[i].commentRegdate)+"</small></div>";
 	           str +="    	<div><p>"+list[i].commentContent+"</p></div></div></li>"; */
 	           
-	    	   str +="<li class='left clearfix' data-commentnum='"+list[i].commentNum+"' data-commentwriter='"+list[i].commentWriter+"'>";
+	    	   str +="<li class='left clearfix'>";
 	    	   str +="  <tr><td><div><div><strong>"+list[i].commentWriter+"</strong>"; 
 	           str +="    <small>"+replyService.displayTime(list[i].commentRegdate)+"</small></div>";
-	           str +="    	<div><p>"+list[i].commentContent+"</p></div></div></td></tr></li>";
+	           str +="    	<div><p>"+list[i].commentContent+"</p></div><div><button  data-commentnum='"+list[i].commentNum+"' data-commentwriter='"+list[i].commentWriter+"' id='modi' type='button' class='btn btn-warning'>ìˆ˜ì •</button></div></div></td></tr></li>";
 	             
 	         }
 
@@ -334,7 +334,7 @@ $(document).ready(function(){
 	      
 	   }//end showList
 	   
-		/*¸ğ´Ş ½ºÅ©¸³Æ®*/
+		/*ëª¨ë‹¬ ìŠ¤í¬ë¦½íŠ¸*/
 		var modal = $(".modal");
 	    var modalInputReply = modal.find("input[name='commentContent']");
 	    var modalInputReplyer = modal.find("input[name='commentWriter']");
@@ -355,7 +355,7 @@ $(document).ready(function(){
 	    	/* alert(seller); */
 	    	
 	    	if(seller != 'S'){
-	    		alert("ÀÛ°¡È¸¿ø¸¸ ÀÛ¼º ÇÒ ¼ö ÀÖ½À´Ï´Ù.");
+	    		alert("ì‘ê°€íšŒì›ë§Œ ì‘ì„± í•  ìˆ˜ ìˆìŠµë‹ˆë‹¤.");
 		    	return false;
 	    	}
 	      
@@ -379,7 +379,7 @@ $(document).ready(function(){
 	            };
 	        replyService.add(reply, function(result){
 	          
-	          alert(result);
+	          /* alert(result); */
 	          
 	          modal.find("input").val("");
 	          modal.modal("hide");
@@ -392,8 +392,8 @@ $(document).ready(function(){
 	      });
 		
 	    
-	  //´ñ±Û Á¶È¸ Å¬¸¯ ÀÌº¥Æ® Ã³¸® 
-	    $(".chat").on("click", "li", function(e){
+	  //ëŒ“ê¸€ ì¡°íšŒ í´ë¦­ ì´ë²¤íŠ¸ ì²˜ë¦¬ 
+	    $(".chat").on("click", "button", function(e){
 	     
 	    	var writer=$(this).data("commentwriter");
 	    	/* alert(writer); */
@@ -401,7 +401,7 @@ $(document).ready(function(){
 	    	/* alert(swriter); */
 	    	
 		    if(writer != swriter){
-		    	alert("ÀÛ¼ºÀÚ¸¸ ¼öÁ¤ ÇÒ ¼ö ÀÖ½À´Ï´Ù.");
+		    	alert("ì‘ì„±ìë§Œ ìˆ˜ì • í•  ìˆ˜ ìˆìŠµë‹ˆë‹¤.");
 		    	return false;
 		    }
 	    	
@@ -431,13 +431,13 @@ $(document).ready(function(){
 	    modalModBtn.on("click", function(e){
 	    	  
 	    	  let rno = $(modal).find("input[name='commentNum']").val();
-	    	  alert(rno);
+	    	  /* alert(rno); */
 	     	  var reply = {commentNum:rno, commentContent: modalInputReply.val()};
 	   
 	     	  
 	     	  replyService.update(reply, function(result){
 	     	        
-	     	    alert(result);
+	     	    /* alert(result); */
 	     	    modal.modal("hide");
 	     	    showList();
 	     	    
@@ -448,7 +448,7 @@ $(document).ready(function(){
 	    modalRemoveBtn.on("click", function (e){
 	     	  
 	    	 let rno = $(modal).find("input[name='commentNum']").val();
-	    	  alert(rno);
+	    	  /* alert(rno); */
 	     	  var reply = {commentNum:rno};
 	   
 	     	  

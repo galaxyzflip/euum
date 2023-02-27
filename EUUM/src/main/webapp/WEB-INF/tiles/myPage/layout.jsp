@@ -146,7 +146,7 @@
 						<div class="category_mp" style="text-align:left; margin:15px; background:#CDCDCD; border:0px; padding: 20px;     border-radius: 5px;">
 							<ul style="list-style: none; padding: 0;">
 								<li style="font-size:18px; font-weight:900; padding-left:0;"><img src="/resources/img/icon/Category.png" width="20px">Category</li>
-								<li><a href="/member/sellerDetail">내 프로필</a></li>
+								<li><a href="/myPage/modifySellerForm">내 프로필</a></li>
 								<li><a href="/myPage/orderList">내 주문 관리</a></li>
 								<li><a href="/myPage/myGoods">내 작품 관리</a></li>
 								<li><a href="/myPage/goodsQNA">상품 문의 내역</a></li>
@@ -238,8 +238,203 @@
 
 <!-- footer -->
 <tiles:insertAttribute name="footer" />
+<!-- Modal -->
+<div class="modal fade" id="addOptionModal" tabindex="8"
+	aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h1 class="modal-title fs-5" id="exampleModalLabel">추가 주문하기</h1>
+				<button type="button" class="btn-close" data-bs-dismiss="modal"
+					aria-label="Close"></button>
+			</div>
 
+
+			<div class="modal-body">
+			<form id="addOrder">
+				<div id="option1">
+
+					<div class="input-group mb-3">
+						<span class="input-group-text" id="inputGroup-sizing-default">결제 내용</span> 
+						<input type="text" class="form-control add-option"
+							aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" name="orderName"	value="">
+					</div>
+
+					<div class="input-group mb-3">
+						<span class="input-group-text" id="inputGroup-sizing-default">추가 금액</span> 
+						<input type="text" class="form-control add-option"
+							aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" name="orderPrice"> 원
+					</div>
+					
+					<div>
+						<input type="hidden" name="goodsNum" value=""/>
+						<input type="hidden" name="orderContact" value=""/>
+						<input type="hidden" name="orderEmail" value=""/>
+						<input type="hidden" name="sellerNickname" value=""/>
+						<input type="hidden" name="sellerNum" value=""/>
+						<input type="hidden" name="orderPayType" value="임시값"/>
+					</div>
+				</div>
+			</form>
+			</div>
+
+
+			<div class="modal-footer">
+				<button type="button" id="cancle-order" class="btn btn-secondary"
+					data-bs-dismiss="modal">취소</button>
+				<button type="button" id="add-order" class="btn btn-primary">주문</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- /.modal -->
+
+<!-- Modal -->
+<div class="modal fade" id="fileUploadModal" tabindex="8"
+	aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h1 class="modal-title fs-5" id="exampleModalLabel">파일 업로드</h1>
+				<button type="button" class="btn-close" data-bs-dismiss="modal"
+					aria-label="Close"></button>
+			</div>
+
+
+			<div class="modal-body">
+				<div id="option1">
+					
+					<form action="/order/fileUpload" id="file-form" enctype="multipart/form-data" method="post">
+	
+						<div class="input-group">
+							<input type="file" class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload" name=uploadFile value="">
+							
+						</div>
+	
+						<div>
+							<input type="hidden" name="orderKeyNum" value=""/>
+							<input type="hidden" name="orderForm" value="">
+							<input type="hidden" name="orderStatus" value="">
+							<input type="hidden" name="orderNum" value="">
+						</div>
+					</form>
+					
+				</div>
+			</div>
+
+			<div class="modal-footer">
+				<button type="button" id="cancle-order" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+				<button type="button" id="add-order" class="btn btn-primary"  onClick="fileUpload()">업로드</button>
+			</div>
+			
+		</div>
+	</div>
+</div>
+<!-- /.modal -->
+
+
+<!-- Modal -->
+<div class="modal fade" id="cancleModal" tabindex="8"
+	aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h1 class="modal-title fs-5" id="exampleModalLabel">주문취소</h1>
+				<button type="button" class="btn-close" data-bs-dismiss="modal"	aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<div id="option1">
+					<form action="" id="file-form" method="">
+						<div class="input-group">
+							<div>
+								<div><span>주문번호 : </span><span class="order-num"> </span></div>
+								<div><span>취소사유 : </span></div>
+								<div>
+									<textarea name="orderCancleReason" cols="40"></textarea>
+								</div>
+								
+								<input type="hidden" class="order-form">
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" id="cancle-order" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+				<button type="button" id="add-order" class="btn btn-primary"  onClick="cancleOrder()">주문취소</button>
+			</div>
+			
+		</div>
+	</div>
+</div>
+<!-- /.modal -->
+
+<!-- modal -->
+<div class="modal fade" id="goodsQNAModal" tabindex="8" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <form id="frm" method="post" enctype="multipart/form-data">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="exampleModalLabel">수정하기</h5>
+	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+	      </div>
+	      <div class="modal-body">
+	     
+	          <div class="mb-3">
+	            <label for="recipient-name" class="col-form-label">제목:</label>
+	            <input type="text" class="form-control" id="goodsQNATitle" name="goodsQNATitle" value="${var.goodsQNATitle }">
+				<input type="hidden" name="goodsQNANum" />	          
+	          
+  <div class="caution">
+    <span class="span_validate" id="goodsQNATitleMsg" aria-live="assertive"></span>   
+   </div>  
+	          </div>
+	          
+	          <div id="showImage">이미지
+
+	          
+	          </div>
+	          
+	           <td>
+		      <input type="file" name="uploadFile">
+	          <input type="file" name="uploadFile">	
+	          <input type="file" name="uploadFile">	
+              </td>  
+	          
+	          <div class="mb-3">
+	            <label for="message-text" class="col-form-label">내용:</label>
+	           <pre><textarea class="form-control" id="goodsQNAContent" name="goodsQNAContent"></textarea></pre>
+	         <div class="caution">
+    <span class="span_validate" id="goodsQNAContentMsg" aria-live="assertive"></span>   
+   </div>  
+	          </div>
+	        
+	      </div>
+	      <div class="modal-footer" >
+	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+	        <button type="button" class="btn btn-primary" id="delete" data-oper="delete">삭제</button>
+	        <button type="button" class="btn btn-primary" id="modify" data-oper="modify">저장</button>
+
+	    
+	      </div>
+	    </div>
+	  </div>
+  </form>
+  
+</div> 
 </body>
 
+
+
+<script>
+	let orderModal = $('#addOptionModal');
+	let uploadModal = $('#fileUploadModal');
+	let cancleModal = $('#cancleModal');
+	let goodsQNAModal = ('#goodsQNAModal');
+</script>
+
+
 </html>
+
+
 

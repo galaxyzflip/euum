@@ -330,15 +330,15 @@ $("#input_goodsCategory").change(function() {
 $("#input_goodsName").blur(function() {
     checkName();
 });
-$("#uploadFile1").change(function() {
-    checkImage();
-});
-$("#uploadFile2").change(function() {
-    checkImage();
-});
-$("#uploadFile3").change(function() {
-    checkImage();
-});
+// $("#uploadFile1").change(function() {
+//     checkImage();
+// });
+// $("#uploadFile2").change(function() {
+//     checkImage();
+// });
+// $("#uploadFile3").change(function() {
+//     checkImage();
+// });
 $(".input_goodsUse").click(function() {
     checkUse();
 });

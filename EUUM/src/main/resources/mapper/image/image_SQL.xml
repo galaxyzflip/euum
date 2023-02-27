@@ -94,6 +94,7 @@
 		select *
 		from IMAGE_TBL
 		where image_use_num = #{imageUseNum}
+		and image_use='seller'
 	</select>
 	
   <!-- 의종: 고객문의 이미지 가져오기-->
