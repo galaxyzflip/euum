@@ -70,6 +70,20 @@ public class OrderServiceImpl implements OrderService{
 
 		List<OrderOptionBean> optionList = optionBean.getOptionList();
 		
+		
+		for (int i=0 ; i<optionList.size() ; i++) {
+			if(i+1 < optionList.size()) {
+				orderName = orderName+optionList.get(i).getOrderOptName()+" / "+optionList.get(i).getOrderOptCount()+" 개`";
+			}else {
+				orderName = orderName+optionList.get(i).getOrderOptName()+" / "+optionList.get(i).getOrderOptCount()+" 개";
+			}
+		}
+		
+		
+		orderBean.setOrderName(orderName);
+		int orderInsertCount = orderMapper.insertOrder(orderBean);
+		
+		
 		for (int i=0 ; i<optionList.size() ; i++) {
 			
 			//옵션주문번호... 주문번호 뒤에 -1, -2 식의 일련번호 추가...
@@ -89,13 +103,6 @@ public class OrderServiceImpl implements OrderService{
 			}
 			
 		}
-		log.info("입력된 옵션주문 개수 : " + optionInsertCount);
-		
-		
-		// 대표주문 처리
-		orderBean.setOrderName(orderName);
-		int orderInsertCount = orderMapper.insertOrder(orderBean);
-		log.info("주문 insert count : " + orderInsertCount);
 
 		return orderNum;
 	}

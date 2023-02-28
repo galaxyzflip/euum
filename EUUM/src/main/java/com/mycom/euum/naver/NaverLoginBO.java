@@ -20,9 +20,11 @@ public class NaverLoginBO {
     //state: 애플리케이션이 생성한 상태 토큰
 	
 	//client_id, client_secret 은 최창선 네이버아이디로 발급받은 것인데 추후 안될 수 있음...
-	//나중에 안되면 본인껄로 발급받아서 수정해주시면 됩니다
-    private final static String CLIENT_ID = "Dr7pb4guLlR3GX1L3y0Z";
-    private final static String CLIENT_SECRET = "1g0CpAwUyj";
+	
+	
+	//CLIENT_ID, CLIENT_SECRET 는 네이버개발자센터 가입 후 발급받으셔야 합니다.
+    private final static String CLIENT_ID = "";
+    private final static String CLIENT_SECRET = "";
     private final static String REDIRECT_URI = "http://localhost:9020/callback";
     private final static String SESSION_STATE = "oauth_state";
     /* 프로필 조회 API URL */

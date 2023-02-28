@@ -131,10 +131,12 @@ public class MemberController {
     //로그인 폼으로 이동
 	@RequestMapping(value ="/member/loginForm", method= {RequestMethod.GET, RequestMethod.POST})
 	public String home(Model model, HttpSession session) {
-		String naverAuthUrl = naverLoginBO.getAuthorizationUrl(session);
 		
+		
+		//네이버 로그인을 위한 코드들 현재 API KEY 없으므로 주석해제하면 오류발생
+		//String naverAuthUrl = naverLoginBO.getAuthorizationUrl(session);
 		//naver 로그인 url 을 컨트롤러에서 만들어서 보냄... 카카오 로그인 url 은 jsp 에 있음...
-		model.addAttribute("url", naverAuthUrl);
+		//model.addAttribute("url", naverAuthUrl);
 		
 		return "member/loginForm";
 	}
