@@ -67,7 +67,7 @@ $(document).ready(function(){
 			<tr>	
 
 				<td>작성자
-				<input type="text" name= "noticeWriter" value="용주" readonly>
+				<input type="text" name= "noticeWriter" value="${sessionScope.loginUser.memberName }" readonly>
 
 				</td>
 			</tr>

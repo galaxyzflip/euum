@@ -97,10 +97,10 @@ table {
 								function() {
 									let requestCategory = $(this).find(
 											'option:selected').val();
-									alert(requestCategory);
+									console.log(requestCategory);
 									$('select[name="requestCategory"]').val(
 											requestCategory);
-									alert($('select[name="requestCategory"]')
+									console.log($('select[name="requestCategory"]')
 											.val());
 									$('#actionForm').submit();
 								});
@@ -111,10 +111,10 @@ table {
 										function() {
 											let requestUse = $(this).find(
 													'option:selected').val();
-											alert(requestUse);
+											console.log(requestUse);
 											$('select[name="requestUse"]').val(
 													requestUse);
-											alert($('select[name="requestUse"]')
+											console.log($('select[name="requestUse"]')
 													.val());
 											$('#actionForm').submit();
 										});
@@ -126,7 +126,7 @@ table {
 									e.preventDefault();
 									let keyword = $(actionForm).find(
 											"input[name='rqkeyword']").val();
-									alert("외않된데" + keyword);
+									console.log("외않된데" + keyword);
 									if (!keyword) {
 										alert("키워드를 입력하세요");
 										return false;

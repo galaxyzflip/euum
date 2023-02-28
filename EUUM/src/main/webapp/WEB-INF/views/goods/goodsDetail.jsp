@@ -84,7 +84,7 @@
 									<select id="select_option" class="select_option" onChange="setTotalInfo(${status.index });">
 										<option value="0">선택하세요</option>
 										<c:forEach items="${selectList}" var="row" varStatus="status">
-											<option value="${row.goodsOptContent} ${row.goodsOptPrice}">
+											<option value="${row.goodsOptContent} ${row.goodsOptPrice}" data-content="${row.goodsOptContent }" data-price="${row.goodsOptPrice }">
 												<span class="option-content">${row.goodsOptContent}</span>
 												<span class="option-price">(<fmt:formatNumber value="${row.goodsOptPrice}" groupingUsed="true" />)</span>
 											</option>
@@ -230,14 +230,8 @@ function setTotalInfo(index) {
 	//선택된 옵션명
 	let optionName = $(selectOption).find('span').text();
 	
-	//선택된 옵션내용, 가격... 아래 optionContent, optionPrice 로 나눌거임
-	let optionStr = $(selectOption).find('select option:selected').val();
-	//선택된 옵션 내용
-	let optionContent ='';
-	//선택된 옵션 가격
-	let optionPrice = '';
-	//옵션 내용 옵션 가격 각 변수에 대입
-	[optionContent, optionPrice] = optionStr.split(' ');
+	let optionContent = $(selectOption).find('select option:selected').data("content");
+	let optionPrice = $(selectOption).find('select option:selected').data("price")
 	
 	//선택하세요. 옵션 선택시에는 옵션 추가 안되게...
 	if(optionContent === '0') {
@@ -245,9 +239,9 @@ function setTotalInfo(index) {
 	}
 
 	//선택된 옵션정보 로그 찍어보기
-console.log(optionName);
-console.log(optionContent);
-console.log(optionPrice);
+	console.log(optionName);
+	console.log(optionContent);
+	console.log(optionPrice);
 	
 	insertSelectedOption(optionName, optionContent, optionPrice);
 	
