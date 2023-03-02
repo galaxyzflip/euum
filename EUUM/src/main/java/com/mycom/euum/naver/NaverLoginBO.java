@@ -23,11 +23,11 @@ public class NaverLoginBO {
 	
 	
 	//CLIENT_ID, CLIENT_SECRET 는 네이버개발자센터 가입 후 발급받으셔야 합니다.
-    private final static String CLIENT_ID = "";
-    private final static String CLIENT_SECRET = "";
-    private final static String REDIRECT_URI = "http://localhost:9020/callback";
-    private final static String SESSION_STATE = "oauth_state";
-    /* 프로필 조회 API URL */
+	private final static String CLIENT_ID = "Dr7pb4guLlR3GX1L3y0Z";
+	private final static String CLIENT_SECRET = "1g0CpAwUyj";
+	private final static String REDIRECT_URI = "http://localhost:9020/callback";
+	private final static String SESSION_STATE = "oauth_state";
+	/* 프로필 조회 API URL */
     private final static String PROFILE_API_URL = "https://openapi.naver.com/v1/nid/me";
     /* 네이버 아이디로 인증 URL 생성 Method */
     public String getAuthorizationUrl(HttpSession session) {

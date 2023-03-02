@@ -134,9 +134,9 @@ public class MemberController {
 		
 		
 		//네이버 로그인을 위한 코드들 현재 API KEY 없으므로 주석해제하면 오류발생
-		//String naverAuthUrl = naverLoginBO.getAuthorizationUrl(session);
+		String naverAuthUrl = naverLoginBO.getAuthorizationUrl(session);
 		//naver 로그인 url 을 컨트롤러에서 만들어서 보냄... 카카오 로그인 url 은 jsp 에 있음...
-		//model.addAttribute("url", naverAuthUrl);
+		model.addAttribute("url", naverAuthUrl);
 		
 		return "member/loginForm";
 	}

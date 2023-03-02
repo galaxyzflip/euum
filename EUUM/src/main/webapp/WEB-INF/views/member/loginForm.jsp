@@ -119,10 +119,10 @@ li {
 
 			
 				<div id="naver_id_login" style="text-align: center">
-					<a href=""> <img width="223" src="https://developers.naver.com/doc/review_201802/CK_bEFnWMeEBjXpQ5o8N_20180202_7aot50.png" /></a>
+					<a href="${url }"> <img width="223" src="https://developers.naver.com/doc/review_201802/CK_bEFnWMeEBjXpQ5o8N_20180202_7aot50.png" /></a>
 				</div>
 				<div id="kakao_id_login" style="text-align: center">
-					<a href=""> <img width="223" src="/resources\img\kakao_login_medium_narrow.png" /></a>
+					<a href="https://kauth.kakao.com/oauth/authorize?client_id=406f013cd09687a6ebea7a93af36fe8e&redirect_uri=http://localhost:9020/kakaoLoginCallback&response_type=code"> <img width="223" src="/resources\img\kakao_login_medium_narrow.png" /></a>
 				</div>
 				<br>
 			</div>
