@@ -324,7 +324,7 @@
 
 			<div class="modal-footer">
 				<button type="button" id="cancle-order" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-				<button type="button" id="add-order" class="btn btn-primary"  onClick="fileUpload()">업로드</button>
+				<button type="button" id="" class="btn btn-primary"  onClick="fileUpload()">업로드</button>
 			</div>
 			
 		</div>
@@ -361,7 +361,7 @@
 			</div>
 			<div class="modal-footer">
 				<button type="button" id="cancle-order" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-				<button type="button" id="add-order" class="btn btn-primary"  onClick="cancleOrder()">주문취소</button>
+				<button type="button" id="" class="btn btn-primary"  onClick="cancleOrder()">주문취소</button>
 			</div>
 			
 		</div>
@@ -431,6 +431,32 @@
 	let uploadModal = $('#fileUploadModal');
 	let cancleModal = $('#cancleModal');
 	let goodsQNAModal = ('#goodsQNAModal');
+	
+	$(document).ready(function(){
+		$('#add-order').on('click', function() {
+			
+			
+			const formData = $('#addOrder');
+			
+			$.ajax({
+				url : "/order/addOrder",
+				type : "post",
+				async:false,
+				//contentType : "application/json; charset=utf-8",
+				dataType : 'json',
+	 			data : formData.serialize(),
+				success : function(data){
+					location.reload()
+				},
+				error : function(request, status, error){
+					console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+					alert('에러');
+				} 
+			})//end ajax
+			
+			orderModal.modal('hide');
+		})
+	})
 </script>
 
 

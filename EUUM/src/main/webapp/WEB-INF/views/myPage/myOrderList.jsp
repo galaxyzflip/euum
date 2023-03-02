@@ -809,7 +809,7 @@ hr{
 	}
 
 	
-	$('#add-order').on('click', function() {
+	/* $('#add-order').on('click', function() {
 	
 		
 		let formData = $('#addOrder');
@@ -831,7 +831,7 @@ hr{
 		})//end ajax
 		
 		orderModal.modal('hide');
-	})
+	}) */
 	
 	
 </script>
